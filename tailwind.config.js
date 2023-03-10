@@ -16,8 +16,8 @@ module.exports = {
       fontFamily: {
         'hero-bold': ['Roboto-bold'],
         'hero-light': ['Roboto-light'],
-      }
-    }
+      },
+    },
   },
   plugins: [],
 }

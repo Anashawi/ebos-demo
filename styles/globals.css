@@ -125,38 +125,10 @@ a {
   background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
 
-.home-line {
-  width: 1105px;
-  height: 620px;
-  bottom: 0;
-  left: 65px;
-  position: absolute;
-  z-index: 1;
-}
-
-.home-line .home-path {
-  fill: none;
-  stroke-width: 5px;
-  stroke: #263238;
-}
-
-.home-line .grid-path {
-  fill: none;
-  stroke-width: 5px;
-  stroke: #fff;
-}
-
-.home-line .dashed-dot {
-  fill: black;
-}
-
-.home-line .dashed-path {
-  fill: none;
-  stroke-width: 1px;
-  stroke-dasharray: 5, 2;
-  stroke: #263238;
-}
-
 .custom-blur {
   backdrop-filter: blur(39px);
+}
+
+.custom-stroke-dasharray {
+  stroke-dasharray: 5, 2;
 }
