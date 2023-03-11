@@ -7,6 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'gunmetal': '#263238',
+        'aquamarine': '#1CE6A1',
+        'yellow-green': '#86bf44',
+        'gray-battleship': '#999999',
+      },
       opacity: {
         '15': '0.15',
       },

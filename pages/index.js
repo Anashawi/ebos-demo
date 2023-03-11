@@ -77,7 +77,7 @@ export default function Home() {
                 <span className='self-end text-[2rem] -translate-y-9 font-extrabold'>Journey</span>
               </div>
             </div>
-            <div className="-translate-x-[1.5rem] -translate-y-[50%] w-40 h-40 flex flex-col justify-center items-center text-center bg-gray-800 text-white rounded-full border-[#1CE6A1] border-[5px] z-[999]">
+            <div className="-translate-x-[1.5rem] -translate-y-[50%] w-40 h-40 flex flex-col justify-center items-center text-center bg-gray-800 text-white rounded-full border-aquamarine border-[5px] z-[999]">
               <h5 className="font-bold text-3xl">
                 2-20X
               </h5>
@@ -97,18 +97,18 @@ export default function Home() {
               </p>
             </div>
             <div className='absolute bottom-0 w-full h-[39rem] border-slate-600'>
-              <div className='absolute top-[575px] left-[15px] bg-zinc-400 text-white text-sm pl-3 pr-6 py-1 rounded-full'>
+              <div className='absolute top-[575px] left-[15px] bg-gray-battleship text-white text-sm pl-3 pr-6 py-1 rounded-full'>
                 Free. No subscription needed
               </div>
               <span class="absolute top-[575px] left-[280px] text-white font-bold text-lg">
                 Subscribers only
               </span>
-              <div className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[8rem] aspect-square p-2 lg:p-3 break-words bg-[#1CE6A1] drop-shadow-lg rounded-full z-[9999]' style={{
+              <div className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[8rem] aspect-square p-2 lg:p-3 break-words bg-aquamarine drop-shadow-lg rounded-full z-[9999]' style={{
                 left: p_0.x,
                 top: p_0.y,
               }
               }>
-                <Link href='' className='text-center text-[#86bf44]'>
+                <Link href='' className='text-center text-yellow-green'>
                   <div className='text-slate-700'>Start here</div>
                   <div className='font-bold text-white'>Register</div>
                   <div className='text-slate-700 font-bold'>Or</div>
@@ -122,16 +122,16 @@ export default function Home() {
                   top: getY((index + 1) / (nodes.length * 1.2)),
                 }
                 }>
-                  <Link href={node.url} className='text-center text-[#86bf44]'>{node.text}</Link>
+                  <Link href={node.url} className='text-center text-yellow-green'>{node.text}</Link>
                 </div>)
                 )
               }
             </div>
             <svg className='home-line absolute bottom-0 w-full h-[39rem] z-[1]'>
-              <path className='stroke-[5px] stroke-[#263238] fill-none' d={`M ${p_0.x} ${p_0.y} Q ${p_1.x} ${p_1.y} ${p_2.x} ${p_2.y}`}></path>
-              <path className='stroke-[5px] stroke-white fill-none' d={`M 55 220 L 55 515 L ${p_2.x} 515`}></path>
+              <path className='stroke-[5px] stroke-gunmetal fill-none' d={`M ${p_0.x} ${p_0.y} Q ${p_1.x} ${p_1.y} ${p_2.x} ${p_2.y}`}></path>
+              <path className='stroke-[5px] stroke-white fill-none' d={`M 55 270 L 55 515 L ${p_2.x} 515`}></path>
               <circle className='fill-black' cx='220' cy='590' r='4'></circle>
-              <path className='custom-stroke-dasharray stroke-[1px] stroke-[#263238] fill-none' d='M 220 590 L 247 590 L 247 451'></path>
+              <path className='custom-stroke-dasharray stroke-[1px] stroke-gunmetal fill-none' d='M 220 590 L 247 590 L 247 451'></path>
             </svg>
           </div>
         </div>
