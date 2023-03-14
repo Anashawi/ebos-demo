@@ -3,30 +3,30 @@ import Link from "next/link";
 const Goals = () => {
    return (
       <>
-         <div className='split '>
-            <div className='page '>
-               <div className='row'>
-                  <div className='md-6 pane-left'>
+         <div className='homepage-bg-gradient w-screen bg-white'>
+            <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+               <div className='flex flex-wrap'>
+                  <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
                         <strong>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
-                     <h3 className='f3 spaced yellow'>Goals</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Goals</h3>
 
-                     <h3 className='f3 spaced weight-normal'>
+                     <h3 className='text-[2.52rem] mb-6 font-normal'>
                         Choose a target date
                         <input
                            id='datepicker'
                            placeholder='31-12-2020'
-                           className='text-input p-3'
+                           className='p-3 bg-gray-200 outline-none caret-dark-blue border-none p-3'
                            value=''
                         />
                      </h3>
-                     <h3 className='f3 spaced weight-normal'>
+                     <h3 className='text-[2.52rem] mb-6 font-normal'>
                         Visualize success on this date, What does it look like
                      </h3>
 
-                     <h2 className='large spaced yellow'>
+                     <h2 className='text-[4.2rem] mb-6 text-yellow-green'>
                         Celebrating Unequivocal Success!
                      </h2>
                      <p>Things you want to be celebrating:</p>
@@ -36,7 +36,7 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input goals'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none goals'
                                  data-id='21'
                                  name='goals[]'
                                  value='5 Consulting Engagement Signed (250,000 JOD)'
@@ -51,7 +51,7 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input goals'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none goals'
                                  data-id='22'
                                  name='goals[]'
                                  value='A stable training income disruptive'
@@ -66,7 +66,7 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input goals'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none goals'
                                  data-id='20'
                                  name='goals[]'
                                  value='EBOS / Others - 10,000 Users'
@@ -81,7 +81,7 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input goals'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none goals'
                                  data-id='19'
                                  name='goals[]'
                                  value='100 Contingent workforce deployed'
@@ -96,7 +96,7 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input goals'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none goals'
                                  data-id='18'
                                  name='goals[]'
                                  value='MC Platform - 250,000 Candidates'
@@ -111,7 +111,7 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input goals'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none goals'
                                  name='goals[]'
                                  placeholder='Enter goal and add another'
                               />
@@ -131,7 +131,7 @@ const Goals = () => {
                      </div>
                      {/* <script src="/modules/goals.js"></script> */}
                   </div>
-                  <div className='md-6 pane-right'>
+                  <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
                         <button type='button' className='btn openideas'>
                            My ideas
@@ -177,7 +177,7 @@ const Goals = () => {
                      <div className='modal-header'>
                         <div className='modal-title '>
                            <h2 className='f2 '>Ideas</h2>
-                           <h3 className='spaced f6 grey-dark'>
+                           <h3 className='mb-6 f6 grey-dark'>
                               Add your ideas
                            </h3>
                         </div>
@@ -220,13 +220,13 @@ const Goals = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input newIdea'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>
                         </div>
 
-                        <div className='spaced'>
+                        <div className='mb-6'>
                            <br />
                            <button
                               type='button'

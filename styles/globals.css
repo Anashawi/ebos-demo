@@ -125,6 +125,10 @@ a {
   background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
 
+.pane-right-gradient {
+  background: linear-gradient(90deg, #86bf44 0%, #86bf44 50%, #86bf44 50%, rgba(253, 198, 29, 0) 100%);
+}
+
 .custom-blur {
   backdrop-filter: blur(39px);
 }

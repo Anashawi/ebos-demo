@@ -3,7 +3,7 @@ import Link from "next/link";
 const Customers = () => {
    return (
       <>
-         <div className='split '>
+         <div className='homepage-bg-gradient w-screen bg-white'>
             <form
                method='post'
                action='http://bo.adpadelhouse.com/app/customers'
@@ -13,9 +13,9 @@ const Customers = () => {
                   name='_token'
                   value='E6vydmJoblEw5asasVKo4Ehneri0ZmjnuHJ03vSY'
                />
-               <div className='page '>
-                  <div className='row'>
-                     <div className='md-4 pane-left'>
+               <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+                  <div className='flex flex-wrap'>
+                     <div className='md-4 bg-white p-12 relative'>
                         <div className='pb-5'>
                            <strong>Mustafa Khairy </strong> |
                            <a href='http://bo.adpadelhouse.com/logout'>
@@ -23,11 +23,11 @@ const Customers = () => {
                            </a>
                         </div>
 
-                        <h3 className='f3 doublespacedplus yellow'>
+                        <h3 className='text-[2.52rem] doublespacedplus text-yellow-green'>
                            Voice of customers
                         </h3>
 
-                        <h4 className='f4 weight-normal spaced'>
+                        <h4 className='f4 font-normal mb-6'>
                            Top customer categories
                         </h4>
 
@@ -36,35 +36,35 @@ const Customers = () => {
                               <input
                                  type='text'
                                  name='name[]'
-                                 className='w100 text-input'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                               />
                            </li>
                            <li>
                               <input
                                  type='text'
                                  name='name[]'
-                                 className='w100 text-input'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                               />
                            </li>
                            <li>
                               <input
                                  type='text'
                                  name='name[]'
-                                 className='w100 text-input'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                               />
                            </li>
                            <li>
                               <input
                                  type='text'
                                  name='name[]'
-                                 className='w100 text-input'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                               />
                            </li>
                            <li>
                               <input
                                  type='text'
                                  name='name[]'
-                                 className='w100 text-input'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                               />
                            </li>
                         </ul>
@@ -82,7 +82,7 @@ const Customers = () => {
                         </div>
                      </div>
 
-                     <div className='md-8 pane-right'>
+                     <div className='md-8 pane-right-gradient min-h-screen p-12'>
                         <div className=''>
                            <button type='button' className='btn openideas'>
                               My ideas
@@ -100,9 +100,9 @@ const Customers = () => {
                            </div>
                         </Link>
 
-                        <div className='row-spaced'>
+                        <div className='row-mb-6'>
                            <div className='col c-6'>
-                              <h4 className='f4 weight-normal spaced'>
+                              <h4 className='f4 font-normal mb-6'>
                                  What do they want
                               </h4>
 
@@ -111,41 +111,41 @@ const Customers = () => {
                                     <input
                                        type='text'
                                        name='target[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='target[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='target[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='target[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='target[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                               </ul>
                            </div>
                            <div className='col c-6'>
-                              <h4 className='f4 weight-normal spaced'>
+                              <h4 className='f4 font-normal mb-6'>
                                  How to fulfill it
                               </h4>
 
@@ -154,35 +154,35 @@ const Customers = () => {
                                     <input
                                        type='text'
                                        name='fulfill[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='fulfill[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='fulfill[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='fulfill[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                                  <li>
                                     <input
                                        type='text'
                                        name='fulfill[]'
-                                       className='w100 text-input'
+                                       className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                                     />
                                  </li>
                               </ul>
@@ -216,7 +216,7 @@ const Customers = () => {
                      <div className='modal-header'>
                         <div className='modal-title '>
                            <h2 className='f2 '>Ideas</h2>
-                           <h3 className='spaced f6 grey-dark'>Add your ideas</h3>
+                           <h3 className='mb-6 f6 grey-dark'>Add your ideas</h3>
                         </div>
                         <button
                            type='button'
@@ -257,13 +257,13 @@ const Customers = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input newIdea'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>
                         </div>
 
-                        <div className='spaced'>
+                        <div className='mb-6'>
                            <br />
                            <button
                               type='button'

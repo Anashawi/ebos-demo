@@ -30,14 +30,14 @@ const Factors = () => {
                         </div>
                      </Link>
 
-                     <h3 className='f3 spaced yellow'>Red ocean canvas</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Red ocean canvas</h3>
 
-                     <h3 className='f3 spaced weight-normal'>
+                     <h3 className='text-[2.52rem] mb-6 font-normal'>
                         Add competing points
                      </h3>
                      <p>What do you compete with competitors on?</p>
 
-                     <table className='rich w100'>
+                     <table className='rich w-full'>
                         <colgroup>
                            <col className='c-3' />
                            <col className='c-2' />
@@ -57,7 +57,7 @@ const Factors = () => {
                                     type='text'
                                     value='price'
                                     name='factor[]'
-                                    className='text-input w100 factor'
+                                    className='p-3 bg-gray-200 outline-none caret-dark-blue border-none w-full factor'
                                     placeholder='E.g. price'
                                  />
                               </td>
@@ -69,7 +69,7 @@ const Factors = () => {
                                     type='text'
                                     value='speed'
                                     name='factor[]'
-                                    className='text-input w100 factor'
+                                    className='p-3 bg-gray-200 outline-none caret-dark-blue border-none w-full factor'
                                     placeholder='E.g. price'
                                  />
                               </td>
@@ -81,7 +81,7 @@ const Factors = () => {
                                     type='text'
                                     value='network'
                                     name='factor[]'
-                                    className='text-input w100 factor'
+                                    className='p-3 bg-gray-200 outline-none caret-dark-blue border-none w-full factor'
                                     placeholder='E.g. price'
                                  />
                               </td>
@@ -93,7 +93,7 @@ const Factors = () => {
                                     type='text'
                                     value='maintenance'
                                     name='factor[]'
-                                    className='text-input w100 factor'
+                                    className='p-3 bg-gray-200 outline-none caret-dark-blue border-none w-full factor'
                                     placeholder='E.g. price'
                                  />
                               </td>
@@ -105,7 +105,7 @@ const Factors = () => {
                                     type='text'
                                     value='test'
                                     name='factor[]'
-                                    className='text-input w100 factor'
+                                    className='p-3 bg-gray-200 outline-none caret-dark-blue border-none w-full factor'
                                     placeholder='E.g. price'
                                  />
                               </td>
@@ -178,7 +178,7 @@ const Factors = () => {
                                  <div className='modal-header'>
                                     <div className='modal-title '>
                                        <h2 className='f2 '>Ideas</h2>
-                                       <h3 className='spaced f6 grey-dark'>
+                                       <h3 className='mb-6 f6 grey-dark'>
                                           Add your ideas
                                        </h3>
                                     </div>
@@ -221,13 +221,13 @@ const Factors = () => {
                                        <li>
                                           <input
                                              type='text'
-                                             className='w100 text-input newIdea'
+                                             className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                              placeholder='New idea'
                                           />
                                        </li>
                                     </div>
 
-                                    <div className='spaced'>
+                                    <div className='mb-6'>
                                        <br />
                                        <button
                                           type='button'

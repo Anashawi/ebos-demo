@@ -3,11 +3,11 @@ import Link from "next/link";
 const NonCustomers = () => {
    return (
       <>
-         <div className='split '>
+         <div className='homepage-bg-gradient w-screen bg-white'>
             <form action='/'>
-               <div className='page '>
-                  <div className='row'>
-                     <div className='md-4 pane-left'>
+               <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+                  <div className='flex flex-wrap'>
+                     <div className='md-4 bg-white p-12 relative'>
                         <div className='pb-5'>
                            <strong>Mustafa Khairy </strong> |
                            <Link href='http://bo.adpadelhouse.com/logout'>
@@ -15,15 +15,15 @@ const NonCustomers = () => {
                            </Link>
                         </div>
 
-                        <h3 className='f3 spaced yellow'>Non customers</h3>
+                        <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Non customers</h3>
 
-                        <div className='spaced'>
-                           <h6 className='f6  spaced'>Soon to be non customers</h6>
+                        <div className='mb-6'>
+                           <h6 className='f6  mb-6'>Soon to be non customers</h6>
                            <ul className='alist non'>
                               <li>
                                  <input
                                     type='text '
-                                    className='w100 text-input nonCustomers'
+                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none nonCustomers'
                                     autocomplete='off'
                                  />
                                  <Link className='deletebtn deleteItem'> X </Link>
@@ -35,13 +35,13 @@ const NonCustomers = () => {
                               </a>
                            </div>
                         </div>
-                        <div className='spaced'>
-                           <h6 className='f6  spaced'>Refusing customers</h6>
+                        <div className='mb-6'>
+                           <h6 className='f6  mb-6'>Refusing customers</h6>
                            <ul className='alist ref'>
                               <li>
                                  <input
                                     type='text '
-                                    className='w100 text-input refusingCustomers'
+                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none refusingCustomers'
                                     autocomplete='off'
                                  />
                                  <a className='deletebtn deleteItem'> X </a>
@@ -53,13 +53,13 @@ const NonCustomers = () => {
                               </a>
                            </div>
                         </div>
-                        <div className='spaced'>
-                           <h6 className='f6  spaced'>Unwanted customers</h6>
+                        <div className='mb-6'>
+                           <h6 className='f6  mb-6'>Unwanted customers</h6>
                            <ul className='alist unwant'>
                               <li>
                                  <input
                                     type='text '
-                                    className='w100 text-input unwantedCustomers'
+                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none unwantedCustomers'
                                     autocomplete='off'
                                  />
                                  <a className='deletebtn deleteItem'> X </a>
@@ -80,7 +80,7 @@ const NonCustomers = () => {
                            </a>
                         </div>
                      </div>
-                     <div className='md-8 pane-right'>
+                     <div className='md-8 pane-right-gradient min-h-screen p-12'>
                         <Link href='/' className='logo-pane'>
                            <h4>20X</h4>
                            <span className='rev'>revenue BY</span>
@@ -94,19 +94,19 @@ const NonCustomers = () => {
 
                         <div className='box box-grey-light c-12'>
                            <div className='box doublespaced box-lighter c-12'>
-                              <div className='box doublespaced box-yellow-light c-12'>
-                                 <h6 className='f6 spaced'>
+                              <div className='box doublespaced box-text-yellow-green-light c-12'>
+                                 <h6 className='f6 mb-6'>
                                     Soon to be non customers
                                  </h6>
-                                 <ul className='normal spaced noncustomersli'></ul>
+                                 <ul className='normal mb-6 noncustomersli'></ul>
                               </div>
 
-                              <h6 className='f6 spaced'>Refusing customers</h6>
-                              <ul className='normal spaced refusingcustomersli'></ul>
+                              <h6 className='f6 mb-6'>Refusing customers</h6>
+                              <ul className='normal mb-6 refusingcustomersli'></ul>
                            </div>
 
-                           <h6 className='f6 spaced'>Unwanted customers</h6>
-                           <ul className='normal spaced unwantedcustomersli'></ul>
+                           <h6 className='f6 mb-6'>Unwanted customers</h6>
+                           <ul className='normal mb-6 unwantedcustomersli'></ul>
                         </div>
 
                         <div className='breath'>
@@ -136,7 +136,7 @@ const NonCustomers = () => {
                      <div className='modal-header'>
                         <div className='modal-title '>
                            <h2 className='f2 '>Ideas</h2>
-                           <h3 className='spaced f6 grey-dark'>Add your ideas</h3>
+                           <h3 className='mb-6 f6 grey-dark'>Add your ideas</h3>
                         </div>
                         <button
                            type='button'
@@ -177,13 +177,13 @@ const NonCustomers = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input newIdea'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>
                         </div>
 
-                        <div className='spaced'>
+                        <div className='mb-6'>
                            <br />
                            <button
                               type='button'

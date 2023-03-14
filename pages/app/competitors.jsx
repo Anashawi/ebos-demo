@@ -3,43 +3,43 @@ import Link from "next/link";
 const Competitors = () => {
    return (
       <>
-         <div className='split '>
-            <div className='page '>
-               <div className='row'>
-                  <div className='md-6 pane-left'>
+         <div className='homepage-bg-gradient w-screen bg-white'>
+            <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+               <div className='flex flex-wrap'>
+                  <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
                         <strong>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
 
-                     <h3 className='f3 spaced yellow'>Market potential</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Market potential</h3>
 
-                     <div className='grid g-3 spacedout bthin spaced'>
+                     <div className='grid g-3 spacedout bthin mb-6'>
                         <div>My market share</div>
                         <div className='input-prefix'>
                            <input
                               type='hidden'
                               id='comp-name-0'
                               value='my-share'
-                              className='w100 comp-name text-input'
+                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
 
                            <span className='prefix'>$</span>
                            <input
                               type='text'
                               id='comp-share-0'
-                              className='w100 comp-share text-input'
+                              className='w-full comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
 
-                     <div className='grid g-3 bthin spaced spacedout'>
+                     <div className='grid g-3 bthin mb-6 spacedout'>
                         <div>Competitor 1</div>
                         <div>
                            <input
                               type='text'
                               id='comp-name-1'
-                              className='w100 comp-name text-input'
+                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                         <div>Market share</div>
@@ -48,18 +48,18 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-share-1'
-                              className='w100 comp-share text-input'
+                              className='w-full comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
 
-                     <div className='grid g-3 bthin spaced spacedout'>
+                     <div className='grid g-3 bthin mb-6 spacedout'>
                         <div>Competitor 2</div>
                         <div>
                            <input
                               type='text'
                               id='comp-name-2'
-                              className='w100 comp-name text-input'
+                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                         <div>Market share</div>
@@ -68,17 +68,17 @@ const Competitors = () => {
                            <input
                               id='comp-share-2'
                               type='text'
-                              className='w100 comp-share text-input'
+                              className='w-full comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
-                     <div className='grid g-3 bthin spaced spacedout'>
+                     <div className='grid g-3 bthin mb-6 spacedout'>
                         <div>Competitor 3</div>
                         <div>
                            <input
                               type='text'
                               id='comp-name-3'
-                              className='w100 comp-name text-input'
+                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                         <div>Market share</div>
@@ -87,7 +87,7 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-share-3'
-                              className='w100  comp-share text-input'
+                              className='w-full  comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
@@ -101,7 +101,7 @@ const Competitors = () => {
                         </a>
                      </div>
                   </div>
-                  <div className='md-6 pane-right'>
+                  <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
                         <button type='button' className='btn openideas'>
                            My ideas
@@ -203,7 +203,7 @@ const Competitors = () => {
                                  <div className='modal-header'>
                                     <div className='modal-title '>
                                        <h2 className='f2 '>Ideas</h2>
-                                       <h3 className='spaced f6 grey-dark'>
+                                       <h3 className='mb-6 f6 grey-dark'>
                                           Add your ideas
                                        </h3>
                                     </div>
@@ -246,13 +246,13 @@ const Competitors = () => {
                                        <li>
                                           <input
                                              type='text'
-                                             className='w100 text-input newIdea'
+                                             className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                              placeholder='New idea'
                                           />
                                        </li>
                                     </div>
 
-                                    <div className='spaced'>
+                                    <div className='mb-6'>
                                        <br />
                                        <button
                                           type='button'

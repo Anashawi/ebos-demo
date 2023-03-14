@@ -28,7 +28,7 @@ const Roadmap = () => {
                         </div>
                      </Link>
 
-                     <h3 className='f3 spaced yellow'>Roadmap</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Roadmap</h3>
 
                      <Link href='/' className='logo-pane'>
                         <h4>20X</h4>
@@ -41,14 +41,14 @@ const Roadmap = () => {
                         </div>
                      </Link>
 
-                     <h4 className='f4 spaced'>
+                     <h4 className='f4 mb-6'>
                         Create a timeline for your ideas
                      </h4>
 
                      <div className='grid g-1 spacedout doublespaced'>
                         <div>Start date</div>
                         <div>
-                           <select name='' id='startDate' className='w100'>
+                           <select name='' id='startDate' className='w-full'>
                               <option value='2023-03-01 00:00:00'>
                                  Mar 2023
                               </option>
@@ -105,7 +105,7 @@ const Roadmap = () => {
                         <li className='grid ideasForm g-1 spacedout'>
                            <div>
                               <div>Idea</div>
-                              <select name='ideas[]' id='' className='w100'>
+                              <select name='ideas[]' id='' className='w-full'>
                                  <option value='1' selected='selected'>
                                     some ideas
                                  </option>
@@ -113,14 +113,14 @@ const Roadmap = () => {
                                  <option value='3'> idea 3 </option>
                               </select>
                            </div>
-                           <div className='row-spaced'>
+                           <div className='row-mb-6'>
                               <div className='c-4'>
                                  <div>Start (month)</div>
 
                                  <select
                                     name='start[]'
                                     id='start'
-                                    className='w100'>
+                                    className='w-full'>
                                     <option
                                        value='2023-03-01 00:00:00'
                                        selected='selected'>
@@ -182,7 +182,7 @@ const Roadmap = () => {
                                     value='4'
                                     name='end[]'
                                     list='duration'
-                                    className='w100'
+                                    className='w-full'
                                     step='1'
                                  />
                                  <datalist id='duration'>
@@ -210,7 +210,7 @@ const Roadmap = () => {
                         <li className='grid ideasForm g-1 spacedout'>
                            <div>
                               <div>Idea</div>
-                              <select name='ideas[]' id='' className='w100'>
+                              <select name='ideas[]' id='' className='w-full'>
                                  <option value='1'> some ideas </option>
                                  <option value='2' selected='selected'>
                                     idea 2
@@ -218,14 +218,14 @@ const Roadmap = () => {
                                  <option value='3'> idea 3 </option>
                               </select>
                            </div>
-                           <div className='row-spaced'>
+                           <div className='row-mb-6'>
                               <div className='c-4'>
                                  <div>Start (month)</div>
 
                                  <select
                                     name='start[]'
                                     id='start'
-                                    className='w100'>
+                                    className='w-full'>
                                     <option
                                        value='2023-03-01 00:00:00'
                                        selected='selected'>
@@ -287,7 +287,7 @@ const Roadmap = () => {
                                     value='7'
                                     name='end[]'
                                     list='duration'
-                                    className='w100'
+                                    className='w-full'
                                     step='1'
                                  />
                                  <datalist id='duration'>
@@ -315,7 +315,7 @@ const Roadmap = () => {
                         <li className='grid ideasForm g-1 spacedout'>
                            <div>
                               <div>Idea</div>
-                              <select name='ideas[]' id='' className='w100'>
+                              <select name='ideas[]' id='' className='w-full'>
                                  <option value='1'> some ideas </option>
                                  <option value='2'> idea 2 </option>
                                  <option value='3' selected='selected'>
@@ -323,14 +323,14 @@ const Roadmap = () => {
                                  </option>
                               </select>
                            </div>
-                           <div className='row-spaced'>
+                           <div className='row-mb-6'>
                               <div className='c-4'>
                                  <div>Start (month)</div>
 
                                  <select
                                     name='start[]'
                                     id='start'
-                                    className='w100'>
+                                    className='w-full'>
                                     <option value='2023-03-01 00:00:00'>
                                        Mar 2023
                                     </option>
@@ -392,7 +392,7 @@ const Roadmap = () => {
                                     value='9'
                                     name='end[]'
                                     list='duration'
-                                    className='w100'
+                                    className='w-full'
                                     step='1'
                                  />
                                  <datalist id='duration'>
@@ -1243,7 +1243,7 @@ const Roadmap = () => {
                      <div className='modal-header'>
                         <div className='modal-title '>
                            <h2 className='f2 '>Ideas</h2>
-                           <h3 className='spaced f6 grey-dark'>
+                           <h3 className='mb-6 f6 grey-dark'>
                               Add your ideas
                            </h3>
                         </div>
@@ -1286,13 +1286,13 @@ const Roadmap = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input newIdea'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>
                         </div>
 
-                        <div className='spaced'>
+                        <div className='mb-6'>
                            <br />
                            <button
                               type='button'

@@ -3,24 +3,24 @@ import Link from "next/link";
 const Analysis = () => {
    return (
       <>
-         <div className='split '>
-            <div className='page '>
-               <div className='row'>
-                  <div className='md-4 pane-left'>
+         <div className='homepage-bg-gradient w-screen bg-white'>
+            <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+               <div className='flex flex-wrap'>
+                  <div className='md-4 bg-white p-12 relative'>
                      <div className='pb-5'>
                         <strong>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
 
-                     <h3 className='f3 spaced yellow'>Step-up step-down</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Step-up step-down</h3>
 
-                     <h6 className='f6 spaced'>10% above</h6>
+                     <h6 className='f6 mb-6'>10% above</h6>
 
                      <ul className='alist above'>
                         <li>
                            <input
                               type='text'
-                              className='w100 text-input is_above'
+                              className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none is_above'
                            />
                            <a className='deletebtn deleteItem'> X </a>
                         </li>
@@ -32,13 +32,13 @@ const Analysis = () => {
                      </div>
                      <br />
 
-                     <h6 className='f6 spaced'>10% below</h6>
+                     <h6 className='f6 mb-6'>10% below</h6>
 
                      <ul className='alist below'>
                         <li>
                            <input
                               type='text'
-                              className='w100 text-input is_below'
+                              className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none is_below'
                            />
                            <a className='deletebtn deleteItem'> X </a>
                         </li>
@@ -59,7 +59,7 @@ const Analysis = () => {
                         </a>
                      </div>
                   </div>
-                  <div className='md-8 pane-right'>
+                  <div className='md-8 pane-right-gradient min-h-screen p-12'>
                      <Link href='/' className='logo-pane'>
                         <h4>20X</h4>
                         <span className='rev'>revenue BY</span>
@@ -72,15 +72,15 @@ const Analysis = () => {
                      </Link>
 
                      <div className='breath'>
-                        <div className='box box-grey-light spaced'>
-                           <div className='box spaced'>
-                              <h6 className='f6 spaced'>10% Above</h6>
-                              <ul className='normal spaced is_aboveli'></ul>
+                        <div className='box box-grey-light mb-6'>
+                           <div className='box mb-6'>
+                              <h6 className='f6 mb-6'>10% Above</h6>
+                              <ul className='normal mb-6 is_aboveli'></ul>
                            </div>
                            <div className='box box-grey-dark'>Your customer</div>
-                           <div className='box spaced'>
-                              <h6 className='f6 spaced'>10% below</h6>
-                              <ul className='normal spaced is_belowli'></ul>
+                           <div className='box mb-6'>
+                              <h6 className='f6 mb-6'>10% below</h6>
+                              <ul className='normal mb-6 is_belowli'></ul>
                            </div>
                         </div>
 
@@ -106,7 +106,7 @@ const Analysis = () => {
                      <div className='modal-header'>
                         <div className='modal-title '>
                            <h2 className='f2 '>Ideas</h2>
-                           <h3 className='spaced f6 grey-dark'>Add your ideas</h3>
+                           <h3 className='mb-6 f6 grey-dark'>Add your ideas</h3>
                         </div>
                         <button
                            type='button'
@@ -147,13 +147,13 @@ const Analysis = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w100 text-input newIdea'
+                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>
                         </div>
 
-                        <div className='spaced'>
+                        <div className='mb-6'>
                            <br />
                            <button
                               type='button'
