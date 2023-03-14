@@ -5,6 +5,8 @@ const DesktopHomepage = ({
    nodes,
    originalScreenWidth,
    currentScreenWidth,
+   openLoginScreen,
+   openSignupScreen,
 }) => {
    // Quadratic curve essential points (used inside the svg element "path" property)
    const curve = {
@@ -111,15 +113,17 @@ const DesktopHomepage = ({
                      }}>
                      <div href='' className='text-center'>
                         <div className='text-slate-700'>Start here</div>
-                        <Link
-                           href='registration/signup'
-                           className='text-center'>
-                           <div className='font-bold text-white'>Register</div>
-                        </Link>
+                        <div
+                           onClick={openSignupScreen}
+                           className='font-bold text-white text-center cursor-pointer'>
+                           Register
+                        </div>
                         <div className='text-slate-700 font-bold'>Or</div>
-                        <Link href='registration/login' className='text-center'>
-                           <div className='font-bold text-white'>Login</div>
-                        </Link>
+                        <div
+                           onClick={openLoginScreen}
+                           className='font-bold text-white text-center cursor-pointer'>
+                           Login
+                        </div>
                      </div>
                   </div>
                   {nodes.map((node, index) => (

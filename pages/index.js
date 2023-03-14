@@ -1,3 +1,5 @@
+import Login from '@/components/auth/login';
+import Signup from '@/components/auth/signup';
 import DesktopHomepage from '@/components/homepage/desktop-homepage';
 import PhabletHomepage from '@/components/homepage/phablet-homepage';
 import Image from 'next/image';
@@ -8,43 +10,43 @@ export default function Home() {
   const nodes = [
     {
       text: "Visualize success",
-      url: "",
+      url: "app/goals",
     },
     {
       text: "Pioneer Migrater Settler",
-      url: "",
+      url: "app/products",
     },
     {
       text: "Market potential",
-      url: "",
+      url: "app/competitors",
     },
     {
       text: "Red ocean canvas",
-      url: "",
+      url: "app/factors",
     },
     {
       text: "Disruption",
-      url: "",
+      url: "app/disruption",
     },
     {
       text: "Voice of customers",
-      url: "",
+      url: "app/customers",
     },
     {
       text: "Blue ocean",
-      url: "",
+      url: "app/idea-factors",
     },
     {
       text: "Non customers",
-      url: "",
+      url: "app/non-customers",
     },
     {
       text: "Step-up, Step-down model",
-      url: "",
+      url: "app/analysis",
     },
     {
       text: "Road map",
-      url: "",
+      url: "app/roadmap",
     },
   ];
 
@@ -52,6 +54,8 @@ export default function Home() {
   const [currentScreenWidth, setCurrentScreenWidth] = useState(0);
   const [originalScreenWidth, setOriginalScreenWidth] = useState(0);
   const [isScreenSmall, setIsScreenSmall] = useState(false);
+  const [isLoginScreen, setIsLoginScreen] = useState(false);
+  const [isSignupScreen, setIsSignupScreen] = useState(false);
 
   useEffect(() => {
     setOriginalScreenWidth(window.screen.width);
@@ -96,7 +100,19 @@ export default function Home() {
             nodes={nodes}
             originalScreenWidth={originalScreenWidth}
             currentScreenWidth={currentScreenWidth}
+            openLoginScreen={() => { setIsLoginScreen(true) }}
+            openSignupScreen={() => { setIsSignupScreen(true) }}
           />)
+        }
+        {
+          isLoginScreen && (
+            <Login closeLoginScreen={() => { setIsLoginScreen(false) }}></Login>
+          )
+        }
+        {
+          isSignupScreen && (
+            <Signup closeSignupScreen={() => { setIsSignupScreen(false) }}></Signup>
+          )
         }
       </div>
     </>

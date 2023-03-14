@@ -17,7 +17,12 @@ module.exports = {
         'gunmetal': '#263238',
         'aquamarine': '#1CE6A1',
         'yellow-green': '#86bf44',
-        'gray-battleship': '#999999',
+        'gray-battleship': '#9999',
+        'gray-gunmetal': '#263238',
+        'black-eerie': '#202020',
+        'dark-blue': '#0c00b4',
+        'mustard': '#FFDA57',
+        'yellow-mikado': '#FDC10E',
       },
       opacity: {
         '15': '0.15',
@@ -28,6 +33,7 @@ module.exports = {
       fontFamily: {
         'hero-bold': ['Roboto-bold'],
         'hero-light': ['Roboto-light'],
+        sans: ['Arial'],
       },
     },
   },
