@@ -1,9 +1,110 @@
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Chart from "react-google-charts";
 import IdeasModal from "../../components/app/ideas-modal";
 import useToggler from "../../components/hooks/useToggler";
 
+class ProductFuture {
+   year = 2023;
+   level = 55;
+   sales = 75;
+}
+
+class Product {
+   id = 0;
+   name = "Product Example";
+   futures = [new ProductFuture()];
+}
+
 const Products = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+   const [product, setProduct] = useState(new Product());
+   const [chartOptions, setChartOptions] = useState(null);
+   const [chartData, setChartData] = useState([]);
+
+   useEffect(() => {
+      // const dt = new google.visualization.DataTable();
+
+      // dt.addColumn("string", "Product");
+      // dt.addColumn("number", "Year");
+      // dt.addColumn("number", "Level");
+      // dt.addColumn("string", "Color");
+      // dt.addColumn("number", "Sales");
+
+      // const rows = product.futures
+      //    .sort((a, b) => {
+      //       if (a.year < b.year) return -1;
+      //       return 1;
+      //    })
+      //    .map((n, i) => {
+      //       return ["", i + 1, parseInt(n.level), "blue", parseInt(n.sales)];
+      //    });
+      // dt.addRows(rows);
+
+      const ticks = product.futures.map((n, i) => {
+         return {
+            v: i + 1,
+            f: n.year.toString(),
+         };
+      });
+
+      setChartOptions({
+         title: "Product future",
+         legend: {
+            position: "top",
+         },
+         tooltip: {
+            trigger: "none",
+         },
+         hAxis: {
+            textStyle: {
+               bold: true,
+            },
+            allowContainerBoundaryTextCutoff: false,
+            gridlines: {
+               color: "#eee",
+            },
+            baseline: 0,
+            maxValue: 4,
+            ticks: ticks,
+         },
+         vAxis: {
+            baseline: 0,
+            maxValue: 4,
+            ticks: [
+               {
+                  v: 1,
+                  f: "Settler",
+               },
+               {
+                  v: 2,
+                  f: "Migrate",
+               },
+               {
+                  v: 3,
+                  f: "Poineer",
+               },
+            ],
+            gridlines: {
+               color: "#eee",
+            },
+         },
+         bubble: {
+            textStyle: {
+               fontSize: 11,
+            },
+         },
+         chartArea: {
+            left: 50,
+            top: 0,
+            width: "100%",
+            height: "90%",
+         },
+      });
+   }, []);
 
    return (
       <>
@@ -17,43 +118,38 @@ const Products = () => {
                         <strong>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
-
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
                         Pioneer, Migrator, Settler
                      </h3>
-
                      <div id='products-app'>
-                        <ul className='flex gap-3 mb-5'>
-                           <select className='px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none md:w-1/2'>
+                        <ul className='flex gap-3 mb-12'>
+                           <select className='grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                               <option value='2' p-id='2'>
                                  Contingent Workforce
                               </option>
-
                               <option value='3' p-id='3' selected='selected'>
                                  Consulting Offering
                               </option>
                            </select>
-
-                           <button className='btn text-black-eerie deleteProduct'>
-                              delete
+                           <button className='p-2 text-black-eerie deleteProduct'>
+                              <FontAwesomeIcon
+                                 className='w-6 h-auto text-gray-300 hover:text-rose-800'
+                                 icon={faTrash}
+                              />
                            </button>
                         </ul>
-
-                        <br />
-                        <br />
-                        <br />
-                        <li>
+                        <div className='flex justify-end'>
                            <a
                               id='addNewProduct'
-                              className='btn text-black-eerie'>
-                              Add new product
+                              className='btn blue-gradient text-black-eerie'>
+                              <b>+</b> Add new product
                            </a>
-                        </li>
+                        </div>
                         <br />
-                        <div className='product_details'>
-                           <div className='flex flex-col gap-3 bthin mb-6 spacedout'>
-                              <div>Product name</div>
+                        <div className='flex flex-col gap-7'>
+                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
                               <div>
+                                 <label>Product name</label>
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
@@ -61,10 +157,9 @@ const Products = () => {
                                  />
                               </div>
                            </div>
-
-                           <div className='flex flex-col gap-3 bthin mb-6 spacedout'>
-                              <div>Present</div>
+                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
                               <div>
+                                 <label>Present</label>
                                  <input
                                     id='first_date'
                                     type='text'
@@ -74,45 +169,43 @@ const Products = () => {
                                  />
                               </div>
                               <div></div>
-                              <div className='flex flex-wrap gap-2'>
-                                 <input
-                                    name='present-level'
-                                    type='radio'
-                                    value='1'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Settler</label>
-
-                                 <input
-                                    name='present-level'
-                                    type='radio'
-                                    value='2'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Migrator</label>
-
-                                 <input
-                                    name='present-level'
-                                    type='radio'
-                                    value='3'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Pioneer</label>
+                              <div className='flex flex-wrap gap-4'>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='present-level'
+                                       type='radio'
+                                       value='1'
+                                    />
+                                    <label className='rbreath'>Settler</label>
+                                 </div>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='present-level'
+                                       type='radio'
+                                       value='2'
+                                    />
+                                    <label className='rbreath'>Migrator</label>
+                                 </div>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='present-level'
+                                       type='radio'
+                                       value='3'
+                                    />
+                                    <label className='rbreath'>Pioneer</label>
+                                 </div>
                               </div>
-
-                              <div>Sales (%)</div>
-
                               <div>
+                                 <label>Sales (%)</label>
                                  <input
                                     name='present-sales'
                                     type='range'
                                     min='0'
                                     max='100'
                                     list='salesmarks'
-                                    className='w-full'
+                                    className='w-full accent-blue-true'
                                     step='10'
                                  />
-
                                  <datalist id='salesmarks' className='dl-100'>
                                     <option value='0' label='0%'></option>
                                     <option value='10'></option>
@@ -128,8 +221,7 @@ const Products = () => {
                                  </datalist>
                               </div>
                            </div>
-
-                           <div className='flex flex-col gap-3 bthin mb-6 spacedout'>
+                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
                               <div>Future 1</div>
                               <div>
                                  <input
@@ -140,43 +232,43 @@ const Products = () => {
                                  />
                               </div>
                               <div></div>
-                              <div className='flex flex-wrap gap-2'>
-                                 <input
-                                    name='future-one-level'
-                                    type='radio'
-                                    value='1'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Settler</label>
-                                 <input
-                                    name='future-one-level'
-                                    type='radio'
-                                    value='2'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Migrator</label>
-                                 <input
-                                    name='future-one-level'
-                                    type='radio'
-                                    value='3'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Pioneer</label>
+                              <div className='flex flex-wrap gap-4'>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='future-one-level'
+                                       type='radio'
+                                       value='1'
+                                    />
+                                    <label className='rbreath'>Settler</label>
+                                 </div>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='future-one-level'
+                                       type='radio'
+                                       value='2'
+                                    />
+                                    <label className='rbreath'>Migrator</label>
+                                 </div>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='future-one-level'
+                                       type='radio'
+                                       value='3'
+                                    />
+                                    <label className='rbreath'>Pioneer</label>
+                                 </div>
                               </div>
-
-                              <div>Sales (%)</div>
-
                               <div>
+                                 <label>Sales (%)</label>
                                  <input
                                     name='future-one-sales'
                                     type='range'
                                     min='0'
                                     max='100'
                                     list='salesmarks'
-                                    className='w-full'
+                                    className='w-full accent-blue-true'
                                     step='10'
                                  />
-
                                  <datalist id='salesmarks' className='dl-100'>
                                     <option value='0' label='0%'></option>
                                     <option value='10'></option>
@@ -192,8 +284,7 @@ const Products = () => {
                                  </datalist>
                               </div>
                            </div>
-
-                           <div className='flex flex-col gap-3 bthin spacedout'>
+                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
                               <div>Future 2</div>
                               <div>
                                  <input
@@ -204,45 +295,44 @@ const Products = () => {
                                  />
                               </div>
                               <div></div>
-                              <div className='flex flex-wrap gap-2'>
-                                 <input
-                                    name='future-two-level'
-                                    type='radio'
-                                    value='1'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Settler</label>
+                              <div className='flex flex-wrap gap-4'>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='future-two-level'
+                                       type='radio'
+                                       value='1'
+                                    />
+                                    <label className='rbreath'>Settler</label>
+                                 </div>
 
-                                 <input
-                                    name='future-two-level'
-                                    type='radio'
-                                    value='2'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Migrator</label>
-
-                                 <input
-                                    name='future-two-level'
-                                    type='radio'
-                                    value='3'
-                                    className=''
-                                 />
-                                 <label className='rbreath'>Pioneer</label>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='future-two-level'
+                                       type='radio'
+                                       value='2'
+                                    />
+                                    <label className='rbreath'>Migrator</label>
+                                 </div>
+                                 <div className='flex gap-2'>
+                                    <input
+                                       name='future-two-level'
+                                       type='radio'
+                                       value='3'
+                                    />
+                                    <label className='rbreath'>Pioneer</label>
+                                 </div>
                               </div>
-
-                              <div>Sales (%)</div>
-
                               <div>
+                                 <label>Sales (%)</label>
                                  <input
                                     name='future-two-sales'
                                     type='range'
                                     min='0'
                                     max='100'
                                     list='salesmarks'
-                                    className='w-full'
+                                    className='w-full accent-blue-true'
                                     step='10'
                                  />
-
                                  <datalist id='salesmarks' className='dl-100'>
                                     <option value='0' label='0%'></option>
                                     <option value='10'></option>
@@ -258,7 +348,6 @@ const Products = () => {
                                  </datalist>
                               </div>
                            </div>
-
                            <div id='addProduct' className='flex gap-3 mt-10'>
                               <button
                                  id='create-product'
@@ -373,7 +462,6 @@ const Products = () => {
     }); */}
                      </div>
                   </div>
-
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
                         <button
@@ -389,17 +477,24 @@ const Products = () => {
                            revenue BY
                         </span>
                         <div className='w-[110px] h-[33px]'>
-                           <img
+                           <Image
+                              width='55'
+                              height='20'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
                         </div>
                      </Link>
-
                      <div className='chart-wrapper'>
-                        <div id='thechart' className='chart'></div>
+                        <Chart
+                           chartType='BubbleChart'
+                           width='100%'
+                           height='400px'
+                           data={chartData}
+                           options={chartOptions}
+                           legendToggle
+                        />
                      </div>
-
                      <div className='breath'>
                         <button
                            className='btn text-black-eerie'

@@ -12,27 +12,26 @@ const Competitors = () => {
          <div className='homepage-bg-gradient w-screen bg-white'>
             <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
-                  <div className='md:w-1/2 bg-white p-12 relative'>
-                     <div className='pb-5'>
+                  <div className='flex flex-col gap-7 md:w-1/2 bg-white p-12 relative'>
+                     <div>
                         <strong>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
-
-                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+                     <h3 className='text-[2.52rem] text-yellow-green'>
                         Market potential
                      </h3>
-
-                     <div className='grid g-3 spacedout bthin mb-6'>
+                     <div className='flex flex-col gap-3 spacedout border-b border-gray-400 pb-7'>
                         <div>My market share</div>
-                        <div className='input-prefix'>
+                        <div className='flex'>
                            <input
                               type='hidden'
                               id='comp-name-0'
                               value='my-share'
                               className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
-
-                           <span className='prefix'>$</span>
+                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
+                              $
+                           </span>
                            <input
                               type='text'
                               id='comp-share-0'
@@ -40,8 +39,7 @@ const Competitors = () => {
                            />
                         </div>
                      </div>
-
-                     <div className='grid g-3 bthin mb-6 spacedout'>
+                     <div className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
                         <div>Competitor 1</div>
                         <div>
                            <input
@@ -51,8 +49,10 @@ const Competitors = () => {
                            />
                         </div>
                         <div>Market share</div>
-                        <div className='input-prefix'>
-                           <span className='prefix'>$</span>
+                        <div className='flex'>
+                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
+                              $
+                           </span>
                            <input
                               type='text'
                               id='comp-share-1'
@@ -60,8 +60,7 @@ const Competitors = () => {
                            />
                         </div>
                      </div>
-
-                     <div className='grid g-3 bthin mb-6 spacedout'>
+                     <div className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
                         <div>Competitor 2</div>
                         <div>
                            <input
@@ -71,8 +70,10 @@ const Competitors = () => {
                            />
                         </div>
                         <div>Market share</div>
-                        <div className='input-prefix'>
-                           <span className='prefix'>$</span>
+                        <div className='flex'>
+                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
+                              $
+                           </span>
                            <input
                               id='comp-share-2'
                               type='text'
@@ -80,7 +81,7 @@ const Competitors = () => {
                            />
                         </div>
                      </div>
-                     <div className='grid g-3 bthin mb-6 spacedout'>
+                     <div className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
                         <div>Competitor 3</div>
                         <div>
                            <input
@@ -90,8 +91,10 @@ const Competitors = () => {
                            />
                         </div>
                         <div>Market share</div>
-                        <div className='input-prefix'>
-                           <span className='prefix'>$</span>
+                        <div className='flex'>
+                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
+                              $
+                           </span>
                            <input
                               type='text'
                               id='comp-share-3'
@@ -99,7 +102,6 @@ const Competitors = () => {
                            />
                         </div>
                      </div>
-
                      <div>
                         <button id='generate' className='btn-rev'>
                            Generate
@@ -131,7 +133,6 @@ const Competitors = () => {
                            />
                         </div>
                      </Link>
-
                      <div className='chart-wrapper'>
                         <div id='thechart' className='chart'>
                            <div className='relative'>
@@ -193,7 +194,6 @@ const Competitors = () => {
                            </div>
                         </div>
                      </div>
-
                      <div className='breath'>
                         <button
                            className='btn text-black-eerie'

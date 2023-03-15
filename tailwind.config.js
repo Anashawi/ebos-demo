@@ -22,6 +22,9 @@ module.exports = {
         'dark-blue': '#0c00b4',
         'mustard': '#FFDA57',
         'yellow-mikado': '#FDC10E',
+        'yellow-jasmine': '#FEE28E',
+        'blue-true': '#406ca9',
+        'blue-ruddy': '#74a6ec',
       },
       opacity: {
         '15': '0.15',

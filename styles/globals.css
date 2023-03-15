@@ -152,6 +152,11 @@ button {
   cursor: pointer;
 }
 
+.blue-gradient {
+  background-image: linear-gradient(to bottom right, #406ca9, #74a6ec);
+  color: white;
+}
+
 h1,
 h2,
 h3,
@@ -191,7 +196,7 @@ li {
   .btn-rev,
   .btn-fake,
   .btn-diff {
-    @apply inline-block leading-none normal-case cursor-pointer px-[1.6rem] py-[1rem] transition-colors rounded-[50px] text-[90%] border-none appearance-none;
+    @apply inline-block leading-none normal-case cursor-pointer px-[1.6rem] py-[1rem] transition-colors rounded text-[90%] border-none appearance-none;
   }
 
   .btn-policeblue {
@@ -226,6 +231,10 @@ li {
 .modal-close:before {
   content: "\2716";
   color: #202020;
+}
+
+.rounded-prefix {
+  border-radius: 50px 0 0 50px;
 }
 
 @media only screen and (min-width: 720px) {
