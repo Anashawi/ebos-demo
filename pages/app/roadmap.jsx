@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const Roadmap = () => {
@@ -18,23 +19,35 @@ const Roadmap = () => {
                      </div>
 
                      <Link href='/' className='logo-pane'>
-                        <h4>20X</h4>
-                        <span className='rev'>revenue BY</span>
-                        <div className='logo'>
-                           <img
+                        <h4 className='text-[3rem] text-white'>20X</h4>
+                        <span className='relative -translate-x-[1.2rem]'>
+                           revenue BY
+                        </span>
+                        <div className='w-[110px] h-[33px]'>
+                           <Image
+                              width='100'
+                              height='100'
+                              className='w-full h-full'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
                         </div>
                      </Link>
 
-                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Roadmap</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+                        Roadmap
+                     </h3>
 
                      <Link href='/' className='logo-pane'>
-                        <h4>20X</h4>
-                        <span className='rev'>revenue BY</span>
-                        <div className='logo'>
-                           <img
+                        <h4 className='text-[3rem] text-white'>20X</h4>
+                        <span className='relative -translate-x-[1.2rem]'>
+                           revenue BY
+                        </span>
+                        <div className='w-[110px] h-[33px]'>
+                           <Image
+                              width='100'
+                              height='100'
+                              className='w-full h-full'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
@@ -101,7 +114,7 @@ const Roadmap = () => {
                         </div>
                      </div>
 
-                     <ul className='alist'>
+                     <ul className='flex flex-col gap-3 mb-5'>
                         <li className='grid ideasForm g-1 spacedout'>
                            <div>
                               <div>Idea</div>
@@ -421,7 +434,7 @@ const Roadmap = () => {
                      <div>
                         <a className='btn addNew'>Add another</a>
                         <button className='btn-rev'>Generate</button>
-                        <a href='/ebos' className='btn'>
+                        <a href='/ebos' className='btn text-black-eerie'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>
@@ -1220,7 +1233,7 @@ const Roadmap = () => {
                      </div>
 
                      <button
-                        className='btn consultant'
+                        className='btn text-black-eerie'
                         data-name='Road Map'
                         id='theSubmitBtn'>
                         <strong>Request </strong> for consultant review
@@ -1229,21 +1242,21 @@ const Roadmap = () => {
                </div>
             </form>
          </div>
-         {/* modal */}
-         <div
-            className='dr-modal-overlay modal-center modal-overlay modal-backdrop'
+         {/* modal!*/}
+         {/* <div
+            className='fixed inset-0 z-[1030] bg-gray-battleship modal-center modal-overlay backdrop-blur'
             data-trigger='.openideas'>
             <div
-               className='modal dr-window'
+               className='fixed inset-0 overflow-hidden outline-none z-[1040px] dr-window'
                role='dialog'
                aria-labelledby='modaltitle'
                tabindex='-1'>
-               <div className='modal-dialog'>
+               <div className='relative w-auto m-6 pointer-events-none flex items-center h-[calc(100vh_-_1.5rem_*_2)] md:max-w-[700px] md:ml-auto md:mr-auto'>
                   <div className='modal-content dr-content'>
-                     <div className='modal-header'>
-                        <div className='modal-title '>
-                           <h2 className='f2 '>Ideas</h2>
-                           <h3 className='mb-6 f6 grey-dark'>
+                     <div className='flex items-center justify-between p-3 h-12'>
+                        <div className='modal-title'>
+                           <h2 className='text-[2.8rem]'>Ideas</h2>
+                           <h3 className='mb-6 f6 text-gray-gunmetal mb-5'>
                               Add your ideas
                            </h3>
                         </div>
@@ -1252,9 +1265,11 @@ const Roadmap = () => {
                            className='modal-close dr-close'
                            aria-label='Close'></button>
                      </div>
-                     <div className='modal-body' id='ideas-app'>
+                     <div
+                        className='relative flex-auto p-3 overflow-auto'
+                        id='ideas-app'>
                         <div className='idea-list'>
-                           <ul className='alist'>
+                           <ul className='flex flex-col gap-3 mb-5'>
                               <li>
                                  <span> some ideas </span>
                                  <button
@@ -1286,7 +1301,7 @@ const Roadmap = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
+                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>
@@ -1305,7 +1320,7 @@ const Roadmap = () => {
                   </div>
                </div>
             </div>
-         </div>
+         </div> */}
       </>
    );
 };

@@ -14,7 +14,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        'gunmetal': '#263238',
         'aquamarine': '#1CE6A1',
         'yellow-green': '#86bf44',
         'gray-battleship': '#9999',

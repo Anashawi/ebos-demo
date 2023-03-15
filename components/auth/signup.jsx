@@ -5,7 +5,7 @@ const Signup = ({ closeSignupScreen }) => {
    return (
       <>
          <div
-            className='fixed inset-0 z-[1030] bg-gray-battleship custom-blur'
+            className='fixed inset-0 z-[1030] bg-gray-battleship backdrop-blur'
             data-trigger='.register-link'
             style={{ display: "block" }}>
             <div
@@ -47,7 +47,7 @@ const Signup = ({ closeSignupScreen }) => {
                                  id='name'
                                  type='text'
                                  placeholder='Name'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='name'
                                  value=''
                                  required=''
@@ -60,7 +60,7 @@ const Signup = ({ closeSignupScreen }) => {
                                  id='email'
                                  type='email'
                                  placeholder='Email'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='email'
                                  value=''
                                  required=''
@@ -73,7 +73,7 @@ const Signup = ({ closeSignupScreen }) => {
                                  id='phone'
                                  type='text'
                                  placeholder='Phone'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='phone'
                                  value=''
                                  required=''
@@ -86,7 +86,7 @@ const Signup = ({ closeSignupScreen }) => {
                                  id='password'
                                  type='password'
                                  placeholder='Password'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='password'
                                  required=''
                                  autocomplete='new-password'
@@ -97,7 +97,7 @@ const Signup = ({ closeSignupScreen }) => {
                                  id='password-confirm'
                                  type='password'
                                  placeholder='Confirm Password'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='password_confirmation'
                                  required=''
                                  autocomplete='new-password'

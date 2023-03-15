@@ -73,7 +73,7 @@ const DesktopHomepage = ({
    return (
       <>
          <div
-            className='flex flex-col pl-[2.8rem] backdrop-opacity-25 bg-black/15 custom-blur rounded-4xl flex-grow lg:w-75 max-w-[1300px] max-h-[600px] mx-auto'
+            className='flex flex-col pl-[2.8rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-75 max-w-[1300px] max-h-[600px] mx-auto'
             style={{
                width: getRelativeXInPixels(curve.getWidth() + 175) + "px",
             }}>
@@ -98,7 +98,7 @@ const DesktopHomepage = ({
                      and online expert advice.
                   </p>
                </div>
-               <div className='absolute bottom-0 w-full h-[39rem] border-slate-600'>
+               <div className='absolute bottom-0 w-full h-[52rem] border-slate-600'>
                   <div className='absolute top-[575px] left-[15px] bg-gray-battleship text-white text-sm pl-3 pr-6 py-1 rounded-full'>
                      Free. No subscription needed
                   </div>
@@ -106,7 +106,7 @@ const DesktopHomepage = ({
                      Subscribers only
                   </span>
                   <div
-                     className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[8rem] aspect-square p-2 lg:p-3 break-words bg-aquamarine drop-shadow-lg rounded-full z-[99999]'
+                     className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[10rem] aspect-square p-2 lg:p-3 break-words bg-aquamarine drop-shadow-lg rounded-full z-[99999]'
                      style={{
                         left: getRelativeXInPixels(curve.p_0.x) + "px",
                         top: curve.p_0.y,
@@ -150,7 +150,7 @@ const DesktopHomepage = ({
                      </div>
                   ))}
                   <div
-                     className='absolute -translate-x-[50%] -translate-y-[50%] w-40 h-40 flex flex-col justify-center items-center text-center bg-gray-800 text-white rounded-full border-aquamarine border-[5px] z-[999]'
+                     className='absolute -translate-x-[50%] -translate-y-[50%] w-[12rem] h-[12rem] flex flex-col justify-center items-center text-center bg-gray-800 text-white rounded-full border-aquamarine border-[5px] z-[999]'
                      style={{
                         left: getRelativeXInPixels(getX(1)) + "px",
                         top: getY(1),
@@ -160,7 +160,7 @@ const DesktopHomepage = ({
                      <div className='font-bold'>in one year</div>
                   </div>
                </div>
-               <svg className='home-line absolute bottom-0 w-full h-[39rem] z-[1]'>
+               <svg className='home-line absolute bottom-0 w-full h-[52rem] z-[1]'>
                   <path
                      className='stroke-[5px] stroke-gunmetal fill-none'
                      d={`M ${getRelativeXInPixels(curve.p_0.x)} ${

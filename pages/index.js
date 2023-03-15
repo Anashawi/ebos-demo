@@ -1,7 +1,7 @@
-import Login from '@/components/auth/login';
-import Signup from '@/components/auth/signup';
-import DesktopHomepage from '@/components/homepage/desktop-homepage';
-import PhabletHomepage from '@/components/homepage/phablet-homepage';
+import Login from '../components/auth/login';
+import Signup from '../components/auth/signup';
+import DesktopHomepage from '../components/homepage/desktop-homepage';
+import PhabletHomepage from '../components/homepage/phablet-homepage';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -78,7 +78,7 @@ export default function Home() {
   return (
     <>
       <div className='relative flex flex-col justify-center items-center homepage-bg-gradient py-5 w-screen h-screen mx-auto'>
-        <div className='self-start ml-[10vw] w-[10rem] mx-12 pb-5'>
+        <div className='self-start ml-[10vw] w-[12rem] mx-12 pb-5'>
           <Image
             width='160'
             height='99'

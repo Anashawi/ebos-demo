@@ -121,6 +121,50 @@ a {
   src: url("../public/fonts/Roboto/Roboto-light.ttf");
 }
 
+html {
+  font-size: 62.5%;
+}
+
+/* body {
+  font-size: 1.4rem;
+} */
+
+body,
+textarea,
+select,
+option,
+input {
+  font-family: "Work Sans", "Roboto", "Segoe UI", -apple-system, system-ui, BlinkMacSystemFont, "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.4rem;
+  color: #202020;
+}
+
+/* a,
+.a {
+  color: #0c00b4;
+  text-decoration: none;
+  cursor: pointer;
+} */
+
+button {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+li {
+  list-style-type: none;
+}
+
 .homepage-bg-gradient {
   background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
@@ -129,10 +173,63 @@ a {
   background: linear-gradient(90deg, #86bf44 0%, #86bf44 50%, #86bf44 50%, rgba(253, 198, 29, 0) 100%);
 }
 
-.custom-blur {
+.backdrop-blur {
   backdrop-filter: blur(39px);
 }
 
 .custom-stroke-dasharray {
   stroke-dasharray: 5, 2;
+}
+
+@layer components {
+
+  .logo-pane {
+    @apply text-gray-900 mb-12 flex flex-nowrap justify-end items-center;
+  }
+
+  .btn,
+  .btn-rev,
+  .btn-fake,
+  .btn-diff {
+    @apply inline-block leading-none normal-case cursor-pointer px-[1.6rem] py-[1rem] transition-colors rounded-[50px] text-[90%] border-none appearance-none;
+  }
+
+  .btn-policeblue {
+    @apply border bg-policeblue text-white rounded-md hover: bg-lightpoliceblue drop-shadow-md hover:scale-105 py-1 px-2 transition ease-in-out duration-200;
+  }
+
+  .btn-fawn {
+    @apply border bg-fawn rounded-md hover: bg-lightfawn drop-shadow-md hover:scale-105 py-1 px-2 transition ease-in-out duration-200;
+  }
+
+  .btn-light {
+    @apply border bg-neutral-200 rounded-md hover: bg-neutral-100 drop-shadow-md hover:scale-105 py-1 px-2 transition ease-in-out duration-200;
+  }
+
+  .btn-delete {
+    @apply absolute font-bold mt-[2%] right-[44px];
+  }
+
+  .btn-rev {
+    @apply text-black-eerie bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-mikado
+  }
+
+  .btn {
+    @apply bg-gray-100 text-dark-blue
+  }
+
+  .modal-content {
+    @apply relative flex flex-col w-full pointer-events-auto bg-transparent shadow-none outline-none text-white max-h-[calc(100vh_-_1.5rem_*_2)] bg-clip-padding;
+  }
+}
+
+.modal-close:before {
+  content: "\2716";
+  color: #202020;
+}
+
+@media only screen and (min-width: 720px) {
+  html {
+    font-size: 75%;
+  }
 }

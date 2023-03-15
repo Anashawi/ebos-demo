@@ -9,7 +9,7 @@ const Login = ({ closeLoginScreen }) => {
    return (
       <>
          <div
-            className='block fixed inset-0 z-[1030] bg-gray-battleship custom-blur'
+            className='block fixed inset-0 z-[1030] bg-gray-battleship backdrop-blur'
             data-trigger='.login-link'>
             <div
                className='fixed inset-0 overflow-hidden outline-none dr-window'
@@ -50,7 +50,7 @@ const Login = ({ closeLoginScreen }) => {
                                  id='email'
                                  type='email'
                                  placeholder='Email'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='email'
                                  value={email}
                                  onChange={(e) => {
@@ -66,7 +66,7 @@ const Login = ({ closeLoginScreen }) => {
                                  id='password'
                                  type='password'
                                  placeholder='Password'
-                                 className='w-full p-3 bg-gray-200 outline-none border-none caret-dark-blue'
+                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='password'
                                  value={password}
                                  onChange={(e) => {

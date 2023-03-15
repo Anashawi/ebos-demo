@@ -1,10 +1,16 @@
 import Link from "next/link";
+import IdeasModal from "../../components/app/ideas-modal";
+import useToggler from "../../components/hooks/useToggler";
 
 const Products = () => {
+   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+
    return (
       <>
+         <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+
          <div className='homepage-bg-gradient w-screen bg-white'>
-            <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+            <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
                   <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
@@ -17,8 +23,8 @@ const Products = () => {
                      </h3>
 
                      <div id='products-app'>
-                        <ul className='alist'>
-                           <select className='select md:w-1/2'>
+                        <ul className='flex gap-3 mb-5'>
+                           <select className='px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none md:w-1/2'>
                               <option value='2' p-id='2'>
                                  Contingent Workforce
                               </option>
@@ -28,9 +34,8 @@ const Products = () => {
                               </option>
                            </select>
 
-                           <button className='btn deleteProduct'>
-                              {" "}
-                              delete{" "}
+                           <button className='btn text-black-eerie deleteProduct'>
+                              delete
                            </button>
                         </ul>
 
@@ -38,36 +43,38 @@ const Products = () => {
                         <br />
                         <br />
                         <li>
-                           <a id='addNewProduct' className='btn'>
+                           <a
+                              id='addNewProduct'
+                              className='btn text-black-eerie'>
                               Add new product
                            </a>
                         </li>
                         <br />
-                        <div className='product_details hidden'>
-                           <div className='grid g-3 bthin mb-6 spacedout'>
+                        <div className='product_details'>
+                           <div className='flex flex-col gap-3 bthin mb-6 spacedout'>
                               <div>Product name</div>
                               <div>
                                  <input
                                     type='text'
-                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                     name='product-name'
                                  />
                               </div>
                            </div>
 
-                           <div className='grid g-3 bthin mb-6 spacedout'>
+                           <div className='flex flex-col gap-3 bthin mb-6 spacedout'>
                               <div>Present</div>
                               <div>
                                  <input
                                     id='first_date'
                                     type='text'
-                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                     placeholder='year'
                                     name='present-year'
                                  />
                               </div>
                               <div></div>
-                              <div>
+                              <div className='flex flex-wrap gap-2'>
                                  <input
                                     name='present-level'
                                     type='radio'
@@ -122,18 +129,18 @@ const Products = () => {
                               </div>
                            </div>
 
-                           <div className='grid g-3 bthin mb-6 spacedout'>
+                           <div className='flex flex-col gap-3 bthin mb-6 spacedout'>
                               <div>Future 1</div>
                               <div>
                                  <input
                                     name='future-one-year'
                                     type='text'
-                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                     placeholder='year'
                                  />
                               </div>
                               <div></div>
-                              <div>
+                              <div className='flex flex-wrap gap-2'>
                                  <input
                                     name='future-one-level'
                                     type='radio'
@@ -141,7 +148,6 @@ const Products = () => {
                                     className=''
                                  />
                                  <label className='rbreath'>Settler</label>
-
                                  <input
                                     name='future-one-level'
                                     type='radio'
@@ -149,7 +155,6 @@ const Products = () => {
                                     className=''
                                  />
                                  <label className='rbreath'>Migrator</label>
-
                                  <input
                                     name='future-one-level'
                                     type='radio'
@@ -188,18 +193,18 @@ const Products = () => {
                               </div>
                            </div>
 
-                           <div className='grid g-3 bthin mb-6 spacedout'>
+                           <div className='flex flex-col gap-3 bthin spacedout'>
                               <div>Future 2</div>
                               <div>
                                  <input
                                     name='future-two-year'
                                     type='text'
-                                    className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                     placeholder='year'
                                  />
                               </div>
                               <div></div>
-                              <div>
+                              <div className='flex flex-wrap gap-2'>
                                  <input
                                     name='future-two-level'
                                     type='radio'
@@ -254,26 +259,27 @@ const Products = () => {
                               </div>
                            </div>
 
-                           <div id='addProduct' className='hidden'>
+                           <div id='addProduct' className='flex gap-3 mt-10'>
                               <button
                                  id='create-product'
                                  className='btn-rev'
                                  type='button'>
                                  Add and generate
                               </button>
-                              <a href='/ebos' className='btn'>
+                              <a href='/ebos' className='btn text-black-eerie'>
                                  <strong>Back To Dashboard</strong>
                               </a>
                            </div>
-                           <div id='updateProduct' className='hidden'>
+                           <div
+                              id='updateProduct'
+                              className='hidden flex gap-3 mt-10'>
                               <button
-                                 pid=''
                                  id='updateButton'
-                                 className=' btn-rev'
+                                 className='btn-rev'
                                  type='button'>
                                  Save and generate
                               </button>
-                              <a href='/ebos' className='btn'>
+                              <a href='/ebos' className='btn text-black-eerie'>
                                  <strong>Back To Dashboard</strong>
                               </a>
                            </div>
@@ -370,14 +376,19 @@ const Products = () => {
 
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
-                        <button type='button' className='btn openideas'>
+                        <button
+                           type='button'
+                           className='btn text-black-eerie'
+                           onClick={toggleIdeasModal}>
                            My ideas
                         </button>
                      </div>
                      <Link href='/' className='logo-pane'>
-                        <h4>20X</h4>
-                        <span className='rev'>revenue BY</span>
-                        <div className='logo'>
+                        <h4 className='text-[3rem] text-white'>20X</h4>
+                        <span className='relative -translate-x-[1.2rem]'>
+                           revenue BY
+                        </span>
+                        <div className='w-[110px] h-[33px]'>
                            <img
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
@@ -391,88 +402,11 @@ const Products = () => {
 
                      <div className='breath'>
                         <button
-                           className='btn consultant'
+                           className='btn text-black-eerie'
                            data-name='Pioneer, Migrate, Settler'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review
                         </button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-
-         <div
-            className='dr-modal-overlay modal-center modal-overlay modal-backdrop'
-            data-trigger='.openideas'>
-            <div
-               className='modal dr-window'
-               role='dialog'
-               aria-labelledby='modaltitle'
-               tabindex='-1'>
-               <div className='modal-dialog'>
-                  <div className='modal-content dr-content'>
-                     <div className='modal-header'>
-                        <div className='modal-title '>
-                           <h2 className='f2 '>Ideas</h2>
-                           <h3 className='mb-6 f6 grey-dark'>
-                              Add your ideas
-                           </h3>
-                        </div>
-                        <button
-                           type='button'
-                           className='modal-close dr-close'
-                           aria-label='Close'></button>
-                     </div>
-                     <div className='modal-body' id='ideas-app'>
-                        <div className='idea-list'>
-                           <ul className='alist'>
-                              <li>
-                                 <span> some ideas </span>
-                                 <button
-                                    className='deleteIdea'
-                                    data-id={1}
-                                    type='button'>
-                                    remove
-                                 </button>
-                              </li>
-                              <li>
-                                 <span> idea 2 </span>
-                                 <button
-                                    className='deleteIdea'
-                                    data-id={2}
-                                    type='button'>
-                                    remove
-                                 </button>
-                              </li>
-                              <li>
-                                 <span> idea 3 </span>
-                                 <button
-                                    className='deleteIdea'
-                                    data-id={3}
-                                    type='button'>
-                                    remove
-                                 </button>
-                              </li>
-                           </ul>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
-                                 placeholder='New idea'
-                              />
-                           </li>
-                        </div>
-
-                        <div className='mb-6'>
-                           <br />
-                           <button
-                              type='button'
-                              id='saveIdea'
-                              className='add-idea btn-rev'>
-                              Save
-                           </button>
-                        </div>
                      </div>
                   </div>
                </div>

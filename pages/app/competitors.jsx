@@ -1,10 +1,16 @@
 import Link from "next/link";
+import IdeasModal from "../../components/app/ideas-modal";
+import useToggler from "../../components/hooks/useToggler";
 
 const Competitors = () => {
+   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+
    return (
       <>
+         <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+
          <div className='homepage-bg-gradient w-screen bg-white'>
-            <div className='p-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+            <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
                   <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
@@ -12,7 +18,9 @@ const Competitors = () => {
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
 
-                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>Market potential</h3>
+                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+                        Market potential
+                     </h3>
 
                      <div className='grid g-3 spacedout bthin mb-6'>
                         <div>My market share</div>
@@ -21,14 +29,14 @@ const Competitors = () => {
                               type='hidden'
                               id='comp-name-0'
                               value='my-share'
-                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
 
                            <span className='prefix'>$</span>
                            <input
                               type='text'
                               id='comp-share-0'
-                              className='w-full comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
@@ -39,7 +47,7 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-name-1'
-                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                         <div>Market share</div>
@@ -48,7 +56,7 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-share-1'
-                              className='w-full comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
@@ -59,7 +67,7 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-name-2'
-                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                         <div>Market share</div>
@@ -68,7 +76,7 @@ const Competitors = () => {
                            <input
                               id='comp-share-2'
                               type='text'
-                              className='w-full comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
@@ -78,7 +86,7 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-name-3'
-                              className='w-full comp-name p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                         <div>Market share</div>
@@ -87,7 +95,7 @@ const Competitors = () => {
                            <input
                               type='text'
                               id='comp-share-3'
-                              className='w-full  comp-share p-3 bg-gray-200 outline-none caret-dark-blue border-none'
+                              className='w-full  comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                            />
                         </div>
                      </div>
@@ -96,22 +104,27 @@ const Competitors = () => {
                         <button id='generate' className='btn-rev'>
                            Generate
                         </button>
-                        <a href='/ebos' className='btn'>
+                        <a href='/ebos' className='btn text-black-eerie'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>
                   </div>
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
-                        <button type='button' className='btn openideas'>
+                        <button
+                           type='button'
+                           className='btn text-black-eerie'
+                           onClick={toggleIdeasModal}>
                            My ideas
                         </button>
                      </div>
 
                      <Link href='/' className='logo-pane'>
-                        <h4>20X</h4>
-                        <span className='rev'>revenue BY</span>
-                        <div className='logo'>
+                        <h4 className='text-[3rem] text-white'>20X</h4>
+                        <span className='relative -translate-x-[1.2rem]'>
+                           revenue BY
+                        </span>
+                        <div className='w-[110px] h-[33px]'>
                            <img
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
@@ -183,91 +196,14 @@ const Competitors = () => {
 
                      <div className='breath'>
                         <button
-                           className='btn consultant'
+                           className='btn text-black-eerie'
                            data-name='Market potential'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review
                         </button>
                      </div>
-
-                     <div
-                        className='dr-modal-overlay modal-center modal-overlay modal-backdrop'
-                        data-trigger='.openideas'>
-                        <div
-                           className='modal dr-window'
-                           role='dialog'
-                           aria-labelledby='modaltitle'
-                           tabindex='-1'>
-                           <div className='modal-dialog'>
-                              <div className='modal-content dr-content'>
-                                 <div className='modal-header'>
-                                    <div className='modal-title '>
-                                       <h2 className='f2 '>Ideas</h2>
-                                       <h3 className='mb-6 f6 grey-dark'>
-                                          Add your ideas
-                                       </h3>
-                                    </div>
-                                    <button
-                                       type='button'
-                                       className='modal-close dr-close'
-                                       aria-label='Close'></button>
-                                 </div>
-                                 <div className='modal-body' id='ideas-app'>
-                                    <div className='idea-list'>
-                                       <ul className='alist'>
-                                          <li>
-                                             <span> some ideas </span>
-                                             <button
-                                                className='deleteIdea'
-                                                data-id='1'
-                                                type='button'>
-                                                remove
-                                             </button>
-                                          </li>
-                                          <li>
-                                             <span> idea 2 </span>
-                                             <button
-                                                className='deleteIdea'
-                                                data-id='2'
-                                                type='button'>
-                                                remove
-                                             </button>
-                                          </li>
-                                          <li>
-                                             <span> idea 3 </span>
-                                             <button
-                                                className='deleteIdea'
-                                                data-id='3'
-                                                type='button'>
-                                                remove
-                                             </button>
-                                          </li>
-                                       </ul>
-                                       <li>
-                                          <input
-                                             type='text'
-                                             className='w-full p-3 bg-gray-200 outline-none caret-dark-blue border-none newIdea'
-                                             placeholder='New idea'
-                                          />
-                                       </li>
-                                    </div>
-
-                                    <div className='mb-6'>
-                                       <br />
-                                       <button
-                                          type='button'
-                                          id='saveIdea'
-                                          className='add-idea btn-rev'>
-                                          Save
-                                       </button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                     {/* <script type="text/javascript">
+                     {/* 
+                     <script type="text/javascript">
 function drawChart(data) {
 var dt = new google.visualization.DataTable();
 
