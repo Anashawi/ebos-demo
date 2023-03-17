@@ -1,9 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
-import useToggler from "../../components/hooks/useToggler";
+import useModalToggler from "../../hooks/use-modal-toggler";
 
 const Competitors = () => {
-   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 
    return (
       <>
@@ -102,7 +103,7 @@ const Competitors = () => {
                            />
                         </div>
                      </div>
-                     <div>
+                     <div className='flex gap-3'>
                         <button id='generate' className='btn-rev'>
                            Generate
                         </button>
@@ -127,7 +128,9 @@ const Competitors = () => {
                            revenue BY
                         </span>
                         <div className='w-[110px] h-[33px]'>
-                           <img
+                           <Image
+                              width='55'
+                              height='0'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
@@ -194,9 +197,9 @@ const Competitors = () => {
                            </div>
                         </div>
                      </div>
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button
-                           className='btn text-black-eerie'
+                           className='btn text-black-eerie mt-10'
                            data-name='Market potential'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review

@@ -54,7 +54,7 @@ const Roadmap = () => {
                         </div>
                      </Link>
 
-                     <h4 className='f4 mb-6'>
+                     <h4 className='text-[2.1rem] mb-6'>
                         Create a timeline for your ideas
                      </h4>
 

@@ -139,12 +139,12 @@ input {
   color: #202020;
 }
 
-/* a,
+a,
 .a {
   color: #0c00b4;
   text-decoration: none;
   cursor: pointer;
-} */
+}
 
 button {
   border: 0;
@@ -189,7 +189,7 @@ li {
 @layer components {
 
   .logo-pane {
-    @apply text-gray-900 mb-12 flex flex-nowrap justify-end items-center;
+    @apply text-gray-900 mb-10 flex flex-nowrap justify-end items-center;
   }
 
   .btn,

@@ -1,9 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
-import useToggler from "../../components/hooks/useToggler";
+import useModalToggler from "../../hooks/use-modal-toggler";
 
 const Customers = () => {
-   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 
    return (
       <>
@@ -21,23 +22,20 @@ const Customers = () => {
                />
                <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                   <div className='flex flex-wrap'>
-                     <div className='md-4 bg-white p-12 relative'>
+                     <div className='grow md:w-4/12 bg-white p-12 relative'>
                         <div className='pb-5'>
                            <strong>Mustafa Khairy </strong> |
                            <a href='http://bo.adpadelhouse.com/logout'>
                               logout
                            </a>
                         </div>
-
-                        <h3 className='text-[2.52rem] doublespacedplus text-yellow-green'>
+                        <h3 className='mt-10 text-[2.52rem] doublespacedplus text-yellow-green'>
                            Voice of customers
                         </h3>
-
-                        <h4 className='f4 font-normal mb-6'>
+                        <h4 className='text-[2.1rem] font-normal mb-6'>
                            Top customer categories
                         </h4>
-
-                        <ul className='flex flex-col gap-3 mb-5'>
+                        <ul className='flex flex-col gap-5 mb-5'>
                            <li>
                               <input
                                  type='text'
@@ -74,8 +72,7 @@ const Customers = () => {
                               />
                            </li>
                         </ul>
-
-                        <div className='breath'>
+                        <div className='flex gap-5 py-3'>
                            <button
                               type='submit'
                               className='btn submit'
@@ -87,8 +84,7 @@ const Customers = () => {
                            </a>
                         </div>
                      </div>
-
-                     <div className='md-8 pane-right-gradient min-h-screen p-12'>
+                     <div className='grow md:w-8/12 pane-right-gradient min-h-screen p-12'>
                         <div className=''>
                            <button
                               type='button'
@@ -96,27 +92,27 @@ const Customers = () => {
                               My ideas
                            </button>
                         </div>
-
                         <Link href='/' className='logo-pane'>
                            <h4 className='text-[3rem] text-white'>20X</h4>
                            <span className='relative -translate-x-[1.2rem]'>
                               revenue BY
                            </span>
                            <div className='w-[110px] h-[33px]'>
-                              <img
+                              <Image
+                                 width='55'
+                                 height='0'
                                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                                  alt='CaseInPoint'
                               />
                            </div>
                         </Link>
-
-                        <div className='row-mb-6'>
-                           <div className='col c-6'>
-                              <h4 className='f4 font-normal mb-6'>
+                        <div className='flex flex-wrap gap-5'>
+                           <div className='col-1/2 grow'>
+                              <h4 className='text-[2.1rem] font-normal mb-6'>
                                  What do they want
                               </h4>
 
-                              <ul className='flex flex-col gap-3 mb-5'>
+                              <ul className='flex flex-col gap-5 mb-5'>
                                  <li>
                                     <input
                                        type='text'
@@ -154,12 +150,11 @@ const Customers = () => {
                                  </li>
                               </ul>
                            </div>
-                           <div className='col c-6'>
-                              <h4 className='f4 font-normal mb-6'>
+                           <div className='col-1/2 grow'>
+                              <h4 className='text-[2.1rem] font-normal mb-6'>
                                  How to fulfill it
                               </h4>
-
-                              <ul className='flex flex-col gap-3 mb-5'>
+                              <ul className='flex flex-col gap-5 mb-5'>
                                  <li>
                                     <input
                                        type='text'
@@ -198,8 +193,7 @@ const Customers = () => {
                               </ul>
                            </div>
                         </div>
-
-                        <div className='breath'>
+                        <div className='py-3'>
                            <button
                               className='btn text-black-eerie'
                               data-name='Voice Of Customers'

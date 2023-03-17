@@ -7,7 +7,7 @@ const NonCustomers = () => {
             <form action='/'>
                <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                   <div className='flex flex-wrap'>
-                     <div className='md-4 bg-white p-12 relative'>
+                     <div className='md:w-4/12 bg-white p-12 relative'>
                         <div className='pb-5'>
                            <strong>Mustafa Khairy </strong> |
                            <Link href='http://bo.adpadelhouse.com/logout'>
@@ -88,7 +88,7 @@ const NonCustomers = () => {
                            </a>
                         </div>
                      </div>
-                     <div className='md-8 pane-right-gradient min-h-screen p-12'>
+                     <div className='md:w-8/12 pane-right-gradient min-h-screen p-12'>
                         <Link href='/' className='logo-pane'>
                            <h4 className='text-[3rem] text-white'>20X</h4>
                            <span className='relative -translate-x-[1.2rem]'>
@@ -102,9 +102,9 @@ const NonCustomers = () => {
                            </div>
                         </Link>
 
-                        <div className='box box-grey-light c-12'>
-                           <div className='box doublespaced box-lighter c-12'>
-                              <div className='box doublespaced box-text-yellow-green-light c-12'>
+                        <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 c-12'>
+                           <div className='p-6 relative rounded-lg doublespaced p-6 relative rounded-lg-lighter c-12'>
+                              <div className='p-6 relative rounded-lg doublespaced p-6 relative rounded-lg-text-yellow-green-light c-12'>
                                  <h6 className='f6 mb-6'>
                                     Soon to be non customers
                                  </h6>
@@ -119,7 +119,7 @@ const NonCustomers = () => {
                            <ul className='normal mb-6 unwantedcustomersli'></ul>
                         </div>
 
-                        <div className='breath'>
+                        <div className='py-3'>
                            <button
                               className='btn text-black-eerie'
                               data-name='Non customers'

@@ -1,9 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
-import useToggler from "../../components/hooks/useToggler";
+import useModalToggler from "../../hooks/use-modal-toggler";
 
 const Goals = () => {
-   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 
    return (
       <>
@@ -36,7 +37,7 @@ const Goals = () => {
                      </h2>
                      <p className='mb-5'>Things you want to be celebrating:</p>
                      <div id='goals-app'>
-                        <ul className='flex flex-col gap-3 mb-5'>
+                        <ul className='flex flex-col gap-3 mb-10'>
                            <li>
                               <input
                                  type='text'
@@ -122,16 +123,20 @@ const Goals = () => {
                               <a className='deleteGoal btn-delete  mt-2'>x</a>
                            </li>
                         </ul>
-                        <a id='add-goal' className='btn btn-gray-100'>
-                           Add
-                        </a>
-
-                        <button type='button' className='btn-rev' id='submit'>
-                           Save and submit
-                        </button>
-                        <a href='/ebos' className='btn text-black-eerie'>
-                           <strong>Back To Dashboard</strong>
-                        </a>
+                        <div className='flex gap-3'>
+                           <a id='add-goal' className='btn btn-gray-100'>
+                              Add
+                           </a>
+                           <button
+                              type='button'
+                              className='btn-rev'
+                              id='submit'>
+                              Save and submit
+                           </button>
+                           <a href='/ebos' className='btn text-black-eerie'>
+                              <strong>Back To Dashboard</strong>
+                           </a>
+                        </div>
                      </div>
                      {/* <script src="/modules/goals.js"></script> */}
                   </div>
@@ -150,20 +155,22 @@ const Goals = () => {
                            revenue BY
                         </span>
                         <div className='w-[110px] h-[33px]'>
-                           <img
+                           <Image
+                              width='55'
+                              height='0'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
                         </div>
                      </Link>
 
-                     <div className='box box-grey-light h-3 doublespaced'>
+                     <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 h-3 doublespaced'>
                         <iframe width='530' height='315' src='1'></iframe>
                      </div>
 
                      <div className='mx-auto text-center'>
                         <button
-                           className='btn text-black-eerie'
+                           className='btn text-black-eerie mt-10'
                            data-name='Goals'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review

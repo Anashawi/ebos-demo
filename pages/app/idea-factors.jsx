@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const IdeaFactors = () => {
@@ -27,7 +28,9 @@ const IdeaFactors = () => {
                            revenue BY
                         </span>
                         <div className='w-[110px] h-[33px]'>
-                           <img
+                           <Image
+                              width='55'
+                              height='0'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
@@ -98,7 +101,7 @@ const IdeaFactors = () => {
                         </tbody>
                      </table>
 
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button className='btn'>Generate graph</button>
                         <a href='/ebos' className='btn text-black-eerie'>
                            <strong>Back To Dashboard</strong>
@@ -141,9 +144,9 @@ const IdeaFactors = () => {
                         </div>
                      </div>
 
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button
-                           className='btn text-black-eerie'
+                           className='btn text-black-eerie mt-10'
                            data-name='Blue Ocean'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review

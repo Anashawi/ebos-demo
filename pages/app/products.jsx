@@ -5,44 +5,84 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import IdeasModal from "../../components/app/ideas-modal";
-import useToggler from "../../components/hooks/useToggler";
+import useModalToggler from "../../hooks/use-modal-toggler";
 
 class ProductFuture {
-   year = 2023;
-   level = 55;
-   sales = 75;
+   id;
+   product_id;
+   year;
+   level;
+   sales;
 }
 
 class Product {
    id = 0;
    name = "Product Example";
-   futures = [new ProductFuture()];
+   futures = [
+      {
+         id: 10,
+         product_id: 2,
+         year: 2023,
+         level: 1,
+         sales: 70,
+      },
+      {
+         id: 11,
+         product_id: 2,
+         year: 2025,
+         level: 1,
+         sales: 50,
+      },
+      {
+         id: 12,
+         product_id: 2,
+         year: 2027,
+         level: 1,
+         sales: 50,
+      },
+   ];
 }
 
 const Products = () => {
-   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
    const [product, setProduct] = useState(new Product());
    const [chartOptions, setChartOptions] = useState(null);
-   const [chartData, setChartData] = useState([]);
+   const [chartRows, setChartRows] = useState([]);
+   const [chartCols, setChartCols] = useState([]);
 
-   useEffect(() => {
-      // const dt = new google.visualization.DataTable();
+   const initChartProps = () => {
+      setChartCols([
+         {
+            type: "string",
+            label: "Product",
+         },
+         {
+            type: "number",
+            label: "Year",
+         },
+         {
+            type: "number",
+            label: "Level",
+         },
+         {
+            type: "string",
+            label: "Color",
+         },
+         {
+            type: "number",
+            label: "Sales",
+         },
+      ]);
 
-      // dt.addColumn("string", "Product");
-      // dt.addColumn("number", "Year");
-      // dt.addColumn("number", "Level");
-      // dt.addColumn("string", "Color");
-      // dt.addColumn("number", "Sales");
-
-      // const rows = product.futures
-      //    .sort((a, b) => {
-      //       if (a.year < b.year) return -1;
-      //       return 1;
-      //    })
-      //    .map((n, i) => {
-      //       return ["", i + 1, parseInt(n.level), "blue", parseInt(n.sales)];
-      //    });
-      // dt.addRows(rows);
+      const rows = product.futures
+         .sort((a, b) => {
+            if (a.year < b.year) return -1;
+            return 1;
+         })
+         .map((n, i) => {
+            return ["", i + 1, parseInt(n.level), "blue", parseInt(n.sales)];
+         });
+      setChartRows(rows);
 
       const ticks = product.futures.map((n, i) => {
          return {
@@ -104,6 +144,10 @@ const Products = () => {
             height: "90%",
          },
       });
+   };
+
+   useEffect(() => {
+      initChartProps();
    }, []);
 
    return (
@@ -206,7 +250,9 @@ const Products = () => {
                                     className='w-full accent-blue-true'
                                     step='10'
                                  />
-                                 <datalist id='salesmarks' className='dl-100'>
+                                 <datalist
+                                    id='salesmarks'
+                                    className='flex items-center justify-between text-lg w-full'>
                                     <option value='0' label='0%'></option>
                                     <option value='10'></option>
                                     <option value='20'></option>
@@ -269,7 +315,9 @@ const Products = () => {
                                     className='w-full accent-blue-true'
                                     step='10'
                                  />
-                                 <datalist id='salesmarks' className='dl-100'>
+                                 <datalist
+                                    id='salesmarks'
+                                    className='flex items-center justify-between text-lg w-full'>
                                     <option value='0' label='0%'></option>
                                     <option value='10'></option>
                                     <option value='20'></option>
@@ -333,7 +381,9 @@ const Products = () => {
                                     className='w-full accent-blue-true'
                                     step='10'
                                  />
-                                 <datalist id='salesmarks' className='dl-100'>
+                                 <datalist
+                                    id='salesmarks'
+                                    className='flex items-center justify-between text-lg w-full'>
                                     <option value='0' label='0%'></option>
                                     <option value='10'></option>
                                     <option value='20'></option>
@@ -490,14 +540,16 @@ const Products = () => {
                            chartType='BubbleChart'
                            width='100%'
                            height='400px'
-                           data={chartData}
+                           cols={chartCols}
+                           rows={chartRows}
                            options={chartOptions}
+                           graphID="ScatterChart"
                            legendToggle
                         />
                      </div>
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button
-                           className='btn text-black-eerie'
+                           className='btn text-black-eerie mt-10'
                            data-name='Pioneer, Migrate, Settler'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review

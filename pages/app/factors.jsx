@@ -117,7 +117,7 @@ const Factors = () => {
                         </tbody>
                      </table>
 
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button className='btn'>Generate graph</button>
                         <Link href='/ebos' className='btn text-black-eerie'>
                            <strong>Back To Dashboard</strong>
@@ -160,7 +160,7 @@ const Factors = () => {
                         </div>
                      </div>
 
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button
                            className='btn  consultant'
                            data-name='Red ocean canvas'

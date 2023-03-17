@@ -1,26 +1,27 @@
+import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
-import useToggler from "../../components/hooks/useToggler";
+import Modal from "../../components/common/modal";
+import useModalToggler from "../../hooks/use-modal-toggler";
 
 const Disruption = () => {
-   const [isIdeasModalOpen, toggleIdeasModal] = useToggler();
+   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+   const [isDisplayVideoModal, closeVideoModal] = useModalToggler();
 
    return (
       <>
          <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
          <div className='homepage-bg-gradient w-screen bg-white'>
-            <div className='video-popup'>
-               <div className='popup-bg'></div>
-               <div className='popup-content'>
-                  <p className='popup-title'></p>
-                  <iframe src='' className='video'></iframe>
-                  <button className='close-btn'>close</button>
-               </div>
-            </div>
+            <Modal
+               config={{
+                  isShown: isDisplayVideoModal,
+                  closeCallback: closeVideoModal,
+               }}
+            />
             <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
-                  <div className='md-8 bg-white p-12 relative'>
+                  <div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
                      <div className='pb-5'>
                         <strong>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
@@ -33,138 +34,138 @@ const Disruption = () => {
                      <h3 className='text-[2.52rem] mb-6 font-normal'>
                         10 Comprehensives
                      </h3>
-                     <p>
+                     <p className='mb-10'>
                         Watch help videos then update your ideas accordingly.
                         Submit for feedback.
                      </p>
-                     <div className='row-mb-6'>
-                        <div className='col c-6'>
-                           <h4 className='f4 mb-6'>Scale</h4>
+                     <div className='flex flex-wrap gap-5'>
+                        <div className='col-1/2 grow'>
+                           <h4 className='text-[2.1rem] mb-6'>Scale</h4>
                            <ul className='flex flex-col gap-3 mb-5'>
                               <li
                                  data-key='Staff on Demand'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Staff on Demand
                                  <a
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'
                                     data-video='1'>
                                     Watch video
                                  </a>
-                                 Staff on Demand
                               </li>
                               <li
                                  data-key='Community and Crowd'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Community and Crowd
                                  <a
                                     data-video='1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Community and Crowd
                               </li>
                               <li
                                  data-key='Algorithms'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Algorithms
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Algorithms
                               </li>
                               <li
                                  data-key='Leveraged Assets'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Leveraged Assets
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Leveraged Assets
                               </li>
                               <li
                                  data-key='Engagement'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Engagement
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Engagement
                               </li>
                            </ul>
                         </div>
-                        <div className='col c-6'>
-                           <h4 className='f4 mb-6'>Ideas</h4>
+                        <div className='col-1/2 grow'>
+                           <h4 className='text-[2.1rem] mb-6'>Ideas</h4>
 
                            <ul className='flex flex-col gap-3 mb-5'>
                               <li
                                  data-key='Interface'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Interface
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Interface
                               </li>
                               <li
                                  data-key='Dashboard'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Dashboard
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Dashboard
                               </li>
                               <li
                                  data-key='Experimentation'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Experimentation
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Experimentation
                               </li>
                               <li
                                  data-key='Autonomy'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Autonomy
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Autonomy
                               </li>
                               <li
                                  data-key='Social Platforms'
-                                 className='box box-grey-light'>
+                                 className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                                 Social Platforms
                                  <a
                                     data-video=' 1'
-                                    className='popup-btn small r'
+                                    className='ml-5 text-[1.2rem]'
                                     target='_blank'>
                                     Watch video
                                  </a>
-                                 Social Platforms
                               </li>
                            </ul>
                         </div>
                      </div>
-                     <a href='/ebos' className='btn text-black-eerie'>
+                     <a href='/ebos' className='btn text-black-eerie w-max'>
                         <strong>Back To Dashboard</strong>
                      </a>
                   </div>
-                  <div className='md-4 pane-right-gradient min-h-screen p-12'>
+                  <div className='md:w-4/12 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
                         <button
                            type='button'
@@ -179,94 +180,98 @@ const Disruption = () => {
                            revenue BY
                         </span>
                         <div className='w-[110px] h-[33px]'>
-                           <img
+                           <Image
+                              width='55'
+                              height='0'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
                         </div>
                      </Link>
 
-                     <h4 className='f4 mb-6'>7 Practical &amp; Quick</h4>
+                     <h4 className='text-[2.1rem] mb-6'>7 Practical &amp; Quick</h4>
 
                      <ul className='flex flex-col gap-3 mb-5'>
                         <li
                            data-key='Eco Systems'
-                           className='box box-grey-light'>
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                           Eco Systems
                            <a
                               data-video=' 1'
-                              className='popup-btn small r'
+                              className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
                            </a>
-                           Eco Systems
                         </li>
                         <li
                            data-key='Info is Power'
-                           className='box box-grey-light'>
-                           <a
-                              data-video=' 1'
-                              className='popup-btn small r'
-                              target='_blank'>
-                              Watch video
-                           </a>
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Info is Power
-                        </li>
-                        <li data-key='OTCR' className='box box-grey-light'>
                            <a
                               data-video=' 1'
-                              className='popup-btn small r'
+                              className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
                            </a>
+                        </li>
+                        <li
+                           data-key='OTCR'
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            OTCR
+                           <a
+                              data-video=' 1'
+                              className='ml-5 text-[1.2rem]'
+                              target='_blank'>
+                              Watch video
+                           </a>
                         </li>
                         <li
                            data-key='Value Destruction'
-                           className='box box-grey-light'>
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                           Value Destruction
                            <a
                               data-video=' 1'
-                              className='popup-btn small r'
+                              className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
                            </a>
-                           Value Destruction
                         </li>
                         <li
                            data-key='Customer Journey'
-                           className='box box-grey-light'>
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                           Customer Journey
                            <a
                               data-video=' 1'
-                              className='popup-btn small r'
+                              className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
                            </a>
-                           Customer Journey
                         </li>
                         <li
                            data-key='Digital Platforms'
-                           className='box box-grey-light'>
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                           Digital Platforms
                            <a
                               data-video=' 1'
-                              className='popup-btn small r'
+                              className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
                            </a>
-                           Digital Platforms
                         </li>
                         <li
                            data-key='Building Capacity'
-                           className='box box-grey-light'>
+                           className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                           Building Capacity
                            <a
                               data-video=' 1'
-                              className='popup-btn small r'
+                              className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
                            </a>
-                           Building Capacity
                         </li>
                      </ul>
 
-                     <div className='breath'>
+                     <div className='py-3'>
                         <button
                            className='btn text-black-eerie'
                            data-name='Disruption'

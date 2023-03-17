@@ -162,7 +162,7 @@ const DesktopHomepage = ({
                </div>
                <svg className='home-line absolute bottom-0 w-full h-[52rem] z-[1]'>
                   <path
-                     className='stroke-[5px] stroke-gunmetal fill-none'
+                     className='stroke-[5px] stroke-gray-gunmetal fill-none'
                      d={`M ${getRelativeXInPixels(curve.p_0.x)} ${
                         curve.p_0.y
                      } Q ${getRelativeXInPixels(curve.p_1.x)} ${
@@ -181,7 +181,7 @@ const DesktopHomepage = ({
                      cy='590'
                      r='4'></circle>
                   <path
-                     className='custom-stroke-dasharray stroke-[1px] stroke-gunmetal fill-none'
+                     className='custom-stroke-dasharray stroke-[1px] stroke-gray-gunmetal fill-none'
                      d='M 220 590 L 247 590 L 247 451'></path>
                </svg>
             </div>
