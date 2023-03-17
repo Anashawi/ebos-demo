@@ -8,12 +8,14 @@ const Goals = () => {
 
    return (
       <>
+         <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+
          <div className='homepage-bg-gradient w-screen bg-white'>
             <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
                   <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
-                        <strong>Mustafa Khairy </strong> |
+                        <strong className='mr-1'>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
@@ -164,7 +166,7 @@ const Goals = () => {
                         </div>
                      </Link>
 
-                     <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 h-3 doublespaced'>
+                     <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 h-3 mb-10'>
                         <iframe width='530' height='315' src='1'></iframe>
                      </div>
 
@@ -180,7 +182,6 @@ const Goals = () => {
                </div>
             </div>
          </div>
-         <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
       </>
    );
 };

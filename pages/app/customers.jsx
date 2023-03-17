@@ -24,7 +24,7 @@ const Customers = () => {
                   <div className='flex flex-wrap'>
                      <div className='grow md:w-4/12 bg-white p-12 relative'>
                         <div className='pb-5'>
-                           <strong>Mustafa Khairy </strong> |
+                           <strong className='mr-1'>Mustafa Khairy </strong> |
                            <a href='http://bo.adpadelhouse.com/logout'>
                               logout
                            </a>
@@ -111,7 +111,6 @@ const Customers = () => {
                               <h4 className='text-[2.1rem] font-normal mb-6'>
                                  What do they want
                               </h4>
-
                               <ul className='flex flex-col gap-5 mb-5'>
                                  <li>
                                     <input

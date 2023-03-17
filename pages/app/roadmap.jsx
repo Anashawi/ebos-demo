@@ -12,56 +12,44 @@ const Roadmap = () => {
                   value='E6vydmJoblEw5asasVKo4Ehneri0ZmjnuHJ03vSY'
                />
                <div className='pane-upper'>
-                  <div className='page'>
-                     <div className='pb-5'>
-                        <strong>Mustafa Khairy </strong> |
-                        <a href='http://bo.adpadelhouse.com/logout'> logout </a>
-                     </div>
-
-                     <Link href='/' className='logo-pane'>
-                        <h4 className='text-[3rem] text-white'>20X</h4>
-                        <span className='relative -translate-x-[1.2rem]'>
-                           revenue BY
-                        </span>
-                        <div className='w-[110px] h-[33px]'>
-                           <Image
-                              width='100'
-                              height='100'
-                              className='w-full h-full'
-                              src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
-                              alt='CaseInPoint'
-                           />
+                  <div className='px-12 py-8'>
+                     <div className='flex gap-5 justify-between items-center pb-5'>
+                        <div>
+                           <strong className='mr-1'>Mustafa Khairy </strong> |
+                           <a href='http://bo.adpadelhouse.com/logout'>
+                              logout
+                           </a>
                         </div>
-                     </Link>
-
+                        <Link href='/' className='logo-pane mb-0'>
+                           <h4 className='text-[3rem] text-yellow-green'>
+                              20X
+                           </h4>
+                           <span className='relative -translate-x-[1.2rem]'>
+                              revenue BY
+                           </span>
+                           <div className='w-[110px] h-[33px]'>
+                              <Image
+                                 width='55'
+                                 height='0'
+                                 src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+                                 alt='CaseInPoint'
+                              />
+                           </div>
+                        </Link>
+                     </div>
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
                         Roadmap
                      </h3>
-
-                     <Link href='/' className='logo-pane'>
-                        <h4 className='text-[3rem] text-white'>20X</h4>
-                        <span className='relative -translate-x-[1.2rem]'>
-                           revenue BY
-                        </span>
-                        <div className='w-[110px] h-[33px]'>
-                           <Image
-                              width='100'
-                              height='100'
-                              className='w-full h-full'
-                              src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
-                              alt='CaseInPoint'
-                           />
-                        </div>
-                     </Link>
-
                      <h4 className='text-[2.1rem] mb-6'>
                         Create a timeline for your ideas
                      </h4>
-
-                     <div className='grid g-1 spacedout doublespaced'>
+                     <div className='flex g-1 gap-5 mb-10'>
                         <div>Start date</div>
-                        <div>
-                           <select name='' id='startDate' className='w-full'>
+                        <div className='grow'>
+                           <select
+                              name=''
+                              id='startDate'
+                              className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                               <option value='2023-03-01 00:00:00'>
                                  Mar 2023
                               </option>
@@ -113,12 +101,14 @@ const Roadmap = () => {
                            </select>
                         </div>
                      </div>
-
                      <ul className='flex flex-col gap-3 mb-5'>
-                        <li className='grid ideasForm g-1 spacedout'>
-                           <div>
+                        <li className='flex gap-5'>
+                           <div className='flex flex-col'>
                               <div>Idea</div>
-                              <select name='ideas[]' id='' className='w-full'>
+                              <select
+                                 name='ideas[]'
+                                 id=''
+                                 className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                  <option value='1' selected='selected'>
                                     some ideas
                                  </option>
@@ -126,14 +116,13 @@ const Roadmap = () => {
                                  <option value='3'> idea 3 </option>
                               </select>
                            </div>
-                           <div className='row-mb-6'>
-                              <div className='c-4'>
+                           <div className='grow md:flex gap-5'>
+                              <div className='grow'>
                                  <div>Start (month)</div>
-
                                  <select
                                     name='start[]'
                                     id='start'
-                                    className='w-full'>
+                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                     <option
                                        value='2023-03-01 00:00:00'
                                        selected='selected'>
@@ -186,7 +175,7 @@ const Roadmap = () => {
                                     </option>
                                  </select>
                               </div>
-                              <div className='c-6'>
+                              <div className='grow'>
                                  <div>Duration (months)</div>
                                  <input
                                     type='range'
@@ -195,7 +184,7 @@ const Roadmap = () => {
                                     value='4'
                                     name='end[]'
                                     list='duration'
-                                    className='w-full'
+                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'
                                     step='1'
                                  />
                                  <datalist id='duration'>
@@ -213,17 +202,18 @@ const Roadmap = () => {
                                     <option value='12' label='12'></option>
                                  </datalist>
                               </div>
-
-                              <div className='c-2'>
+                              <div className='col-2/12'>
                                  <div className='delete-road'>X</div>
                               </div>
                            </div>
                         </li>
-
-                        <li className='grid ideasForm g-1 spacedout'>
-                           <div>
+                        <li className='flex gap-5'>
+                           <div className='flex flex-col'>
                               <div>Idea</div>
-                              <select name='ideas[]' id='' className='w-full'>
+                              <select
+                                 name='ideas[]'
+                                 id=''
+                                 className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                  <option value='1'> some ideas </option>
                                  <option value='2' selected='selected'>
                                     idea 2
@@ -231,14 +221,13 @@ const Roadmap = () => {
                                  <option value='3'> idea 3 </option>
                               </select>
                            </div>
-                           <div className='row-mb-6'>
-                              <div className='c-4'>
+                           <div className='grow md:flex gap-5'>
+                              <div className='grow'>
                                  <div>Start (month)</div>
-
                                  <select
                                     name='start[]'
                                     id='start'
-                                    className='w-full'>
+                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                     <option
                                        value='2023-03-01 00:00:00'
                                        selected='selected'>
@@ -291,7 +280,7 @@ const Roadmap = () => {
                                     </option>
                                  </select>
                               </div>
-                              <div className='c-6'>
+                              <div className='grow'>
                                  <div>Duration (months)</div>
                                  <input
                                     type='range'
@@ -300,7 +289,7 @@ const Roadmap = () => {
                                     value='7'
                                     name='end[]'
                                     list='duration'
-                                    className='w-full'
+                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'
                                     step='1'
                                  />
                                  <datalist id='duration'>
@@ -319,16 +308,18 @@ const Roadmap = () => {
                                  </datalist>
                               </div>
 
-                              <div className='c-2'>
+                              <div className='col-2/12'>
                                  <div className='delete-road'>X</div>
                               </div>
                            </div>
                         </li>
-
-                        <li className='grid ideasForm g-1 spacedout'>
-                           <div>
+                        <li className='flex gap-5'>
+                           <div className='flex flex-col'>
                               <div>Idea</div>
-                              <select name='ideas[]' id='' className='w-full'>
+                              <select
+                                 name='ideas[]'
+                                 id=''
+                                 className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                  <option value='1'> some ideas </option>
                                  <option value='2'> idea 2 </option>
                                  <option value='3' selected='selected'>
@@ -336,14 +327,13 @@ const Roadmap = () => {
                                  </option>
                               </select>
                            </div>
-                           <div className='row-mb-6'>
-                              <div className='c-4'>
+                           <div className='grow md:flex gap-5'>
+                              <div className='grow'>
                                  <div>Start (month)</div>
-
                                  <select
                                     name='start[]'
                                     id='start'
-                                    className='w-full'>
+                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                     <option value='2023-03-01 00:00:00'>
                                        Mar 2023
                                     </option>
@@ -396,7 +386,7 @@ const Roadmap = () => {
                                     </option>
                                  </select>
                               </div>
-                              <div className='c-6'>
+                              <div className='grow'>
                                  <div>Duration (months)</div>
                                  <input
                                     type='range'
@@ -405,7 +395,7 @@ const Roadmap = () => {
                                     value='9'
                                     name='end[]'
                                     list='duration'
-                                    className='w-full'
+                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'
                                     step='1'
                                  />
                                  <datalist id='duration'>
@@ -424,15 +414,16 @@ const Roadmap = () => {
                                  </datalist>
                               </div>
 
-                              <div className='c-2'>
+                              <div className='col-2/12'>
                                  <div className='delete-road'>X</div>
                               </div>
                            </div>
                         </li>
                      </ul>
-
-                     <div>
-                        <a className='btn addNew'>Add another</a>
+                     <div className='flex gap-5 my-10'>
+                        <a className='btn blue-gradient text-black-eerie'>
+                           + Add another
+                        </a>
                         <button className='btn-rev'>Generate</button>
                         <a href='/ebos' className='btn text-black-eerie'>
                            <strong>Back To Dashboard</strong>
@@ -440,8 +431,8 @@ const Roadmap = () => {
                      </div>
                   </div>
                </div>
-               <div className='pane-lower'>
-                  <div className='page'>
+               <div className='pane-lower-gradient'>
+                  <div className='px-12 py-8'>
                      <div className='chart-wrapper'>
                         <div id='thechart' className='chart'>
                            <div className='relative'>
@@ -1301,7 +1292,7 @@ const Roadmap = () => {
                            <li>
                               <input
                                  type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none newIdea'
+                                 className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none p-3 bg-gray-100 outline-none caret-dark-blue border-none newIdea'
                                  placeholder='New idea'
                               />
                            </li>

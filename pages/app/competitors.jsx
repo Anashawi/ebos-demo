@@ -15,7 +15,7 @@ const Competitors = () => {
                <div className='flex flex-wrap'>
                   <div className='flex flex-col gap-7 md:w-1/2 bg-white p-12 relative'>
                      <div>
-                        <strong>Mustafa Khairy </strong> |
+                        <strong className='mr-1'>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
                      <h3 className='text-[2.52rem] text-yellow-green'>

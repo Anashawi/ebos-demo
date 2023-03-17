@@ -14,28 +14,31 @@ const IdeaFactors = () => {
                   value='E6vydmJoblEw5asasVKo4Ehneri0ZmjnuHJ03vSY'
                />
                <div className='pane-upper'>
-                  <div className='page'>
-                     <div className='pb-5'>
-                        <strong>Mustafa Khairy </strong> |
-                        <Link href='http://bo.adpadelhouse.com/logout'>
-                           logout
+                  <div className='px-12 py-8'>
+                     <div className='flex justify-between items-center mb-10'>
+                        <div>
+                           <strong className='mr-1'>Mustafa Khairy </strong> |
+                           <Link href='http://bo.adpadelhouse.com/logout'>
+                              logout
+                           </Link>
+                        </div>
+                        <Link href='/' className='logo-pane mb-0'>
+                           <h4 className='text-[3rem] text-yellow-green'>
+                              20X
+                           </h4>
+                           <span className='relative -translate-x-[1.2rem]'>
+                              revenue BY
+                           </span>
+                           <div className='w-[110px] h-[33px]'>
+                              <Image
+                                 width='55'
+                                 height='0'
+                                 src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+                                 alt='CaseInPoint'
+                              />
+                           </div>
                         </Link>
                      </div>
-
-                     <Link href='/' className='logo-pane'>
-                        <h4 className='text-[3rem] text-white'>20X</h4>
-                        <span className='relative -translate-x-[1.2rem]'>
-                           revenue BY
-                        </span>
-                        <div className='w-[110px] h-[33px]'>
-                           <Image
-                              width='55'
-                              height='0'
-                              src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
-                              alt='CaseInPoint'
-                           />
-                        </div>
-                     </Link>
 
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
                         Blue ocean
@@ -46,22 +49,24 @@ const IdeaFactors = () => {
                         shift
                      </h3>
 
-                     <table className='rich w-full'>
+                     <table className='flex flex-col w-full mt-7'>
                         <colgroup>
-                           <col className='c-3' />
-                           <col className='c-2' />
-                           <col className='c-2' />
-                           <col className='c-2' />
-                           <col className='c-2' />
+                           <col className='col-3/12' />
+                           <col className='col-2/12' />
+                           <col className='col-2/12' />
+                           <col className='col-2/12' />
+                           <col className='col-2/12' />
                         </colgroup>
                         <tbody>
                            <tr>
-                              <th className='text-nowrap'>Points</th>
+                              <th className='text-nowrap bg-gray-100 text-[700] shadow border-gray-200 border-[1px] p-3 w-full'>
+                                 Points
+                              </th>
                            </tr>
                         </tbody>
                         <tbody>
                            <tr>
-                              <td>
+                              <td className='p-3 border-gray-100 border-[1px] w-[330px]'>
                                  some ideas
                                  <input
                                     type='hidden'
@@ -72,9 +77,8 @@ const IdeaFactors = () => {
                                  />
                               </td>
                            </tr>
-
                            <tr>
-                              <td>
+                              <td className='p-3 border-gray-100 border-[1px] w-[330px]'>
                                  idea 2
                                  <input
                                     type='hidden'
@@ -85,9 +89,8 @@ const IdeaFactors = () => {
                                  />
                               </td>
                            </tr>
-
                            <tr>
-                              <td>
+                              <td className='p-3 border-gray-100 border-[1px] w-[330px]'>
                                  idea 3
                                  <input
                                     type='hidden'
@@ -100,16 +103,17 @@ const IdeaFactors = () => {
                            </tr>
                         </tbody>
                      </table>
-
-                     <div className='py-3'>
-                        <button className='btn'>Generate graph</button>
+                     <div className='flex gap-5 py-5'>
+                        <button className='btn text-black-eerie'>
+                           Generate graph
+                        </button>
                         <a href='/ebos' className='btn text-black-eerie'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>
                   </div>
                </div>
-               <div className='pane-lower'>
+               <div className='pane-lower-gradient'>
                   <div className='page'>
                      <div className='chart-wrapper'>
                         <div id='chart3_div' className='chart'>
@@ -143,10 +147,9 @@ const IdeaFactors = () => {
                            </div>
                         </div>
                      </div>
-
                      <div className='py-3'>
                         <button
-                           className='btn text-black-eerie mt-10'
+                           className='btn text-black-eerie mt-10 mx-10'
                            data-name='Blue Ocean'
                            id='theSubmitBtn'>
                            <strong>Request </strong> for consultant review
@@ -229,11 +232,7 @@ const IdeaFactors = () => {
                            </div>
                         </div>
                      </div> */}
-
                      {/* <script type="text/javascript">
-
-
-
     function drawChart() {
         // var data = google.visualization.arrayToDataTable([
         //     ['Factor', 'Competitor1',
@@ -265,10 +264,6 @@ const IdeaFactors = () => {
         //     ]
         // ]);
 
-
-
-
-
         competitor = []
         factor = [{"id":1,"user_id":2,"name":"some ideas","created_at":"2023-03-01T19:36:37.000000Z","updated_at":"2023-03-01T19:36:37.000000Z","competitors":[]},{"id":2,"user_id":2,"name":"idea 2","created_at":"2023-03-01T19:36:45.000000Z","updated_at":"2023-03-01T19:36:45.000000Z","competitors":[]},{"id":3,"user_id":2,"name":"idea 3","created_at":"2023-03-01T19:36:50.000000Z","updated_at":"2023-03-01T19:36:50.000000Z","competitors":[]}]
         var factors = [];
@@ -284,11 +279,7 @@ $.each(factor, function(index, value) {
     })
 
     fullChart.push(chart)
-
-
 });
-
-
 
         var dt = new google.visualization.DataTable();
 
@@ -296,8 +287,6 @@ $.each(factor, function(index, value) {
         $.each( competitor, function( key, value ) {
             dt.addColumn('number', value);
         });
-
-
 
 // index factor1comp1 factors1comp2 factors1comp3
 // index factors2comp1 factors2comp2 ..etc
@@ -310,8 +299,6 @@ $.each(factor, function(index, value) {
         // ]);
 
     dt.addRows(fullChart);
-
-
         var options = {
             title: 'Blue ocean',
             pointSize: 15,
@@ -363,7 +350,6 @@ $.each(factor, function(index, value) {
                     color: '#333'
                 },
                 ticks: factors,
-
             },
             vAxis: {
                 ticks: [{

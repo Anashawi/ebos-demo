@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const Analysis = () => {
@@ -8,16 +9,13 @@ const Analysis = () => {
                <div className='flex flex-wrap'>
                   <div className='md:w-4/12 bg-white p-12 relative'>
                      <div className='pb-5'>
-                        <strong>Mustafa Khairy </strong> |
+                        <strong className='mr-1'>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
-
-                     <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+                     <h3 className='text-[2.52rem] my-10 text-yellow-green'>
                         Step-up step-down
                      </h3>
-
-                     <h6 className='f6 mb-6'>10% above</h6>
-
+                     <h6 className='f6 mb-2'>10% above</h6>
                      <ul className='flex flex-col gap-3 above'>
                         <li>
                            <input
@@ -27,15 +25,16 @@ const Analysis = () => {
                            <a className='btn-delete deleteItem'> X </a>
                         </li>
                      </ul>
-                     <div>
-                        <a id='above' href='#' className='btn'>
-                           Add
+                     <div className='mt-3'>
+                        <a
+                           id='above'
+                           href='#'
+                           className='btn blue-gradient text-black-eerie'>
+                           + Add
                         </a>
                      </div>
                      <br />
-
-                     <h6 className='f6 mb-6'>10% below</h6>
-
+                     <h6 className='f6 mb-2'>10% below</h6>
                      <ul className='flex flex-col gap-3 below'>
                         <li>
                            <input
@@ -45,15 +44,17 @@ const Analysis = () => {
                            <a className='btn-delete deleteItem'> X </a>
                         </li>
                      </ul>
-                     <div>
-                        <a id='below' href='#' className='btn'>
-                           Add
+                     <div className='mt-3'>
+                        <a
+                           id='below'
+                           href='#'
+                           className='btn blue-gradient text-black-eerie'>
+                           + Add
                         </a>
                      </div>
-
                      <br />
-                     <div>
-                        <button id='generate' className='btn'>
+                     <div className='flex gap-5'>
+                        <button id='generate' className='btn text-black-eerie'>
                            Save
                         </button>
                         <a href='/ebos' className='btn text-black-eerie'>
@@ -61,35 +62,35 @@ const Analysis = () => {
                         </a>
                      </div>
                   </div>
-                  <div className='md:w-8/12 pane-right-gradient min-h-screen p-12'>
+                  <div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
                      <Link href='/' className='logo-pane'>
                         <h4 className='text-[3rem] text-white'>20X</h4>
                         <span className='relative -translate-x-[1.2rem]'>
                            revenue BY
                         </span>
                         <div className='w-[110px] h-[33px]'>
-                           <img
+                           <Image
+                              width='55'
+                              height='0'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />
                         </div>
                      </Link>
-
                      <div className='py-3'>
-                        <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 mb-6'>
-                           <div className='p-6 relative rounded-lg mb-6'>
-                              <h6 className='f6 mb-6'>10% Above</h6>
-                              <ul className='normal mb-6 is_aboveli'></ul>
+                        <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 mb-2'>
+                           <div className='p-6 relative rounded-lg mb-2'>
+                              <h6 className='f6 mb-2'>10% Above</h6>
+                              <ul className='normal mb-2 is_aboveli'></ul>
                            </div>
-                           <div className='p-6 relative rounded-lg p-6 relative rounded-lg-grey-dark'>
+                           <div className='p-6 relative rounded-lg p-6 relative rounded-lg bg-gray-800 text-white'>
                               Your customer
                            </div>
-                           <div className='p-6 relative rounded-lg mb-6'>
-                              <h6 className='f6 mb-6'>10% below</h6>
-                              <ul className='normal mb-6 is_belowli'></ul>
+                           <div className='p-6 relative rounded-lg mb-2'>
+                              <h6 className='f6 mb-2'>10% below</h6>
+                              <ul className='normal mb-2 is_belowli'></ul>
                            </div>
                         </div>
-
                         <button
                            className='btn text-black-eerie mt-10'
                            data-name='Goals'
@@ -115,7 +116,7 @@ const Analysis = () => {
                      <div className='flex items-center justify-between p-3 h-12'>
                         <div className='modal-title'>
                            <h2 className='text-[2.8rem]'>Ideas</h2>
-                           <h3 className='mb-6 f6 text-gray-gunmetal mb-5'>Add your ideas</h3>
+                           <h3 className='mb-2 f6 text-gray-gunmetal mb-5'>Add your ideas</h3>
                         </div>
                         <button
                            type='button'
@@ -161,8 +162,7 @@ const Analysis = () => {
                               />
                            </li>
                         </div>
-
-                        <div className='mb-6'>
+                        <div className='mb-2'>
                            <br />
                            <button
                               type='button'

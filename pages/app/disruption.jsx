@@ -23,7 +23,7 @@ const Disruption = () => {
                <div className='flex flex-wrap'>
                   <div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
                      <div className='pb-5'>
-                        <strong>Mustafa Khairy </strong> |
+                        <strong className='mr-1'>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
 

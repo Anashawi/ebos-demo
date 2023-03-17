@@ -159,7 +159,7 @@ const Products = () => {
                <div className='flex flex-wrap'>
                   <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
-                        <strong>Mustafa Khairy </strong> |
+                        <strong className='mr-1'>Mustafa Khairy </strong> |
                         <a href='http://bo.adpadelhouse.com/logout'> logout </a>
                      </div>
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
@@ -543,7 +543,7 @@ const Products = () => {
                            cols={chartCols}
                            rows={chartRows}
                            options={chartOptions}
-                           graphID="ScatterChart"
+                           graphID='BubbleChart'
                            legendToggle
                         />
                      </div>

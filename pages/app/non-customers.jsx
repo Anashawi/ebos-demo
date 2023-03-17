@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const NonCustomers = () => {
@@ -9,18 +10,16 @@ const NonCustomers = () => {
                   <div className='flex flex-wrap'>
                      <div className='md:w-4/12 bg-white p-12 relative'>
                         <div className='pb-5'>
-                           <strong>Mustafa Khairy </strong> |
+                           <strong className='mr-1'>Mustafa Khairy </strong> |
                            <Link href='http://bo.adpadelhouse.com/logout'>
                               logout
                            </Link>
                         </div>
-
-                        <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+                        <h3 className='text-[2.52rem] my-10 text-yellow-green'>
                            Non customers
                         </h3>
-
-                        <div className='mb-6'>
-                           <h6 className='f6  mb-6'>
+                        <div className='flex flex-col gap-3 mb-5'>
+                           <h6 className='f6  mb-2'>
                               Soon to be non customers
                            </h6>
                            <ul className='flex flex-col gap-3 non'>
@@ -38,13 +37,16 @@ const NonCustomers = () => {
                               </li>
                            </ul>
                            <div>
-                              <a id='non' href='#' className='btn'>
-                                 Add
+                              <a
+                                 id='non'
+                                 href='#'
+                                 className='btn blue-gradient text-black-eerie'>
+                                 + Add
                               </a>
                            </div>
                         </div>
-                        <div className='mb-6'>
-                           <h6 className='f6  mb-6'>Refusing customers</h6>
+                        <div className='flex flex-col gap-3 mb-5'>
+                           <h6 className='f6  mb-2'>Refusing customers</h6>
                            <ul className='flex flex-col gap-3 ref'>
                               <li>
                                  <input
@@ -56,13 +58,15 @@ const NonCustomers = () => {
                               </li>
                            </ul>
                            <div>
-                              <a id='ref' className='btn'>
-                                 Add
+                              <a
+                                 id='ref'
+                                 className='btn blue-gradient text-black-eerie'>
+                                 + Add
                               </a>
                            </div>
                         </div>
-                        <div className='mb-6'>
-                           <h6 className='f6  mb-6'>Unwanted customers</h6>
+                        <div className='flex flex-col gap-3 mb-5'>
+                           <h6 className='f6  mb-2'>Unwanted customers</h6>
                            <ul className='flex flex-col gap-3 unwant'>
                               <li>
                                  <input
@@ -74,12 +78,14 @@ const NonCustomers = () => {
                               </li>
                            </ul>
                            <div>
-                              <a id='unwant' className='btn'>
-                                 Add
+                              <a
+                                 id='unwant'
+                                 className='btn blue-gradient text-black-eerie'>
+                                 + Add
                               </a>
                            </div>
                         </div>
-                        <div>
+                        <div className='flex gap-5 flex-wrap mt-10'>
                            <button id='generate' className='btn'>
                               Save
                            </button>
@@ -88,37 +94,35 @@ const NonCustomers = () => {
                            </a>
                         </div>
                      </div>
-                     <div className='md:w-8/12 pane-right-gradient min-h-screen p-12'>
+                     <div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
                         <Link href='/' className='logo-pane'>
                            <h4 className='text-[3rem] text-white'>20X</h4>
                            <span className='relative -translate-x-[1.2rem]'>
                               revenue BY
                            </span>
                            <div className='w-[110px] h-[33px]'>
-                              <img
+                              <Image
+                                 width='55'
+                                 height='0'
                                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                                  alt='CaseInPoint'
                               />
                            </div>
                         </Link>
-
-                        <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 c-12'>
-                           <div className='p-6 relative rounded-lg doublespaced p-6 relative rounded-lg-lighter c-12'>
-                              <div className='p-6 relative rounded-lg doublespaced p-6 relative rounded-lg-text-yellow-green-light c-12'>
-                                 <h6 className='f6 mb-6'>
+                        <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+                           <div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-gray-300'>
+                              <div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-yellow-jasmine text-gray-900'>
+                                 <h6 className='f6 mb-2'>
                                     Soon to be non customers
                                  </h6>
-                                 <ul className='normal mb-6 noncustomersli'></ul>
+                                 <ul className='normal mb-2 noncustomersli'></ul>
                               </div>
-
-                              <h6 className='f6 mb-6'>Refusing customers</h6>
-                              <ul className='normal mb-6 refusingcustomersli'></ul>
+                              <h6 className='f6 mb-2'>Refusing customers</h6>
+                              <ul className='normal mb-2 refusingcustomersli'></ul>
                            </div>
-
-                           <h6 className='f6 mb-6'>Unwanted customers</h6>
-                           <ul className='normal mb-6 unwantedcustomersli'></ul>
+                           <h6 className='f6 mb-2'>Unwanted customers</h6>
+                           <ul className='normal mb-2 unwantedcustomersli'></ul>
                         </div>
-
                         <div className='py-3'>
                            <button
                               className='btn text-black-eerie'
@@ -146,7 +150,7 @@ const NonCustomers = () => {
                      <div className='flex items-center justify-between p-3 h-12'>
                         <div className='modal-title'>
                            <h2 className='text-[2.8rem]'>Ideas</h2>
-                           <h3 className='mb-6 f6 text-gray-gunmetal mb-5'>Add your ideas</h3>
+                           <h3 className='flex flex-col gap-3 mb-5 f6 text-gray-gunmetal mb-5'>Add your ideas</h3>
                         </div>
                         <button
                            type='button'
@@ -193,7 +197,7 @@ const NonCustomers = () => {
                            </li>
                         </div>
 
-                        <div className='mb-6'>
+                        <div className='flex flex-col gap-3 mb-5'>
                            <br />
                            <button
                               type='button'
