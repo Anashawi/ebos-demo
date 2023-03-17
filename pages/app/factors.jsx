@@ -329,7 +329,7 @@ const Factors = () => {
                      </table>
                      <div className='flex gap-5 py-5'>
                         <button className='btn'>Generate graph</button>
-                        <Link href='/ebos' className='btn text-black-eerie'>
+                        <Link href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
                         </Link>
                      </div>

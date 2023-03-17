@@ -40,7 +40,7 @@ const NonCustomers = () => {
                               <a
                                  id='non'
                                  href='#'
-                                 className='btn blue-gradient text-black-eerie'>
+                                 className='btn blue-gradient text-black-eerie hover:text-white'>
                                  + Add
                               </a>
                            </div>
@@ -60,7 +60,7 @@ const NonCustomers = () => {
                            <div>
                               <a
                                  id='ref'
-                                 className='btn blue-gradient text-black-eerie'>
+                                 className='btn blue-gradient text-black-eerie hover:text-white'>
                                  + Add
                               </a>
                            </div>
@@ -80,7 +80,7 @@ const NonCustomers = () => {
                            <div>
                               <a
                                  id='unwant'
-                                 className='btn blue-gradient text-black-eerie'>
+                                 className='btn blue-gradient text-black-eerie hover:text-white'>
                                  + Add
                               </a>
                            </div>
@@ -89,7 +89,7 @@ const NonCustomers = () => {
                            <button id='generate' className='btn'>
                               Save
                            </button>
-                           <a href='/ebos' className='btn text-black-eerie'>
+                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                               <strong>Back To Dashboard</strong>
                            </a>
                         </div>

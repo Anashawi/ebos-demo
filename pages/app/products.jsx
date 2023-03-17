@@ -185,7 +185,7 @@ const Products = () => {
                         <div className='flex justify-end'>
                            <a
                               id='addNewProduct'
-                              className='btn blue-gradient text-black-eerie'>
+                              className='btn blue-gradient text-black-eerie hover:text-white'>
                               <b>+</b> Add new product
                            </a>
                         </div>
@@ -405,7 +405,7 @@ const Products = () => {
                                  type='button'>
                                  Add and generate
                               </button>
-                              <a href='/ebos' className='btn text-black-eerie'>
+                              <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                                  <strong>Back To Dashboard</strong>
                               </a>
                            </div>
@@ -418,7 +418,7 @@ const Products = () => {
                                  type='button'>
                                  Save and generate
                               </button>
-                              <a href='/ebos' className='btn text-black-eerie'>
+                              <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                                  <strong>Back To Dashboard</strong>
                               </a>
                            </div>

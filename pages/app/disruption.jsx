@@ -161,7 +161,7 @@ const Disruption = () => {
                            </ul>
                         </div>
                      </div>
-                     <a href='/ebos' className='btn text-black-eerie w-max'>
+                     <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs w-max'>
                         <strong>Back To Dashboard</strong>
                      </a>
                   </div>

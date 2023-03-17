@@ -25,6 +25,7 @@ module.exports = {
         'yellow-jasmine': '#FEE28E',
         'blue-true': '#406ca9',
         'blue-ruddy': '#74a6ec',
+        'blue-ncs': '#048bca',
       },
       opacity: {
         '15': '0.15',

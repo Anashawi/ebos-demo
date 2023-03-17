@@ -107,7 +107,7 @@ const IdeaFactors = () => {
                         <button className='btn text-black-eerie'>
                            Generate graph
                         </button>
-                        <a href='/ebos' className='btn text-black-eerie'>
+                        <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>

@@ -29,7 +29,7 @@ const Analysis = () => {
                         <a
                            id='above'
                            href='#'
-                           className='btn blue-gradient text-black-eerie'>
+                           className='btn blue-gradient text-black-eerie hover:text-white'>
                            + Add
                         </a>
                      </div>
@@ -48,7 +48,7 @@ const Analysis = () => {
                         <a
                            id='below'
                            href='#'
-                           className='btn blue-gradient text-black-eerie'>
+                           className='btn blue-gradient text-black-eerie hover:text-white'>
                            + Add
                         </a>
                      </div>
@@ -57,7 +57,7 @@ const Analysis = () => {
                         <button id='generate' className='btn text-black-eerie'>
                            Save
                         </button>
-                        <a href='/ebos' className='btn text-black-eerie'>
+                        <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>

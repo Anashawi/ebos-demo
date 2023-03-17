@@ -146,6 +146,12 @@ a,
   cursor: pointer;
 }
 
+a:hover,
+.a:hover {
+  color: #048bca;
+}
+
+
 button {
   border: 0;
   background-color: transparent;
@@ -220,11 +226,11 @@ li {
   }
 
   .btn-rev {
-    @apply text-black-eerie bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-mikado
+    @apply text-black-eerie bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-mikado hover:text-white
   }
 
   .btn {
-    @apply bg-gray-100 text-dark-blue
+    @apply bg-gray-100 text-dark-blue hover:shadow-lg hover:bg-gray-200;
   }
 
   .modal-content {

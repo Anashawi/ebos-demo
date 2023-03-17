@@ -102,7 +102,7 @@ const Roadmap = () => {
                         </div>
                      </div>
                      <ul className='flex flex-col gap-3 mb-5'>
-                        <li className='flex gap-5'>
+                        <li className='flex gap-5 items-start'>
                            <div className='flex flex-col'>
                               <div>Idea</div>
                               <select
@@ -116,7 +116,7 @@ const Roadmap = () => {
                                  <option value='3'> idea 3 </option>
                               </select>
                            </div>
-                           <div className='grow md:flex gap-5'>
+                           <div className='grow md:flex gap-5 items-start'>
                               <div className='grow'>
                                  <div>Start (month)</div>
                                  <select
@@ -184,22 +184,60 @@ const Roadmap = () => {
                                     value='4'
                                     name='end[]'
                                     list='duration'
-                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'
+                                    className='w-full grow bg-gray-100 outline-none caret-dark-blue border-none'
                                     step='1'
                                  />
-                                 <datalist id='duration'>
-                                    <option value='1' label='01'></option>
-                                    <option value='2' label='02'></option>
-                                    <option value='3' label='03'></option>
-                                    <option value='4' label='04'></option>
-                                    <option value='5' label='05'></option>
-                                    <option value='6' label='06'></option>
-                                    <option value='7' label='07'></option>
-                                    <option value='8' label='08'></option>
-                                    <option value='9' label='09'></option>
-                                    <option value='10' label='10'></option>
-                                    <option value='11' label='11'></option>
-                                    <option value='12' label='12'></option>
+                                 <datalist
+                                    id='duration'
+                                    className='flex items-center justify-between text-lg w-full'>
+                                    <option
+                                       value='1'
+                                       label='01'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='2'
+                                       label='02'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='3'
+                                       label='03'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='4'
+                                       label='04'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='5'
+                                       label='05'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='6'
+                                       label='06'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='7'
+                                       label='07'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='8'
+                                       label='08'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='9'
+                                       label='09'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='10'
+                                       label='10'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='11'
+                                       label='11'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='12'
+                                       label='12'
+                                       className='text-[1.12rem]'></option>
                                  </datalist>
                               </div>
                               <div className='col-2/12'>
@@ -207,7 +245,7 @@ const Roadmap = () => {
                               </div>
                            </div>
                         </li>
-                        <li className='flex gap-5'>
+                        <li className='flex gap-5 items-start'>
                            <div className='flex flex-col'>
                               <div>Idea</div>
                               <select
@@ -221,7 +259,7 @@ const Roadmap = () => {
                                  <option value='3'> idea 3 </option>
                               </select>
                            </div>
-                           <div className='grow md:flex gap-5'>
+                           <div className='grow md:flex gap-5 items-start'>
                               <div className='grow'>
                                  <div>Start (month)</div>
                                  <select
@@ -289,22 +327,60 @@ const Roadmap = () => {
                                     value='7'
                                     name='end[]'
                                     list='duration'
-                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'
+                                    className='w-full grow bg-gray-100 outline-none caret-dark-blue border-none'
                                     step='1'
                                  />
-                                 <datalist id='duration'>
-                                    <option value='1' label='01'></option>
-                                    <option value='2' label='02'></option>
-                                    <option value='3' label='03'></option>
-                                    <option value='4' label='04'></option>
-                                    <option value='5' label='05'></option>
-                                    <option value='6' label='06'></option>
-                                    <option value='7' label='07'></option>
-                                    <option value='8' label='08'></option>
-                                    <option value='9' label='09'></option>
-                                    <option value='10' label='10'></option>
-                                    <option value='11' label='11'></option>
-                                    <option value='12' label='12'></option>
+                                 <datalist
+                                    id='duration'
+                                    className='flex items-center justify-between text-lg w-full'>
+                                    <option
+                                       value='1'
+                                       label='01'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='2'
+                                       label='02'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='3'
+                                       label='03'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='4'
+                                       label='04'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='5'
+                                       label='05'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='6'
+                                       label='06'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='7'
+                                       label='07'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='8'
+                                       label='08'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='9'
+                                       label='09'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='10'
+                                       label='10'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='11'
+                                       label='11'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='12'
+                                       label='12'
+                                       className='text-[1.12rem]'></option>
                                  </datalist>
                               </div>
 
@@ -313,7 +389,7 @@ const Roadmap = () => {
                               </div>
                            </div>
                         </li>
-                        <li className='flex gap-5'>
+                        <li className='flex gap-5 items-start'>
                            <div className='flex flex-col'>
                               <div>Idea</div>
                               <select
@@ -327,7 +403,7 @@ const Roadmap = () => {
                                  </option>
                               </select>
                            </div>
-                           <div className='grow md:flex gap-5'>
+                           <div className='grow md:flex gap-5 items-start'>
                               <div className='grow'>
                                  <div>Start (month)</div>
                                  <select
@@ -395,22 +471,60 @@ const Roadmap = () => {
                                     value='9'
                                     name='end[]'
                                     list='duration'
-                                    className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'
+                                    className='w-full grow bg-gray-100 outline-none caret-dark-blue border-none'
                                     step='1'
                                  />
-                                 <datalist id='duration'>
-                                    <option value='1' label='01'></option>
-                                    <option value='2' label='02'></option>
-                                    <option value='3' label='03'></option>
-                                    <option value='4' label='04'></option>
-                                    <option value='5' label='05'></option>
-                                    <option value='6' label='06'></option>
-                                    <option value='7' label='07'></option>
-                                    <option value='8' label='08'></option>
-                                    <option value='9' label='09'></option>
-                                    <option value='10' label='10'></option>
-                                    <option value='11' label='11'></option>
-                                    <option value='12' label='12'></option>
+                                 <datalist
+                                    id='duration'
+                                    className='flex items-center justify-between text-lg w-full'>
+                                    <option
+                                       value='1'
+                                       label='01'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='2'
+                                       label='02'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='3'
+                                       label='03'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='4'
+                                       label='04'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='5'
+                                       label='05'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='6'
+                                       label='06'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='7'
+                                       label='07'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='8'
+                                       label='08'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='9'
+                                       label='09'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='10'
+                                       label='10'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='11'
+                                       label='11'
+                                       className='text-[1.12rem]'></option>
+                                    <option
+                                       value='12'
+                                       label='12'
+                                       className='text-[1.12rem]'></option>
                                  </datalist>
                               </div>
 
@@ -421,11 +535,13 @@ const Roadmap = () => {
                         </li>
                      </ul>
                      <div className='flex gap-5 my-10'>
-                        <a className='btn blue-gradient text-black-eerie'>
+                        <a className='btn blue-gradient text-black-eerie hover:text-white'>
                            + Add another
                         </a>
                         <button className='btn-rev'>Generate</button>
-                        <a href='/ebos' className='btn text-black-eerie'>
+                        <a
+                           href='/ebos'
+                           className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>

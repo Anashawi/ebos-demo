@@ -48,8 +48,12 @@ const DesktopHomepage = ({
       );
 
    const getRelativeXInPixels = (x_pos) => {
+      let currWidth = currentScreenWidth;
+      if (currentScreenWidth > 1350) {
+         currWidth = 1350;
+      }
       return (
-         Math.round((x_pos * currentScreenWidth) / originalScreenWidth) || 0
+         Math.round((x_pos * currWidth) / originalScreenWidth) || 0
       );
    };
 
@@ -77,8 +81,8 @@ const DesktopHomepage = ({
             style={{
                width: getRelativeXInPixels(curve.getWidth() + 175) + "px",
             }}>
-            <div className='flex h-min text-[11rem]'>
-               <strong className='text-white text-bolder font-black leading-[12rem]'>
+            <div className='flex h-min text-[16rem]'>
+               <strong className='text-white text-bolder font-black leading-[18rem]'>
                   20X
                </strong>
                <div className='-translate-x-[0.61ch] translate-y-[0.5ch] flex flex-col'>
@@ -90,19 +94,19 @@ const DesktopHomepage = ({
             </div>
             <div className='h-full relative'>
                <div className='translate-x-[7rem] translate-y-[2.5rem] flex flex-col gap-3 w-1/4 z-[99999]'>
-                  <p className='text-2xl text-white'>
+                  <p className='text-3xl text-white'>
                      Every project is successful
                   </p>
-                  <p className='italic text-sm'>
+                  <p className='italic text-lg'>
                      Live and on-demand training, virtual reporting, assistance,
                      and online expert advice.
                   </p>
                </div>
                <div className='absolute bottom-0 w-full h-[52rem] border-slate-600'>
-                  <div className='absolute top-[575px] left-[15px] bg-gray-battleship text-white text-sm pl-3 pr-6 py-1 rounded-full'>
+                  <div className='absolute top-[576px] left-[28px] bg-gray-battleship text-white text-lg pl-3 pr-6 py-1 rounded-full'>
                      Free. No subscription needed
                   </div>
-                  <span className='absolute top-[575px] left-[280px] text-white font-bold text-lg'>
+                  <span className='absolute top-[575px] left-[285px] text-white font-bold text-2xl'>
                      Subscribers only
                   </span>
                   <div
@@ -129,7 +133,7 @@ const DesktopHomepage = ({
                   {nodes.map((node, index) => (
                      <div
                         key={index}
-                        className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[105px] aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
+                        className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[100px] aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
                         style={{
                            left:
                               getRelativeXInPixels(
@@ -144,7 +148,7 @@ const DesktopHomepage = ({
                         }}>
                         <Link
                            href={node.url}
-                           className='text-center text-yellow-green'>
+                           className='text-center text-yellow-green hover:text-yellow-green'>
                            {node.text}
                         </Link>
                      </div>
@@ -172,7 +176,7 @@ const DesktopHomepage = ({
                      }`}></path>
                   <path
                      className='stroke-[5px] stroke-white fill-none'
-                     d={`M 55 270 L 55 515 L ${getRelativeXInPixels(
+                     d={`M 55 275 L 55 515 L ${getRelativeXInPixels(
                         curve.p_2.x
                      )} 515`}></path>
                   <circle
@@ -182,7 +186,7 @@ const DesktopHomepage = ({
                      r='4'></circle>
                   <path
                      className='custom-stroke-dasharray stroke-[1px] stroke-gray-gunmetal fill-none'
-                     d='M 220 590 L 247 590 L 247 451'></path>
+                     d='M 220 590 L 248 590 L 248 451'></path>
                </svg>
             </div>
          </div>

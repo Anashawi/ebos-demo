@@ -126,8 +126,8 @@ const Goals = () => {
                            </li>
                         </ul>
                         <div className='flex gap-3'>
-                           <a id='add-goal' className='btn btn-gray-100'>
-                              Add
+                           <a id='add-goal' className='btn blue-gradient text-black-eerie hover:text-white'>
+                             + Add
                            </a>
                            <button
                               type='button'
@@ -135,7 +135,7 @@ const Goals = () => {
                               id='submit'>
                               Save and submit
                            </button>
-                           <a href='/ebos' className='btn text-black-eerie'>
+                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                               <strong>Back To Dashboard</strong>
                            </a>
                         </div>

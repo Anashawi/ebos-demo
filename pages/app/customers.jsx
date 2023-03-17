@@ -79,7 +79,7 @@ const Customers = () => {
                               id='addNewProduct'>
                               Submit
                            </button>
-                           <a href='/ebos' className='btn text-black-eerie'>
+                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                               <strong>Back To Dashboard</strong>
                            </a>
                         </div>

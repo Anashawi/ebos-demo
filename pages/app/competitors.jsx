@@ -107,7 +107,7 @@ const Competitors = () => {
                         <button id='generate' className='btn-rev'>
                            Generate
                         </button>
-                        <a href='/ebos' className='btn text-black-eerie'>
+                        <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
                         </a>
                      </div>
