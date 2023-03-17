@@ -6,7 +6,7 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 
 const Disruption = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-   const [isDisplayVideoModal, closeVideoModal] = useModalToggler();
+   const [isDisplayVideoModal, toggleVideoModal] = useModalToggler();
 
    return (
       <>
@@ -16,9 +16,19 @@ const Disruption = () => {
             <Modal
                config={{
                   isShown: isDisplayVideoModal,
-                  closeCallback: closeVideoModal,
-               }}
-            />
+                  closeCallback: toggleVideoModal,
+               }}>
+               <div class='video-popup'>
+                  <div class='popup-bg'></div>
+                  <div class='popup-content'>
+                     <p class='popup-title'></p>
+                     <iframe src='' class='video'></iframe>
+                     <button class='close-btn' onClick={toggleVideoModal}>
+                        close
+                     </button>
+                  </div>
+               </div>
+            </Modal>
             <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
                   <div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
@@ -49,7 +59,8 @@ const Disruption = () => {
                                  <a
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    data-video='1'>
+                                    data-video='1'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -60,7 +71,8 @@ const Disruption = () => {
                                  <a
                                     data-video='1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -71,7 +83,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -82,7 +95,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -93,7 +107,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -110,7 +125,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -121,7 +137,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -132,7 +149,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -143,7 +161,8 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
@@ -154,14 +173,17 @@ const Disruption = () => {
                                  <a
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
-                                    target='_blank'>
+                                    target='_blank'
+                                    onClick={toggleVideoModal}>
                                     Watch video
                                  </a>
                               </li>
                            </ul>
                         </div>
                      </div>
-                     <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs w-max'>
+                     <a
+                        href='/ebos'
+                        className='btn text-black-eerie hover:text-blue-ncs w-max'>
                         <strong>Back To Dashboard</strong>
                      </a>
                   </div>
@@ -189,7 +211,9 @@ const Disruption = () => {
                         </div>
                      </Link>
 
-                     <h4 className='text-[2.1rem] mb-6'>7 Practical &amp; Quick</h4>
+                     <h4 className='text-[2.1rem] mb-6'>
+                        7 Practical &amp; Quick
+                     </h4>
 
                      <ul className='flex flex-col gap-3 mb-5'>
                         <li
