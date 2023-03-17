@@ -12,10 +12,10 @@ const IdeasModal = ({ isOpen, toggle }) => {
                aria-labelledby='modaltitle'
                tabindex='-1'>
                <div className='relative w-auto m-6 pointer-events-none flex items-center h-[calc(100vh_-_1.5rem_*_2)] md:max-w-[700px] md:ml-auto md:mr-auto'>
-                  <div className='modal-content dr-content'>
-                     <div className='flex items-center justify-between p-3 h-12'>
-                        <div className='modal-title'>
-                           <h2 className='text-[2.8rem]'>Ideas</h2>
+                  <div className='p-5 modal-content dr-content shadow-2xl'>
+                     <div className='flex justify-between p-3 h-12 mb-10'>
+                        <div className='modal-title mb-10'>
+                           <h2 className='mb-4 text-[2.8rem]'>Ideas</h2>
                            <h3 className='mb-6 f6 text-gray-gunmetal mb-5'>
                               Add your ideas
                            </h3>
@@ -27,7 +27,7 @@ const IdeasModal = ({ isOpen, toggle }) => {
                            aria-label='Close'></button>
                      </div>
                      <div
-                        className='relative flex-auto p-3 overflow-auto'
+                        className='mt-10 relative flex-auto p-3 overflow-auto'
                         id='ideas-app'>
                         <div className='idea-list'>
                            <ul className='flex flex-col gap-3 mb-5'>
@@ -67,8 +67,7 @@ const IdeasModal = ({ isOpen, toggle }) => {
                               />
                            </li>
                         </div>
-                        <div className='mb-6'>
-                           <br />
+                        <div className='flex justify-end pt-10'>
                            <button
                               type='button'
                               id='saveIdea'
