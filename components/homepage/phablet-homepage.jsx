@@ -1,10 +1,10 @@
 const PhabletHomepage = ({ nodes }) => {
    return (
-      <div className='p-10'>
-         <h1 className='text-2xl mb-5'>hello from phablet homepage</h1>
-         {nodes.map((node, index) => (
+      <div className='fixed top-10'>
+         <h1 className='text-2xl'>You Cant use this app on mobile phone</h1>
+         {/* {nodes.map((node, index) => (
             <div key={index}>{node.text}</div>
-         ))}
+         ))} */}
       </div>
    );
 };

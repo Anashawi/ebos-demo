@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -11,15 +12,15 @@ const DesktopHomepage = ({
    // Quadratic curve essential points (used inside the svg element "path" property)
    const curve = {
       p_0: {
-         x: 50,
+         x: 75,
          y: 500,
       },
       p_1: {
-         x: 1100,
+         x: 1200,
          y: 500,
       },
       p_2: {
-         x: 1200,
+         x: 1450,
          y: 0,
       },
       getWidth: function () {
@@ -31,8 +32,9 @@ const DesktopHomepage = ({
    };
 
    const delta_x = curve.getWidth() / (nodes.length + 2 - 1); // curve width / number of gaps between nodes [nodes.length + 2 other nodes (the first node and the last node)]
-   const t_1 = 0.2 / nodes.length;
+   const t_1 = 0.08 / nodes.length;
    const t_values = [t_1];
+   const nodeWidth = 105;
 
    const getX = (t) =>
       Math.round(
@@ -52,9 +54,7 @@ const DesktopHomepage = ({
       if (currentScreenWidth > 1350) {
          currWidth = 1350;
       }
-      return (
-         Math.round((x_pos * currWidth) / originalScreenWidth) || 0
-      );
+      return Math.round((x_pos * currWidth) / originalScreenWidth) || 0;
    };
 
    const getDelta_T = (curr_T) => {
@@ -77,23 +77,44 @@ const DesktopHomepage = ({
    return (
       <>
          <div
-            className='flex flex-col pl-[2.8rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-75 max-w-[1300px] max-h-[600px] mx-auto'
+            className='flex flex-col pl-[2.8rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-full max-w-[1400px] max-h-[590px] min-h-[530px] mx-auto'
             style={{
-               width: getRelativeXInPixels(curve.getWidth() + 175) + "px",
+               width: getRelativeXInPixels(curve.getWidth() + 275) + "px",
             }}>
-            <div className='flex h-min text-[16rem]'>
-               <strong className='text-white text-bolder font-black leading-[18rem]'>
+            <div
+               className='absolute w-[12rem] mx-12 pb-5'
+               style={{ left: curve.p_0.x + "px", top: "-110px" }}>
+               <Image
+                  width='160'
+                  height='99'
+                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+                  alt='CaseInPoint'
+                  className='scale-[1.2]'
+               />
+            </div>
+            <div
+               className='flex h-min text-[16rem] relative z-[9999]'
+               style={{
+                  paddingLeft: getRelativeXInPixels(curve.p_0.x - 30) + "px",
+               }}>
+               <strong className='text-white text-bolder font-black leading-[17rem]'>
                   20X
                </strong>
                <div className='-translate-x-[0.61ch] translate-y-[0.5ch] flex flex-col'>
-                  <span className='text-[5rem] font-hero-light'>revenue</span>
-                  <span className='self-end text-[2rem] -translate-y-9 font-extrabold'>
+                  <span className='text-[6.9rem] font-hero-light font-light'>
+                     revenue
+                  </span>
+                  <span className='self-end text-[3rem] -translate-y-[3.5rem] font-bold'>
                      Journey
                   </span>
                </div>
             </div>
             <div className='h-full relative'>
-               <div className='translate-x-[7rem] translate-y-[2.5rem] flex flex-col gap-3 w-1/4 z-[99999]'>
+               <div
+                  className='translate-x-[7rem] translate-y-[2.5rem] flex flex-col gap-3 w-1/4 relative z-[9999]'
+                  style={{
+                     paddingLeft: getRelativeXInPixels(curve.p_0.x - 20) + "px",
+                  }}>
                   <p className='text-3xl text-white'>
                      Every project is successful
                   </p>
@@ -103,10 +124,18 @@ const DesktopHomepage = ({
                   </p>
                </div>
                <div className='absolute bottom-0 w-full h-[52rem] border-slate-600'>
-                  <div className='absolute top-[576px] left-[28px] bg-gray-battleship text-white text-lg pl-3 pr-6 py-1 rounded-full'>
+                  <div
+                     className='absolute top-[576px] bg-gray-battleship text-white text-lg pl-flex flex-col pl-[1.3rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-75 max-w-[1300px] max-h-[600px] mx-auto3 pr-6 py-1 rounded-full'
+                     style={{
+                        left: `${curve.p_0.x + nodeWidth * 2 - 268 + "px"}`,
+                     }}>
                      Free. No subscription needed
                   </div>
-                  <span className='absolute top-[575px] left-[285px] text-white font-bold text-2xl'>
+                  <span
+                     className='absolute top-[575px] text-white font-bold text-2xl'
+                     style={{
+                        left: `${curve.p_0.x + nodeWidth * 2 + "px"}`,
+                     }}>
                      Subscribers only
                   </span>
                   <div
@@ -133,8 +162,9 @@ const DesktopHomepage = ({
                   {nodes.map((node, index) => (
                      <div
                         key={index}
-                        className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[100px] aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
+                        className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
                         style={{
+                           width: nodeWidth + "px",
                            left:
                               getRelativeXInPixels(
                                  getX(
@@ -164,7 +194,7 @@ const DesktopHomepage = ({
                      <div className='font-bold'>in one year</div>
                   </div>
                </div>
-               <svg className='home-line absolute bottom-0 w-full h-[52rem] z-[1]'>
+               <svg className='home-line absolute bottom-0 w-full h-[52rem]'>
                   <path
                      className='stroke-[5px] stroke-gray-gunmetal fill-none'
                      d={`M ${getRelativeXInPixels(curve.p_0.x)} ${
@@ -176,17 +206,21 @@ const DesktopHomepage = ({
                      }`}></path>
                   <path
                      className='stroke-[5px] stroke-white fill-none'
-                     d={`M 55 275 L 55 515 L ${getRelativeXInPixels(
-                        curve.p_2.x
-                     )} 515`}></path>
+                     d={`M ${getRelativeXInPixels(
+                        curve.p_0.x
+                     )} 240 L ${getRelativeXInPixels(
+                        curve.p_0.x
+                     )} 515 L ${getRelativeXInPixels(curve.p_2.x)} 515`}></path>
                   <circle
                      className='fill-black'
-                     cx='220'
+                     cx={`${curve.p_0.x + nodeWidth * 2 - 70}px`}
                      cy='590'
                      r='4'></circle>
                   <path
                      className='custom-stroke-dasharray stroke-[1px] stroke-gray-gunmetal fill-none'
-                     d='M 220 590 L 248 590 L 248 451'></path>
+                     d={`M ${curve.p_0.x + nodeWidth * 2 - 70} 590 L ${
+                        curve.p_0.x + nodeWidth * 2 - 39
+                     } 590 L ${curve.p_0.x + nodeWidth * 2 - 39} 451`}></path>
                </svg>
             </div>
          </div>

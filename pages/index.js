@@ -77,16 +77,7 @@ export default function Home() {
 
   return (
     <>
-      <div className='relative flex flex-col justify-center items-center homepage-bg-gradient py-5 w-screen h-screen mx-auto'>
-        <div className='self-start ml-[11.5vw] w-[12rem] mx-12 pb-5'>
-          <Image
-            width='160'
-            height='99'
-            src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
-            alt='CaseInPoint'
-            className='scale-[1.1]'
-          />
-        </div>
+      <div className='relative flex flex-col justify-center items-center homepage-bg-gradient pt-[10rem] pb-5 w-screen h-screen mx-auto'>
         {
           isScreenSmall && (
             <PhabletHomepage

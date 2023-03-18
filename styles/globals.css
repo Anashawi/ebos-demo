@@ -121,6 +121,11 @@ a {
   src: url("../public/fonts/Roboto/Roboto-light.ttf");
 }
 
+@font-face {
+  font-family: Roboto-thin;
+  src: url("../public/fonts/Roboto/Roboto-thin.ttf");
+}
+
 html {
   font-size: 62.5%;
 }

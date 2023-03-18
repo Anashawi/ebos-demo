@@ -36,6 +36,7 @@ module.exports = {
       fontFamily: {
         'hero-bold': ['Roboto-bold'],
         'hero-light': ['Roboto-light'],
+        'hero-thin': ['Roboto-thin'],
         sans: ['Arial'],
       },
     },
