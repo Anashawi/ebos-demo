@@ -201,7 +201,7 @@ li {
   stroke-dasharray: 5, 2;
 }
 
-input:focus {
+input[type='text']:focus {
   outline: none;
   border-bottom-color: #263238;
   box-shadow: 0 1px 0px 0px #263238;

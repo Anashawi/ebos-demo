@@ -25,7 +25,7 @@ const NonCustomers = () => {
                            <ul className='flex flex-col gap-3 non'>
                               <li>
                                  <input
-                                    type='text '
+                                    type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers'
                                     autocomplete='off'
                                  />
@@ -50,7 +50,7 @@ const NonCustomers = () => {
                            <ul className='flex flex-col gap-3 ref'>
                               <li>
                                  <input
-                                    type='text '
+                                    type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none refusingCustomers'
                                     autocomplete='off'
                                  />
@@ -70,7 +70,7 @@ const NonCustomers = () => {
                            <ul className='flex flex-col gap-3 unwant'>
                               <li>
                                  <input
-                                    type='text '
+                                    type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none unwantedCustomers'
                                     autocomplete='off'
                                  />
