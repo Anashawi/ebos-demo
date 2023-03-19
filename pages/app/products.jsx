@@ -1,11 +1,13 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
+import * as Yup from "yup";
 
 class ProductFuture {
    id;
@@ -165,265 +167,301 @@ const Products = () => {
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
                         Pioneer, Migrator, Settler
                      </h3>
-                     <div id='products-app'>
-                        <ul className='flex gap-3 mb-12'>
-                           <select className='grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
-                              <option value='2' p-id='2'>
-                                 Contingent Workforce
-                              </option>
-                              <option value='3' p-id='3' selected='selected'>
-                                 Consulting Offering
-                              </option>
-                           </select>
-                           <button className='p-2 text-black-eerie deleteProduct'>
-                              <FontAwesomeIcon
-                                 className='w-6 h-auto text-gray-300 hover:text-rose-800'
-                                 icon={faTrash}
-                              />
-                           </button>
-                        </ul>
-                        <div className='flex justify-end'>
-                           <a
-                              id='addNewProduct'
-                              className='btn blue-gradient text-black-eerie hover:text-white'>
-                              <b>+</b> Add new product
-                           </a>
-                        </div>
-                        <br />
-                        <div className='flex flex-col gap-7'>
-                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                              <div>
-                                 <label>Product name</label>
-                                 <input
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                    name='product-name'
+                     <Formik
+                        initialValues={{
+                           products: [],
+                        }}
+                        validationSchema={Yup.object({})}
+                        onSubmit={(values) => {
+                           console.log(values);
+                        }}>
+                        <div id='products-app'>
+                           <ul className='flex gap-3 mb-12'>
+                              <select className='grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
+                                 <option value='2' p-id='2'>
+                                    Contingent Workforce
+                                 </option>
+                                 <option value='3' p-id='3' selected='selected'>
+                                    Consulting Offering
+                                 </option>
+                              </select>
+                              <button className='p-2 text-black-eerie deleteProduct'>
+                                 <FontAwesomeIcon
+                                    className='w-6 h-auto text-gray-300 hover:text-rose-800'
+                                    icon={faTrash}
                                  />
-                              </div>
+                              </button>
+                           </ul>
+                           <div className='flex justify-end'>
+                              <a
+                                 id='addNewProduct'
+                                 className='btn blue-gradient text-black-eerie hover:text-white'>
+                                 <b>+</b> Add new product
+                              </a>
                            </div>
-                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                              <div>
-                                 <label>Present</label>
-                                 <input
-                                    id='first_date'
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                    placeholder='year'
-                                    name='present-year'
-                                 />
-                              </div>
-                              <div></div>
-                              <div className='flex flex-wrap gap-4'>
-                                 <div className='flex gap-2'>
+                           <br />
+                           <div className='flex flex-col gap-7'>
+                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
+                                 <div>
+                                    <label>Product name</label>
                                     <input
-                                       name='present-level'
-                                       type='radio'
-                                       value='1'
+                                       type='text'
+                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                       name='product-name'
                                     />
-                                    <label className='rbreath'>Settler</label>
-                                 </div>
-                                 <div className='flex gap-2'>
-                                    <input
-                                       name='present-level'
-                                       type='radio'
-                                       value='2'
-                                    />
-                                    <label className='rbreath'>Migrator</label>
-                                 </div>
-                                 <div className='flex gap-2'>
-                                    <input
-                                       name='present-level'
-                                       type='radio'
-                                       value='3'
-                                    />
-                                    <label className='rbreath'>Pioneer</label>
                                  </div>
                               </div>
-                              <div>
-                                 <label>Sales (%)</label>
-                                 <input
-                                    name='present-sales'
-                                    type='range'
-                                    min='0'
-                                    max='100'
-                                    list='salesmarks'
-                                    className='w-full accent-blue-true'
-                                    step='10'
-                                 />
-                                 <datalist
-                                    id='salesmarks'
-                                    className='flex items-center justify-between text-lg w-full'>
-                                    <option value='0' label='0%'></option>
-                                    <option value='10'></option>
-                                    <option value='20'></option>
-                                    <option value='30'></option>
-                                    <option value='40'></option>
-                                    <option value='50' label='50%'></option>
-                                    <option value='60'></option>
-                                    <option value='70'></option>
-                                    <option value='80'></option>
-                                    <option value='90'></option>
-                                    <option value='100' label='100%'></option>
-                                 </datalist>
-                              </div>
-                           </div>
-                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                              <div>Future 1</div>
-                              <div>
-                                 <input
-                                    name='future-one-year'
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                    placeholder='year'
-                                 />
-                              </div>
-                              <div></div>
-                              <div className='flex flex-wrap gap-4'>
-                                 <div className='flex gap-2'>
+                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
+                                 <div>
+                                    <label>Present</label>
                                     <input
-                                       name='future-one-level'
-                                       type='radio'
-                                       value='1'
+                                       id='first_date'
+                                       type='text'
+                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                       placeholder='year'
+                                       name='present-year'
                                     />
-                                    <label className='rbreath'>Settler</label>
                                  </div>
-                                 <div className='flex gap-2'>
-                                    <input
-                                       name='future-one-level'
-                                       type='radio'
-                                       value='2'
-                                    />
-                                    <label className='rbreath'>Migrator</label>
+                                 <div></div>
+                                 <div className='flex flex-wrap gap-4'>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='present-level'
+                                          type='radio'
+                                          value='1'
+                                       />
+                                       <label className='rbreath'>
+                                          Settler
+                                       </label>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='present-level'
+                                          type='radio'
+                                          value='2'
+                                       />
+                                       <label className='rbreath'>
+                                          Migrator
+                                       </label>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='present-level'
+                                          type='radio'
+                                          value='3'
+                                       />
+                                       <label className='rbreath'>
+                                          Pioneer
+                                       </label>
+                                    </div>
                                  </div>
-                                 <div className='flex gap-2'>
+                                 <div>
+                                    <label>Sales (%)</label>
                                     <input
-                                       name='future-one-level'
-                                       type='radio'
-                                       value='3'
+                                       name='present-sales'
+                                       type='range'
+                                       min='0'
+                                       max='100'
+                                       list='salesmarks'
+                                       className='w-full accent-blue-true'
+                                       step='10'
                                     />
-                                    <label className='rbreath'>Pioneer</label>
+                                    <datalist
+                                       id='salesmarks'
+                                       className='flex items-center justify-between text-lg w-full'>
+                                       <option value='0' label='0%'></option>
+                                       <option value='10'></option>
+                                       <option value='20'></option>
+                                       <option value='30'></option>
+                                       <option value='40'></option>
+                                       <option value='50' label='50%'></option>
+                                       <option value='60'></option>
+                                       <option value='70'></option>
+                                       <option value='80'></option>
+                                       <option value='90'></option>
+                                       <option
+                                          value='100'
+                                          label='100%'></option>
+                                    </datalist>
                                  </div>
                               </div>
-                              <div>
-                                 <label>Sales (%)</label>
-                                 <input
-                                    name='future-one-sales'
-                                    type='range'
-                                    min='0'
-                                    max='100'
-                                    list='salesmarks'
-                                    className='w-full accent-blue-true'
-                                    step='10'
-                                 />
-                                 <datalist
-                                    id='salesmarks'
-                                    className='flex items-center justify-between text-lg w-full'>
-                                    <option value='0' label='0%'></option>
-                                    <option value='10'></option>
-                                    <option value='20'></option>
-                                    <option value='30'></option>
-                                    <option value='40'></option>
-                                    <option value='50' label='50%'></option>
-                                    <option value='60'></option>
-                                    <option value='70'></option>
-                                    <option value='80'></option>
-                                    <option value='90'></option>
-                                    <option value='100' label='100%'></option>
-                                 </datalist>
-                              </div>
-                           </div>
-                           <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                              <div>Future 2</div>
-                              <div>
-                                 <input
-                                    name='future-two-year'
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                    placeholder='year'
-                                 />
-                              </div>
-                              <div></div>
-                              <div className='flex flex-wrap gap-4'>
-                                 <div className='flex gap-2'>
+                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
+                                 <div>Future 1</div>
+                                 <div>
                                     <input
-                                       name='future-two-level'
-                                       type='radio'
-                                       value='1'
+                                       name='future-one-year'
+                                       type='text'
+                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                       placeholder='year'
                                     />
-                                    <label className='rbreath'>Settler</label>
                                  </div>
+                                 <div></div>
+                                 <div className='flex flex-wrap gap-4'>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='future-one-level'
+                                          type='radio'
+                                          value='1'
+                                       />
+                                       <label className='rbreath'>
+                                          Settler
+                                       </label>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='future-one-level'
+                                          type='radio'
+                                          value='2'
+                                       />
+                                       <label className='rbreath'>
+                                          Migrator
+                                       </label>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='future-one-level'
+                                          type='radio'
+                                          value='3'
+                                       />
+                                       <label className='rbreath'>
+                                          Pioneer
+                                       </label>
+                                    </div>
+                                 </div>
+                                 <div>
+                                    <label>Sales (%)</label>
+                                    <input
+                                       name='future-one-sales'
+                                       type='range'
+                                       min='0'
+                                       max='100'
+                                       list='salesmarks'
+                                       className='w-full accent-blue-true'
+                                       step='10'
+                                    />
+                                    <datalist
+                                       id='salesmarks'
+                                       className='flex items-center justify-between text-lg w-full'>
+                                       <option value='0' label='0%'></option>
+                                       <option value='10'></option>
+                                       <option value='20'></option>
+                                       <option value='30'></option>
+                                       <option value='40'></option>
+                                       <option value='50' label='50%'></option>
+                                       <option value='60'></option>
+                                       <option value='70'></option>
+                                       <option value='80'></option>
+                                       <option value='90'></option>
+                                       <option
+                                          value='100'
+                                          label='100%'></option>
+                                    </datalist>
+                                 </div>
+                              </div>
+                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
+                                 <div>Future 2</div>
+                                 <div>
+                                    <input
+                                       name='future-two-year'
+                                       type='text'
+                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                       placeholder='year'
+                                    />
+                                 </div>
+                                 <div></div>
+                                 <div className='flex flex-wrap gap-4'>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='future-two-level'
+                                          type='radio'
+                                          value='1'
+                                       />
+                                       <label className='rbreath'>
+                                          Settler
+                                       </label>
+                                    </div>
 
-                                 <div className='flex gap-2'>
-                                    <input
-                                       name='future-two-level'
-                                       type='radio'
-                                       value='2'
-                                    />
-                                    <label className='rbreath'>Migrator</label>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='future-two-level'
+                                          type='radio'
+                                          value='2'
+                                       />
+                                       <label className='rbreath'>
+                                          Migrator
+                                       </label>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                       <input
+                                          name='future-two-level'
+                                          type='radio'
+                                          value='3'
+                                       />
+                                       <label className='rbreath'>
+                                          Pioneer
+                                       </label>
+                                    </div>
                                  </div>
-                                 <div className='flex gap-2'>
+                                 <div>
+                                    <label>Sales (%)</label>
                                     <input
-                                       name='future-two-level'
-                                       type='radio'
-                                       value='3'
+                                       name='future-two-sales'
+                                       type='range'
+                                       min='0'
+                                       max='100'
+                                       list='salesmarks'
+                                       className='w-full accent-blue-true'
+                                       step='10'
                                     />
-                                    <label className='rbreath'>Pioneer</label>
+                                    <datalist
+                                       id='salesmarks'
+                                       className='flex items-center justify-between text-lg w-full'>
+                                       <option value='0' label='0%'></option>
+                                       <option value='10'></option>
+                                       <option value='20'></option>
+                                       <option value='30'></option>
+                                       <option value='40'></option>
+                                       <option value='50' label='50%'></option>
+                                       <option value='60'></option>
+                                       <option value='70'></option>
+                                       <option value='80'></option>
+                                       <option value='90'></option>
+                                       <option
+                                          value='100'
+                                          label='100%'></option>
+                                    </datalist>
                                  </div>
                               </div>
-                              <div>
-                                 <label>Sales (%)</label>
-                                 <input
-                                    name='future-two-sales'
-                                    type='range'
-                                    min='0'
-                                    max='100'
-                                    list='salesmarks'
-                                    className='w-full accent-blue-true'
-                                    step='10'
-                                 />
-                                 <datalist
-                                    id='salesmarks'
-                                    className='flex items-center justify-between text-lg w-full'>
-                                    <option value='0' label='0%'></option>
-                                    <option value='10'></option>
-                                    <option value='20'></option>
-                                    <option value='30'></option>
-                                    <option value='40'></option>
-                                    <option value='50' label='50%'></option>
-                                    <option value='60'></option>
-                                    <option value='70'></option>
-                                    <option value='80'></option>
-                                    <option value='90'></option>
-                                    <option value='100' label='100%'></option>
-                                 </datalist>
+                              <div id='addProduct' className='flex gap-3 mt-10'>
+                                 <button
+                                    id='create-product'
+                                    className='btn-rev'
+                                    type='button'>
+                                    Add and generate
+                                 </button>
+                                 <a
+                                    href='/ebos'
+                                    className='btn text-black-eerie hover:text-blue-ncs'>
+                                    <strong>Back To Dashboard</strong>
+                                 </a>
+                              </div>
+                              <div
+                                 id='updateProduct'
+                                 className='hidden flex gap-3 mt-10'>
+                                 <button
+                                    id='updateButton'
+                                    className='btn-rev'
+                                    type='button'>
+                                    Save and generate
+                                 </button>
+                                 <a
+                                    href='/ebos'
+                                    className='btn text-black-eerie hover:text-blue-ncs'>
+                                    <strong>Back To Dashboard</strong>
+                                 </a>
                               </div>
                            </div>
-                           <div id='addProduct' className='flex gap-3 mt-10'>
-                              <button
-                                 id='create-product'
-                                 className='btn-rev'
-                                 type='button'>
-                                 Add and generate
-                              </button>
-                              <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
-                                 <strong>Back To Dashboard</strong>
-                              </a>
-                           </div>
-                           <div
-                              id='updateProduct'
-                              className='hidden flex gap-3 mt-10'>
-                              <button
-                                 id='updateButton'
-                                 className='btn-rev'
-                                 type='button'>
-                                 Save and generate
-                              </button>
-                              <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
-                                 <strong>Back To Dashboard</strong>
-                              </a>
-                           </div>
-                        </div>
-                        {/* function drawChart(product) {
+                           {/* function drawChart(product) {
         var dt = new google
             .visualization
             .DataTable();
@@ -510,7 +548,8 @@ const Products = () => {
     google.charts.load('current', {
         'packages': ['corechart']
     }); */}
-                     </div>
+                        </div>
+                     </Formik>
                   </div>
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>

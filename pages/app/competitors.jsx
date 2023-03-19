@@ -1,7 +1,38 @@
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
+import * as Yup from "yup";
+import Spinner from "../../components/common/spinner";
+
+class Competitor {
+   id;
+   name;
+   marketShare;
+}
+const competitors_dummy = [
+   {
+      id: 1,
+      name: "Competitor (ME)",
+      marketShare: 230000,
+   },
+   {
+      id: 2,
+      name: "First Competitor",
+      marketShare: 230000,
+   },
+   {
+      id: 3,
+      name: "Second Competitor",
+      marketShare: 90125,
+   },
+   {
+      id: 4,
+      name: "Third Competitor",
+      marketShare: 110500,
+   },
+];
 
 const Competitors = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -21,96 +52,126 @@ const Competitors = () => {
                      <h3 className='text-[2.52rem] text-yellow-green'>
                         Market potential
                      </h3>
-                     <div className='flex flex-col gap-3 spacedout border-b border-gray-400 pb-7'>
-                        <div>My market share</div>
-                        <div className='flex'>
-                           <input
-                              type='hidden'
-                              id='comp-name-0'
-                              value='my-share'
-                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
-                              $
-                           </span>
-                           <input
-                              type='text'
-                              id='comp-share-0'
-                              className='w-full comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                     </div>
-                     <div className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
-                        <div>Competitor 1</div>
-                        <div>
-                           <input
-                              type='text'
-                              id='comp-name-1'
-                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                        <div>Market share</div>
-                        <div className='flex'>
-                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
-                              $
-                           </span>
-                           <input
-                              type='text'
-                              id='comp-share-1'
-                              className='w-full comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                     </div>
-                     <div className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
-                        <div>Competitor 2</div>
-                        <div>
-                           <input
-                              type='text'
-                              id='comp-name-2'
-                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                        <div>Market share</div>
-                        <div className='flex'>
-                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
-                              $
-                           </span>
-                           <input
-                              id='comp-share-2'
-                              type='text'
-                              className='w-full comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                     </div>
-                     <div className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
-                        <div>Competitor 3</div>
-                        <div>
-                           <input
-                              type='text'
-                              id='comp-name-3'
-                              className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                        <div>Market share</div>
-                        <div className='flex'>
-                           <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
-                              $
-                           </span>
-                           <input
-                              type='text'
-                              id='comp-share-3'
-                              className='w-full  comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                           />
-                        </div>
-                     </div>
-                     <div className='flex gap-3'>
-                        <button id='generate' className='btn-rev'>
-                           Generate
-                        </button>
-                        <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
-                           <strong>Back To Dashboard</strong>
-                        </a>
-                     </div>
+                     <Formik
+                        initialValues={{
+                           competitors: competitors_dummy,
+                        }}
+                        validationSchema={Yup.object({
+                           competitors: Yup.array(
+                              Yup.object({
+                                 id: Yup.string().required("required"),
+                                 name: Yup.string().required("required"),
+                                 marketShare: Yup.number()
+                                    .required("required")
+                                    .min(
+                                       1,
+                                       "Market share must be greater than 0"
+                                    ),
+                              })
+                           )
+                              .required("Must provide at least one goal !")
+                              .min(1, "Must provide at least one goal !"),
+                        })}
+                        onSubmit={(values) => {
+                           console.log(values);
+                        }}
+                        validateOnMount>
+                        {({ values, isSubmitting, isValid }) => (
+                           <Form>
+                              <FieldArray>
+                                 {({ remove, push, form }) => (
+                                    <>
+                                       <ul className='flex flex-col gap-5 mb-10'>
+                                          {!!values.competitors.length &&
+                                             values.competitors.map(
+                                                (comp, index) => (
+                                                   <li
+                                                      key={index}
+                                                      className='flex flex-col gap-3 border-b border-gray-400 pb-7 spacedout'>
+                                                      {index !== 0 ? (
+                                                         <div>
+                                                            Competitor {index}
+                                                         </div>
+                                                      ) : null}
+                                                      <div>
+                                                         <Field
+                                                            type='text'
+                                                            className={
+                                                               index === 0
+                                                                  ? "hidden"
+                                                                  : "w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none"
+                                                            }
+                                                            name={`competitors.${index}.name`}
+                                                         />
+                                                         <ErrorMessage
+                                                            name={`competitors.${index}.name`}>
+                                                            {(msg) => (
+                                                               <div className='text-lg text-rose-500'>
+                                                                  {msg}
+                                                               </div>
+                                                            )}
+                                                         </ErrorMessage>
+                                                      </div>
+                                                      <div>
+                                                         {index === 0 ? (
+                                                            <span>My</span>
+                                                         ) : null}{" "}
+                                                         Market share
+                                                      </div>
+                                                      <div className='flex flex-wrap'>
+                                                         <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
+                                                            $
+                                                         </span>
+                                                         <Field
+                                                            type='number'
+                                                            className='grow comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                            name={`competitors.${index}.marketShare`}
+                                                         />
+                                                         <ErrorMessage
+                                                            name={`competitors.${index}.marketShare`}>
+                                                            {(msg) => (
+                                                               <div className='w-full text-lg text-rose-500'>
+                                                                  {msg}
+                                                               </div>
+                                                            )}
+                                                         </ErrorMessage>
+                                                      </div>
+                                                   </li>
+                                                )
+                                             )}
+                                       </ul>
+                                       <div className='flex justify-between items-center'>
+                                          <div className='flex gap-3'>
+                                             <button
+                                                type='submit'
+                                                className={
+                                                   isSubmitting || !isValid
+                                                      ? "btn-rev btn-disabled"
+                                                      : "btn-rev"
+                                                }
+                                                disabled={
+                                                   isSubmitting || !isValid
+                                                }>
+                                                Generate
+                                             </button>
+                                             <a
+                                                href='/ebos'
+                                                className='btn text-black-eerie hover:text-blue-ncs'>
+                                                <strong>
+                                                   Back To Dashboard
+                                                </strong>
+                                             </a>
+                                          </div>
+                                          {isSubmitting && (
+                                             <Spinner message='Saving Competitors' />
+                                          )}
+                                       </div>
+                                    </>
+                                 )}
+                              </FieldArray>
+                           </Form>
+                        )}
+                     </Formik>
                   </div>
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
                      <div className=''>

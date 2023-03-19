@@ -1,10 +1,22 @@
+import { Field, FieldArray, Form, Formik, ErrorMessage } from "formik";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
+import * as Yup from "yup";
+import Spinner from "../../components/common/spinner";
+
+const goals_dummy = [
+   "5 Consulting Engagement Signed (250,000 JOD)",
+   "A stable training income disruptive",
+   "100 Contingent workforce deployed",
+   "MC Platform - 250,000 Candidates",
+];
 
 const Goals = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+   const [targetDate, setTargetDate] = useState();
 
    return (
       <>
@@ -28,7 +40,10 @@ const Goals = () => {
                            type='date'
                            placeholder='31-12-2020'
                            className='p-3 bg-gray-100 outline-none caret-dark-blue border-none p-3 grow'
-                           value=''
+                           value={targetDate}
+                           onChange={(e) => {
+                              setTargetDate(e.target.value);
+                           }}
                         />
                      </h3>
                      <h3 className='text-[2.52rem] mb-6 font-normal'>
@@ -38,108 +53,103 @@ const Goals = () => {
                         Celebrating Unequivocal Success!
                      </h2>
                      <p className='mb-5'>Things you want to be celebrating:</p>
-                     <div id='goals-app'>
-                        <ul className='flex flex-col gap-3 mb-10'>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-                                 data-id='21'
-                                 name='goals[]'
-                                 value='5 Consulting Engagement Signed (250,000 JOD)'
-                                 placeholder='Enter goal and add another'
-                              />
-                              <a
-                                 data-id='21'
-                                 className='deleteGoal btn-delete mt-2'>
-                                 x
-                              </a>
-                           </li>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-                                 data-id='22'
-                                 name='goals[]'
-                                 value='A stable training income disruptive'
-                                 placeholder='Enter goal and add another'
-                              />
-                              <a
-                                 data-id='22'
-                                 className='deleteGoal btn-delete mt-2'>
-                                 x
-                              </a>
-                           </li>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-                                 data-id='20'
-                                 name='goals[]'
-                                 value='EBOS / Others - 10,000 Users'
-                                 placeholder='Enter goal and add another'
-                              />
-                              <a
-                                 data-id='20'
-                                 className='deleteGoal btn-delete mt-2'>
-                                 x
-                              </a>
-                           </li>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-                                 data-id='19'
-                                 name='goals[]'
-                                 value='100 Contingent workforce deployed'
-                                 placeholder='Enter goal and add another'
-                              />
-                              <a
-                                 data-id='19'
-                                 className='deleteGoal btn-delete mt-2'>
-                                 x
-                              </a>
-                           </li>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-                                 data-id='18'
-                                 name='goals[]'
-                                 value='MC Platform - 250,000 Candidates'
-                                 placeholder='Enter goal and add another'
-                              />
-                              <a
-                                 data-id='18'
-                                 className='deleteGoal btn-delete mt-2'>
-                                 x
-                              </a>
-                           </li>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-                                 name='goals[]'
-                                 placeholder='Enter goal and add another'
-                              />
-                              <a className='deleteGoal btn-delete  mt-2'>x</a>
-                           </li>
-                        </ul>
-                        <div className='flex gap-3'>
-                           <a id='add-goal' className='btn blue-gradient text-black-eerie hover:text-white'>
-                             + Add
-                           </a>
-                           <button
-                              type='button'
-                              className='btn-rev'
-                              id='submit'>
-                              Save and submit
-                           </button>
-                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
-                              <strong>Back To Dashboard</strong>
-                           </a>
-                        </div>
-                     </div>
+                     <Formik
+                        initialValues={{
+                           goals: goals_dummy,
+                        }}
+                        validationSchema={Yup.object({
+                           goals: Yup.array(
+                              Yup.string().required(
+                                 "the goal field must not be empty !"
+                              )
+                           )
+                              .required("Must provide at least one goal !")
+                              .min(1, "Must provide at least one goal !"),
+                        })}
+                        onSubmit={(values) => {
+                           console.log(values);
+                        }}
+                        validateOnMount>
+                        {({ values, isSubmitting, isValid, errors }) => (
+                           <Form id='goals-app'>
+                              <FieldArray name='goals'>
+                                 {({ remove, push, form }) => (
+                                    <>
+                                       <ul className='flex flex-col gap-3 mb-10'>
+                                          {!!values.goals.length &&
+                                             values.goals.map((goal, index) => (
+                                                <div key={index}>
+                                                   <li>
+                                                      <Field
+                                                         type='text'
+                                                         className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
+                                                         name={`goals.${index}`}
+                                                         placeholder='Enter goal and add another'
+                                                      />
+                                                      <a
+                                                         onClick={() => {
+                                                            remove(index);
+                                                         }}
+                                                         className='btn-delete mt-2'>
+                                                         x
+                                                      </a>
+                                                   </li>
+                                                   <ErrorMessage
+                                                      name={`goals.${index}`}>
+                                                      {(msg) => (
+                                                         <div className='text-lg text-rose-500'>
+                                                            {msg}
+                                                         </div>
+                                                      )}
+                                                   </ErrorMessage>
+                                                </div>
+                                             ))}
+                                          {!values.goals.length &&
+                                             form.errors?.goals && (
+                                                <p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
+                                                   {form.errors.goals}
+                                                </p>
+                                             )}
+                                       </ul>
+                                       <div className='flex justify-between items-center'>
+                                          <div className='flex gap-3'>
+                                             <a
+                                                onClick={() => {
+                                                   push("");
+                                                }}
+                                                className='btn blue-gradient text-black-eerie hover:text-white'>
+                                                + Add
+                                             </a>
+                                             <button
+                                                type='submit'
+                                                className={
+                                                   isSubmitting || !isValid
+                                                      ? "btn-rev btn-disabled"
+                                                      : "btn-rev"
+                                                }
+                                                disabled={
+                                                   isSubmitting || !isValid
+                                                }>
+                                                Save and submit
+                                             </button>
+                                             <a
+                                                href='/ebos'
+                                                className='btn text-black-eerie hover:text-blue-ncs'>
+                                                <strong>
+                                                   Back To Dashboard
+                                                </strong>
+                                             </a>
+                                          </div>
+                                          {isSubmitting && (
+                                             <Spinner message='Saving Goals' />
+                                          )}
+                                       </div>
+                                    </>
+                                 )}
+                              </FieldArray>
+                           </Form>
+                        )}
+                     </Formik>
                      {/* <script src="/modules/goals.js"></script> */}
                   </div>
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
@@ -165,11 +175,9 @@ const Goals = () => {
                            />
                         </div>
                      </Link>
-
                      <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 h-3 mb-10'>
                         <iframe width='530' height='315' src='1'></iframe>
                      </div>
-
                      <div className='mx-auto text-center'>
                         <button
                            className='btn text-black-eerie mt-10'
