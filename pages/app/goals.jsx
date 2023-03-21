@@ -71,7 +71,7 @@ const Goals = () => {
                         }}
                         validateOnMount>
                         {({ values, isSubmitting, isValid, errors }) => (
-                           <Form id='goals-app'>
+                           <Form>
                               <FieldArray name='goals'>
                                  {({ remove, push, form }) => (
                                     <>

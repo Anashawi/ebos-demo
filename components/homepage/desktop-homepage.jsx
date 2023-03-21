@@ -12,7 +12,7 @@ const DesktopHomepage = ({
    // Quadratic curve essential points (used inside the svg element "path" property)
    const curve = {
       p_0: {
-         x: 75,
+         x: 55,
          y: 500,
       },
       p_1: {
@@ -20,7 +20,7 @@ const DesktopHomepage = ({
          y: 500,
       },
       p_2: {
-         x: 1450,
+         x: 1300,
          y: 0,
       },
       getWidth: function () {
@@ -29,19 +29,26 @@ const DesktopHomepage = ({
       getHeight: function () {
          return this.p_2.y - this.p_0.y;
       },
+      getMinWidth: function () {
+         return this.p_2.x - this.p_0.x;
+      },
    };
 
    const delta_x = curve.getWidth() / (nodes.length + 2 - 1); // curve width / number of gaps between nodes [nodes.length + 2 other nodes (the first node and the last node)]
-   const t_1 = 0.08 / nodes.length;
+   const t_1 = 0.05 / nodes.length;
    const t_values = [t_1];
    const nodeWidth = 105;
 
-   const getX = (t) =>
-      Math.round(
+   const getX = (t, flag = false) => {
+      if (flag) {
+         console.log(t_values);
+      }
+      return Math.round(
          Math.pow(1 - t, 2) * curve.p_0.x +
             2 * (1 - t) * t * curve.p_1.x +
             Math.pow(t, 2) * curve.p_2.x
       );
+   };
    const getY = (t) =>
       Math.round(
          Math.pow(1 - t, 2) * curve.p_0.y +
@@ -51,8 +58,8 @@ const DesktopHomepage = ({
 
    const getRelativeXInPixels = (x_pos) => {
       let currWidth = currentScreenWidth;
-      if (currentScreenWidth > 1350) {
-         currWidth = 1350;
+      if (currentScreenWidth > originalScreenWidth) {
+         currWidth = originalScreenWidth;
       }
       return Math.round((x_pos * currWidth) / originalScreenWidth) || 0;
    };
@@ -77,9 +84,9 @@ const DesktopHomepage = ({
    return (
       <>
          <div
-            className='flex flex-col pl-[2.8rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-full max-w-[1400px] max-h-[590px] min-h-[530px] mx-auto'
+            className='flex flex-col pl-[2.8rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-full max-h-[590px] min-h-[540px] mx-auto'
             style={{
-               width: getRelativeXInPixels(curve.getWidth() + 275) + "px",
+               width: getRelativeXInPixels(curve.getWidth() + 200) + "px",
             }}>
             <div
                className='absolute w-[12rem] mx-12 pb-5'
@@ -125,14 +132,14 @@ const DesktopHomepage = ({
                </div>
                <div className='absolute bottom-0 w-full h-[52rem] border-slate-600'>
                   <div
-                     className='absolute top-[576px] bg-gray-battleship text-white text-lg pl-flex flex-col pl-[1.3rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-75 max-w-[1300px] max-h-[600px] mx-auto3 pr-6 py-1 rounded-full'
+                     className='absolute top-[576px] bg-gray-battleship text-white text-lg flex flex-col pl-[1.3rem] backdrop-opacity-25 bg-black/15 backdrop-blur rounded-4xl flex-grow lg:w-75 max-w-[1300px] max-h-[600px] mx-auto3 pr-6 py-1 rounded-full z-[9999]'
                      style={{
-                        left: `${curve.p_0.x + nodeWidth * 2 - 268 + "px"}`,
+                        left: `${curve.p_0.x + nodeWidth * 2 - 268}px`,
                      }}>
                      Free. No subscription needed
                   </div>
                   <span
-                     className='absolute top-[575px] text-white font-bold text-2xl'
+                     className='absolute top-[575px] text-white font-bold text-2xl z-[9999]'
                      style={{
                         left: `${curve.p_0.x + nodeWidth * 2 + "px"}`,
                      }}>
@@ -213,14 +220,35 @@ const DesktopHomepage = ({
                      )} 515 L ${getRelativeXInPixels(curve.p_2.x)} 515`}></path>
                   <circle
                      className='fill-black'
-                     cx={`${curve.p_0.x + nodeWidth * 2 - 70}px`}
+                     cx={`${getRelativeXInPixels(
+                        getRelativeXInPixels(
+                           getX((t_values[2] - t_values[1]) / 2 + t_values[1])
+                        ) - 40
+                     )}px`}
                      cy='590'
                      r='4'></circle>
+                  {console.log(
+                     "curve.p_0.x",
+                     curve.p_0.x,
+                     "getRelativeXInPixels(getX((t_values[2] - t_values[1]) / 2 + t_values[1]))",
+                     getRelativeXInPixels(
+                        getX((t_values[2] - t_values[1]) / 2 + t_values[1])
+                     ),
+                     "nodeWidth",
+                     nodeWidth
+                  )}
                   <path
                      className='custom-stroke-dasharray stroke-[1px] stroke-gray-gunmetal fill-none'
-                     d={`M ${curve.p_0.x + nodeWidth * 2 - 70} 590 L ${
-                        curve.p_0.x + nodeWidth * 2 - 39
-                     } 590 L ${curve.p_0.x + nodeWidth * 2 - 39} 451`}></path>
+                     d={`M ${getRelativeXInPixels(
+                        getRelativeXInPixels(
+                           getX((t_values[2] - t_values[1]) / 2 + t_values[1]) -
+                              40
+                        )
+                     )} 590 L ${getRelativeXInPixels(
+                        getX((t_values[2] - t_values[1]) / 2 + t_values[1])
+                     )} 590 L ${getRelativeXInPixels(
+                        getX((t_values[2] - t_values[1]) / 2 + t_values[1])
+                     )} 440`}></path>
                </svg>
             </div>
          </div>

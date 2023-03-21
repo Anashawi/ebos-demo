@@ -16,6 +16,7 @@
     "eslint-config-next": "13.2.3",
     "formik": "^2.2.9",
     "next": "13.2.3",
+    "object-path": "^0.11.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-google-charts": "^4.0.0",

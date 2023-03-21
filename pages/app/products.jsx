@@ -1,13 +1,20 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+   faCirclePlus,
+   faSquareMinus,
+   faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Formik } from "formik";
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Chart from "react-google-charts";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import * as Yup from "yup";
+import useConfirmDialog from "../../hooks/use-confirm-dialog";
+import ConfirmModal from "../../components/common/confirm-dialog";
+import objectPath from "object-path";
 
 class ProductFuture {
    id;
@@ -18,8 +25,8 @@ class ProductFuture {
 }
 
 class Product {
-   id = 0;
-   name = "Product Example";
+   id = 1;
+   name = "Product Example 1";
    futures = [
       {
          id: 10,
@@ -45,53 +52,89 @@ class Product {
    ];
 }
 
+const products_dummy = [
+   new Product(),
+   {
+      id: 2,
+      name: "Product Example 2",
+      futures: [
+         {
+            id: 13,
+            product_id: 3,
+            year: 2023,
+            level: 3,
+            sales: 50,
+         },
+         {
+            id: 14,
+            product_id: 3,
+            year: 2025,
+            level: 1,
+            sales: 80,
+         },
+         {
+            id: 15,
+            product_id: 3,
+            year: 2027,
+            level: 2,
+            sales: 70,
+         },
+      ],
+   },
+   {
+      id: 3,
+      name: "Product Example 3",
+      futures: [],
+   },
+];
+
 const Products = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-   const [product, setProduct] = useState(new Product());
    const [chartOptions, setChartOptions] = useState(null);
-   const [chartRows, setChartRows] = useState([]);
-   const [chartCols, setChartCols] = useState([]);
+   const [chartData, setChartData] = useState([]);
+   let deleteConfig = {
+      title: "Delete Product",
+      confirmMessage: "Are you sure to delete this product ?",
+      okBtnText: "Delete",
+      cancelBtnText: "Cancel",
+      okCallback: () => {},
+   };
+   const [deleteDialogConfig, toggleDeleteDialog] = useConfirmDialog();
 
    const initChartProps = () => {
-      setChartCols([
-         {
-            type: "string",
-            label: "Product",
-         },
-         {
-            type: "number",
-            label: "Year",
-         },
-         {
-            type: "number",
-            label: "Level",
-         },
-         {
-            type: "string",
-            label: "Color",
-         },
-         {
-            type: "number",
-            label: "Sales",
-         },
-      ]);
+      const rows = products_dummy
+         .map((product) =>
+            product.futures
+               .sort((a, b) => {
+                  if (a.year < b.year) return -1;
+                  return 1;
+               })
+               .map((n, i) => {
+                  return [
+                     "",
+                     i + 1,
+                     parseInt(n.level),
+                     "blue",
+                     parseInt(n.sales),
+                  ];
+               })
+         )
+         .flat();
 
-      const rows = product.futures
-         .sort((a, b) => {
-            if (a.year < b.year) return -1;
-            return 1;
-         })
-         .map((n, i) => {
-            return ["", i + 1, parseInt(n.level), "blue", parseInt(n.sales)];
-         });
-      setChartRows(rows);
+      setChartData([["Product", "Year", "Level", "Color", "Sales"], ...rows]);
+      console.log("chartData", chartData);
 
-      const ticks = product.futures.map((n, i) => {
-         return {
-            v: i + 1,
-            f: n.year.toString(),
-         };
-      });
+      const ticks = products_dummy
+         .map((product) =>
+            product.futures.map((n, i) => {
+               return {
+                  v: i + 1,
+                  f: n.year.toString(),
+               };
+            })
+         )
+         .flat();
+      console.log("chartData", chartData);
 
       setChartOptions({
          title: "Product future",
@@ -148,6 +191,22 @@ const Products = () => {
       });
    };
 
+   const emptyProduct = useMemo(() => {
+      return {
+         id: 0,
+         name: "Product Example 2",
+         futures: [
+            {
+               id: 0,
+               product_id: 0,
+               year: 2023,
+               level: 2,
+               sales: 50,
+            },
+         ],
+      };
+   }, []);
+
    useEffect(() => {
       initChartProps();
    }, []);
@@ -169,274 +228,371 @@ const Products = () => {
                      </h3>
                      <Formik
                         initialValues={{
-                           products: [],
+                           products: products_dummy,
                         }}
-                        validationSchema={Yup.object({})}
+                        validationSchema={Yup.object({
+                           products: Yup.array(
+                              Yup.object({
+                                 // id: Yup.string("must be a string").required(
+                                 //    "required"
+                                 // ),
+                                 name: Yup.string("must be a string").required(
+                                    "Name is required"
+                                 ),
+                                 futures: Yup.array(
+                                    Yup.object({
+                                       // id: Yup.string(
+                                       //    "must be a string"
+                                       // ).required("required"),
+                                       // product_id:
+                                       //    Yup.string(
+                                       //       "must be a string"
+                                       //    ).required("required"),
+                                       year: Yup.number(
+                                          "must be a number"
+                                       ).required("Year is required"),
+                                       // level: Yup.number(
+                                       //    "must be a number"
+                                       // ).required("Level is required"),
+                                       sales: Yup.number(
+                                          "must be a number"
+                                       ).required(
+                                          "sales percentage is required"
+                                       ),
+                                    })
+                                 )
+                                    .required(
+                                       "Must provide at least one future !"
+                                    )
+                                    .min(
+                                       1,
+                                       "Must provide at least one future !"
+                                    ),
+                              })
+                           )
+                              .required("Must provide at least one product !")
+                              .min(1, "Must provide at least one product !"),
+                        })}
                         onSubmit={(values) => {
                            console.log(values);
-                        }}>
-                        <div id='products-app'>
-                           <ul className='flex gap-3 mb-12'>
-                              <select className='grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
-                                 <option value='2' p-id='2'>
-                                    Contingent Workforce
-                                 </option>
-                                 <option value='3' p-id='3' selected='selected'>
-                                    Consulting Offering
-                                 </option>
-                              </select>
-                              <button className='p-2 text-black-eerie deleteProduct'>
-                                 <FontAwesomeIcon
-                                    className='w-6 h-auto text-gray-300 hover:text-rose-800'
-                                    icon={faTrash}
-                                 />
-                              </button>
-                           </ul>
-                           <div className='flex justify-end'>
-                              <a
-                                 id='addNewProduct'
-                                 className='btn blue-gradient text-black-eerie hover:text-white'>
-                                 <b>+</b> Add new product
-                              </a>
-                           </div>
-                           <br />
-                           <div className='flex flex-col gap-7'>
-                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                                 <div>
-                                    <label>Product name</label>
-                                    <input
-                                       type='text'
-                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                       name='product-name'
-                                    />
-                                 </div>
-                              </div>
-                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                                 <div>
-                                    <label>Present</label>
-                                    <input
-                                       id='first_date'
-                                       type='text'
-                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                       placeholder='year'
-                                       name='present-year'
-                                    />
-                                 </div>
-                                 <div></div>
-                                 <div className='flex flex-wrap gap-4'>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='present-level'
-                                          type='radio'
-                                          value='1'
-                                       />
-                                       <label className='rbreath'>
-                                          Settler
-                                       </label>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='present-level'
-                                          type='radio'
-                                          value='2'
-                                       />
-                                       <label className='rbreath'>
-                                          Migrator
-                                       </label>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='present-level'
-                                          type='radio'
-                                          value='3'
-                                       />
-                                       <label className='rbreath'>
-                                          Pioneer
-                                       </label>
-                                    </div>
-                                 </div>
-                                 <div>
-                                    <label>Sales (%)</label>
-                                    <input
-                                       name='present-sales'
-                                       type='range'
-                                       min='0'
-                                       max='100'
-                                       list='salesmarks'
-                                       className='w-full accent-blue-true'
-                                       step='10'
-                                    />
-                                    <datalist
-                                       id='salesmarks'
-                                       className='flex items-center justify-between text-lg w-full'>
-                                       <option value='0' label='0%'></option>
-                                       <option value='10'></option>
-                                       <option value='20'></option>
-                                       <option value='30'></option>
-                                       <option value='40'></option>
-                                       <option value='50' label='50%'></option>
-                                       <option value='60'></option>
-                                       <option value='70'></option>
-                                       <option value='80'></option>
-                                       <option value='90'></option>
-                                       <option
-                                          value='100'
-                                          label='100%'></option>
-                                    </datalist>
-                                 </div>
-                              </div>
-                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                                 <div>Future 1</div>
-                                 <div>
-                                    <input
-                                       name='future-one-year'
-                                       type='text'
-                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                       placeholder='year'
-                                    />
-                                 </div>
-                                 <div></div>
-                                 <div className='flex flex-wrap gap-4'>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='future-one-level'
-                                          type='radio'
-                                          value='1'
-                                       />
-                                       <label className='rbreath'>
-                                          Settler
-                                       </label>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='future-one-level'
-                                          type='radio'
-                                          value='2'
-                                       />
-                                       <label className='rbreath'>
-                                          Migrator
-                                       </label>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='future-one-level'
-                                          type='radio'
-                                          value='3'
-                                       />
-                                       <label className='rbreath'>
-                                          Pioneer
-                                       </label>
-                                    </div>
-                                 </div>
-                                 <div>
-                                    <label>Sales (%)</label>
-                                    <input
-                                       name='future-one-sales'
-                                       type='range'
-                                       min='0'
-                                       max='100'
-                                       list='salesmarks'
-                                       className='w-full accent-blue-true'
-                                       step='10'
-                                    />
-                                    <datalist
-                                       id='salesmarks'
-                                       className='flex items-center justify-between text-lg w-full'>
-                                       <option value='0' label='0%'></option>
-                                       <option value='10'></option>
-                                       <option value='20'></option>
-                                       <option value='30'></option>
-                                       <option value='40'></option>
-                                       <option value='50' label='50%'></option>
-                                       <option value='60'></option>
-                                       <option value='70'></option>
-                                       <option value='80'></option>
-                                       <option value='90'></option>
-                                       <option
-                                          value='100'
-                                          label='100%'></option>
-                                    </datalist>
-                                 </div>
-                              </div>
-                              <div className='flex flex-col gap-3 border-b border-gray-300 pb-7 spacedout'>
-                                 <div>Future 2</div>
-                                 <div>
-                                    <input
-                                       name='future-two-year'
-                                       type='text'
-                                       className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                       placeholder='year'
-                                    />
-                                 </div>
-                                 <div></div>
-                                 <div className='flex flex-wrap gap-4'>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='future-two-level'
-                                          type='radio'
-                                          value='1'
-                                       />
-                                       <label className='rbreath'>
-                                          Settler
-                                       </label>
-                                    </div>
-
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='future-two-level'
-                                          type='radio'
-                                          value='2'
-                                       />
-                                       <label className='rbreath'>
-                                          Migrator
-                                       </label>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                       <input
-                                          name='future-two-level'
-                                          type='radio'
-                                          value='3'
-                                       />
-                                       <label className='rbreath'>
-                                          Pioneer
-                                       </label>
-                                    </div>
-                                 </div>
-                                 <div>
-                                    <label>Sales (%)</label>
-                                    <input
-                                       name='future-two-sales'
-                                       type='range'
-                                       min='0'
-                                       max='100'
-                                       list='salesmarks'
-                                       className='w-full accent-blue-true'
-                                       step='10'
-                                    />
-                                    <datalist
-                                       id='salesmarks'
-                                       className='flex items-center justify-between text-lg w-full'>
-                                       <option value='0' label='0%'></option>
-                                       <option value='10'></option>
-                                       <option value='20'></option>
-                                       <option value='30'></option>
-                                       <option value='40'></option>
-                                       <option value='50' label='50%'></option>
-                                       <option value='60'></option>
-                                       <option value='70'></option>
-                                       <option value='80'></option>
-                                       <option value='90'></option>
-                                       <option
-                                          value='100'
-                                          label='100%'></option>
-                                    </datalist>
-                                 </div>
-                              </div>
-                              <div id='addProduct' className='flex gap-3 mt-10'>
-                                 <button
-                                    id='create-product'
-                                    className='btn-rev'
-                                    type='button'>
+                        }}
+                        validateOnMount>
+                        {({ values, isSubmitting, isValid }) => (
+                           <Form>
+                              <FieldArray name='products'>
+                                 {({ push, remove, form }) => (
+                                    <>
+                                       <div className='flex justify-end mb-5'>
+                                          <a
+                                             onClick={() => {
+                                                push(emptyProduct);
+                                             }}
+                                             className='btn blue-gradient text-black-eerie hover:text-white'>
+                                             <b>+</b> Add new product
+                                          </a>
+                                       </div>
+                                       <div className='min-h-[350px] h-[60vh] overflow-x-auto flex gap-10 shadow-inner border'>
+                                          {!!values.products.length &&
+                                             values.products.map(
+                                                (product, productIndex) => (
+                                                   <div
+                                                      key={productIndex}
+                                                      className='min-w-[450px] p-5 lg:p-10 shadow-lg flex flex-col gap-5'>
+                                                      <div className='flex flex-col gap-3 border-b border-gray-300 pb-5 spacedout'>
+                                                         <div className='flex items-center gap-5'>
+                                                            <div className='grow'>
+                                                               <label>
+                                                                  Product name
+                                                               </label>
+                                                               <Field
+                                                                  type='text'
+                                                                  className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                                  name={`products.${productIndex}.name`}
+                                                               />
+                                                               <ErrorMessage
+                                                                  name={`products.${productIndex}.name`}>
+                                                                  {(msg) => (
+                                                                     <div className='text-lg text-rose-500'>
+                                                                        {msg}
+                                                                     </div>
+                                                                  )}
+                                                               </ErrorMessage>
+                                                            </div>
+                                                            <FontAwesomeIcon
+                                                               onClick={() => {
+                                                                  deleteConfig.closeCallback =
+                                                                     toggleDeleteDialog;
+                                                                  deleteConfig.okCallback =
+                                                                     () => {
+                                                                        remove(
+                                                                           productIndex
+                                                                        );
+                                                                     };
+                                                                  toggleDeleteDialog(
+                                                                     deleteConfig
+                                                                  );
+                                                               }}
+                                                               className='w-7 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+                                                               icon={faTrash}
+                                                            />
+                                                         </div>
+                                                      </div>
+                                                      <FieldArray
+                                                         name={`products.${productIndex}.futures`}>
+                                                         {({
+                                                            remove,
+                                                            push,
+                                                            form,
+                                                         }) => (
+                                                            <div className='px-5 overflow-y-auto'>
+                                                               {!!product
+                                                                  .futures
+                                                                  ?.length &&
+                                                                  product.futures.map(
+                                                                     (
+                                                                        future,
+                                                                        futureIndex
+                                                                     ) => (
+                                                                        <div
+                                                                           key={
+                                                                              futureIndex
+                                                                           }
+                                                                           className='flex flex-col border-b border-gray-300 pb-3 spacedout'>
+                                                                           <div className='flex justify-between'>
+                                                                              <h3 className='mb-0'>
+                                                                                 {futureIndex ===
+                                                                                 0
+                                                                                    ? `Present`
+                                                                                    : `Future ${futureIndex}`}
+                                                                              </h3>
+                                                                              <FontAwesomeIcon
+                                                                                 onClick={() => {
+                                                                                    remove(
+                                                                                       futureIndex
+                                                                                    );
+                                                                                 }}
+                                                                                 className='w-6 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+                                                                                 icon={
+                                                                                    faSquareMinus
+                                                                                 }
+                                                                              />
+                                                                           </div>
+                                                                           <div className='flex'>
+                                                                              <div className='grow p-2'>
+                                                                                 <label>
+                                                                                    Year
+                                                                                 </label>
+                                                                                 <Field
+                                                                                    id='first_date'
+                                                                                    type='text'
+                                                                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                                                    placeholder='year'
+                                                                                    name={`products.${productIndex}.futures.${futureIndex}.year`}
+                                                                                 />
+                                                                                 <ErrorMessage
+                                                                                    name={`products.${productIndex}.futures.${futureIndex}.year`}>
+                                                                                    {(
+                                                                                       msg
+                                                                                    ) => (
+                                                                                       <div className='text-lg text-rose-500'>
+                                                                                          {
+                                                                                             msg
+                                                                                          }
+                                                                                       </div>
+                                                                                    )}
+                                                                                 </ErrorMessage>
+                                                                              </div>
+                                                                              <div className='grow p-2'>
+                                                                                 <label className='rbreath'>
+                                                                                    Level
+                                                                                 </label>
+                                                                                 <Field
+                                                                                    as='select'
+                                                                                    name={`products.${productIndex}.futures.${futureIndex}.level`}
+                                                                                    className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
+                                                                                    <option
+                                                                                       value={
+                                                                                          1
+                                                                                       }>
+                                                                                       Settler
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          2
+                                                                                       }>
+                                                                                       Migrator
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          3
+                                                                                       }>
+                                                                                       Pioneer
+                                                                                    </option>
+                                                                                 </Field>
+                                                                                 <ErrorMessage
+                                                                                    name={`products.${productIndex}.futures.${futureIndex}.level`}>
+                                                                                    {(
+                                                                                       msg
+                                                                                    ) => (
+                                                                                       <div className='text-lg text-rose-500'>
+                                                                                          {
+                                                                                             msg
+                                                                                          }
+                                                                                       </div>
+                                                                                    )}
+                                                                                 </ErrorMessage>
+                                                                              </div>
+                                                                              <div className='grow p-2'>
+                                                                                 <label>
+                                                                                    Sales
+                                                                                    (%)
+                                                                                 </label>
+                                                                                 <Field
+                                                                                    as='select'
+                                                                                    name={`products.${productIndex}.futures.${futureIndex}.sales`}
+                                                                                    min='0'
+                                                                                    max='100'
+                                                                                    className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
+                                                                                    <option
+                                                                                       value={
+                                                                                          0
+                                                                                       }>
+                                                                                       0
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          10
+                                                                                       }>
+                                                                                       10
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          20
+                                                                                       }>
+                                                                                       20
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          30
+                                                                                       }>
+                                                                                       30
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          40
+                                                                                       }>
+                                                                                       40
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          50
+                                                                                       }>
+                                                                                       50
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          60
+                                                                                       }>
+                                                                                       60
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          70
+                                                                                       }>
+                                                                                       70
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          80
+                                                                                       }>
+                                                                                       80
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          90
+                                                                                       }>
+                                                                                       90
+                                                                                    </option>
+                                                                                    <option
+                                                                                       value={
+                                                                                          100
+                                                                                       }>
+                                                                                       100
+                                                                                    </option>
+                                                                                 </Field>
+                                                                                 <ErrorMessage
+                                                                                    name={`products.${productIndex}.futures.${futureIndex}.sales`}>
+                                                                                    {(
+                                                                                       msg
+                                                                                    ) => (
+                                                                                       <div className='text-lg text-rose-500'>
+                                                                                          {
+                                                                                             msg
+                                                                                          }
+                                                                                       </div>
+                                                                                    )}
+                                                                                 </ErrorMessage>
+                                                                              </div>
+                                                                           </div>
+                                                                        </div>
+                                                                     )
+                                                                  )}
+                                                               {!product.futures
+                                                                  .length &&
+                                                                  !!objectPath.get(
+                                                                     form,
+                                                                     `errors.products.${productIndex}.futures`
+                                                                  ) && (
+                                                                     <div className='w-full flex items-center'>
+                                                                        <p className='grow text-lg p-3 text-center bg-rose-50 text-rose-500'>
+                                                                           {objectPath.get(
+                                                                              form,
+                                                                              `errors.products.${productIndex}.futures`
+                                                                           )}
+                                                                        </p>
+                                                                     </div>
+                                                                  )}
+                                                               <div className='flex justify-center mt-5'>
+                                                                  <button
+                                                                     type='button'
+                                                                     onClick={() => {
+                                                                        push(
+                                                                           ""
+                                                                        );
+                                                                     }}
+                                                                     className='inline-flex items-center gap-3 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>
+                                                                     <span>
+                                                                        Add a
+                                                                        Future
+                                                                     </span>
+                                                                     <FontAwesomeIcon
+                                                                        className='w-7 h-auto cursor-pointer text-white'
+                                                                        icon={
+                                                                           faCirclePlus
+                                                                        }
+                                                                     />
+                                                                  </button>
+                                                               </div>
+                                                            </div>
+                                                         )}
+                                                      </FieldArray>
+                                                   </div>
+                                                )
+                                             )}
+                                          {!values.products.length &&
+                                             form.errors?.products && (
+                                                <div className='w-full flex justify-center items-center'>
+                                                   <p className='text-2xl p-10 text-center bg-rose-50 text-rose-500'>
+                                                      {form.errors.products}
+                                                   </p>
+                                                </div>
+                                             )}
+                                       </div>
+                                    </>
+                                 )}
+                              </FieldArray>
+                              <div className='hidden flex gap-3 mt-10'>
+                                 <button type='submit' className='btn-rev'>
                                     Add and generate
                                  </button>
                                  <a
@@ -445,14 +601,16 @@ const Products = () => {
                                     <strong>Back To Dashboard</strong>
                                  </a>
                               </div>
-                              <div
-                                 id='updateProduct'
-                                 className='hidden flex gap-3 mt-10'>
+                              <div className='flex gap-3 mt-10'>
                                  <button
-                                    id='updateButton'
-                                    className='btn-rev'
-                                    type='button'>
-                                    Save and generate
+                                    type='submit'
+                                    className={
+                                       isSubmitting || !isValid
+                                          ? "btn-rev btn-disabled"
+                                          : "btn-rev"
+                                    }
+                                    disabled={isSubmitting || !isValid}>
+                                    Save and generate {console.log("hello")}
                                  </button>
                                  <a
                                     href='/ebos'
@@ -460,95 +618,8 @@ const Products = () => {
                                     <strong>Back To Dashboard</strong>
                                  </a>
                               </div>
-                           </div>
-                           {/* function drawChart(product) {
-        var dt = new google
-            .visualization
-            .DataTable();
-
-        dt.addColumn('string', 'Product');
-        dt.addColumn('number', 'Year');
-        dt.addColumn('number', 'Level');
-        dt.addColumn('string', 'Color');
-        dt.addColumn('number', 'Sales');
-
-        const rows = product.futures.sort((a,b) => {
-            if (a.year < b.year) return -1;
-            return 1;
-        }).map((n, i) => {
-            return [
-                '', i + 1, parseInt(n.level), 'blue', parseInt(n.sales)
-            ]
-        });
-        dt.addRows(rows);
-
-        const ticks = product.futures.map((n, i) => {
-            return {
-
-        v: i + 1,
-                f: n.year.toString()
-
-            }
-        });
-
-        var options = {
-        title: 'Product future',
-            legend: {
-        position: 'top'
-            },
-            tooltip: {
-        trigger: 'none'
-            },
-            hAxis: {
-        textStyle: {
-        bold: true
-                },
-                allowContainerBoundaryTextCutoff: false,
-                gridlines: {
-        color: '#eee'
-                },
-                baseline: 0,
-                maxValue: 4,
-                ticks: ticks,
-            },
-            vAxis: {
-        baseline: 0,
-                maxValue: 4,
-                ticks: [{
-        v: 1,
-                    f: 'Settler'
-                }, {
-        v: 2,
-                    f: 'Migrate'
-                }, {
-        v: 3,
-                    f: 'Poineer'
-                }],
-                gridlines: {
-        color: '#eee'
-                }
-            },
-            bubble: {
-        textStyle: {
-        fontSize: 11
-                }
-            },
-            chartArea: {
-        left: 50,
-                top: 0,
-                width: '100%',
-                height: '90%'
-            }
-        };
-
-        var chart = new google.visualization.BubbleChart(document.getElementById('thechart'));
-        chart.draw(dt, options);
-    }
-
-    google.charts.load('current', {
-        'packages': ['corechart']
-    }); */}
-                        </div>
+                           </Form>
+                        )}
                      </Formik>
                   </div>
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
@@ -579,9 +650,8 @@ const Products = () => {
                            chartType='BubbleChart'
                            width='100%'
                            height='400px'
-                           cols={chartCols}
-                           rows={chartRows}
                            options={chartOptions}
+                           data={chartData}
                            graphID='BubbleChart'
                            legendToggle
                         />
@@ -598,6 +668,8 @@ const Products = () => {
                </div>
             </div>
          </div>
+
+         <ConfirmModal config={deleteDialogConfig}></ConfirmModal>
       </>
    );
 };
