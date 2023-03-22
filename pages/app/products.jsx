@@ -1,5 +1,6 @@
 import {
    faCirclePlus,
+   faMinusCircle,
    faSquareMinus,
    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Chart from "react-google-charts";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
@@ -114,6 +115,7 @@ const products_dummy = [
             sales: 70,
          },
       ],
+      hasAddFutureCallback: false,
    },
    {
       id: 3,
@@ -141,6 +143,7 @@ const products_dummy = [
             sales: 70,
          },
       ],
+      hasAddFutureCallback: false,
    },
 ];
 
@@ -158,7 +161,7 @@ const Products = () => {
    const [deleteDialogConfig, toggleDeleteDialog] = useConfirmDialog();
 
    let futurePopCallbacks = [];
-   let futureAddCallbacks = [];
+   const [futureAddCallbacks, setFutureAddCallbacks] = useState([]);
 
    const initChartProps = () => {
       const rows = products_dummy
@@ -181,23 +184,18 @@ const Products = () => {
          .flat();
 
       setChartData([["Product", "Year", "Level", "legend", "Sales"], ...rows]);
-      console.log("chartData", chartData);
 
-      const ticks = products_dummy
-         .map((product) =>
-            product.futures.map((n, i) => {
-               return {
-                  v: i + 1,
-                  f: n.year.toString(),
-               };
-            })
-         )
-         .flat();
+      const ticks = products_dummy[0].futures.map((future, i) => {
+         return {
+            v: i + 1,
+            f: future.year.toString(),
+         };
+      });
       console.log("chartData", chartData);
 
       setChartOptions({
          title: "Product future",
-         colors: ["red", "orange", "blue"],
+         colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
          legend: {
             position: "top",
          },
@@ -255,16 +253,37 @@ const Products = () => {
       return {
          id: 0,
          product_id: 0,
-         year: 2023,
+         year: 0,
          level: 2,
          sales: 50,
       };
    }, []);
-   const emptyProduct = useMemo(() => {
-      return {
-         id: 0,
-         name: "Product Example 2",
-         futures: [emptyFuture],
+   const emptyProduct = {
+      id: 0,
+      name: "Product Example 2",
+      futures: [],
+      hasAddFutureCallback: false,
+   };
+   const productsFutures = useRef([]);
+
+   let addProductCallback = useMemo(() => {
+      return (productsFieldArrPush) => {
+         const newProduct = emptyProduct;
+         newProduct.futures = productsFutures.current;
+
+         productsFieldArrPush(emptyProduct);
+      };
+   }, []);
+   let addFutureCallback = useMemo(() => {
+      return (currProduct, futuresFieldArrPush) => {
+         if (currProduct.hasAddFutureCallback) {
+            return;
+         }
+         futureAddCallbacks.push(() => {
+            futuresFieldArrPush(emptyFuture);
+         });
+         setFutureAddCallbacks([...futureAddCallbacks]);
+         currProduct.hasAddFutureCallback = !currProduct.hasAddFutureCallback;
       };
    }, []);
 
@@ -302,19 +321,18 @@ const Products = () => {
                                  ),
                                  futures: Yup.array(
                                     Yup.object({
-                                       // id: Yup.string(
-                                       //    "must be a string"
-                                       // ).required("required"),
                                        // product_id:
                                        //    Yup.string(
                                        //       "must be a string"
                                        //    ).required("required"),
-                                       year: Yup.number(
+                                       year: Yup.number("must be a number")
+                                          .typeError("you must specify a year")
+                                          .min(2023, "min year is 2023")
+                                          .max(2099, "max year is 2099")
+                                          .required("Year is required"),
+                                       level: Yup.number(
                                           "must be a number"
-                                       ).required("Year is required"),
-                                       // level: Yup.number(
-                                       //    "must be a number"
-                                       // ).required("Level is required"),
+                                       ).required("Level is required"),
                                        sales: Yup.number(
                                           "must be a number"
                                        ).required(
@@ -338,345 +356,344 @@ const Products = () => {
                            console.log(values);
                         }}
                         validateOnMount>
-                        {({ values, isSubmitting, isValid }) => (
-                           <Form>
-                              <FieldArray name='products'>
-                                 {({ push, remove, form }) => (
-                                    <>
-                                       <div className='flex justify-end mb-5'>
-                                          <a
-                                             onClick={() => {
-                                                push(emptyProduct);
-                                             }}
-                                             className='btn blue-gradient text-black-eerie hover:text-white'>
-                                             <b>+</b> Add new product
-                                          </a>
-                                       </div>
-                                       <div className='min-h-[350px] h-[60vh] overflow-x-auto flex gap-10 shadow-inner border'>
-                                          {!!values.products.length &&
-                                             values.products.map(
-                                                (product, productIndex) => {
-                                                   futureAddCallbacks = [];
-                                                   futurePopCallbacks = [];
-                                                   return (
-                                                      <div
-                                                         key={productIndex}
-                                                         className='min-w-[450px] p-5 lg:p-10 shadow-lg flex flex-col gap-5'>
-                                                         <div className='flex flex-col gap-3 border-b border-gray-300 pb-5 spacedout'>
-                                                            <div className='flex items-center gap-5'>
-                                                               <div className='grow'>
-                                                                  <label>
-                                                                     Product
-                                                                     name
-                                                                  </label>
-                                                                  <Field
-                                                                     type='text'
-                                                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                                     name={`products.${productIndex}.name`}
-                                                                  />
-                                                                  <ErrorMessage
-                                                                     name={`products.${productIndex}.name`}>
-                                                                     {(msg) => (
-                                                                        <div className='text-lg text-rose-500'>
-                                                                           {msg}
-                                                                        </div>
-                                                                     )}
-                                                                  </ErrorMessage>
-                                                               </div>
-                                                               <FontAwesomeIcon
-                                                                  onClick={() => {
-                                                                     deleteConfig.closeCallback =
-                                                                        toggleDeleteDialog;
-                                                                     deleteConfig.okCallback =
-                                                                        () => {
-                                                                           remove(
-                                                                              productIndex
+                        {({ values, isSubmitting, isValid }) => {
+                           return (
+                              <Form>
+                                 <FieldArray name='products'>
+                                    {({ push, remove, form }) => {
+                                       productsFutures.current =
+                                          values.products[0].futures.map(
+                                             () => emptyFuture
+                                          );
+                                       return (
+                                          <>
+                                             <div className='flex justify-end mb-5'>
+                                                <a
+                                                   onClick={() => {
+                                                      addProductCallback(push);
+                                                   }}
+                                                   className='btn blue-gradient text-black-eerie hover:text-white'>
+                                                   <b>+</b> Add new product
+                                                </a>
+                                             </div>
+                                             <div className='p-5 min-h-[350px] h-[58vh] overflow-x-auto flex gap-5 shadow-inner border'>
+                                                {!!values.products.length &&
+                                                   values.products.map(
+                                                      (
+                                                         product,
+                                                         productIndex
+                                                      ) => {
+                                                         futurePopCallbacks =
+                                                            [];
+                                                         return (
+                                                            <div
+                                                               key={
+                                                                  productIndex
+                                                               }
+                                                               className='min-w-[450px] p-5 lg:p-7 shadow-lg flex flex-col gap-5'>
+                                                               <div className='flex flex-col gap-3 border-b border-gray-300 pb-5 spacedout'>
+                                                                  <div className='flex items-center gap-5'>
+                                                                     <div className='grow'>
+                                                                        <label>
+                                                                           Product
+                                                                           name
+                                                                        </label>
+                                                                        <Field
+                                                                           type='text'
+                                                                           className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                                           name={`products.${productIndex}.name`}
+                                                                        />
+                                                                        <ErrorMessage
+                                                                           name={`products.${productIndex}.name`}>
+                                                                           {(
+                                                                              msg
+                                                                           ) => (
+                                                                              <div className='text-lg text-rose-500'>
+                                                                                 {
+                                                                                    msg
+                                                                                 }
+                                                                              </div>
+                                                                           )}
+                                                                        </ErrorMessage>
+                                                                     </div>
+                                                                     <FontAwesomeIcon
+                                                                        onClick={() => {
+                                                                           deleteConfig.closeCallback =
+                                                                              toggleDeleteDialog;
+                                                                           deleteConfig.okCallback =
+                                                                              () => {
+                                                                                 remove(
+                                                                                    productIndex
+                                                                                 );
+                                                                              };
+                                                                           toggleDeleteDialog(
+                                                                              deleteConfig
                                                                            );
-                                                                        };
-                                                                     toggleDeleteDialog(
-                                                                        deleteConfig
+                                                                        }}
+                                                                        className='w-7 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+                                                                        icon={
+                                                                           faTrash
+                                                                        }
+                                                                     />
+                                                                  </div>
+                                                               </div>
+                                                               <FieldArray
+                                                                  name={`products.${productIndex}.futures`}>
+                                                                  {({
+                                                                     remove,
+                                                                     push,
+                                                                     form,
+                                                                  }) => {
+                                                                     addFutureCallback(
+                                                                        product,
+                                                                        push
+                                                                     );
+                                                                     return (
+                                                                        <div className='overflow-y-auto'>
+                                                                           {!!product
+                                                                              .futures
+                                                                              ?.length &&
+                                                                              product.futures.map(
+                                                                                 (
+                                                                                    future,
+                                                                                    futureIndex
+                                                                                 ) => {
+                                                                                    if (
+                                                                                       futureIndex ===
+                                                                                       product
+                                                                                          .futures
+                                                                                          .length -
+                                                                                          1
+                                                                                    ) {
+                                                                                       futurePopCallbacks.push(
+                                                                                          () => {
+                                                                                             if (
+                                                                                                product
+                                                                                                   .futures
+                                                                                                   ?.length >
+                                                                                                1
+                                                                                             ) {
+                                                                                                remove(
+                                                                                                   futureIndex
+                                                                                                ); // to pop the last future
+                                                                                             }
+                                                                                          }
+                                                                                       );
+                                                                                    }
+                                                                                    return (
+                                                                                       <div
+                                                                                          key={
+                                                                                             futureIndex
+                                                                                          }
+                                                                                          className='flex flex-col border-b border-gray-300 pb-3 spacedout'>
+                                                                                          <div className='flex'>
+                                                                                             <div className='grow p-2'>
+                                                                                                <label>
+                                                                                                   {futureIndex ===
+                                                                                                   0
+                                                                                                      ? `Present`
+                                                                                                      : `Future ${futureIndex}`}{" "}
+                                                                                                </label>
+                                                                                                <Field
+                                                                                                   type='number'
+                                                                                                   min='2023'
+                                                                                                   max='2099'
+                                                                                                   className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                                                                   placeholder='year'
+                                                                                                   name={`products.${productIndex}.futures.${futureIndex}.year`}
+                                                                                                />
+                                                                                                <ErrorMessage
+                                                                                                   name={`products.${productIndex}.futures.${futureIndex}.year`}>
+                                                                                                   {(
+                                                                                                      msg
+                                                                                                   ) => (
+                                                                                                      <div className='text-lg text-rose-500'>
+                                                                                                         {
+                                                                                                            msg
+                                                                                                         }
+                                                                                                      </div>
+                                                                                                   )}
+                                                                                                </ErrorMessage>
+                                                                                             </div>
+                                                                                             <div className='grow p-2'>
+                                                                                                <label className='rbreath'>
+                                                                                                   Level
+                                                                                                </label>
+                                                                                                <Field
+                                                                                                   as='select'
+                                                                                                   name={`products.${productIndex}.futures.${futureIndex}.level`}
+                                                                                                   className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         1
+                                                                                                      }>
+                                                                                                      Settler
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         2
+                                                                                                      }>
+                                                                                                      Migrator
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         3
+                                                                                                      }>
+                                                                                                      Pioneer
+                                                                                                   </option>
+                                                                                                </Field>
+                                                                                                <ErrorMessage
+                                                                                                   name={`products.${productIndex}.futures.${futureIndex}.level`}>
+                                                                                                   {(
+                                                                                                      msg
+                                                                                                   ) => (
+                                                                                                      <div className='text-lg text-rose-500'>
+                                                                                                         {
+                                                                                                            msg
+                                                                                                         }
+                                                                                                      </div>
+                                                                                                   )}
+                                                                                                </ErrorMessage>
+                                                                                             </div>
+                                                                                             <div className='grow p-2'>
+                                                                                                <label>
+                                                                                                   Sales
+                                                                                                   (%)
+                                                                                                </label>
+                                                                                                <Field
+                                                                                                   as='select'
+                                                                                                   name={`products.${productIndex}.futures.${futureIndex}.sales`}
+                                                                                                   min='0'
+                                                                                                   max='100'
+                                                                                                   className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         0
+                                                                                                      }>
+                                                                                                      0
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         10
+                                                                                                      }>
+                                                                                                      10
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         20
+                                                                                                      }>
+                                                                                                      20
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         30
+                                                                                                      }>
+                                                                                                      30
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         40
+                                                                                                      }>
+                                                                                                      40
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         50
+                                                                                                      }>
+                                                                                                      50
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         60
+                                                                                                      }>
+                                                                                                      60
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         70
+                                                                                                      }>
+                                                                                                      70
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         80
+                                                                                                      }>
+                                                                                                      80
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         90
+                                                                                                      }>
+                                                                                                      90
+                                                                                                   </option>
+                                                                                                   <option
+                                                                                                      value={
+                                                                                                         100
+                                                                                                      }>
+                                                                                                      100
+                                                                                                   </option>
+                                                                                                </Field>
+                                                                                                <ErrorMessage
+                                                                                                   name={`products.${productIndex}.futures.${futureIndex}.sales`}>
+                                                                                                   {(
+                                                                                                      msg
+                                                                                                   ) => (
+                                                                                                      <div className='text-lg text-rose-500'>
+                                                                                                         {
+                                                                                                            msg
+                                                                                                         }
+                                                                                                      </div>
+                                                                                                   )}
+                                                                                                </ErrorMessage>
+                                                                                             </div>
+                                                                                          </div>
+                                                                                       </div>
+                                                                                    );
+                                                                                 }
+                                                                              )}
+                                                                           {!product
+                                                                              .futures
+                                                                              .length &&
+                                                                              !!objectPath.get(
+                                                                                 form,
+                                                                                 `errors.products.${productIndex}.futures`
+                                                                              ) && (
+                                                                                 <div className='w-full flex items-center'>
+                                                                                    <p className='grow text-lg p-3 text-center bg-rose-50 text-rose-500'>
+                                                                                       {objectPath.get(
+                                                                                          form,
+                                                                                          `errors.products.${productIndex}.futures`
+                                                                                       )}
+                                                                                    </p>
+                                                                                 </div>
+                                                                              )}
+                                                                        </div>
                                                                      );
                                                                   }}
-                                                                  className='w-7 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
-                                                                  icon={faTrash}
-                                                               />
+                                                               </FieldArray>
                                                             </div>
-                                                         </div>
-                                                         <FieldArray
-                                                            name={`products.${productIndex}.futures`}>
-                                                            {({
-                                                               remove,
-                                                               push,
-                                                               form,
-                                                            }) => {
-                                                               futureAddCallbacks.push(
-                                                                  () => {
-                                                                     push(
-                                                                        emptyFuture
-                                                                     );
-                                                                     console.log(
-                                                                        "hi"
-                                                                     );
-                                                                  }
-                                                               );
-                                                               return (
-                                                                  <div className='px-5 overflow-y-auto'>
-                                                                     {!!product
-                                                                        .futures
-                                                                        ?.length &&
-                                                                        product.futures.map(
-                                                                           (
-                                                                              future,
-                                                                              futureIndex
-                                                                           ) => {
-                                                                              if (
-                                                                                 futureIndex ===
-                                                                                 product
-                                                                                    .futures
-                                                                                    .length -
-                                                                                    1
-                                                                              ) {
-                                                                                 futurePopCallbacks.push(
-                                                                                    () => {
-                                                                                       if (
-                                                                                          !!product
-                                                                                             .futures
-                                                                                             ?.length
-                                                                                       ) {
-                                                                                          remove(
-                                                                                             futureIndex
-                                                                                          ); // to pop the last future
-                                                                                       }
-                                                                                    }
-                                                                                 );
-                                                                              }
-                                                                              return (
-                                                                                 <div
-                                                                                    key={
-                                                                                       futureIndex
-                                                                                    }
-                                                                                    className='flex flex-col border-b border-gray-300 pb-3 spacedout'>
-                                                                                    <div className='flex'>
-                                                                                       <div className='grow p-2'>
-                                                                                          <label>
-                                                                                             {futureIndex ===
-                                                                                             0
-                                                                                                ? `Present`
-                                                                                                : `Future ${futureIndex}`}{" "}
-                                                                                          </label>
-                                                                                          <Field
-                                                                                             id='first_date'
-                                                                                             type='text'
-                                                                                             className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                                                             placeholder='year'
-                                                                                             name={`products.${productIndex}.futures.${futureIndex}.year`}
-                                                                                          />
-                                                                                          <ErrorMessage
-                                                                                             name={`products.${productIndex}.futures.${futureIndex}.year`}>
-                                                                                             {(
-                                                                                                msg
-                                                                                             ) => (
-                                                                                                <div className='text-lg text-rose-500'>
-                                                                                                   {
-                                                                                                      msg
-                                                                                                   }
-                                                                                                </div>
-                                                                                             )}
-                                                                                          </ErrorMessage>
-                                                                                       </div>
-                                                                                       <div className='grow p-2'>
-                                                                                          <label className='rbreath'>
-                                                                                             Level
-                                                                                          </label>
-                                                                                          <Field
-                                                                                             as='select'
-                                                                                             name={`products.${productIndex}.futures.${futureIndex}.level`}
-                                                                                             className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   1
-                                                                                                }>
-                                                                                                Settler
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   2
-                                                                                                }>
-                                                                                                Migrator
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   3
-                                                                                                }>
-                                                                                                Pioneer
-                                                                                             </option>
-                                                                                          </Field>
-                                                                                          <ErrorMessage
-                                                                                             name={`products.${productIndex}.futures.${futureIndex}.level`}>
-                                                                                             {(
-                                                                                                msg
-                                                                                             ) => (
-                                                                                                <div className='text-lg text-rose-500'>
-                                                                                                   {
-                                                                                                      msg
-                                                                                                   }
-                                                                                                </div>
-                                                                                             )}
-                                                                                          </ErrorMessage>
-                                                                                       </div>
-                                                                                       <div className='grow p-2'>
-                                                                                          <label>
-                                                                                             Sales
-                                                                                             (%)
-                                                                                          </label>
-                                                                                          <Field
-                                                                                             as='select'
-                                                                                             name={`products.${productIndex}.futures.${futureIndex}.sales`}
-                                                                                             min='0'
-                                                                                             max='100'
-                                                                                             className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   0
-                                                                                                }>
-                                                                                                0
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   10
-                                                                                                }>
-                                                                                                10
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   20
-                                                                                                }>
-                                                                                                20
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   30
-                                                                                                }>
-                                                                                                30
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   40
-                                                                                                }>
-                                                                                                40
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   50
-                                                                                                }>
-                                                                                                50
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   60
-                                                                                                }>
-                                                                                                60
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   70
-                                                                                                }>
-                                                                                                70
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   80
-                                                                                                }>
-                                                                                                80
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   90
-                                                                                                }>
-                                                                                                90
-                                                                                             </option>
-                                                                                             <option
-                                                                                                value={
-                                                                                                   100
-                                                                                                }>
-                                                                                                100
-                                                                                             </option>
-                                                                                          </Field>
-                                                                                          <ErrorMessage
-                                                                                             name={`products.${productIndex}.futures.${futureIndex}.sales`}>
-                                                                                             {(
-                                                                                                msg
-                                                                                             ) => (
-                                                                                                <div className='text-lg text-rose-500'>
-                                                                                                   {
-                                                                                                      msg
-                                                                                                   }
-                                                                                                </div>
-                                                                                             )}
-                                                                                          </ErrorMessage>
-                                                                                       </div>
-                                                                                    </div>
-                                                                                 </div>
-                                                                              );
-                                                                           }
-                                                                        )}
-                                                                     {!product
-                                                                        .futures
-                                                                        .length &&
-                                                                        !!objectPath.get(
-                                                                           form,
-                                                                           `errors.products.${productIndex}.futures`
-                                                                        ) && (
-                                                                           <div className='w-full flex items-center'>
-                                                                              <p className='grow text-lg p-3 text-center bg-rose-50 text-rose-500'>
-                                                                                 {objectPath.get(
-                                                                                    form,
-                                                                                    `errors.products.${productIndex}.futures`
-                                                                                 )}
-                                                                              </p>
-                                                                           </div>
-                                                                        )}
-                                                                  </div>
-                                                               );
-                                                            }}
-                                                         </FieldArray>
+                                                         );
+                                                      }
+                                                   )}
+                                                {!values.products.length &&
+                                                   form.errors?.products && (
+                                                      <div className='w-full flex justify-center items-center'>
+                                                         <p className='text-2xl p-10 text-center bg-rose-50 text-rose-500'>
+                                                            {
+                                                               form.errors
+                                                                  .products
+                                                            }
+                                                         </p>
                                                       </div>
-                                                   );
-                                                }
-                                             )}
-                                          {!values.products.length &&
-                                             form.errors?.products && (
-                                                <div className='w-full flex justify-center items-center'>
-                                                   <p className='text-2xl p-10 text-center bg-rose-50 text-rose-500'>
-                                                      {form.errors.products}
-                                                   </p>
-                                                </div>
-                                             )}
-                                       </div>
-                                    </>
-                                 )}
-                              </FieldArray>
-                              <div className='hidden flex gap-3 mt-10'>
-                                 <button type='submit' className='btn-rev'>
-                                    Add and generate
-                                 </button>
-                                 <Link
-                                    href='/'
-                                    className='btn text-black-eerie hover:text-blue-ncs'>
-                                    <strong>Back To Dashboard</strong>
-                                 </Link>
-                              </div>
-                              <div className='flex gap-3 justify-between mt-10'>
-                                 <div className='flex gap-3'>
-                                    <button
-                                       type='submit'
-                                       className={
-                                          isSubmitting || !isValid
-                                             ? "btn-rev btn-disabled"
-                                             : "btn-rev"
-                                       }
-                                       disabled={isSubmitting || !isValid}>
-                                       Save and generate {console.log("hello")}
+                                                   )}
+                                             </div>
+                                          </>
+                                       );
+                                    }}
+                                 </FieldArray>
+                                 <div className='hidden flex gap-3 mt-10'>
+                                    <button type='submit' className='btn-rev'>
+                                       Add and generate
                                     </button>
                                     <Link
                                        href='/'
@@ -684,41 +701,62 @@ const Products = () => {
                                        <strong>Back To Dashboard</strong>
                                     </Link>
                                  </div>
-                                 <button
-                                    type='button'
-                                    onClick={() => {
-                                       futurePopCallbacks.forEach(
-                                          (callback) => {
-                                             callback();
+                                 <div className='flex gap-3 justify-between mt-10'>
+                                    <div className='flex gap-3'>
+                                       <button
+                                          type='submit'
+                                          className={
+                                             isSubmitting || !isValid
+                                                ? "btn-rev btn-disabled"
+                                                : "btn-rev"
                                           }
-                                       );
-                                    }}
-                                    className='inline-flex items-center gap-3 text-lg p-3 btn hover:text-rose-500'>
-                                    <span>remove last Future</span>
-                                    <FontAwesomeIcon
-                                       className='w-7 h-auto cursor-pointer text-rose-300 '
-                                       icon={faTrash}
-                                    />
-                                 </button>
-                                 <button
-                                    type='button'
-                                    onClick={() => {
-                                       futureAddCallbacks.forEach(
-                                          (callback) => {
-                                             callback();
-                                          }
-                                       );
-                                    }}
-                                    className='inline-flex items-center gap-3 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>
-                                    <span>Add a Future</span>
-                                    <FontAwesomeIcon
-                                       className='w-7 h-auto cursor-pointer text-white'
-                                       icon={faCirclePlus}
-                                    />
-                                 </button>
-                              </div>
-                           </Form>
-                        )}
+                                          disabled={isSubmitting || !isValid}>
+                                          Save and generate{" "}
+                                       </button>
+                                       <Link
+                                          href='/'
+                                          className='btn text-black-eerie hover:text-blue-ncs'>
+                                          <strong>Back To Dashboard</strong>
+                                       </Link>
+                                    </div>
+                                    {productsFutures.current.length > 1 && (
+                                       <button
+                                          type='button'
+                                          onClick={() => {
+                                             futurePopCallbacks.forEach(
+                                                (callback) => {
+                                                   callback();
+                                                }
+                                             );
+                                          }}
+                                          className='inline-flex items-center gap-3 text-lg p-3 btn text-rose-400 hover:text-rose-500'>
+                                          <span>remove last Future</span>
+                                          <FontAwesomeIcon
+                                             className='w-7 h-auto cursor-pointer hover:text-rose-500'
+                                             icon={faMinusCircle}
+                                          />
+                                       </button>
+                                    )}
+                                    <button
+                                       type='button'
+                                       onClick={() => {
+                                          futureAddCallbacks.forEach(
+                                             (callback) => {
+                                                callback();
+                                             }
+                                          );
+                                       }}
+                                       className='inline-flex items-center gap-3 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>
+                                       <span>Add a Future</span>
+                                       <FontAwesomeIcon
+                                          className='w-7 h-auto cursor-pointer text-white'
+                                          icon={faCirclePlus}
+                                       />
+                                    </button>
+                                 </div>
+                              </Form>
+                           );
+                        }}
                      </Formik>
                   </div>
                   <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
