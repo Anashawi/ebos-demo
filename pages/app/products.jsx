@@ -16,102 +16,7 @@ import * as Yup from "yup";
 import useConfirmDialog from "../../hooks/use-confirm-dialog";
 import ConfirmModal from "../../components/common/confirm-dialog";
 import objectPath from "object-path";
-
-class ProductFuture {
-   id;
-   product_id;
-   year;
-   level;
-   sales;
-}
-
-class Product {
-   id = 1;
-   name = "Product Example 1";
-   futures = [
-      {
-         id: 10,
-         product_id: 2,
-         year: 2023,
-         level: 1,
-         sales: 70,
-      },
-      {
-         id: 11,
-         product_id: 2,
-         year: 2025,
-         level: 1,
-         sales: 50,
-      },
-      {
-         id: 12,
-         product_id: 2,
-         year: 2027,
-         level: 1,
-         sales: 50,
-      },
-   ];
-}
-
-const products_dummy = [
-   new Product(),
-   {
-      id: 2,
-      name: "Product Example 2",
-      futures: [
-         {
-            id: 13,
-            product_id: 3,
-            year: 2023,
-            level: 3,
-            sales: 50,
-         },
-         {
-            id: 14,
-            product_id: 3,
-            year: 2025,
-            level: 1,
-            sales: 80,
-         },
-         {
-            id: 15,
-            product_id: 3,
-            year: 2027,
-            level: 2,
-            sales: 70,
-         },
-      ],
-      hasAddFutureCallback: false,
-   },
-   {
-      id: 3,
-      name: "Product Example 3",
-      futures: [
-         {
-            id: 13,
-            product_id: 3,
-            year: 2023,
-            level: 3,
-            sales: 50,
-         },
-         {
-            id: 14,
-            product_id: 3,
-            year: 2025,
-            level: 1,
-            sales: 80,
-         },
-         {
-            id: 15,
-            product_id: 3,
-            year: 2027,
-            level: 2,
-            sales: 70,
-         },
-      ],
-      hasAddFutureCallback: false,
-   },
-];
+import products_dummy from "../../samples/products.json";
 
 const Products = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -226,10 +131,11 @@ const Products = () => {
    }, []);
    const emptyProduct = {
       id: 0,
-      name: "Product Example 2",
+      name: "",
       futures: [],
       hasAddFutureCallback: false,
    };
+
    const productsFutures = useRef([]);
 
    let addProductCallback = useMemo(() => {

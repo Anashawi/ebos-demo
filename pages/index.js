@@ -2,7 +2,6 @@ import Login from '../components/auth/login';
 import Signup from '../components/auth/signup';
 import DesktopHomepage from '../components/homepage/desktop-homepage';
 import PhabletHomepage from '../components/homepage/phablet-homepage';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
