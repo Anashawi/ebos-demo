@@ -133,7 +133,7 @@ const Goals = () => {
                                                 Save and submit
                                              </button>
                                              <a
-                                                href='/ebos'
+                                                href='/'
                                                 className='btn text-black-eerie hover:text-blue-ncs'>
                                                 <strong>
                                                    Back To Dashboard

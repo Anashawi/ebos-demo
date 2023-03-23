@@ -89,9 +89,11 @@ const NonCustomers = () => {
                            <button id='generate' className='btn'>
                               Save
                            </button>
-                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
+                           <Link
+                              href='/'
+                              className='btn text-black-eerie hover:text-blue-ncs'>
                               <strong>Back To Dashboard</strong>
-                           </a>
+                           </Link>
                         </div>
                      </div>
                      <div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
