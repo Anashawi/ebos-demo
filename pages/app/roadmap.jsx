@@ -30,7 +30,7 @@ const Roadmap = () => {
                            <div className='w-[110px] h-[33px]'>
                               <Image
                                  width='55'
-                                 height='0'
+                                 height='30'
                                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                                  alt='CaseInPoint'
                               />
