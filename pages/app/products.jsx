@@ -68,10 +68,18 @@ const Products = () => {
          title: "Product future",
          colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
          legend: {
-            position: "top",
+            position: "right",
+            textStyle: {
+               fontSize: 14,
+            },
          },
          tooltip: {
             trigger: "none",
+         },
+         plugins: {
+            legend: {
+               display: true,
+            },
          },
          hAxis: {
             textStyle: {
@@ -112,7 +120,7 @@ const Products = () => {
             },
          },
          chartArea: {
-            left: 50,
+            left: 80,
             top: 0,
             width: "100%",
             height: "90%",
