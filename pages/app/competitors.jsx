@@ -442,7 +442,10 @@ const Competitors = () => {
                                                                   </FieldArray>
                                                                </div>
                                                             </div>
-                                                            <div className='md:w-[34%] px-10'>
+                                                            <div className='flex flex-col gap-5 md:w-[34%] px-10'>
+                                                               <h1 className='text-white text-3xl'>
+                                                                  {product.name}
+                                                               </h1>
                                                                <Chart
                                                                   chartType='PieChart'
                                                                   width='100%'
