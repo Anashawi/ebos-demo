@@ -23,9 +23,9 @@ const ideas_dummy = [
 ];
 
 const IdeasModal = ({ isOpen, toggle }) => {
-   if (!isOpen) return;
-
    const [ideas, setIdeas] = useState(ideas_dummy);
+
+   if (!isOpen) return <></>;
 
    return (
       <>

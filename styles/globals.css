@@ -185,6 +185,14 @@ li {
   background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
 
+.products-gradient {
+  background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
+}
+
+.products-revese-gradient {
+  background: linear-gradient(270deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
+}
+
 .market-potential-gradient {
   background: linear-gradient(90deg, #fff 0%, #fff 64%, #86bf44 64%, #1caa55 100%);
 }

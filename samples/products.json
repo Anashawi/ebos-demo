@@ -250,14 +250,14 @@
             "product_id": "3",
             "year": 2023,
             "level": 3,
-            "sales": 50
+            "sales": 20
          },
          {
             "id": "14",
             "product_id": "3",
             "year": 2025,
             "level": 1,
-            "sales": 80
+            "sales": 10
          },
          {
             "id": "15",
@@ -270,7 +270,7 @@
       "hasAddFutureCallback": false
    },
    {
-      "id": "3",
+      "id": "4",
       "name": "Product Example 4",
       "competitors": [
          {
@@ -294,22 +294,22 @@
             "id": "14",
             "product_id": "3",
             "year": 2023,
-            "level": 3,
-            "sales": 41
+            "level": 1,
+            "sales": 20
          },
          {
             "id": "14",
             "product_id": "3",
             "year": 2025,
             "level": 1,
-            "sales": 41
+            "sales": 60
          },
          {
             "id": "15",
             "product_id": "3",
             "year": 2027,
-            "level": 2,
-            "sales": 18
+            "level": 3,
+            "sales": 20
          }
       ],
       "hasAddFutureCallback": false

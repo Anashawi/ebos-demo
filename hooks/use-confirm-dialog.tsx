@@ -10,7 +10,7 @@ const initialConfig = {
    closeCallback: () => {},
 };
 
-const useConfirmDialog = (config = { ...initialConfig }) => {
+const useConfirmDialog = (config = { ...initialConfig }): any[] => {
    const [dialogConfig, setDialogConfig] = useState(config);
 
    const toggle = (newConfig = null) => {
