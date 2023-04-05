@@ -215,7 +215,7 @@ const Competitors = () => {
                                     {({ push, remove, form }) => {
                                        generalizeProductsPush(push);
                                        return (
-                                          <div>
+                                          <div className='flex flex-col gap-12'>
                                              <div className='flex flex-col gap-10'>
                                                 {!values.products?.length && (
                                                    <p>
@@ -467,10 +467,12 @@ const Competitors = () => {
                                                       )
                                                    )}
                                              </div>
-                                             <div className='pt-10 md:w-[66%] pr-12 flex flex-col'>
-                                                <label>Add a Product</label>
+                                             <div className='py-10 md:w-[66%] pr-12 flex items-center gap-5'>
+                                                <label className='text-yellow-green font-semibold text-3xl'>
+                                                   Show more products
+                                                </label>
                                                 <select
-                                                   className='min-w-[200px] w-1/2 p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                   className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                                    value={0}
                                                    onChange={(e) => {
                                                       const productToAdd =

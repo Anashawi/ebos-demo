@@ -16,9 +16,9 @@ const Roadmap = () => {
                      <div className='flex gap-5 justify-between items-center pb-5'>
                         <div>
                            <strong className='mr-1'>Mustafa Khairy </strong> |
-                           <a href='http://bo.adpadelhouse.com/logout'>
+                           <Link href='http://bo.adpadelhouse.com/logout'>
                               logout
-                           </a>
+                           </Link>
                         </div>
                         <Link href='/' className='logo-pane mb-0'>
                            <h4 className='text-[3rem] text-yellow-green'>
@@ -109,7 +109,7 @@ const Roadmap = () => {
                                  name='ideas[]'
                                  id=''
                                  className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
-                                 <option value='1' selected='selected'>
+                                 <option value='1' selected={true}>
                                     some ideas
                                  </option>
                                  <option value='2'> idea 2 </option>
@@ -125,7 +125,7 @@ const Roadmap = () => {
                                     className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                     <option
                                        value='2023-03-01 00:00:00'
-                                       selected='selected'>
+                                       selected={true}>
                                        Mar 2023
                                     </option>
                                     <option value='2023-04-01 00:00:00'>
@@ -253,7 +253,7 @@ const Roadmap = () => {
                                  id=''
                                  className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                  <option value='1'> some ideas </option>
-                                 <option value='2' selected='selected'>
+                                 <option value='2' selected={true}>
                                     idea 2
                                  </option>
                                  <option value='3'> idea 3 </option>
@@ -268,7 +268,7 @@ const Roadmap = () => {
                                     className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                     <option
                                        value='2023-03-01 00:00:00'
-                                       selected='selected'>
+                                       selected={true}>
                                        Mar 2023
                                     </option>
                                     <option value='2023-04-01 00:00:00'>
@@ -398,7 +398,7 @@ const Roadmap = () => {
                                  className='w-full grow px-[1.6rem] py-[1rem] bg-gray-100 outline-none caret-dark-blue border-none'>
                                  <option value='1'> some ideas </option>
                                  <option value='2'> idea 2 </option>
-                                 <option value='3' selected='selected'>
+                                 <option value='3' selected={true}>
                                     idea 3
                                  </option>
                               </select>
@@ -418,7 +418,7 @@ const Roadmap = () => {
                                     </option>
                                     <option
                                        value='2023-05-01 00:00:00'
-                                       selected='selected'>
+                                       selected={true}>
                                        May 2023
                                     </option>
                                     <option value='2023-06-01 00:00:00'>
@@ -535,15 +535,17 @@ const Roadmap = () => {
                         </li>
                      </ul>
                      <div className='flex gap-5 my-10'>
-                        <a className='btn blue-gradient text-black-eerie hover:text-white'>
+                        <Link
+                           href=''
+                           className='btn blue-gradient text-black-eerie hover:text-white'>
                            + Add another
-                        </a>
+                        </Link>
                         <button className='btn-rev'>Generate</button>
-                        <a
+                        <Link
                            href='/'
                            className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
-                        </a>
+                        </Link>
                      </div>
                   </div>
                </div>
@@ -1338,7 +1340,6 @@ const Roadmap = () => {
                            </div>
                         </div>
                      </div>
-
                      <button
                         className='btn text-black-eerie'
                         data-name='Road Map'

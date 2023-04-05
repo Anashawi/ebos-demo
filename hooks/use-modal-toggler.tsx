@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const useModalToggler = () => {
-   const [isShown, setToggler] = useState(false);
+   const [isShown, setToggler] = useState<any>(false);
 
    const toggle = () => {
       setToggler(!isShown);

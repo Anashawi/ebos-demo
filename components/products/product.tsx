@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Chart, { ReactGoogleChartProps } from "react-google-charts";
 import {
    faCirclePlus,
+   faEyeSlash,
    faMinusCircle,
    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -17,10 +18,10 @@ import ConfirmModal from "../common/confirm-dialog";
 type Props = {
    product: ProductModel;
    index: number;
-   remove: any;
+   onRemove: any;
 };
 
-const Product: NextPage<Props> = ({ product, index, remove }) => {
+const Product: NextPage<Props> = ({ product, index, onRemove }) => {
    let deleteConfig: ConfirmDialog = {
       isShown: false,
       title: "Delete Product",
@@ -158,7 +159,7 @@ const Product: NextPage<Props> = ({ product, index, remove }) => {
                               )}
                            </ErrorMessage>
                         </div>
-                        <FontAwesomeIcon
+                        {/* <FontAwesomeIcon
                            onClick={() => {
                               deleteConfig.closeCallback = toggleDeleteDialog;
                               deleteConfig.okCallback = () => {
@@ -168,7 +169,14 @@ const Product: NextPage<Props> = ({ product, index, remove }) => {
                            }}
                            className='w-7 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
                            icon={faTrash}
-                        />
+                        /> */}
+                        <div className='flex justify-end mb-5'>
+                           <FontAwesomeIcon
+                              onClick={onRemove}
+                              className='w-9 cursor-pointer text-rose-200 hover:text-rose-500'
+                              icon={faEyeSlash}
+                           />
+                        </div>
                      </div>
                   </div>
                   <FieldArray name={`products.${index}.futures`}>

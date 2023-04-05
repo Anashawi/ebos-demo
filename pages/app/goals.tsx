@@ -28,7 +28,10 @@ const Goals = () => {
                   <div className='md:w-1/2 bg-white p-12 relative'>
                      <div className='pb-5'>
                         <strong className='mr-1'>Mustafa Khairy </strong> |
-                        <a href='http://bo.adpadelhouse.com/logout'> logout </a>
+                        <Link href='http://bo.adpadelhouse.com/logout'>
+                           {" "}
+                           logout{" "}
+                        </Link>
                      </div>
                      <h3 className='text-[2.52rem] mb-6 text-yellow-green'>
                         Goals
@@ -39,9 +42,9 @@ const Goals = () => {
                            id='datepicker'
                            type='date'
                            placeholder='31-12-2020'
-                           className='p-3 bg-gray-100 outline-none caret-dark-blue border-none p-3 grow'
+                           className='p-3 bg-gray-100 outline-none caret-dark-blue border-none grow'
                            value={targetDate}
-                           onChange={(e) => {
+                           onChange={(e: any) => {
                               setTargetDate(e.target.value);
                            }}
                         />
@@ -86,13 +89,14 @@ const Goals = () => {
                                                          name={`goals.${index}`}
                                                          placeholder='Enter goal and add another'
                                                       />
-                                                      <a
+                                                      <Link
+                                                         href=''
                                                          onClick={() => {
                                                             remove(index);
                                                          }}
                                                          className='btn-delete mt-2'>
                                                          x
-                                                      </a>
+                                                      </Link>
                                                    </li>
                                                    <ErrorMessage
                                                       name={`goals.${index}`}>
@@ -107,19 +111,20 @@ const Goals = () => {
                                           {!values.goals.length &&
                                              form.errors?.goals && (
                                                 <p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
-                                                   {form.errors.goals}
+                                                   <>{form.errors.goals}</>
                                                 </p>
                                              )}
                                        </ul>
                                        <div className='flex justify-between items-center'>
                                           <div className='flex gap-3'>
-                                             <a
+                                             <Link
+                                                href=''
                                                 onClick={() => {
                                                    push("");
                                                 }}
                                                 className='btn blue-gradient text-black-eerie hover:text-white'>
                                                 + Add
-                                             </a>
+                                             </Link>
                                              <button
                                                 type='submit'
                                                 className={
@@ -132,16 +137,19 @@ const Goals = () => {
                                                 }>
                                                 Save and submit
                                              </button>
-                                             <a
+                                             <Link
                                                 href='/'
                                                 className='btn text-black-eerie hover:text-blue-ncs'>
                                                 <strong>
                                                    Back To Dashboard
                                                 </strong>
-                                             </a>
+                                             </Link>
                                           </div>
                                           {isSubmitting && (
-                                             <Spinner message='Saving Goals' />
+                                             <Spinner
+                                                className=''
+                                                message='Saving Goals'
+                                             />
                                           )}
                                        </div>
                                     </>

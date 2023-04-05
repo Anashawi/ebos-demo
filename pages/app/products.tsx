@@ -1,34 +1,18 @@
-import {
-   faCirclePlus,
-   faMinusCircle,
-   faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import * as Yup from "yup";
-import useConfirmDialog from "../../hooks/use-confirm-dialog";
-import ConfirmModal from "../../components/common/confirm-dialog";
-import objectPath from "object-path";
 import products_dummy from "../../samples/products.json";
-import { ProductModel } from "../../models/products/product";
-import { ConfirmDialog } from "../../models/common/confirm-dialog";
 import Product from "../../components/products/product";
+import { useState } from "react";
 
 const Products = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 
-   const emptyProduct = {
-      id: "0",
-      name: "",
-      futures: [],
-      competitors: [],
-      hasAddFutureCallback: false,
-   };
+   const [lookupProducts, setLookupProducts] = useState(
+      products_dummy.slice(1, 3)
+   );
 
    return (
       <>
@@ -47,7 +31,12 @@ const Products = () => {
                      </h3>
                      <Formik
                         initialValues={{
-                           products: products_dummy,
+                           products: products_dummy.filter(
+                              (prod) =>
+                                 !lookupProducts.some(
+                                    (lookupProd) => lookupProd.id === prod.id
+                                 )
+                           ),
                         }}
                         validationSchema={Yup.object({
                            products: Yup.array(
@@ -98,12 +87,8 @@ const Products = () => {
                               <Form>
                                  <FieldArray name='products'>
                                     {({ push, remove, form }) => {
-                                       // productsFutures.current =
-                                       //    values.products[0].futures.map(
-                                       //       () => emptyFuture
-                                       //    );
                                        return (
-                                          <>
+                                          <div className='flex flex-col gap-12'>
                                              <div className='py-5 flex flex-col gap-12'>
                                                 {!!values.products.length &&
                                                    values.products.map(
@@ -118,7 +103,19 @@ const Products = () => {
                                                                index={
                                                                   productIndex
                                                                }
-                                                               remove={remove}
+                                                               onRemove={() => {
+                                                                  setLookupProducts(
+                                                                     (
+                                                                        prevValue
+                                                                     ) => [
+                                                                        ...prevValue,
+                                                                        product,
+                                                                     ]
+                                                                  );
+                                                                  remove(
+                                                                     productIndex
+                                                                  );
+                                                               }}
                                                             />
                                                          </div>
                                                       )
@@ -137,19 +134,46 @@ const Products = () => {
                                                       </div>
                                                    )}
                                              </div>
-                                             <div
-                                                className='flex gap-5 justify-around py-10 my-12 
-                                                   products-revese-gradient border shadow-lg'>
-                                                <a
-                                                   onClick={() => {
-                                                      push(emptyProduct);
-                                                   }}
-                                                   className='inline-flex items-center gap-3 btn blue-gradient 
-                                                      p-5 text-black-eerie hover:text-white text-2xl'>
-                                                   <b>+</b> Add new product
-                                                </a>
+                                             <div className='w-1/2 flex gap-5 items-center pr-5 md:pr-10 py-10'>
+                                                <label className='text-yellow-green font-semibold text-3xl'>
+                                                   Show more products
+                                                </label>
+                                                <select
+                                                   className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                                   value={0}
+                                                   onChange={(e) => {
+                                                      const productToAdd =
+                                                         products_dummy.find(
+                                                            (prod) =>
+                                                               prod.id ===
+                                                               e.target.value
+                                                         );
+                                                      push(productToAdd);
+                                                      setLookupProducts(
+                                                         (prevValue) =>
+                                                            prevValue.filter(
+                                                               (prod) =>
+                                                                  prod.id !==
+                                                                  e.target.value
+                                                            )
+                                                      );
+                                                   }}>
+                                                   <option value={0}>
+                                                      select a product to be
+                                                      displayed
+                                                   </option>
+                                                   {lookupProducts.map(
+                                                      (product, index) => (
+                                                         <option
+                                                            key={index}
+                                                            value={product.id}>
+                                                            {product.name}
+                                                         </option>
+                                                      )
+                                                   )}
+                                                </select>
                                              </div>
-                                          </>
+                                          </div>
                                        );
                                     }}
                                  </FieldArray>
