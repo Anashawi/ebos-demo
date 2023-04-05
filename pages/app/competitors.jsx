@@ -1,48 +1,12 @@
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import * as Yup from "yup";
-import Spinner from "../../components/common/spinner";
 import products_dummy from "../../samples/products.json";
-import { useMemo, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-   faCirclePlus,
-   faEyeSlash,
-   faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
-import Chart from "react-google-charts";
-
-class Competitor {
-   id;
-   name;
-   marketShare;
-}
-const competitors_dummy = [
-   {
-      id: 1,
-      name: "Competitor (ME)",
-      marketShare: 230000,
-   },
-   {
-      id: 2,
-      name: "First Competitor",
-      marketShare: 230000,
-   },
-   {
-      id: 3,
-      name: "Second Competitor",
-      marketShare: 90125,
-   },
-   {
-      id: 4,
-      name: "Third Competitor",
-      marketShare: 110500,
-   },
-];
+import { useState } from "react";
+import CompetitorsProduct from "../../components/competitors/product";
 
 const Competitors = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -50,60 +14,6 @@ const Competitors = () => {
    const [lookupProducts, setLookupProducts] = useState(
       products_dummy.slice(1, 3)
    );
-   let productsFieldArrPush;
-   const generalizeProductsPush = (productsPush) => {
-      productsFieldArrPush = productsPush;
-   };
-
-   const updateChartProps = (prod) => {
-      const rows = prod.competitors?.map((comp) => [
-         comp.name,
-         comp.marketShare,
-      ]);
-      const chart = {
-         id: "0",
-         chartType: "PieChart",
-         width: "100%",
-         height: "400px",
-         options: null,
-         data: null,
-      };
-      chart.data = [["Competitor", "Market share"], ...rows];
-
-      chart.options = {
-         title: "",
-         is3D: true,
-         legend: {
-            position: "right",
-            alignment: "start",
-            textStyle: {
-               fontSize: 14,
-            },
-         },
-         tooltip: { trigger: "none" },
-         bubble: {
-            textStyle: {
-               fontSize: 11,
-            },
-         },
-         chartArea: { left: 50, top: 20, width: "100%", height: "100%" },
-      };
-      prod.chart = chart;
-   };
-
-   useEffect(() => {
-      products_dummy.map((prod) => {
-         updateChartProps(prod);
-      });
-   }, []);
-
-   const emptyCompetitor = useMemo(() => {
-      return {
-         id: "0",
-         name: "",
-         marketShare: 0,
-      };
-   }, []);
 
    return (
       <>
@@ -212,14 +122,14 @@ const Competitors = () => {
                            return (
                               <Form>
                                  <FieldArray name='products'>
-                                    {({ push, remove, form }) => {
-                                       generalizeProductsPush(push);
+                                    {({ push, remove }) => {
                                        return (
                                           <div className='flex flex-col gap-12'>
-                                             <div className='flex flex-col gap-10'>
+                                             <div className='flex flex-col gap-20'>
                                                 {!values.products?.length && (
-                                                   <p>
-                                                      You have no Products yet !
+                                                   <p className='text-rose-300'>
+                                                      make a selection to view
+                                                      products !
                                                    </p>
                                                 )}
                                                 {!!values.products.length &&
@@ -229,240 +139,31 @@ const Competitors = () => {
                                                          productIndex
                                                       ) => (
                                                          <div
-                                                            key={productIndex}
-                                                            className='flex justify-between'>
-                                                            <div className='md:w-[66%] pr-12'>
-                                                               <div
-                                                                  key={
+                                                            key={productIndex}>
+                                                            <CompetitorsProduct
+                                                               product={product}
+                                                               index={
+                                                                  productIndex
+                                                               }
+                                                               onRemove={() => {
+                                                                  setLookupProducts(
+                                                                     (
+                                                                        prevValue
+                                                                     ) => [
+                                                                        ...prevValue,
+                                                                        product,
+                                                                     ]
+                                                                  );
+                                                                  remove(
                                                                      productIndex
-                                                                  }
-                                                                  className='border shadow p-5'>
-                                                                  <div className='flex justify-end mb-5'>
-                                                                     <FontAwesomeIcon
-                                                                        onClick={() => {
-                                                                           setLookupProducts(
-                                                                              (
-                                                                                 prevValue
-                                                                              ) => [
-                                                                                 ...prevValue,
-                                                                                 product,
-                                                                              ]
-                                                                           );
-                                                                           delete product.chart;
-                                                                           remove(
-                                                                              productIndex
-                                                                           );
-                                                                        }}
-                                                                        className='w-9 cursor-pointer text-rose-200 hover:text-rose-500'
-                                                                        icon={
-                                                                           faEyeSlash
-                                                                        }
-                                                                     />
-                                                                  </div>
-                                                                  <FieldArray
-                                                                     name={`products.${productIndex}.competitors`}>
-                                                                     {({
-                                                                        remove,
-                                                                        push,
-                                                                        form,
-                                                                     }) => (
-                                                                        <>
-                                                                           <ul className='flex flex-col gap-5 mb-10'>
-                                                                              {!!product
-                                                                                 .competitors
-                                                                                 ?.length &&
-                                                                                 product.competitors.map(
-                                                                                    (
-                                                                                       comp,
-                                                                                       compIndex
-                                                                                    ) => (
-                                                                                       <li
-                                                                                          key={
-                                                                                             compIndex
-                                                                                          }
-                                                                                          className='flex gap-5 border-b border-gray-400 pb-7 spacedout'>
-                                                                                          {compIndex >
-                                                                                             0 && (
-                                                                                             <>
-                                                                                                <div className='w-full md:w-1/2'>
-                                                                                                   <label>
-                                                                                                      Competitor{" "}
-                                                                                                      {
-                                                                                                         compIndex
-                                                                                                      }
-                                                                                                   </label>
-                                                                                                   <Field
-                                                                                                      type='text'
-                                                                                                      placeholder='name'
-                                                                                                      className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                                                                      name={`products.${productIndex}.competitors.${compIndex}.name`}
-                                                                                                   />
-                                                                                                   <ErrorMessage
-                                                                                                      name={`products.${productIndex}.competitors.${compIndex}.name`}>
-                                                                                                      {(
-                                                                                                         msg
-                                                                                                      ) => (
-                                                                                                         <div className='text-lg text-rose-500'>
-                                                                                                            {
-                                                                                                               msg
-                                                                                                            }
-                                                                                                         </div>
-                                                                                                      )}
-                                                                                                   </ErrorMessage>
-                                                                                                </div>
-                                                                                             </>
-                                                                                          )}
-                                                                                          {compIndex ===
-                                                                                             0 && (
-                                                                                             <>
-                                                                                                <div className='w-full md:w-1/2'>
-                                                                                                   <label>
-                                                                                                      My
-                                                                                                      Product
-                                                                                                   </label>
-                                                                                                   <Field
-                                                                                                      type='text'
-                                                                                                      placeholder='product name'
-                                                                                                      className='opacity-60 pointer-events-none w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                                                                      name={`products.${productIndex}.name`}
-                                                                                                      readOnly
-                                                                                                   />
-                                                                                                </div>
-                                                                                             </>
-                                                                                          )}
-                                                                                          <div className='w-full md:w-1/2'>
-                                                                                             <label>
-                                                                                                {compIndex ===
-                                                                                                0 ? (
-                                                                                                   <span>
-                                                                                                      My
-                                                                                                   </span>
-                                                                                                ) : null}{" "}
-                                                                                                Market
-                                                                                                share
-                                                                                                (USD)
-                                                                                             </label>
-                                                                                             <div className='flex flex-wrap'>
-                                                                                                <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
-                                                                                                   $
-                                                                                                </span>
-                                                                                                <Field
-                                                                                                   type='number'
-                                                                                                   placeholder='percentage'
-                                                                                                   className='grow comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                                                                   name={`products.${productIndex}.competitors.${compIndex}.marketShare`}
-                                                                                                   min='0'
-                                                                                                   max='100'
-                                                                                                />
-                                                                                                <ErrorMessage
-                                                                                                   name={`products.${productIndex}.competitors.${compIndex}.marketShare`}>
-                                                                                                   {(
-                                                                                                      msg
-                                                                                                   ) => (
-                                                                                                      <div className='w-full text-lg text-rose-500'>
-                                                                                                         {
-                                                                                                            msg
-                                                                                                         }
-                                                                                                      </div>
-                                                                                                   )}
-                                                                                                </ErrorMessage>
-                                                                                             </div>
-                                                                                          </div>
-                                                                                          {compIndex >
-                                                                                             0 && (
-                                                                                             <FontAwesomeIcon
-                                                                                                icon={
-                                                                                                   faTrash
-                                                                                                }
-                                                                                                onClick={() => {
-                                                                                                   remove(
-                                                                                                      compIndex
-                                                                                                   );
-                                                                                                }}
-                                                                                                className='w-5 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
-                                                                                             />
-                                                                                          )}
-                                                                                       </li>
-                                                                                    )
-                                                                                 )}
-                                                                              <div>
-                                                                                 {typeof errors?.competitors ===
-                                                                                    "string" && (
-                                                                                    <p className='text-rose-500'>
-                                                                                       {
-                                                                                          errors.competitors
-                                                                                       }
-                                                                                    </p>
-                                                                                 )}
-                                                                              </div>
-                                                                              <div className='flex justify-center'>
-                                                                                 <button
-                                                                                    type='button'
-                                                                                    onClick={() => {
-                                                                                       push(
-                                                                                          emptyCompetitor
-                                                                                       );
-                                                                                    }}
-                                                                                    className='inline-flex items-center gap-3 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>
-                                                                                    <span>
-                                                                                       Add
-                                                                                       new
-                                                                                       competitor
-                                                                                    </span>
-                                                                                    <FontAwesomeIcon
-                                                                                       className='w-7 h-auto cursor-pointer text-white'
-                                                                                       icon={
-                                                                                          faCirclePlus
-                                                                                       }
-                                                                                    />
-                                                                                 </button>
-                                                                              </div>
-                                                                           </ul>
-                                                                           <div className='flex justify-between items-center'>
-                                                                              <button
-                                                                                 type='submit'
-                                                                                 className={
-                                                                                    isSubmitting ||
-                                                                                    !isValid
-                                                                                       ? "btn-rev btn-disabled"
-                                                                                       : "btn-rev"
-                                                                                 }
-                                                                                 disabled={
-                                                                                    isSubmitting ||
-                                                                                    !isValid
-                                                                                 }>
-                                                                                 Generate
-                                                                              </button>
-                                                                              {isSubmitting && (
-                                                                                 <Spinner message='Saving Competitors' />
-                                                                              )}
-                                                                           </div>
-                                                                        </>
-                                                                     )}
-                                                                  </FieldArray>
-                                                               </div>
-                                                            </div>
-                                                            <div className='flex flex-col gap-5 md:w-[34%] px-10'>
-                                                               <h1 className='text-white text-3xl'>
-                                                                  {product.name}
-                                                               </h1>
-                                                               <Chart
-                                                                  chartType='PieChart'
-                                                                  width='100%'
-                                                                  height='400px'
-                                                                  options={
-                                                                     product
-                                                                        .chart
-                                                                        ?.options
-                                                                  }
-                                                                  data={
-                                                                     product
-                                                                        .chart
-                                                                        ?.data
-                                                                  }
-                                                                  legendToggle
-                                                               />
-                                                            </div>
+                                                                  );
+                                                               }}
+                                                               formUtilities={{
+                                                                  isSubmitting,
+                                                                  isValid,
+                                                                  errors,
+                                                               }}
+                                                            />
                                                          </div>
                                                       )
                                                    )}
@@ -475,18 +176,13 @@ const Competitors = () => {
                                                    className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                                    value={0}
                                                    onChange={(e) => {
-                                                      const productToAdd =
+                                                      const productToBeShown =
                                                          products_dummy.find(
                                                             (prod) =>
                                                                prod.id ===
                                                                e.target.value
                                                          );
-                                                      updateChartProps(
-                                                         productToAdd
-                                                      );
-                                                      productsFieldArrPush(
-                                                         productToAdd
-                                                      );
+                                                      push(productToBeShown);
                                                       setLookupProducts(
                                                          (prevValue) =>
                                                             prevValue.filter(

@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import products_dummy from "../../samples/products.json";
 import Product from "../../components/products/product";
 import { useState } from "react";
+import Image from "next/image";
 
 const Products = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -22,9 +23,38 @@ const Products = () => {
             <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div>
                   <div className='p-12 relative mx-auto max-w-[1920px]'>
-                     <div className='pb-5'>
-                        <strong className='mr-1'>Mustafa Khairy </strong> |
-                        <a href='http://bo.adpadelhouse.com/logout'> logout </a>
+                     <div className='flex justify-between gap-5 pb-5'>
+                        <div className='flex gap-2 items-center'>
+                           <strong className='mr-1'>Mustafa Khairy </strong> |
+                           <a href='http://bo.adpadelhouse.com/logout'>
+                              {" "}
+                              logout{" "}
+                           </a>
+                        </div>
+                        <div className='flex justify-between items-center gap-5 w-1/2'>
+                           <div className='ml-5'>
+                              <button
+                                 type='button'
+                                 onClick={toggleIdeasModal}
+                                 className='btn text-black-eerie'>
+                                 My ideas
+                              </button>
+                           </div>
+                           <Link href='/' className='logo-pane mb-0'>
+                              <h4 className='text-[3rem] text-white'>20X</h4>
+                              <span className='relative -translate-x-[1.2rem]'>
+                                 revenue BY
+                              </span>
+                              <div className='w-[110px] h-[33px]'>
+                                 <Image
+                                    width='55'
+                                    height='30'
+                                    src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+                                    alt='CaseInPoint'
+                                 />
+                              </div>
+                           </Link>
+                        </div>
                      </div>
                      <h3 className='text-[2.52rem] mb-10 text-yellow-green'>
                         Pioneer, Migrator, Settler
@@ -89,7 +119,7 @@ const Products = () => {
                                     {({ push, remove, form }) => {
                                        return (
                                           <div className='flex flex-col gap-12'>
-                                             <div className='py-5 flex flex-col gap-12'>
+                                             <div className='py-5 flex flex-col gap-20'>
                                                 {!!values.products.length &&
                                                    values.products.map(
                                                       (
@@ -142,13 +172,13 @@ const Products = () => {
                                                    className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
                                                    value={0}
                                                    onChange={(e) => {
-                                                      const productToAdd =
+                                                      const productToBeShown =
                                                          products_dummy.find(
                                                             (prod) =>
                                                                prod.id ===
                                                                e.target.value
                                                          );
-                                                      push(productToAdd);
+                                                      push(productToBeShown);
                                                       setLookupProducts(
                                                          (prevValue) =>
                                                             prevValue.filter(
@@ -201,30 +231,6 @@ const Products = () => {
                         }}
                      </Formik>
                   </div>
-                  {/* <div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
-                     <div className=''>
-                        <button
-                           type='button'
-                           className='btn text-black-eerie'
-                           onClick={toggleIdeasModal}>
-                           My ideas
-                        </button>
-                     </div>
-                     <Link href='/' className='logo-pane'>
-                        <h4 className='text-[3rem] text-white'>20X</h4>
-                        <span className='relative -translate-x-[1.2rem]'>
-                           revenue BY
-                        </span>
-                        <div className='w-[110px] h-[33px]'>
-                           <Image
-                              width='55'
-                              height='20'
-                              src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
-                              alt='CaseInPoint'
-                           />
-                        </div>
-                     </Link>
-                  </div> */}
                </div>
             </div>
          </div>
