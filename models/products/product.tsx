@@ -2,7 +2,7 @@ import { ReactGoogleChartProps } from "react-google-charts";
 import { ProductCompetitor } from "./competitor";
 import { ProductFuture } from "./future";
 
-export class Product {
+export class ProductModel {
    id!: string;
    name!: string;
    competitors!: ProductCompetitor[];
