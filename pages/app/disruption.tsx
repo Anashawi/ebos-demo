@@ -18,12 +18,12 @@ const Disruption = () => {
                   isShown: isDisplayVideoModal,
                   closeCallback: toggleVideoModal,
                }}>
-               <div class='video-popup'>
-                  <div class='popup-bg'></div>
-                  <div class='popup-content'>
-                     <p class='popup-title'></p>
-                     <iframe src='' class='video'></iframe>
-                     <button class='close-btn' onClick={toggleVideoModal}>
+               <div className='video-popup'>
+                  <div className='popup-bg'></div>
+                  <div className='popup-content'>
+                     <p className='popup-title'></p>
+                     <iframe src='' className='video'></iframe>
+                     <button className='close-btn' onClick={toggleVideoModal}>
                         close
                      </button>
                   </div>
@@ -181,11 +181,11 @@ const Disruption = () => {
                            </ul>
                         </div>
                      </div>
-                     <a
-                        href='/ebos'
+                     <Link
+                        href='/'
                         className='btn text-black-eerie hover:text-blue-ncs w-max'>
                         <strong>Back To Dashboard</strong>
-                     </a>
+                     </Link>
                   </div>
                   <div className='md:w-4/12 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
@@ -204,7 +204,7 @@ const Disruption = () => {
                         <div className='w-[110px] h-[33px]'>
                            <Image
                               width='55'
-                              height='0'
+                              height='30'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />

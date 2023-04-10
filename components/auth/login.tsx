@@ -1,10 +1,14 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NextPage } from "next";
 import { useState } from "react";
 
-const Login = ({ closeLoginScreen }) => {
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+type Props = {
+   closeLoginScreen: () => void;
+};
+const Login: NextPage<Props> = ({ closeLoginScreen }) => {
+   const [email, setEmail] = useState("");
+   const [password, setPassword] = useState("");
 
    return (
       <>
@@ -15,7 +19,7 @@ const Login = ({ closeLoginScreen }) => {
                className='fixed inset-0 overflow-hidden outline-none dr-window'
                role='dialog'
                aria-labelledby='modaltitle'
-               tabindex='-1'>
+               tabIndex={-1}>
                <div className='relative flex items-center p-0 mx-auto my-[1.5rem] max-w-[700px] w-auto text-black-eerie pointer-events-none h-[calc(100vh_-_1.5rem_*_2)] z-[1040]'>
                   <div className='relative flex flex-col gap-3 p-3 w-full pointer-events-auto outline-none text-white drop-shadow-sm shadow-2xl bg-clip-padding max-h-[calc(100vh_-_1.5rem_*_2)] bg-transparent'>
                      <div className='flex items-center justify-between min-h-[58px] p-3'>
@@ -57,8 +61,8 @@ const Login = ({ closeLoginScreen }) => {
                                     setEmail(e.target.value);
                                  }}
                                  required
-                                 autocomplete='email'
-                                 autofocus=''
+                                 autoComplete='email'
+                                 autoFocus
                               />
                            </div>
                            <div className='mb-6'>
@@ -73,7 +77,7 @@ const Login = ({ closeLoginScreen }) => {
                                     setPassword(e.target.value);
                                  }}
                                  required
-                                 autocomplete='new-password'
+                                 autoComplete='new-password'
                               />
                            </div>
                            <div className='mb-6'>

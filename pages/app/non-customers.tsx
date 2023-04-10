@@ -27,7 +27,7 @@ const NonCustomers = () => {
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers'
-                                    autocomplete='off'
+                                    autoComplete='off'
                                  />
                                  <Link
                                     href=''
@@ -52,7 +52,7 @@ const NonCustomers = () => {
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none refusingCustomers'
-                                    autocomplete='off'
+                                    autoComplete='off'
                                  />
                                  <a className='btn-delete deleteItem'> X </a>
                               </li>
@@ -72,7 +72,7 @@ const NonCustomers = () => {
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none unwantedCustomers'
-                                    autocomplete='off'
+                                    autoComplete='off'
                                  />
                                  <a className='btn-delete deleteItem'> X </a>
                               </li>
@@ -89,9 +89,11 @@ const NonCustomers = () => {
                            <button id='generate' className='btn'>
                               Save
                            </button>
-                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
+                           <Link
+                              href='/'
+                              className='btn text-black-eerie hover:text-blue-ncs'>
                               <strong>Back To Dashboard</strong>
-                           </a>
+                           </Link>
                         </div>
                      </div>
                      <div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
@@ -103,7 +105,7 @@ const NonCustomers = () => {
                            <div className='w-[110px] h-[33px]'>
                               <Image
                                  width='55'
-                                 height='0'
+                                 height='30'
                                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                                  alt='CaseInPoint'
                               />

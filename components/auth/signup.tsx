@@ -1,7 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
-const Signup = ({ closeSignupScreen }) => {
+import { NextPage } from "next";
+type Props = {
+   closeSignupScreen: () => void;
+};
+const Signup: NextPage<Props> = ({ closeSignupScreen }) => {
    return (
       <>
          <div
@@ -12,7 +15,7 @@ const Signup = ({ closeSignupScreen }) => {
                className='fixed inset-0 overflow-hidden outline-none dr-window'
                role='dialog'
                aria-labelledby='modaltitle'
-               tabindex='-1'>
+               tabIndex={-1}>
                <div className='relative flex items-center p-0 mx-auto my-[1.5rem] max-w-[700px] w-auto text-black-eerie pointer-events-none h-[calc(100vh_-_1.5rem_*_2)] z-[1040]'>
                   <div className='relative flex flex-col gap-3 p-3 w-full pointer-events-auto outline-none text-white drop-shadow-sm shadow-2xl bg-clip-padding max-h-[calc(100vh_-_1.5rem_*_2)] bg-transparent'>
                      <div className='flex items-center justify-between min-h-[58px] p-3'>
@@ -50,9 +53,9 @@ const Signup = ({ closeSignupScreen }) => {
                                  className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='name'
                                  value=''
-                                 required=''
-                                 autocomplete='name'
-                                 autofocus=''
+                                 required
+                                 autoComplete='name'
+                                 autoFocus
                               />
                            </div>
                            <div className='mb-6'>
@@ -63,9 +66,9 @@ const Signup = ({ closeSignupScreen }) => {
                                  className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='email'
                                  value=''
-                                 required=''
-                                 autocomplete='email'
-                                 autofocus=''
+                                 required
+                                 autoComplete='email'
+                                 autoFocus
                               />
                            </div>
                            <div className='mb-6'>
@@ -76,9 +79,9 @@ const Signup = ({ closeSignupScreen }) => {
                                  className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='phone'
                                  value=''
-                                 required=''
-                                 autocomplete='phone'
-                                 autofocus=''
+                                 required
+                                 autoComplete='phone'
+                                 autoFocus
                               />
                            </div>
                            <div className='mb-6'>
@@ -88,8 +91,8 @@ const Signup = ({ closeSignupScreen }) => {
                                  placeholder='Password'
                                  className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='password'
-                                 required=''
-                                 autocomplete='new-password'
+                                 required
+                                 autoComplete='new-password'
                               />
                            </div>
                            <div className='mb-6'>
@@ -99,8 +102,8 @@ const Signup = ({ closeSignupScreen }) => {
                                  placeholder='Confirm Password'
                                  className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
                                  name='password_confirmation'
-                                 required=''
-                                 autocomplete='new-password'
+                                 required
+                                 autoComplete='new-password'
                               />{" "}
                            </div>
                            <div className='mb-6'>

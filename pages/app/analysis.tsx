@@ -57,9 +57,9 @@ const Analysis = () => {
                         <button id='generate' className='btn text-black-eerie'>
                            Save
                         </button>
-                        <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
+                        <Link href='/' className='btn text-black-eerie hover:text-blue-ncs'>
                            <strong>Back To Dashboard</strong>
-                        </a>
+                        </Link>
                      </div>
                   </div>
                   <div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
@@ -71,7 +71,7 @@ const Analysis = () => {
                         <div className='w-[110px] h-[33px]'>
                            <Image
                               width='55'
-                              height='0'
+                              height='30'
                               src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                               alt='CaseInPoint'
                            />

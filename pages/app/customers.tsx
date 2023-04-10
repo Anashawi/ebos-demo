@@ -14,7 +14,7 @@ const Customers = () => {
             <form
                method='post'
                action='http://bo.adpadelhouse.com/app/customers'
-               enctype='multipart/form-data'>
+               encType='multipart/form-data'>
                <input
                   type='hidden'
                   name='_token'
@@ -79,9 +79,11 @@ const Customers = () => {
                               id='addNewProduct'>
                               Submit
                            </button>
-                           <a href='/ebos' className='btn text-black-eerie hover:text-blue-ncs'>
+                           <Link
+                              href='/'
+                              className='btn text-black-eerie hover:text-blue-ncs'>
                               <strong>Back To Dashboard</strong>
-                           </a>
+                           </Link>
                         </div>
                      </div>
                      <div className='grow md:w-8/12 pane-right-gradient min-h-screen p-12'>
@@ -100,7 +102,7 @@ const Customers = () => {
                            <div className='w-[110px] h-[33px]'>
                               <Image
                                  width='55'
-                                 height='0'
+                                 height='30'
                                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
                                  alt='CaseInPoint'
                               />
