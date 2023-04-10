@@ -11,7 +11,7 @@ import { ProductModel } from "../../models/products/product.model";
 import { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import { ProductCompetitor } from "../../models/products/competitor.model";
-import factorValueOptions from "../../samples/lookups/factor-value-options.json";
+import ideaValueOptions from "../../samples/lookups/idea-factor-value-options.json";
 
 type Props = {
    product: ProductModel;
@@ -20,7 +20,7 @@ type Props = {
    formUtilities: any;
 };
 
-const FactorsProduct: NextPage<Props> = ({
+const IdeaFactorsProduct: NextPage<Props> = ({
    product,
    index,
    onRemove,
@@ -34,7 +34,7 @@ const FactorsProduct: NextPage<Props> = ({
       data: [],
    });
    const updateChartProps = () => {
-      const rows = product.factors?.map((factor) => {
+      const rows = product.ideaFactors?.map((factor) => {
          console.log([
             factor.name,
             ...factor.competitors.map((comp) => comp.value),
@@ -79,25 +79,25 @@ const FactorsProduct: NextPage<Props> = ({
                      icon={faEyeSlash}
                   />
                </div>
-               <FieldArray name={`products.${index}.factors`}>
+               <FieldArray name={`products.${index}.ideaFactors`}>
                   {({ remove, push }) => (
                      <>
                         <ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[350px] overflow-y-auto'>
-                           {!!product.factors?.length &&
-                              product.factors.map((factor, factorIndex) => (
+                           {!!product.ideaFactors?.length &&
+                              product.ideaFactors.map((idea, ideaIndex) => (
                                  <li
-                                    key={factorIndex}
+                                    key={ideaIndex}
                                     className='flex gap-5 items-start border-b border-gray-400 pb-7 spacedout'>
                                     <div className=''>
                                        <label>Factor</label>
                                        <Field
                                           type='text'
                                           placeholder='name'
-                                          className='w-full factor-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                          name={`products.${index}.factors.${factorIndex}.name`}
+                                          className='w-full idea-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                                          name={`products.${index}.ideaFactors.${ideaIndex}.name`}
                                        />
                                        <ErrorMessage
-                                          name={`products.${index}.factors.${factorIndex}.name`}>
+                                          name={`products.${index}.ideaFactors.${ideaIndex}.name`}>
                                           {(msg) => (
                                              <div className='text-lg text-rose-500'>
                                                 {msg}
@@ -117,10 +117,10 @@ const FactorsProduct: NextPage<Props> = ({
                                                 <label>{comp.name}</label>
                                                 <Field
                                                    as='select'
-                                                   placeholder={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
+                                                   placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
                                                    className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                   name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
-                                                   {factorValueOptions.map(
+                                                   name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}>
+                                                   {ideaValueOptions.map(
                                                       (option: any) => (
                                                          <option
                                                             key={option.id}
@@ -135,7 +135,7 @@ const FactorsProduct: NextPage<Props> = ({
                                                    )}
                                                 </Field>
                                                 <ErrorMessage
-                                                   name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}>
+                                                   name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}>
                                                    {(msg) => (
                                                       <div className='w-full text-lg text-rose-500'>
                                                          {msg}
@@ -150,7 +150,7 @@ const FactorsProduct: NextPage<Props> = ({
                                     <FontAwesomeIcon
                                        icon={faTrash}
                                        onClick={() => {
-                                          remove(factorIndex);
+                                          remove(ideaIndex);
                                        }}
                                        className='self-center w-5 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
                                     />
@@ -184,4 +184,4 @@ const FactorsProduct: NextPage<Props> = ({
    );
 };
 
-export default FactorsProduct;
+export default IdeaFactorsProduct;

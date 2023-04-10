@@ -505,7 +505,7 @@ const Factors = () => {
                      <div className='flex'>
                         <div className='md:w-1/2 flex gap-12 justify-between pr-12'>
                            <h3 className='text-[2.52rem] text-yellow-green'>
-                              Red ocean canvas
+                              Red Ocean Canvas
                            </h3>
                         </div>
                      </div>
@@ -634,18 +634,28 @@ const Factors = () => {
                                        );
                                     }}
                                  </FieldArray>
+                                 <div className='flex gap-5 py-10'>
+                                    <Link
+                                       href='/'
+                                       className='btn text-black-eerie hover:text-blue-ncs'>
+                                       <strong>Back To Dashboard</strong>
+                                    </Link>
+                                    <button
+                                       type='submit'
+                                       className={
+                                          isSubmitting || !isValid
+                                             ? "btn-rev btn-disabled"
+                                             : "btn-rev"
+                                       }
+                                       disabled={isSubmitting || !isValid}>
+                                       Save and submit
+                                    </button>
+                                 </div>
                               </Form>
                            );
                         }}
                      </Formik>
                   </div>
-               </div>
-               <div className='pl-12 pb-10'>
-                  <Link
-                     href='/'
-                     className='btn text-black-eerie hover:text-blue-ncs'>
-                     <strong>Back To Dashboard</strong>
-                  </Link>
                </div>
             </div>
          </div>

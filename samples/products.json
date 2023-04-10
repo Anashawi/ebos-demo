@@ -50,7 +50,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
@@ -117,7 +140,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
@@ -184,7 +230,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
@@ -251,7 +320,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
@@ -318,7 +410,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
@@ -385,7 +500,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
@@ -452,7 +590,30 @@
                {
                   "id": "1",
                   "value": 1,
-                  "label": "Poor"
+                  "displayValue": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ],
+      "ideaFactors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "displayValue": "Poor"
                },
                {
                   "id": "2",
