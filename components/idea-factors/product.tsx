@@ -12,6 +12,7 @@ import { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import { ProductCompetitor } from "../../models/products/competitor.model";
 import ideaValueOptions from "../../samples/lookups/idea-factor-value-options.json";
+import ideas_dummy from "../../samples/ideas.json";
 
 type Props = {
    product: ProductModel;

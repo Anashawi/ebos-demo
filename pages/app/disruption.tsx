@@ -18,12 +18,12 @@ const Disruption = () => {
                   isShown: isDisplayVideoModal,
                   closeCallback: toggleVideoModal,
                }}>
-               <div class='video-popup'>
-                  <div class='popup-bg'></div>
-                  <div class='popup-content'>
-                     <p class='popup-title'></p>
-                     <iframe src='' class='video'></iframe>
-                     <button class='close-btn' onClick={toggleVideoModal}>
+               <div className='video-popup'>
+                  <div className='popup-bg'></div>
+                  <div className='popup-content'>
+                     <p className='popup-title'></p>
+                     <iframe src='' className='video'></iframe>
+                     <button className='close-btn' onClick={toggleVideoModal}>
                         close
                      </button>
                   </div>

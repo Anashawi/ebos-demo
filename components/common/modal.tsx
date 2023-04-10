@@ -1,10 +1,16 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NextPage } from "next";
 
-const Modal = ({ children, config = {} }) => {
+type Props = {
+   children: any;
+   config: any;
+};
+
+const Modal: NextPage<Props> = ({ children, config = {} }) => {
    const { className, isShown, closeCallback } = config;
 
-   if (!isShown) return;
+   if (!isShown) return <></>;
 
    return (
       <div className='z-[99999] fixed inset-0 flex justify-center items-center bg-neutral-900 bg-opacity-60'>
@@ -14,7 +20,7 @@ const Modal = ({ children, config = {} }) => {
             }`}>
             <span
                onClick={closeCallback}
-               className='absolute right-0 top-0 inline flex items-center p-2 text-policeblue text-lg hover:text-xl cursor-pointer'>
+               className='absolute right-0 top-0 inline-flex items-center p-2 text-policeblue text-lg hover:text-xl cursor-pointer'>
                <FontAwesomeIcon
                   icon={faTimes}
                   className='me-3 mt-3 text-xl font-bold'

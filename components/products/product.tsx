@@ -11,7 +11,7 @@ import {
    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useMemo, useState } from "react";
-import { ConfirmDialog } from "../../models/common/confirm-dialog";
+import { ConfirmDialog } from "../../models/common/confirm-dialog.model";
 import useConfirmDialog from "../../hooks/use-confirm-dialog";
 import ConfirmModal from "../common/confirm-dialog";
 

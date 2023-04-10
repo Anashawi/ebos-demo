@@ -1,8 +1,16 @@
+import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const DesktopHomepage = ({
+type Props = {
+   nodes: any;
+   originalScreenWidth: any;
+   currentScreenWidth: any;
+   openLoginScreen: any;
+   openSignupScreen: any;
+};
+const DesktopHomepage: NextPage<Props> = ({
    nodes,
    originalScreenWidth,
    currentScreenWidth,
@@ -39,7 +47,7 @@ const DesktopHomepage = ({
    const t_values = [t_1];
    const nodeWidth = 105;
 
-   const getX = (t, flag = false) => {
+   const getX = (t: number, flag = false) => {
       if (flag) {
          console.log(t_values);
       }
@@ -49,14 +57,14 @@ const DesktopHomepage = ({
             Math.pow(t, 2) * curve.p_2.x
       );
    };
-   const getY = (t) =>
+   const getY = (t: number) =>
       Math.round(
          Math.pow(1 - t, 2) * curve.p_0.y +
             2 * (1 - t) * t * curve.p_1.y +
             Math.pow(t, 2) * curve.p_2.y
       );
 
-   const getRelativeXInPixels = (x_pos) => {
+   const getRelativeXInPixels = (x_pos: number) => {
       let currWidth = currentScreenWidth;
       if (currentScreenWidth > originalScreenWidth) {
          currWidth = originalScreenWidth;
@@ -64,7 +72,7 @@ const DesktopHomepage = ({
       return Math.round((x_pos * currWidth) / originalScreenWidth) || 0;
    };
 
-   const getDelta_T = (curr_T) => {
+   const getDelta_T = (curr_T: number) => {
       const linearEquation_1 = curve.p_0.x - 2 * curve.p_1.x + curve.p_2.x;
       const linearEquation_2 = curve.p_1.x - curve.p_0.x;
       const numerator =
@@ -151,7 +159,7 @@ const DesktopHomepage = ({
                         left: getRelativeXInPixels(curve.p_0.x) + "px",
                         top: curve.p_0.y,
                      }}>
-                     <div href='' className='text-center'>
+                     <div className='text-center'>
                         <div className='text-slate-700'>Start here</div>
                         <div
                            onClick={openSignupScreen}
@@ -166,7 +174,7 @@ const DesktopHomepage = ({
                         </div>
                      </div>
                   </div>
-                  {nodes.map((node, index) => (
+                  {nodes.map((node: any, index: number) => (
                      <div
                         key={index}
                         className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
@@ -227,7 +235,7 @@ const DesktopHomepage = ({
                      )}px`}
                      cy='590'
                      r='4'></circle>
-                  {console.log(
+                  {/* {console.log(
                      "curve.p_0.x",
                      curve.p_0.x,
                      "getRelativeXInPixels(getX((t_values[2] - t_values[1]) / 2 + t_values[1]))",
@@ -236,7 +244,7 @@ const DesktopHomepage = ({
                      ),
                      "nodeWidth",
                      nodeWidth
-                  )}
+                  )} */}
                   <path
                      className='custom-stroke-dasharray stroke-[1px] stroke-gray-gunmetal fill-none'
                      d={`M ${getRelativeXInPixels(

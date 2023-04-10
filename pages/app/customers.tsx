@@ -14,7 +14,7 @@ const Customers = () => {
             <form
                method='post'
                action='http://bo.adpadelhouse.com/app/customers'
-               enctype='multipart/form-data'>
+               encType='multipart/form-data'>
                <input
                   type='hidden'
                   name='_token'

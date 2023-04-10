@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import products_dummy from "../../samples/products.json";
 import { useState } from "react";
 import CompetitorsProduct from "../../components/competitors/product";
+import { ProductModel } from "../../models/products/product.model";
 
 const Competitors = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -65,7 +66,7 @@ const Competitors = () => {
                      <Formik
                         initialValues={{
                            products: products_dummy.filter(
-                              (prod) =>
+                              (prod: any) =>
                                  !lookupProducts.some(
                                     (lookupProd) => lookupProd.id === prod.id
                                  )
@@ -90,9 +91,10 @@ const Competitors = () => {
                                           ),
                                     })
                                  )
-                                    .test((competitors) => {
+                                    .test((competitors: any) => {
                                        const sum = competitors.reduce(
-                                          (acc, curr) => curr.marketShare + acc,
+                                          (acc: number, curr: any) =>
+                                             curr.marketShare + acc,
                                           0
                                        );
                                        if (sum !== 100) {
@@ -143,7 +145,7 @@ const Competitors = () => {
                                                             <CompetitorsProduct
                                                                product={product}
                                                                index={
-                                                                  productIndex
+                                                                  productIndex   
                                                                }
                                                                onRemove={() => {
                                                                   setLookupProducts(

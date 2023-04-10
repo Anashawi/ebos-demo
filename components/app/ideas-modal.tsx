@@ -3,26 +3,16 @@ import { useState } from "react";
 import * as Yup from "yup";
 import Spinner from "../common/spinner";
 
-class Idea {
-   id;
-   text;
-}
-const ideas_dummy = [
-   {
-      id: 1,
-      text: "idea 1",
-   },
-   {
-      id: 2,
-      text: "idea 2",
-   },
-   {
-      id: 3,
-      text: "idea 3",
-   },
-];
+import ideas_dummy from "../../samples/ideas.json";
+import { Idea } from "../../models/idea.model";
+import { NextPage } from "next";
 
-const IdeasModal = ({ isOpen, toggle }) => {
+type Props = {
+   isOpen: boolean;
+   toggle: () => void;
+};
+
+const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
    const [ideas, setIdeas] = useState(ideas_dummy);
 
    if (!isOpen) return <></>;
@@ -38,7 +28,7 @@ const IdeasModal = ({ isOpen, toggle }) => {
                      <div className='flex justify-between p-3 h-12 mb-10'>
                         <div className='modal-title mb-10'>
                            <h2 className='mb-4 text-[2.8rem]'>Ideas</h2>
-                           <h3 className='mb-6 f6 text-gray-gunmetal mb-5'>
+                           <h3 className='mb-6 f6 text-gray-gunmetal'>
                               Add your ideas
                            </h3>
                         </div>
@@ -54,7 +44,7 @@ const IdeasModal = ({ isOpen, toggle }) => {
                         <div className='idea-list'>
                            {!!ideas.length && (
                               <ul className='flex flex-col gap-3 mb-5'>
-                                 {ideas.map((idea, index) => (
+                                 {ideas.map((idea: Idea, index: number) => (
                                     <li key={index}>
                                        <span> {idea.text} </span>
                                        <button
@@ -116,7 +106,10 @@ const IdeasModal = ({ isOpen, toggle }) => {
                                     </button>
                                  </div>
                                  {isSubmitting && (
-                                    <Spinner message='Saving Ideas' />
+                                    <Spinner
+                                       className=''
+                                       message='Saving Ideas'
+                                    />
                                  )}
                               </Form>
                            )}

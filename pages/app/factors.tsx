@@ -635,21 +635,29 @@ const Factors = () => {
                                     }}
                                  </FieldArray>
                                  <div className='flex gap-5 py-10'>
+                                    {!!products_dummy.filter(
+                                       (prod) =>
+                                          !lookupProducts.some(
+                                             (lookupProd) =>
+                                                lookupProd.id === prod.id
+                                          )
+                                    ).length && (
+                                       <button
+                                          type='submit'
+                                          className={
+                                             isSubmitting || !isValid
+                                                ? "btn-rev btn-disabled"
+                                                : "btn-rev"
+                                          }
+                                          disabled={isSubmitting || !isValid}>
+                                          Save and submit
+                                       </button>
+                                    )}
                                     <Link
                                        href='/'
                                        className='btn text-black-eerie hover:text-blue-ncs'>
                                        <strong>Back To Dashboard</strong>
                                     </Link>
-                                    <button
-                                       type='submit'
-                                       className={
-                                          isSubmitting || !isValid
-                                             ? "btn-rev btn-disabled"
-                                             : "btn-rev"
-                                       }
-                                       disabled={isSubmitting || !isValid}>
-                                       Save and submit
-                                    </button>
                                  </div>
                               </Form>
                            );

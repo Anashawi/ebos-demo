@@ -27,7 +27,7 @@ const NonCustomers = () => {
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers'
-                                    autocomplete='off'
+                                    autoComplete='off'
                                  />
                                  <Link
                                     href=''
@@ -52,7 +52,7 @@ const NonCustomers = () => {
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none refusingCustomers'
-                                    autocomplete='off'
+                                    autoComplete='off'
                                  />
                                  <a className='btn-delete deleteItem'> X </a>
                               </li>
@@ -72,7 +72,7 @@ const NonCustomers = () => {
                                  <input
                                     type='text'
                                     className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none unwantedCustomers'
-                                    autocomplete='off'
+                                    autoComplete='off'
                                  />
                                  <a className='btn-delete deleteItem'> X </a>
                               </li>

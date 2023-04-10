@@ -1,4 +1,9 @@
-const PhabletHomepage = ({ nodes }) => {
+import { NextPage } from "next";
+
+type Props = {
+   nodes: any;
+};
+const PhabletHomepage: NextPage<Props> = ({ nodes }) => {
    return (
       <div className='fixed top-10'>
          <h1 className='text-2xl'>You Cant use this app on mobile phone</h1>

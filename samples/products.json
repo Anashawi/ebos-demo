@@ -44,7 +44,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -67,7 +67,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -134,7 +134,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -157,7 +157,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -224,7 +224,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -247,7 +247,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -314,7 +314,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -337,7 +337,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -404,7 +404,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -427,7 +427,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -494,7 +494,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -517,7 +517,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -584,7 +584,7 @@
       ],
       "factors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
@@ -607,7 +607,7 @@
       ],
       "ideaFactors": [
          {
-            "id": 1,
+            "id": "1",
             "name": "speed",
             "competitors": [
                {
