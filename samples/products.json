@@ -4,17 +4,17 @@
       "name": "Product Example 1",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 68
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 23
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 9
          }
@@ -42,24 +42,46 @@
             "sales": 50
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    },
    {
       "id": "3",
       "name": "Product Example 3",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 25
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 48
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 27
          }
@@ -87,24 +109,46 @@
             "sales": 70
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    },
    {
       "id": "2",
       "name": "Product Example 2",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 10
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 70
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 20
          }
@@ -132,24 +176,46 @@
             "sales": 70
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    },
    {
       "id": "3",
       "name": "Product Example 3",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 25
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 48
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 27
          }
@@ -177,24 +243,46 @@
             "sales": 70
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    },
    {
       "id": "2",
       "name": "Product Example 2",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 10
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 70
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 20
          }
@@ -222,24 +310,46 @@
             "sales": 70
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    },
    {
       "id": "3",
       "name": "Product Example 3",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 25
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 48
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 27
          }
@@ -267,24 +377,46 @@
             "sales": 70
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    },
    {
       "id": "4",
       "name": "Product Example 4",
       "competitors": [
          {
-            "id": "0",
+            "id": "1",
             "name": "competitor 1",
             "marketShare": 40
          },
          {
-            "id": "0",
+            "id": "2",
             "name": "competitor 2",
             "marketShare": 30
          },
          {
-            "id": "0",
+            "id": "3",
             "name": "competitor 3",
             "marketShare": 30
          }
@@ -312,6 +444,28 @@
             "sales": 20
          }
       ],
-      "hasAddFutureCallback": false
+      "factors": [
+         {
+            "id": 1,
+            "name": "speed",
+            "competitors": [
+               {
+                  "id": "1",
+                  "value": 1,
+                  "label": "Poor"
+               },
+               {
+                  "id": "2",
+                  "value": 3,
+                  "displayValue": "Migrator"
+               },
+               {
+                  "id": "3",
+                  "value": 2,
+                  "displayValue": "Settler"
+               }
+            ]
+         }
+      ]
    }
 ]

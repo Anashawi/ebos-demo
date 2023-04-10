@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import Chart, { ReactGoogleChartProps } from "react-google-charts";
 import Spinner from "../common/spinner";
-import { ProductModel } from "../../models/products/product";
+import { ProductModel } from "../../models/products/product.model";
 import { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 

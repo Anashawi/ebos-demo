@@ -1,5 +1,5 @@
 import objectPath from "object-path";
-import { ProductModel } from "../../models/products/product";
+import { ProductModel } from "../../models/products/product.model";
 import { NextPage } from "next";
 import { ErrorMessage, Field, FieldArray } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
