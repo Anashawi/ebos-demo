@@ -118,12 +118,12 @@ a {
 
 @font-face {
   font-family: Roboto-light;
-  src: url("../public/fonts/Roboto/Roboto-light.ttf");
+  src: url("../public/fonts/Roboto/Roboto-Light.ttf");
 }
 
 @font-face {
   font-family: Roboto-thin;
-  src: url("../public/fonts/Roboto/Roboto-thin.ttf");
+  src: url("../public/fonts/Roboto/Roboto-Thin.ttf");
 }
 
 html {
