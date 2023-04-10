@@ -241,7 +241,7 @@
 //                               <Image
 //                                  width='55'
 //                                  height='30'
-//                                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+//                                  src='/ilogo.webp'
 //                                  alt='CaseInPoint'
 //                               />
 //                            </div>
@@ -495,7 +495,7 @@ const Factors = () => {
                                  <Image
                                     width='55'
                                     height='30'
-                                    src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+                                    src='/ilogo.webp'
                                     alt='CaseInPoint'
                                  />
                               </div>
