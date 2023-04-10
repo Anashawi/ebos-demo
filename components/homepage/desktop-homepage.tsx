@@ -102,7 +102,7 @@ const DesktopHomepage: NextPage<Props> = ({
                <Image
                   width='160'
                   height='99'
-                  src='http://bo.adpadelhouse.com/assets/images/ilogo.png'
+                  src='/ilogo.webp'
                   alt='CaseInPoint'
                   className='scale-[1.2]'
                />
