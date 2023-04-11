@@ -37,7 +37,24 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
          ...rows,
       ];
       console.log(chart.data);
-      chart.options = {};
+      chart.options = chart.options = {
+         title: product.name,
+         titleTextStyle: {
+            // color: <string>,    // any HTML string color ('red', '#cc00cc')
+            // fontName: <string>, // i.e. 'Times New Roman'
+            fontSize: 16, // 12, 18 whatever you want (don't specify px)
+            // {/* bold: <boolean>,    // true or false
+            // italic: <boolean>   // true of false */}
+         },
+         colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
+         vAxis: {
+            ticks: [
+               { v: 1, f: "Poor" },
+               { v: 2, f: "Migrator" },
+               { v: 3, f: "Settler" },
+            ] as any,
+         },
+      };
       setChart({ ...chart });
    };
 
@@ -168,7 +185,6 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
             </div>
          </div>
          <div className='flex flex-col justify-between gap-12 md:w-1/2 px-10'>
-            <h1 className='text-white text-4xl'>{product.name}</h1>
             <Chart {...chart} legendToggle />
          </div>
       </div>

@@ -21,22 +21,16 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
       <>
          <Modal
             config={{
-               className: "p-5 lg:p-10 modal-content h-[90%] max-h-[650px]",
+               className:
+                  "p-5 lg:p-10 modal-content w-2/3 max-w-[900px] h-[90%] max-h-[650px]",
                isShown: isOpen,
                closeCallback: toggle,
             }}>
-            <div className='flex justify-between p-3 mb-2'>
-               <div className='flex flex-col gap-5'>
-                  <h2 className='text-4xl text-gray-700'>Products Ideas</h2>
-                  <h3 className='text-gray-400 text-2xl'>
-                     Add ideas to your products
-                  </h3>
-               </div>
-               <button
-                  type='button'
-                  className='self-start modal-close dr-close'
-                  onClick={toggle}
-                  aria-label='Close'></button>
+            <div className='flex flex-col gap-7'>
+               <h2 className='text-4xl text-gray-700'>Products Ideas</h2>
+               <h3 className='text-gray-400 text-2xl'>
+                  Add ideas to your products
+               </h3>
             </div>
             {!products.length && (
                <p className='text-rose-300'>You Have No Products yet !</p>

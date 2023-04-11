@@ -188,30 +188,43 @@ const IdeaFactors = () => {
                                        );
                                     }}
                                  </FieldArray>
-                                 <div className='flex gap-5 py-10'>
-                                    {!!products_dummy.filter(
-                                       (prod) =>
-                                          !lookupProducts.some(
-                                             (lookupProd) =>
-                                                lookupProd.id === prod.id
-                                          )
-                                    ).length && (
+                                 <div className='flex gap-3 justify-between items-center mt-10'>
+                                    <div className='flex gap-3'>
+                                       {!!products_dummy.filter(
+                                          (prod) =>
+                                             !lookupProducts.some(
+                                                (lookupProd) =>
+                                                   lookupProd.id === prod.id
+                                             )
+                                       ).length && (
+                                          <button
+                                             type='submit'
+                                             className={
+                                                isSubmitting || !isValid
+                                                   ? "btn-rev btn-disabled"
+                                                   : "btn-rev"
+                                             }
+                                             disabled={
+                                                isSubmitting || !isValid
+                                             }>
+                                             Save and submit
+                                          </button>
+                                       )}
+                                       <Link
+                                          href='/'
+                                          className='btn text-black-eerie hover:text-blue-ncs'>
+                                          <strong>Back To Dashboard</strong>
+                                       </Link>
+                                    </div>
+                                    <div className='py-3'>
                                        <button
-                                          type='submit'
-                                          className={
-                                             isSubmitting || !isValid
-                                                ? "btn-rev btn-disabled"
-                                                : "btn-rev"
-                                          }
-                                          disabled={isSubmitting || !isValid}>
-                                          Save and submit
+                                          className='btn text-black-eerie mt-10'
+                                          data-name='Pioneer, Migrate, Settler'
+                                          id='theSubmitBtn'>
+                                          <strong>Request </strong> for
+                                          consultant review
                                        </button>
-                                    )}
-                                    <Link
-                                       href='/'
-                                       className='btn text-black-eerie hover:text-blue-ncs'>
-                                       <strong>Back To Dashboard</strong>
-                                    </Link>
+                                    </div>
                                  </div>
                               </Form>
                            );

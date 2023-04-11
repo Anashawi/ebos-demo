@@ -3,32 +3,22 @@ import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import Modal from "../../components/common/modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
+import videoUrls from "../../samples/disruption.json";
+import { useState } from "react";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import VideosUrlsForm from "../../components/disruption/videos-urls-form";
+import Video from "../../components/disruption/video";
 
 const Disruption = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-   const [isDisplayVideoModal, toggleVideoModal] = useModalToggler();
+   const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+   const [isEditUrlsModalOn, toggleEditUrlsModal] = useModalToggler();
+   const [selectedVideoURL, setSelectedVideoURL] = useState<string>("");
 
    return (
       <>
-         <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
-
          <div className='homepage-bg-gradient w-screen bg-white'>
-            <Modal
-               config={{
-                  isShown: isDisplayVideoModal,
-                  closeCallback: toggleVideoModal,
-               }}>
-               <div className='video-popup'>
-                  <div className='popup-bg'></div>
-                  <div className='popup-content'>
-                     <p className='popup-title'></p>
-                     <iframe src='' className='video'></iframe>
-                     <button className='close-btn' onClick={toggleVideoModal}>
-                        close
-                     </button>
-                  </div>
-               </div>
-            </Modal>
             <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
                <div className='flex flex-wrap'>
                   <div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
@@ -60,7 +50,12 @@ const Disruption = () => {
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
                                     data-video='1'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -72,7 +67,12 @@ const Disruption = () => {
                                     data-video='1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -84,7 +84,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -96,7 +101,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -108,7 +118,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -126,7 +141,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -138,7 +158,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -150,7 +175,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -162,7 +192,12 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
@@ -174,18 +209,31 @@ const Disruption = () => {
                                     data-video=' 1'
                                     className='ml-5 text-[1.2rem]'
                                     target='_blank'
-                                    onClick={toggleVideoModal}>
+                                    onClick={() => {
+                                       setSelectedVideoURL(
+                                          videoUrls.staffOnDemand
+                                       );
+                                       toggleVideoModal();
+                                    }}>
                                     Watch video
                                  </a>
                               </li>
                            </ul>
                         </div>
                      </div>
-                     <Link
-                        href='/'
-                        className='btn text-black-eerie hover:text-blue-ncs w-max'>
-                        <strong>Back To Dashboard</strong>
-                     </Link>
+                     <div className='mt-5 flex gap-5 justify-between'>
+                        <Link
+                           href='/'
+                           className='btn text-black-eerie hover:text-blue-ncs w-max'>
+                           <strong>Back To Dashboard</strong>
+                        </Link>
+                        <button
+                           className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+                           onClick={toggleEditUrlsModal}>
+                           <span>Edit videos Urls</span>
+                           <FontAwesomeIcon className='w-7' icon={faEdit} />
+                        </button>
+                     </div>
                   </div>
                   <div className='md:w-4/12 pane-right-gradient min-h-screen p-12'>
                      <div className=''>
@@ -221,7 +269,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Eco Systems
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -232,7 +283,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Info is Power
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -243,7 +297,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            OTCR
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -254,7 +311,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Value Destruction
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -265,7 +325,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Customer Journey
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -276,7 +339,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Digital Platforms
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -287,7 +353,10 @@ const Disruption = () => {
                            className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
                            Building Capacity
                            <a
-                              data-video=' 1'
+                              onClick={() => {
+                                 setSelectedVideoURL(videoUrls.staffOnDemand);
+                                 toggleVideoModal();
+                              }}
                               className='ml-5 text-[1.2rem]'
                               target='_blank'>
                               Watch video
@@ -307,6 +376,41 @@ const Disruption = () => {
                </div>
             </div>
          </div>
+
+         {/* ideas modal */}
+         <IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+
+         {/* video modal */}
+         <Modal
+            config={{
+               isShown: isVideoModalOn,
+               closeCallback: toggleVideoModal,
+               className:
+                  "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+            }}>
+            <Video url={selectedVideoURL} />
+            <div className='flex justify-center p-5 bg-black'>
+               <button
+                  className='btn-diff bg-gray-100 hover:bg-gray-300'
+                  onClick={toggleVideoModal}>
+                  close
+               </button>
+            </div>
+         </Modal>
+
+         {/* video urls form modal */}
+         <Modal
+            config={{
+               isShown: isEditUrlsModalOn,
+               closeCallback: toggleEditUrlsModal,
+               className:
+                  "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[750px] rounded-xl overflow-hidden p-5 lg:p-10",
+            }}>
+            <VideosUrlsForm
+               formValues={videoUrls}
+               toggleEditUrlsModal={toggleEditUrlsModal}
+            />
+         </Modal>
       </>
    );
 };

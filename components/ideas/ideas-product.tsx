@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Spinner from "../common/spinner";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useMemo, useState } from "react";
 import { ProductIdeaFactor } from "../../models/products/idea-factor.model";
 
@@ -48,8 +48,8 @@ const IdeasProduct: NextPage<Props> = ({ product }) => {
                            className='flex items-center gap-3 text-lg p-3 text-rose-200 hover:text-rose-500'
                            type='button'>
                            <FontAwesomeIcon
-                              className='w-7 h-auto cursor-pointer hover:text-rose-500'
-                              icon={faMinusCircle}
+                              className='w-4 h-auto cursor-pointer hover:text-rose-500'
+                              icon={faTimes}
                            />
                         </button>
                      </li>
