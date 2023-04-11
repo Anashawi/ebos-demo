@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Chart, { ReactGoogleChartProps } from "react-google-charts";
 import {
    faCirclePlus,
-   faEyeSlash,
    faMinusCircle,
    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -44,9 +43,9 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
    }, []);
 
    const [chart, setChart] = useState<ReactGoogleChartProps>({
-      chartType: "PieChart",
+      chartType: "BubbleChart",
       width: "100%",
-      height: "400px",
+      height: "100%",
       options: [],
       data: [],
    });
@@ -62,8 +61,6 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
          });
 
       chart.data = [["Product", "Year", "Level", "Sales"], ...rows];
-      console.log("product.name :", product.name);
-      console.log("product chart data:", chart.data);
       const ticks: any = product.futures.map((future, i) => {
          return {
             v: i + 1,
@@ -86,7 +83,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
       ];
 
       chart.options = {
-         title: "Product future",
+         title: product.name,
          colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
          legend: {
             position: "right",
@@ -149,6 +146,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                            <Field
                               type='text'
                               className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+                              placeholder='Name'
                               name={`products.${index}.name`}
                            />
                            <ErrorMessage name={`products.${index}.name`}>
@@ -173,8 +171,8 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                         <div className='flex justify-end mb-5'>
                            <FontAwesomeIcon
                               onClick={onRemove}
-                              className='w-9 cursor-pointer text-rose-200 hover:text-rose-500'
-                              icon={faEyeSlash}
+                              className='w-7 cursor-pointer text-rose-200 hover:text-rose-500'
+                              icon={faTrash}
                            />
                         </div>
                      </div>
@@ -308,19 +306,21 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                        </p>
                                     </div>
                                  )}
-                              <div className='flex justify-between pr-3 py-5 gap-5'>
-                                 <button
-                                    type='button'
-                                    onClick={() => {
-                                       remove(product.futures.length - 1);
-                                    }}
-                                    className='inline-flex items-center gap-3 text-lg p-5 btn text-rose-400 hover:text-rose-500'>
-                                    <span>remove last Future</span>
-                                    <FontAwesomeIcon
-                                       className='w-7 h-auto cursor-pointer hover:text-rose-500'
-                                       icon={faMinusCircle}
-                                    />
-                                 </button>
+                              <div className='flex justify-between w-full pr-3 py-5 gap-5'>
+                                 {product.futures.length > 0 && (
+                                    <button
+                                       type='button'
+                                       onClick={() => {
+                                          remove(product.futures.length - 1);
+                                       }}
+                                       className='inline-flex items-center gap-3 text-lg p-5 btn text-rose-400 hover:text-rose-500'>
+                                       <span>remove last Future</span>
+                                       <FontAwesomeIcon
+                                          className='w-7 h-auto cursor-pointer hover:text-rose-500'
+                                          icon={faMinusCircle}
+                                       />
+                                    </button>
+                                 )}
                                  <button
                                     type='button'
                                     onClick={() => {
@@ -340,24 +340,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                </div>
             </div>
             <div className='md:w-1/2 pl-10'>
-               <div className='chart-wrapper'>
-                  <Chart
-                     chartType='BubbleChart'
-                     width='100%'
-                     height='400px'
-                     options={chart.options}
-                     data={chart.data}
-                     legendToggle
-                  />
-               </div>
-               <div className='py-3'>
-                  <button
-                     className='btn text-black-eerie mt-10'
-                     data-name='Pioneer, Migrate, Settler'
-                     id='theSubmitBtn'>
-                     <strong>Request </strong> for consultant review
-                  </button>
-               </div>
+               <Chart {...chart} legendToggle />
             </div>
          </div>
 

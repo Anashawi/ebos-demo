@@ -12,7 +12,6 @@ import { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import { ProductCompetitor } from "../../models/products/competitor.model";
 import ideaValueOptions from "../../samples/lookups/idea-factor-value-options.json";
-import ideas_dummy from "../../samples/ideas.json";
 
 type Props = {
    product: ProductModel;
@@ -21,25 +20,16 @@ type Props = {
    formUtilities: any;
 };
 
-const IdeaFactorsProduct: NextPage<Props> = ({
-   product,
-   index,
-   onRemove,
-   formUtilities,
-}) => {
+const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
    const [chart, setChart] = useState<ReactGoogleChartProps>({
       chartType: "Line",
       width: "100%",
-      height: "400px",
+      height: "100%",
       options: {},
       data: [],
    });
    const updateChartProps = () => {
       const rows = product.ideaFactors?.map((factor) => {
-         console.log([
-            factor.name,
-            ...factor.competitors.map((comp) => comp.value),
-         ]);
          return [factor.name, ...factor.competitors.map((comp) => +comp.value)];
       });
       chart.data = [
@@ -90,7 +80,7 @@ const IdeaFactorsProduct: NextPage<Props> = ({
                                     key={ideaIndex}
                                     className='flex gap-5 items-start border-b border-gray-400 pb-7 spacedout'>
                                     <div className=''>
-                                       <label>Factor</label>
+                                       <label>Idea</label>
                                        <Field
                                           type='text'
                                           placeholder='name'

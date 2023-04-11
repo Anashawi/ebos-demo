@@ -27,7 +27,7 @@ const CompetitorsProduct: NextPage<Props> = ({
    const [chart, setChart] = useState<ReactGoogleChartProps>({
       chartType: "PieChart",
       width: "100%",
-      height: "400px",
+      height: "100%",
       options: [],
       data: [],
    });
@@ -39,7 +39,14 @@ const CompetitorsProduct: NextPage<Props> = ({
       chart.data = [["Competitor", "Market share"], ...rows];
 
       chart.options = {
-         title: "",
+         title: product.name,
+         titleTextStyle: {
+            // color: <string>,    // any HTML string color ('red', '#cc00cc')
+            // fontName: <string>, // i.e. 'Times New Roman'
+            fontSize: 16, // 12, 18 whatever you want (don't specify px)
+            // {/* bold: <boolean>,    // true or false
+            // italic: <boolean>   // true of false */}
+        },
          is3D: true,
          legend: {
             position: "right",
@@ -54,7 +61,7 @@ const CompetitorsProduct: NextPage<Props> = ({
                fontSize: 11,
             },
          },
-         chartArea: { left: 50, top: 20, width: "100%", height: "100%" },
+         chartArea: { left: 50, top: 70, width: "100%", height: "100%" },
       };
       setChart({ ...chart });
    };
@@ -190,35 +197,12 @@ const CompetitorsProduct: NextPage<Props> = ({
                               </button>
                            </div>
                         </ul>
-                        <div className='flex justify-between items-center'>
-                           <button
-                              type='submit'
-                              className={
-                                 formUtilities.isSubmitting ||
-                                 !formUtilities.isValid
-                                    ? "btn-rev btn-disabled"
-                                    : "btn-rev"
-                              }
-                              disabled={
-                                 formUtilities.isSubmitting ||
-                                 !formUtilities.isValid
-                              }>
-                              Generate
-                           </button>
-                           {formUtilities.isSubmitting && (
-                              <Spinner
-                                 className=''
-                                 message='Saving Competitors'
-                              />
-                           )}
-                        </div>
                      </>
                   )}
                </FieldArray>
             </div>
          </div>
          <div className='flex flex-col justify-between gap-12 md:w-[34%] px-10'>
-            <h1 className='text-white text-4xl'>{product.name}</h1>
             <Chart {...chart} legendToggle />
          </div>
       </div>

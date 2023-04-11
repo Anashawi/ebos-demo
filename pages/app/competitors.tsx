@@ -145,7 +145,7 @@ const Competitors = () => {
                                                             <CompetitorsProduct
                                                                product={product}
                                                                index={
-                                                                  productIndex   
+                                                                  productIndex
                                                                }
                                                                onRemove={() => {
                                                                   setLookupProducts(
@@ -213,18 +213,39 @@ const Competitors = () => {
                                        );
                                     }}
                                  </FieldArray>
+                                 <div className='flex gap-3 justify-between items-center mt-10'>
+                                    <div className='flex gap-3'>
+                                       <button
+                                          type='submit'
+                                          className={
+                                             isSubmitting || !isValid
+                                                ? "btn-rev btn-disabled"
+                                                : "btn-rev"
+                                          }
+                                          disabled={isSubmitting || !isValid}>
+                                          Save
+                                       </button>
+                                       <Link
+                                          href='/'
+                                          className='btn text-black-eerie hover:text-blue-ncs'>
+                                          <strong>Back To Dashboard</strong>
+                                       </Link>
+                                    </div>
+                                    <div className='py-3'>
+                                       <button
+                                          className='btn text-black-eerie mt-10'
+                                          data-name='Pioneer, Migrate, Settler'
+                                          id='theSubmitBtn'>
+                                          <strong>Request </strong> for
+                                          consultant review
+                                       </button>
+                                    </div>
+                                 </div>
                               </Form>
                            );
                         }}
                      </Formik>
                   </div>
-               </div>
-               <div className='pl-12 pb-10'>
-                  <Link
-                     href='/'
-                     className='btn text-black-eerie hover:text-blue-ncs'>
-                     <strong>Back To Dashboard</strong>
-                  </Link>
                </div>
             </div>
          </div>

@@ -5,15 +5,26 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import * as Yup from "yup";
 import products_dummy from "../../samples/products.json";
 import Product from "../../components/products/product";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { ProductModel } from "../../models/products/product.model";
 
 const Products = () => {
    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+   const [products, setProducts] = useState<ProductModel[]>(products_dummy);
 
-   const [lookupProducts, setLookupProducts] = useState(
-      products_dummy.slice(1, 3)
-   );
+   const emptyProduct = useMemo(() => {
+      return {
+         id: "",
+         name: "",
+         competitors: [],
+         futures: [],
+         factors: [],
+         ideaFactors: [],
+      };
+   }, []);
 
    return (
       <>
@@ -61,12 +72,7 @@ const Products = () => {
                      </h3>
                      <Formik
                         initialValues={{
-                           products: products_dummy.filter(
-                              (prod) =>
-                                 !lookupProducts.some(
-                                    (lookupProd) => lookupProd.id === prod.id
-                                 )
-                           ),
+                           products: products,
                         }}
                         validationSchema={Yup.object({
                            products: Yup.array(
@@ -134,14 +140,6 @@ const Products = () => {
                                                                   productIndex
                                                                }
                                                                onRemove={() => {
-                                                                  setLookupProducts(
-                                                                     (
-                                                                        prevValue
-                                                                     ) => [
-                                                                        ...prevValue,
-                                                                        product,
-                                                                     ]
-                                                                  );
                                                                   remove(
                                                                      productIndex
                                                                   );
@@ -164,50 +162,29 @@ const Products = () => {
                                                       </div>
                                                    )}
                                              </div>
-                                             <div className='w-1/2 flex gap-5 items-center pr-5 md:pr-10 py-10'>
-                                                <label className='text-yellow-green font-semibold text-3xl'>
-                                                   Show more products
-                                                </label>
-                                                <select
-                                                   className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                   value={0}
-                                                   onChange={(e) => {
-                                                      const productToBeShown =
-                                                         products_dummy.find(
-                                                            (prod) =>
-                                                               prod.id ===
-                                                               e.target.value
-                                                         );
-                                                      push(productToBeShown);
-                                                      setLookupProducts(
-                                                         (prevValue) =>
-                                                            prevValue.filter(
-                                                               (prod) =>
-                                                                  prod.id !==
-                                                                  e.target.value
-                                                            )
+                                             <div className='w-1/2 flex gap-5 items-cente justify-end pr-5 md:pr-10 py-10'>
+                                                <button
+                                                   onClick={() => {
+                                                      products.push(
+                                                         emptyProduct
                                                       );
-                                                   }}>
-                                                   <option value={0}>
-                                                      select a product to be
-                                                      displayed
-                                                   </option>
-                                                   {lookupProducts.map(
-                                                      (product, index) => (
-                                                         <option
-                                                            key={index}
-                                                            value={product.id}>
-                                                            {product.name}
-                                                         </option>
-                                                      )
-                                                   )}
-                                                </select>
+                                                      setProducts([
+                                                         ...products,
+                                                      ]);
+                                                   }}
+                                                   className='inline-flex items-center gap-3 btn blue-gradient text-black-eerie hover:text-white'>
+                                                   <FontAwesomeIcon
+                                                      className='w-7 h-auto cursor-pointer text-white'
+                                                      icon={faCirclePlus}
+                                                   />
+                                                   <span>Add New Product</span>
+                                                </button>
                                              </div>
                                           </div>
                                        );
                                     }}
                                  </FieldArray>
-                                 <div className='flex gap-3 justify-between mt-10'>
+                                 <div className='flex gap-3 justify-between items-center mt-10'>
                                     <div className='flex gap-3'>
                                        <button
                                           type='submit'
@@ -224,6 +201,15 @@ const Products = () => {
                                           className='btn text-black-eerie hover:text-blue-ncs'>
                                           <strong>Back To Dashboard</strong>
                                        </Link>
+                                    </div>
+                                    <div className='py-3'>
+                                       <button
+                                          className='btn text-black-eerie mt-10'
+                                          data-name='Pioneer, Migrate, Settler'
+                                          id='theSubmitBtn'>
+                                          <strong>Request </strong> for
+                                          consultant review
+                                       </button>
                                     </div>
                                  </div>
                               </Form>
