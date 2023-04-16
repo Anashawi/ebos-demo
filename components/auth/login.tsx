@@ -1,98 +1,136 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextPage } from "next";
+import { useFormik } from "formik";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import { object, string } from "yup";
+import Spinner from "../common/spinner";
 
-type Props = {
-   closeLoginScreen: () => void;
-};
-const Login: NextPage<Props> = ({ closeLoginScreen }) => {
-   const [email, setEmail] = useState("");
-   const [password, setPassword] = useState("");
+const Login = () => {
+	const [authState, setAuthState] = useState({
+		isLoading: false,
+		error: "",
+	});
 
-   return (
-      <>
-         <div
-            className='block fixed inset-0 z-[1030] bg-gray-battleship backdrop-blur'
-            data-trigger='.login-link'>
-            <div
-               className='fixed inset-0 overflow-hidden outline-none dr-window'
-               role='dialog'
-               aria-labelledby='modaltitle'
-               tabIndex={-1}>
-               <div className='relative flex items-center p-0 mx-auto my-[1.5rem] max-w-[700px] w-auto text-black-eerie pointer-events-none h-[calc(100vh_-_1.5rem_*_2)] z-[1040]'>
-                  <div className='relative flex flex-col gap-3 p-3 w-full pointer-events-auto outline-none text-white drop-shadow-sm shadow-2xl bg-clip-padding max-h-[calc(100vh_-_1.5rem_*_2)] bg-transparent'>
-                     <div className='flex items-center justify-between min-h-[58px] p-3'>
-                        <div className='flex flex-col gap-3'>
-                           <h2 className='text-5xl'>Register now</h2>
-                           <h3 className='text-2xl text-gray-gunmetal'>
-                              to start your free sessions
-                           </h3>
-                        </div>
-                        <button
-                           type='button'
-                           onClick={closeLoginScreen}
-                           className='self-start border-none bg-transparent cursor-pointer w-[1rem] dr-close'
-                           aria-label='Close'>
-                           <FontAwesomeIcon icon={faTimes} />
-                        </button>
-                     </div>
-                     <div className='relative flex-auto p-3 overflow-auto'>
-                        <div id='validation-errors2'></div>
-                        {/* submit form then redirect to app/goals */}
-                        <form
-                           method='POST'
-                           className='text-gray-700'
-                           action='http://bo.adpadelhouse.com/login'>
-                           <input
-                              type='hidden'
-                              name='_token'
-                              value='flLpueuWiW4yYQhFv42duLSPTHXIub8XYUjHG5lR'
-                           />
-                           <div className='mb-6'>
-                              <input
-                                 id='email'
-                                 type='email'
-                                 placeholder='Email'
-                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
-                                 name='email'
-                                 value={email}
-                                 onChange={(e) => {
-                                    setEmail(e.target.value);
-                                 }}
-                                 required
-                                 autoComplete='email'
-                                 autoFocus
-                              />
-                           </div>
-                           <div className='mb-6'>
-                              <input
-                                 id='password'
-                                 type='password'
-                                 placeholder='Password'
-                                 className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
-                                 name='password'
-                                 value={password}
-                                 onChange={(e) => {
-                                    setPassword(e.target.value);
-                                 }}
-                                 required
-                                 autoComplete='new-password'
-                              />
-                           </div>
-                           <div className='mb-6'>
-                              <button className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-yellow-mikado rounded-full'>
-                                 Login
-                              </button>
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </>
-   );
+	const formik = useFormik({
+		initialValues: {
+			email: "",
+			password: "",
+		},
+		validationSchema: object({
+			email: string().email("wrong email validation").required("required"),
+			password: string().required("required"),
+		}),
+		onSubmit: async (values) => {
+			await login();
+		},
+	});
+
+	const router = useRouter();
+
+	async function login() {
+		if (!formik.values.email || !formik.values.password) {
+			setAuthState((old) => ({
+				...old,
+				isLoading: false,
+				error: "Invalid Login",
+			}));
+			return;
+		}
+		setAuthState((old) => ({ ...old, isLoading: true, error: "" }));
+		await trySignIn(formik.values.email, formik.values.password);
+	}
+
+	async function trySignIn(email: string, password: string) {
+		const result = await signIn("credentials", {
+			redirect: false,
+			email: email,
+			password: password,
+		});
+
+		if (!result?.error) {
+			router.push("/redirect");
+		} else {
+			setAuthState((old) => ({
+				...old,
+				isLoading: false,
+				error: "Invalid Login",
+			}));
+		}
+	}
+
+	return (
+		<>
+			<div className='flex items-center justify-between min-h-[58px] p-3'>
+				<div className='flex flex-col gap-3'>
+					<h2 className='text-5xl'>Register now</h2>
+					<h3 className='text-2xl text-gray-gunmetal'>
+						to start your free sessions
+					</h3>
+				</div>
+			</div>
+
+			{authState.error && (
+				<div className='bg-red-100 p-2 mt-2 rounded-md text-red-900'>
+					{authState.error}
+				</div>
+			)}
+
+			{authState.isLoading && (
+				<div className='flex flex-col items-center justify-center mt-5'>
+					<Spinner
+						className=''
+						message='trying to login, please wait ...'></Spinner>
+				</div>
+			)}
+
+			<div className='relative flex-auto p-3 overflow-auto'>
+				<form
+					onSubmit={formik.handleSubmit}
+					className='flex flex-col gap-10 text-gray-700'>
+					<input
+						type='hidden'
+						name='_token'
+						value='flLpueuWiW4yYQhFv42duLSPTHXIub8XYUjHG5lR'
+					/>
+					<div>
+						<input
+							id='email'
+							type='email'
+							placeholder='Email'
+							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+							{...formik.getFieldProps("email")}
+						/>
+						{formik.errors.email && (
+							<div className='text-rose-400 text-sm'>
+								{formik.errors.email}
+							</div>
+						)}
+					</div>
+					<div>
+						<input
+							id='password'
+							type='password'
+							placeholder='Password'
+							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+							{...formik.getFieldProps("password")}
+						/>
+						{formik.errors?.password && (
+							<div className='text-rose-400 text-sm'>
+								{formik.errors.password}
+							</div>
+						)}
+					</div>
+					<div>
+						<button
+							type='submit'
+							className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-yellow-mikado rounded-full'>
+							Login
+						</button>
+					</div>
+				</form>
+			</div>
+		</>
+	);
 };
 
 export default Login;
