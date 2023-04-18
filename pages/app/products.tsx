@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { IProduct } from "../../models/product";
 import { useSession } from "next-auth/react";
+import { IFuture } from "../../models/future";
+import * as futuresClientApi from "../../http-client/futures.client";
 
 const Products = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -26,6 +28,14 @@ const Products = () => {
 	>({
 		queryKey: [clientApi.Keys.All],
 		queryFn: clientApi.getAll,
+		refetchOnWindowFocus: false,
+	});
+
+	const { data: futuresRes, isLoading: isLoadingFutures } = useQuery<
+		IFuture[]
+	>({
+		queryKey: [futuresClientApi.Keys.All],
+		queryFn: futuresClientApi.getAll,
 		refetchOnWindowFocus: false,
 	});
 
@@ -82,7 +92,11 @@ const Products = () => {
 						</h3>
 						<Formik
 							initialValues={{
-								products: products,
+								products: products.map(p => {
+									return {
+										...p, futures: futuresRes?.filter((f) => f.productId == p.id)
+									}
+								}),
 							}}
 							validationSchema={Yup.object({
 								products: Yup.array(
