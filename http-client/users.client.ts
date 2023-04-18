@@ -1,14 +1,12 @@
 import axios from "axios";
-import { IUser } from "../models/mongoose/user";
+import { IUser } from "../models/user";
 
 const api = axios.create({
    baseURL: "/api",
 });
 
-export const getAll = (queryFilters: string | null) =>
-   api.get(`/users`, {
-      params: queryFilters,
-   }).then((res) => res.data);
+export const getAll = () =>
+   api.get(`/users`).then((res) => res.data);
 
 export const getAllLookup = () =>
    api.get(`/users/lookup`).then((res) => res.data);
@@ -26,8 +24,8 @@ export const getOne = (id: string) =>
    api.get(`/users/${id}`).then((res) => res.data);
 
 export const Keys = {
-   All: "OFFERS_LIST",
-   User: "OFFER",
-   Lookup: "OFFER_LOOKUP",
-   AllLookup: "ALL_OFFERS_LOOKUP",
+   All: "USERS_LIST",
+   User: "USER",
+   Lookup: "USER_LOOKUP",
+   AllLookup: "ALL_USERS_LOOKUP",
 };

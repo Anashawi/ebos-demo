@@ -1,4 +1,4 @@
-import { IUser } from "../models/mongoose/user";
+import { IUser } from "../models/user";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 

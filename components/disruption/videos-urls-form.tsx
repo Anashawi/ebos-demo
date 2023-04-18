@@ -33,7 +33,6 @@ const VideosUrlsForm: NextPage<Props> = ({
          buildingCapacity: string().required("required"),
       }),
       onSubmit: (values) => {
-         debugger;
          console.log("values");
       },
    });

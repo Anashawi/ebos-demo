@@ -1,6 +1,6 @@
 import axios from "axios";
 import getConfig from "next/config";
-import { IBlob } from "../models/mongoose/blob";
+import { IBlob } from "../models/blob";
 
 const { publicRuntimeConfig } = getConfig();
 

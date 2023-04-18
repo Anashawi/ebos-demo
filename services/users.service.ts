@@ -1,4 +1,4 @@
-import { IUser, User } from "../models/mongoose/user";
+import { IUser, User } from "../models/user";
 
 export async function getAll(query: { searchText?: any; }) {
    try {

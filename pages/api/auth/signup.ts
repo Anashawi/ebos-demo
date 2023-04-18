@@ -1,4 +1,4 @@
-import { IUser } from '../../../models/mongoose/user';
+import { IUser } from '../../../models/user';
 
 import * as authService from "../../../services/auth.service";
 import { NextApiRequest, NextApiResponse } from "next";

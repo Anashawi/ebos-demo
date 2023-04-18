@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
-import { ProductFuture } from "../products/future.model";
 
 interface ProductAttrs {
    name: string;
-   futures: ProductFuture[];
 }
 
 interface ProductDocument extends mongoose.Document, ProductAttrs { }
@@ -22,20 +20,16 @@ const productSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
-      futures: {
-         type: Array<Object>,
-         required: true,
-      },
    },
    {
       toJSON: {
          transform(doc, ret) {
             ret.id = ret._id.toString();
+            delete ret.password;
          },
       },
    }
 );
-
 
 productSchema.statics.build = (attrs: ProductAttrs) => {
    return new Product(attrs);

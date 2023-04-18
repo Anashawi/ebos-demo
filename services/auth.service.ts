@@ -1,6 +1,6 @@
 import { hash, compare } from "bcryptjs";
 import { dbConnect } from "./db.service";
-import { IUser, User } from "../models/mongoose/user";
+import { IUser, User } from "../models/user";
 
 const USERS_COLLECTION = "users";
 

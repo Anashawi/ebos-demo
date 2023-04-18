@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "../models/mongoose/user";
+import { IUser } from "../models/user";
 
 const api = axios.create({
   baseURL: '/api',

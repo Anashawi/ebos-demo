@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { authProviderEnum } from "../../enums";
+import { authProviderEnum } from "./enums";
 
 interface UserAttrs {
   fullName: string;

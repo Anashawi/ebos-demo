@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { authProviderEnum } from "../../enums";
-import { IUser } from "../../models/mongoose/user";
+import { authProviderEnum } from "../../models/enums";
+import { IUser } from "../../models/user";
 import { signIn } from "next-auth/react";
 import * as api from "../../http-client/auth.client";
 import { useState } from "react";

@@ -1,4 +1,4 @@
-import { IBlob, Blob } from "../models/mongoose/blob";
+import { IBlob, Blob } from "../models/blob";
 
 export async function storeBlob(blob: IBlob) {
   try {

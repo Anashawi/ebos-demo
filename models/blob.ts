@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { BlobTypeEnum } from "../../enums";
+import { BlobTypeEnum } from "./enums";
 
 interface BlobAttrs {
     fileName: string;
