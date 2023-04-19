@@ -7,7 +7,7 @@ import Modal from "../common/modal";
 import IdeasProduct from "../ideas/ideas-product";
 import { ProductModel } from "../../models/products/product.model";
 
-type Props = {
+interface Props {
    isOpen: boolean;
    toggle: () => void;
 };

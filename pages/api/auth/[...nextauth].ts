@@ -17,7 +17,6 @@ export const authOptions = {
     // @ts-ignore
     async session({ session, token, user, profile }) {
       // Send properties to the client, like an access_token and user id from a provider.
-      console.log("session^%*^&*%^&(^&*()^&)&(*)_&(_$%#^%#$^$%^$#%^$%^", session);
       session.user = token;
       return session;
     },
@@ -36,10 +35,8 @@ export const authOptions = {
       name: "credentials",
       // @ts-ignore
       async authorize(credentials: { email: string, password: string }) {
-        console.log("credentials$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", credentials);
         if (!credentials) return;
         const user = await authService.login(credentials);
-        console.log("user$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", user);
         return user;
       },
     }),

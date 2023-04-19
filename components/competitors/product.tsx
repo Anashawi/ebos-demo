@@ -11,7 +11,7 @@ import { ProductModel } from "../../models/products/product.model";
 import { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 
-type Props = {
+interface Props {
    product: ProductModel;
    index: number;
    onRemove: any;

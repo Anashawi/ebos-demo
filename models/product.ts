@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import { IFuture } from "./types";
 
 interface ProductAttrs {
    name: string;
+   futures: IFuture[]
 }
 
 interface ProductDocument extends mongoose.Document, ProductAttrs { }
@@ -18,6 +20,10 @@ const productSchema = new mongoose.Schema(
    {
       name: {
          type: String,
+         required: true,
+      },
+      futures: {
+         type: Array<IFuture>,
          required: true,
       },
    },

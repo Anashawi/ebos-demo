@@ -1,5 +1,6 @@
 import axios from "axios";
-import { IProduct } from "../models/product";
+import { IUserProduct } from "../models/user-product";
+import { productPagesEnum } from "../models/enums";
 
 const api = axios.create({
    baseURL: "/api",
@@ -7,7 +8,7 @@ const api = axios.create({
 
 
 export const getAll = () =>
-   api.get(`/products`).then((res) => res.data);
+   api.get(`/user-products`).then((res) => res.data);
 
 // export const getAllLookup = () =>
 //    api.get(`/products/lookup`).then((res) => res.data);
@@ -15,18 +16,18 @@ export const getAll = () =>
 // export const getLookup = (courseId) =>
 //   api.get(`/products/lookup/${productId}`).then((res) => res.data);
 
-export const insertOne = (product: IProduct) =>
-   api.post(`/products`, product).then((res) => res.data);
+export const insertOne = (userProduct: IUserProduct) =>
+   api.post(`/user-products`, userProduct).then((res) => res.data);
 
-export const updateOne = (product: IProduct) =>
-   api.put(`/products/${product.id}`, product).then((res) => res.data);
+export const updateOne = (userProduct: IUserProduct, path: productPagesEnum) =>
+   api.put(`/user-products`, { userProduct, path }).then((res) => res.data);
 
 export const getOne = (id: string) =>
-   api.get(`/products/${id}`).then((res) => res.data);
+   api.get(`/user-products/${id}`).then((res) => res.data);
 
 export const Keys = {
-   All: "PRODUCTS_LIST",
-   Product: "PRODUCT",
-   Lookup: "PRODUCT_LOOKUP",
-   AllLookup: "ALL_PRODUCTS_LOOKUP",
+   All: "USER_PRODUCTS_LIST",
+   UserProduct: "USER_PRODUCT",
+   Lookup: "USER_PRODUCT_LOOKUP",
+   AllLookup: "ALL_USER_PRODUCTS_LOOKUP",
 };

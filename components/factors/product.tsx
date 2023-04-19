@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ProductCompetitor } from "../../models/products/competitor.model";
 import factorValueOptions from "../../samples/lookups/factor-value-options.json";
 
-type Props = {
+interface Props {
    product: ProductModel;
    index: number;
    onRemove: any;
@@ -104,7 +104,7 @@ const FactorsProduct: NextPage<Props> = ({
                               product.factors.map((factor, factorIndex) => (
                                  <li
                                     key={factorIndex}
-                                    className='flex gap-5 items-start border-b border-gray-400 pb-7 spacedout'>
+                                    className='flex gap-5 items-start border-b border-gray-400 pb-7'>
                                     <div className=''>
                                        <label>Factor</label>
                                        <Field

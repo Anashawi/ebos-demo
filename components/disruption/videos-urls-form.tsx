@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { NextPage } from "next";
 import { object, string } from "yup";
 
-type Props = {
+interface Props {
    toggleEditUrlsModal: () => void;
    formValues: any;
 };

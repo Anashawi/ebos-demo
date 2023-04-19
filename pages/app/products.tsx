@@ -8,46 +8,94 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
-import { IProduct } from "../../models/product";
 import { useSession } from "next-auth/react";
-import { IFuture } from "../../models/future";
-import * as futuresClientApi from "../../http-client/futures.client";
+import { IUserProduct } from "../../models/user-product";
+import { IFuture, IProduct } from "../../models/types";
+import Spinner from "../../components/common/spinner";
+import { productPagesEnum } from "../../models/enums";
 
 const Products = () => {
+	const { data: session }: any = useSession();
+
+	const emptyUserProduct = useMemo(() => {
+		return {
+			id: "",
+			userId: session?.user?.id,
+			products: [],
+		} as IUserProduct;
+	}, []);
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [products, setProducts] = useState<IProduct[]>([]);
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
 
-	const { data: session } = useSession();
+	const queryClient = useQueryClient();
 
-	console.log(session);
-
-	const { data: productsRes, isLoading: isLoadingProducts } = useQuery<
-		IProduct[]
-	>({
+	const { data, isLoading, refetch } = useQuery<IUserProduct>({
 		queryKey: [clientApi.Keys.All],
 		queryFn: clientApi.getAll,
 		refetchOnWindowFocus: false,
-	});
-
-	const { data: futuresRes, isLoading: isLoadingFutures } = useQuery<
-		IFuture[]
-	>({
-		queryKey: [futuresClientApi.Keys.All],
-		queryFn: futuresClientApi.getAll,
-		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
 	});
 
 	useEffect(() => {
-		setProducts(productsRes ?? []);
-	}, [productsRes]);
+		setUserProduct(data ?? emptyUserProduct);
+	}, [data]);
+
+	const { mutate: createUserProduct, isLoading: isCreatingUserProduct } =
+		useMutation(
+			(userProduct: IUserProduct) => clientApi.insertOne(userProduct),
+			{
+				onMutate: (updated) => {
+					queryClient.setQueryData(
+						[clientApi.Keys.UserProduct, userProduct.id],
+						updated
+					);
+				},
+				onSuccess: (updated) => {
+					queryClient.invalidateQueries([
+						clientApi.Keys.UserProduct,
+						userProduct.id,
+					]);
+					queryClient.invalidateQueries([clientApi.Keys.All]);
+				},
+			}
+		);
+	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
+		useMutation(
+			(userProduct: IUserProduct) => {
+				return clientApi.updateOne(userProduct, productPagesEnum.futures);
+			},
+			{
+				onMutate: (updated) => {
+					queryClient.setQueryData(
+						[clientApi.Keys.UserProduct, userProduct.id],
+						updated
+					);
+				},
+				onSuccess: (updated) => {
+					queryClient.invalidateQueries([
+						clientApi.Keys.UserProduct,
+						userProduct.id,
+					]);
+					queryClient.invalidateQueries([clientApi.Keys.All]);
+				},
+			}
+		);
 
 	const emptyProduct = useMemo(() => {
 		return {
-			id: "",
+			uuid: "",
 			name: "",
-			userId: (session as any)?.user.id ?? "",
+			futures: [
+				{
+					year: 2023,
+					level: 1,
+					sales: 55,
+				} as IFuture,
+			],
 		};
 	}, []);
 
@@ -92,11 +140,7 @@ const Products = () => {
 						</h3>
 						<Formik
 							initialValues={{
-								products: products.map(p => {
-									return {
-										...p, futures: futuresRes?.filter((f) => f.productId == p.id)
-									}
-								}),
+								products: userProduct?.products,
 							}}
 							validationSchema={Yup.object({
 								products: Yup.array(
@@ -107,10 +151,6 @@ const Products = () => {
 										name: Yup.string().required("Name is required"),
 										futures: Yup.array(
 											Yup.object({
-												// product_id:
-												//    Yup.string(
-												//       "must be a string"
-												//    ).required("required"),
 												year: Yup.number()
 													.typeError("you must specify a year")
 													.min(2023, "min year is 2023")
@@ -131,8 +171,24 @@ const Products = () => {
 									.required("Must provide at least one product !")
 									.min(1, "Must provide at least one product !"),
 							})}
-							onSubmit={(values) => {
-								console.log(values);
+							onSubmit={async (values, actions) => {
+								values.products?.map((product) => {
+									if (!product.uuid) {
+										product.uuid = crypto.randomUUID();
+									}
+								});
+								if (userProduct?.id) {
+									await updateUserProduct({
+										...userProduct,
+										...values,
+									});
+								} else {
+									await createUserProduct({
+										...userProduct,
+										...values,
+									});
+								}
+								actions.setSubmitting(false);
 							}}
 							enableReinitialize
 							validateOnMount>
@@ -144,8 +200,8 @@ const Products = () => {
 												return (
 													<div className='flex flex-col gap-12'>
 														<div className='py-5 flex flex-col gap-20'>
-															{!!values.products.length &&
-																values.products.map(
+															{!!values.products?.length &&
+																values.products?.map(
 																	(product, productIndex) => (
 																		<div key={productIndex}>
 																			<Product
@@ -160,7 +216,7 @@ const Products = () => {
 																		</div>
 																	)
 																)}
-															{!values.products.length &&
+															{!values.products?.length &&
 																form.errors?.products && (
 																	<div className='w-full flex justify-center items-center'>
 																		<p className='text-2xl p-10 text-center bg-rose-50 text-rose-500'>
@@ -176,9 +232,9 @@ const Products = () => {
 														</div>
 														<div className='w-1/2 flex gap-5 items-center justify-end pr-5 md:pr-10 py-10'>
 															<button
+																type='button'
 																onClick={() => {
-																	products.push(emptyProduct);
-																	setProducts([...products]);
+																	push(emptyProduct);
 																}}
 																className='inline-flex items-center gap-3 btn blue-gradient text-black-eerie hover:text-white'>
 																<FontAwesomeIcon
@@ -209,12 +265,19 @@ const Products = () => {
 													className='btn text-black-eerie hover:text-blue-ncs'>
 													<strong>Back To Dashboard</strong>
 												</Link>
+												{(!!isLoading ||
+													isUpdatingUserProduct ||
+													isCreatingUserProduct) && (
+													<Spinner
+														className='flex items-center px-10 text-2xl'
+														message='Loading Products'
+													/>
+												)}
 											</div>
 											<div className='py-3'>
 												<button
 													className='btn text-black-eerie mt-10'
-													data-name='Pioneer, Migrate, Settler'
-													id='theSubmitBtn'>
+													data-name='Pioneer, Migrate, Settler'>
 													<strong>Request </strong> for consultant
 													review
 												</button>

@@ -9,7 +9,7 @@ config.autoAddCss = false;
 
 const queryClient = new QueryClient();
 
-type Props = {
+interface Props {
 	Component: any;
 	pageProps: any;
 };

@@ -2,67 +2,47 @@ import objectPath from "object-path";
 import { NextPage } from "next";
 import { ErrorMessage, Field, FieldArray } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
+import Chart from "react-google-charts";
 import {
 	faCirclePlus,
 	faMinusCircle,
 	faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useConfirmDialog from "../../hooks/use-confirm-dialog";
 import ConfirmModal from "../common/confirm-dialog";
-import { ConfirmDialog } from "../../models/types";
-import { IFuture } from "../../models/future";
-import { IProduct } from "../../models/product";
+import { ConfirmDialog, IFuture, IProduct } from "../../models/types";
 import useFuturesChart from "../../hooks/use-futures-chart";
-import * as futuresClientApi from "../../http-client/futures.client";
-import { useQuery } from "@tanstack/react-query";
 
-type Props = {
+interface Props {
 	product: IProduct;
 	index: number;
 	onRemove: any;
-};
+}
 
 const Product: NextPage<Props> = ({ product, index, onRemove }) => {
-	let deleteConfig: ConfirmDialog = {
-		isShown: false,
-		title: "Delete Product",
-		confirmMessage: "Are you sure to delete this product ?",
-		okBtnText: "Delete",
-		cancelBtnText: "Cancel",
-		okCallback: () => {},
-		closeCallback: () => {},
-	};
-	const [deleteDialogConfig, toggleDeleteDialog] = useConfirmDialog();
-	const [futures, setFutures] = useState<IFuture[]>([]);
-
-	const { data: futuresRes, isLoading: isLoadingFutures } = useQuery<
-		IFuture[]
-	>({
-		queryKey: [futuresClientApi.Keys.All],
-		queryFn: futuresClientApi.getAll,
-		refetchOnWindowFocus: false,
-	});
-	useEffect(() => {
-		product.futures = futuresRes.fil;
-		// setProducts((prevProduct) => {
-		// 	prevProduct.futures = futuresRes ?? [];
-		// 	return { ...prevProduct };
-		// });
-	}, [futuresRes]);
+	const deleteConfig: ConfirmDialog = useMemo(() => {
+		return {
+			isShown: false,
+			title: "Delete Product",
+			confirmMessage: "Are you sure to delete this product ?",
+			okBtnText: "Delete",
+			cancelBtnText: "Cancel",
+			okCallback: () => {},
+		};
+	}, []);
+	const [deleteDialogConfig, toggleDeleteDialog] =
+		useConfirmDialog(deleteConfig);
 
 	const emptyFuture = useMemo(() => {
 		return {
-			id: "",
-			productId: "",
-			year: (futures[futures?.length - 1]?.year ?? 2022) + 1,
+			year: (product.futures[product.futures?.length - 1]?.year ?? 2022) + 1,
 			level: 2,
 			sales: 50,
-		};
+		} as IFuture;
 	}, []);
 
-	const [chart] = useFuturesChart(product, futures);
+	const [chart] = useFuturesChart(product);
 
 	return (
 		<>
@@ -87,20 +67,14 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 										)}
 									</ErrorMessage>
 								</div>
-								{/* <FontAwesomeIcon
-                           onClick={() => {
-                              deleteConfig.closeCallback = toggleDeleteDialog;
-                              deleteConfig.okCallback = () => {
-                                 remove(index);
-                              };
-                              toggleDeleteDialog(deleteConfig);
-                           }}
-                           className='w-7 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
-                           icon={faTrash}
-                        /> */}
 								<div className='flex justify-end mb-5'>
 									<FontAwesomeIcon
-										onClick={onRemove}
+										onClick={() => {
+											deleteDialogConfig.okCallback = () => {
+												onRemove();
+											};
+											toggleDeleteDialog(deleteDialogConfig);
+										}}
 										className='w-7 cursor-pointer text-rose-200 hover:text-rose-500'
 										icon={faTrash}
 									/>
@@ -109,11 +83,10 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 						</div>
 						<FieldArray name={`products.${index}.futures`}>
 							{({ remove, push, form }) => {
-								// addFutureCallback(product, push);
 								return (
 									<div className='overflow-y-auto'>
-										{!!futures?.length &&
-											futures?.map((future, futureIndex) => {
+										{!!product.futures?.length &&
+											product.futures?.map((future, futureIndex) => {
 												return (
 													<div
 														key={futureIndex}
@@ -172,8 +145,8 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																<Field
 																	as='select'
 																	name={`products.${index}.futures.${futureIndex}.sales`}
-																	min='0'
-																	max='100'
+																	min={0}
+																	max={100}
 																	className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
 																	<option value={0}>0</option>
 																	<option value={10}>
@@ -220,7 +193,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 													</div>
 												);
 											})}
-										{!futures?.length &&
+										{!product.futures?.length &&
 											!!objectPath.get(
 												form,
 												`errors.products.${index}.futures`
@@ -235,11 +208,11 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 												</div>
 											)}
 										<div className='flex justify-between w-full pr-3 py-5 gap-5'>
-											{futures?.length > 0 && (
+											{product.futures?.length > 0 && (
 												<button
 													type='button'
 													onClick={() => {
-														remove(futures.length - 1);
+														remove(product.futures.length - 1);
 													}}
 													className='inline-flex items-center gap-3 text-lg p-5 btn text-rose-400 hover:text-rose-500'>
 													<span>remove last Future</span>
@@ -272,7 +245,11 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 				</div>
 			</div>
 
-			<ConfirmModal config={deleteDialogConfig}></ConfirmModal>
+			<ConfirmModal
+				config={deleteDialogConfig}
+				toggle={() => {
+					toggleDeleteDialog();
+				}}></ConfirmModal>
 		</>
 	);
 };

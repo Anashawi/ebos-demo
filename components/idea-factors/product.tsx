@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ProductCompetitor } from "../../models/products/competitor.model";
 import ideaValueOptions from "../../samples/lookups/idea-factor-value-options.json";
 
-type Props = {
+interface Props {
    product: ProductModel;
    index: number;
    onRemove: any;

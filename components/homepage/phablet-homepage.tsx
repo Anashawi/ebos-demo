@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 
-type Props = {
+interface Props {
    nodes: any;
 };
 const PhabletHomepage: NextPage<Props> = ({ nodes }) => {

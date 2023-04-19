@@ -1,15 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import * as service from "../../services/products.service";
-import { getSession } from "next-auth/react";
-import objectPath from "object-path";
+import * as service from "../../services/user-products.service";
 import { getToken } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "PUT":
       return await _put(req, res);
-    case "DELETE":
-      return await _delete(req, res);
+    case "POST":
+      return await _post(req, res);
     case "GET":
       return _get(req, res);
   }
@@ -30,10 +28,11 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function _put(req: NextApiRequest, res: NextApiResponse) {
+async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const products = req.body;
-    const result = await service.updateAll(products);
+    const userProduct = req.body;
+    delete userProduct.uuid;
+    const result = await service.insertOne(userProduct);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({
@@ -42,17 +41,15 @@ async function _put(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function _delete(req: NextApiRequest, res: NextApiResponse) {
+async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { id } = req.query;;
-
-    const result = await service.deleteOne(id as string);
+    const { userProduct, path } = req.body;
+    const result = await service.updateOne(userProduct, path);
     res.status(200).json(result);
   } catch (error: any) {
-    if (error instanceof Error)
-      res.status(500).json({
-        message: error.message,
-      });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 }
 

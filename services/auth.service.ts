@@ -44,7 +44,6 @@ export async function login(credentials: { email: string, password: string }) {
       throw new Error("invalid password");
     }
     const user = result.toJSON();
-    console.log("user $#^#$^$#%#@%@$^%#$%^&%$^$%^%$%", user)
     return { email: user.email, role: "admin", id: user.id, fullName: user.fullName };
   } catch (error) {
     console.log(error);

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
-import { IProduct } from "../models/product";
-import { IFuture } from "../models/future";
+import { IProduct } from "../models/types";
 
-const useFuturesChart = (product: IProduct, futures: IFuture[]) => {
+const useFuturesChart = (product: IProduct) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "BubbleChart",
 		width: "100%",
@@ -17,17 +16,17 @@ const useFuturesChart = (product: IProduct, futures: IFuture[]) => {
 	}, [product]);
 
 	const updateChartProps = () => {
-		const rows = futures
+		const rows = product.futures
 			.sort((a, b) => {
 				if (a.year < b.year) return -1;
 				return 1;
 			})
 			.map((n, i) => {
-				return ["", i + 1, n.level, n.sales];
+				return ["", i + 1, +n.level, n.sales];
 			});
 
 		chart.data = [["Product", "Year", "Level", "Sales"], ...rows];
-		const ticks: any = futures?.map((future, i) => {
+		const ticks: any = product.futures?.map((future, i) => {
 			return {
 				v: i + 1,
 				f: future.year.toString(),
@@ -69,7 +68,7 @@ const useFuturesChart = (product: IProduct, futures: IFuture[]) => {
 					color: "#eee",
 				},
 				baseline: 0,
-				maxValue: futures?.length + 1,
+				maxValue: product.futures?.length + 1,
 				ticks: ticks,
 			},
 			vAxis: {
@@ -93,10 +92,9 @@ const useFuturesChart = (product: IProduct, futures: IFuture[]) => {
 			},
 		};
 		setChart({ ...chart });
-		console.log("product with chart: ", product);
 	};
 
-	return [chart, updateChartProps];
+	return [chart];
 };
 
 export default useFuturesChart;

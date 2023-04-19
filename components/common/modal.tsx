@@ -1,13 +1,13 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextPage } from "next";
+import { IModal } from "../../models/types";
 
-type Props = {
+interface Props {
 	children: any;
-	config: any;
-};
+	config: IModal;
+}
 
-const Modal: NextPage<Props> = ({ children, config = {} }) => {
+const Modal = ({ children, config = {} as IModal }: Props) => {
 	const { className, isShown, closeCallback } = config;
 
 	if (!isShown) return <></>;
@@ -15,12 +15,12 @@ const Modal: NextPage<Props> = ({ children, config = {} }) => {
 	return (
 		<div className='z-[99999] fixed inset-0 flex justify-center items-center bg-neutral-900 bg-opacity-60'>
 			<div
-				className={`relative min-h-[300px] min-w-[320px] rounded-md bg-white ${
+				className={`relative min-h-[200px] min-w-[320px] rounded-md bg-white ${
 					className ?? ""
 				}`}>
 				<span
 					onClick={closeCallback}
-					className='absolute right-5 top-0 inline-flex items-center p-2 text-gray-400 hover:text-gray-800 text-lg hover:text-xl cursor-pointer'>
+					className='absolute right-5 top-0 inline-flex items-center p-1 text-gray-400 hover:text-gray-800 text-lg hover:text-xl cursor-pointer'>
 					<FontAwesomeIcon
 						icon={faTimes}
 						className='w-5 me-3 mt-3 text-xl font-bold'

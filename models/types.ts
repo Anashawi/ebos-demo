@@ -1,9 +1,26 @@
-export class ConfirmDialog {
-   isShown: boolean = false;
-   title: string = "Confirm Action Dialog";
-   confirmMessage: string = "Are you sure to proceed with this action ?";
-   okBtnText: string = "Yes";
-   cancelBtnText: string = "Cancel";
-   okCallback: () => void = () => {};
-   closeCallback: () => void = () => {};
+export interface ConfirmDialog {
+   isShown: boolean;
+   title: string;
+   confirmMessage: string;
+   okBtnText: string;
+   cancelBtnText: string;
+   okCallback: () => void;
+}
+
+export interface IModal {
+   className: string;
+   isShown: boolean;
+   closeCallback: () => void
+}
+
+export interface IProduct {
+   uuid: string;
+   name: string;
+   futures: IFuture[]
+}
+
+export interface IFuture {
+   year: number;
+   level: number;
+   sales: number;
 }

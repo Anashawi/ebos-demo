@@ -8,7 +8,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useMemo, useState } from "react";
 import { ProductIdeaFactor } from "../../models/products/idea-factor.model";
 
-type Props = {
+interface Props {
    product: ProductModel;
 };
 

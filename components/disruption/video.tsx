@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 
-type Props = {
+interface Props {
    url: string;
 };
 

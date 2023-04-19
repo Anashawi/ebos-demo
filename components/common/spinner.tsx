@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 
-type Props = {
+interface Props {
    className: string;
    message: string;
 };

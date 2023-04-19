@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type Props = {
+interface Props {
    nodes: any;
    originalScreenWidth: any;
    currentScreenWidth: any;
