@@ -36,7 +36,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 
 	const emptyFuture = useMemo(() => {
 		return {
-			year: (product.futures[product.futures?.length - 1]?.year ?? 2022) + 1,
+			year: (product.futures ? product.futures[product.futures?.length - 1]?.year ?? 2022 : 2022) + 1,
 			level: 2,
 			sales: 50,
 		} as IFuture;
@@ -121,13 +121,13 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																	as='select'
 																	name={`products.${index}.futures.${futureIndex}.level`}
 																	className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
-																	<option value={1}>
+																	<option value='1'>
 																		Settler
 																	</option>
-																	<option value={2}>
+																	<option value='2'>
 																		Migrator
 																	</option>
-																	<option value={3}>
+																	<option value='3'>
 																		Pioneer
 																	</option>
 																</Field>
@@ -145,38 +145,38 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																<Field
 																	as='select'
 																	name={`products.${index}.futures.${futureIndex}.sales`}
-																	min={0}
-																	max={100}
+																	min='0'
+																	max='100'
 																	className='accent-blue-true w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'>
-																	<option value={0}>0</option>
-																	<option value={10}>
+																	<option value='0'>0</option>
+																	<option value='10'>
 																		10
 																	</option>
-																	<option value={20}>
+																	<option value='20'>
 																		20
 																	</option>
-																	<option value={30}>
+																	<option value='30'>
 																		30
 																	</option>
-																	<option value={40}>
+																	<option value='40'>
 																		40
 																	</option>
-																	<option value={50}>
+																	<option value='50'>
 																		50
 																	</option>
-																	<option value={60}>
+																	<option value='60'>
 																		60
 																	</option>
-																	<option value={70}>
+																	<option value='70'>
 																		70
 																	</option>
-																	<option value={80}>
+																	<option value='80'>
 																		80
 																	</option>
-																	<option value={90}>
+																	<option value='90'>
 																		90
 																	</option>
-																	<option value={100}>
+																	<option value='100'>
 																		100
 																	</option>
 																</Field>
@@ -208,20 +208,25 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 												</div>
 											)}
 										<div className='flex justify-between w-full pr-3 py-5 gap-5'>
-											{product.futures?.length > 0 && (
-												<button
-													type='button'
-													onClick={() => {
-														remove(product.futures.length - 1);
-													}}
-													className='inline-flex items-center gap-3 text-lg p-5 btn text-rose-400 hover:text-rose-500'>
-													<span>remove last Future</span>
-													<FontAwesomeIcon
-														className='w-7 h-auto cursor-pointer hover:text-rose-500'
-														icon={faMinusCircle}
-													/>
-												</button>
-											)}
+											{!!product.futures?.length &&
+												product.futures?.length > 0 && (
+													<button
+														type='button'
+														onClick={() => {
+															if (product.futures) {
+																remove(
+																	product.futures.length - 1
+																);
+															}
+														}}
+														className='inline-flex items-center gap-3 text-lg p-5 btn text-rose-400 hover:text-rose-500'>
+														<span>remove last Future</span>
+														<FontAwesomeIcon
+															className='w-7 h-auto cursor-pointer hover:text-rose-500'
+															icon={faMinusCircle}
+														/>
+													</button>
+												)}
 											<button
 												type='button'
 												onClick={() => {

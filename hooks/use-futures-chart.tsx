@@ -16,14 +16,15 @@ const useFuturesChart = (product: IProduct) => {
 	}, [product]);
 
 	const updateChartProps = () => {
-		const rows = product.futures
-			.sort((a, b) => {
-				if (a.year < b.year) return -1;
-				return 1;
-			})
-			.map((n, i) => {
-				return ["", i + 1, +n.level, n.sales];
-			});
+		const rows =
+			product.futures
+				?.sort((a, b) => {
+					if (a.year < b.year) return -1;
+					return 1;
+				})
+				.map((n, i) => {
+					return ["", i + 1, +n.level, n.sales];
+				}) ?? [];
 
 		chart.data = [["Product", "Year", "Level", "Sales"], ...rows];
 		const ticks: any = product.futures?.map((future, i) => {
@@ -68,7 +69,7 @@ const useFuturesChart = (product: IProduct) => {
 					color: "#eee",
 				},
 				baseline: 0,
-				maxValue: product.futures?.length + 1,
+				maxValue: product.futures?.length ?? 0 + 1,
 				ticks: ticks,
 			},
 			vAxis: {

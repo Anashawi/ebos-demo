@@ -12,7 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
 import { IUserProduct } from "../../models/user-product";
-import { IFuture, IProduct } from "../../models/types";
+import { IFuture } from "../../models/types";
 import Spinner from "../../components/common/spinner";
 import { productPagesEnum } from "../../models/enums";
 
@@ -28,12 +28,13 @@ const Products = () => {
 	}, []);
 
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+
 	const [userProduct, setUserProduct] =
 		useState<IUserProduct>(emptyUserProduct);
 
 	const queryClient = useQueryClient();
 
-	const { data, isLoading, refetch } = useQuery<IUserProduct>({
+	const { data, isLoading } = useQuery<IUserProduct>({
 		queryKey: [clientApi.Keys.All],
 		queryFn: clientApi.getAll,
 		refetchOnWindowFocus: false,
@@ -44,9 +45,11 @@ const Products = () => {
 		setUserProduct(data ?? emptyUserProduct);
 	}, [data]);
 
-	const { mutate: createUserProduct, isLoading: isCreatingUserProduct } =
+	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
-			(userProduct: IUserProduct) => clientApi.insertOne(userProduct),
+			(userProduct: IUserProduct) => {
+				return clientApi.updateOne(userProduct, productPagesEnum.futures);
+			},
 			{
 				onMutate: (updated) => {
 					queryClient.setQueryData(
@@ -63,11 +66,10 @@ const Products = () => {
 				},
 			}
 		);
-	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
+
+	const { mutate: createUserProduct, isLoading: isCreatingUserProduct } =
 		useMutation(
-			(userProduct: IUserProduct) => {
-				return clientApi.updateOne(userProduct, productPagesEnum.futures);
-			},
+			(userProduct: IUserProduct) => clientApi.insertOne(userProduct),
 			{
 				onMutate: (updated) => {
 					queryClient.setQueryData(
