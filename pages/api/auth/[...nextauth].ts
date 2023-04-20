@@ -41,6 +41,10 @@ export const authOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: '/',
+    singOut: '/'
+  }
 };
 // @ts-ignore
 export default NextAuth(authOptions);
