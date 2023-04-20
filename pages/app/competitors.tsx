@@ -41,11 +41,14 @@ const Competitors = () => {
 	});
 
 	useEffect(() => {
-		// data?.products.forEach((prod) => {
-		// 	if (prod.competitors && prod.competitors.length === 0) {
-		// 		prod.competitors = [meAsCompetitor];
-		// 	}
-		// });
+		data?.products.forEach((prod) => {
+			if (
+				!prod.competitors ||
+				(prod.competitors && prod.competitors.length === 0)
+			) {
+				prod.competitors = [meAsCompetitor];
+			}
+		});
 		setUserProduct(data ?? emptyUserProduct);
 		setLookupProducts(!!data?.products.length ? data.products : []);
 	}, [data]);
@@ -143,8 +146,7 @@ const Competitors = () => {
 										Yup.object({
 											competitors: Yup.array(
 												Yup.object({
-													// uuid: Yup.string().required("required"),
-													name: Yup.string(),
+													name: Yup.string().required("required"),
 													marketShare: Yup.number()
 														.required("required")
 														.min(
@@ -180,7 +182,7 @@ const Competitors = () => {
 													"Must provide at least one competitor !"
 												),
 										})
-									),
+									).required(),
 								})}
 								onSubmit={async (values, actions) => {
 									values.products?.map((product) => {
@@ -188,10 +190,12 @@ const Competitors = () => {
 											product.uuid = crypto.randomUUID();
 										}
 									});
+
 									if (userProduct?.id) {
+										userProduct.products =
+											values.products.concat(lookupProducts);
 										await updateUserProduct({
 											...userProduct,
-											...values.products.concat(lookupProducts),
 										});
 									}
 									actions.setSubmitting(false);
@@ -252,7 +256,7 @@ const Competitors = () => {
 																	Show more products
 																</label>
 																<select
-																	className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																	className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
 																	value={0}
 																	onChange={(e) => {
 																		const productToBeShown =

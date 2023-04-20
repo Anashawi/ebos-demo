@@ -69,7 +69,7 @@ const useFuturesChart = (product: IProduct) => {
 					color: "#eee",
 				},
 				baseline: 0,
-				maxValue: product.futures?.length ?? 0 + 1,
+				maxValue: (product.futures?.length ?? 0) + 1,
 				ticks: ticks,
 			},
 			vAxis: {
