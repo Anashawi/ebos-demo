@@ -1,52 +1,157 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Spinner from "../common/spinner";
-
-import products_dummy from "../../samples/products.json";
+import { object, string } from "yup";
 import { NextPage } from "next";
 import Modal from "../common/modal";
-import IdeasProduct from "../ideas/ideas-product";
-import { ProductModel } from "../../models/products/product.model";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { IIdea } from "../../models/idea";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import * as clientApi from "../../http-client/ideas.client";
 
 interface Props {
-   isOpen: boolean;
-   toggle: () => void;
-};
+	isOpen: boolean;
+	toggle: () => void;
+}
 
 const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
-   const [products, setProducts] = useState(products_dummy);
+	const [ideaFactors, setIdeaFactors] = useState<IIdea[]>([]);
 
-   if (!isOpen) return <></>;
+	const { data, isLoading } = useQuery<any>({
+		queryKey: [clientApi.Keys.AllLookup],
+		queryFn: clientApi.getAllLookup,
+		refetchOnWindowFocus: false,
+	});
 
-   return (
-      <>
-         <Modal
-            config={{
-               className:
-                  "p-5 lg:p-10 modal-content w-2/3 max-w-[900px] h-[90%] max-h-[650px]",
-               isShown: isOpen,
-               closeCallback: toggle,
-            }}>
-            <div className='flex flex-col gap-7'>
-               <h2 className='text-4xl text-gray-700'>Products Ideas</h2>
-               <h3 className='text-gray-400 text-2xl'>
-                  Add ideas to your products
-               </h3>
-            </div>
-            {!products.length && (
-               <p className='text-rose-300'>You Have No Products yet !</p>
-            )}
-            {!!products.length && (
-               <div className='h-[90%] overflow-auto'>
-                  {products.map((product: ProductModel, index: number) => (
-                     <div key={index} className='border-b'>
-                        <IdeasProduct product={product} />
-                     </div>
-                  ))}
-               </div>
-            )}
-         </Modal>
-      </>
-   );
+	useEffect(() => {
+		setIdeaFactors(data);
+	}, [data]);
+
+	const queryClient = useQueryClient();
+
+	const { mutate: createIdea, isLoading: isCreatingIdea } = useMutation(
+		(idea: IIdea) => {
+			return clientApi.insertOne(idea);
+		},
+		{
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
+			},
+		}
+	);
+
+	const { mutate: deleteIdea, isLoading: isDeletingIdea } = useMutation(
+		(id: string) => {
+			return clientApi.deleteOne(id);
+		},
+		{
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
+			},
+		}
+	);
+
+	if (!isOpen) return <></>;
+
+	return (
+		<>
+			<Modal
+				config={{
+					className:
+						"p-5 lg:p-10 w-2/3 min-w-[320px] max-w-[650px] max-h-[650px]",
+					isShown: isOpen,
+					closeCallback: toggle,
+				}}>
+				<div className='flex flex-col gap-7'>
+					<h2 className='text-4xl text-gray-700'>Ideas</h2>
+					<h3 className='text-gray-400 text-2xl'>Add ideas</h3>
+				</div>
+				<div className='h-[90%] overflow-auto'>
+					<div className='relative flex-auto py-3'>
+						{!!ideaFactors.length && (
+							<ul className='flex flex-col gap-2 mb-10'>
+								{ideaFactors.map((idea: IIdea, index: number) => (
+									<li
+										key={index}
+										className='flex gap-5 justify-between text-gray-800 '>
+										<span> {idea.name} </span>
+										<button
+											onClick={() => {
+												deleteIdea(idea.id);
+											}}
+											className='flex items-center gap-3 text-lg p-3 text-rose-200 hover:text-rose-500'
+											type='button'>
+											<FontAwesomeIcon
+												className='w-4 h-auto cursor-pointer hover:text-rose-500'
+												icon={faTimes}
+											/>
+										</button>
+									</li>
+								))}
+							</ul>
+						)}
+						<Formik
+							initialValues={{
+								name: "",
+							}}
+							validationSchema={object({
+								name: string().required("required"),
+							})}
+							onSubmit={async (values, actions) => {
+								await createIdea({ name: values.name } as IIdea);
+								actions.setSubmitting(false);
+							}}
+							validateOnMount>
+							{({ values, isSubmitting, isValid }) => (
+								<Form>
+									<div className='flex flex-wrap gap-5 items-start'>
+										<div className='grow'>
+											<Field
+												type='text'
+												className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+												placeholder='New idea'
+												name='name'
+											/>
+											<ErrorMessage name={`name`}>
+												{(msg) => (
+													<div className='text-lg text-rose-500'>
+														{msg}
+													</div>
+												)}
+											</ErrorMessage>
+										</div>
+										<div className='flex justify-end'>
+											<button
+												type='submit'
+												className={
+													isSubmitting || !isValid
+														? "btn-rev btn-disabled"
+														: "btn-rev"
+												}
+												disabled={isSubmitting || !isValid}>
+												Add New Idea
+											</button>
+										</div>
+										{isLoading ||
+											isCreatingIdea ||
+											(isDeletingIdea && (
+												<div className='flex grow'>
+													<Spinner
+														className=''
+														message='Loading Ideas ...'
+													/>
+												</div>
+											))}
+									</div>
+								</Form>
+							)}
+						</Formik>
+					</div>
+				</div>
+			</Modal>
+		</>
+	);
 };
 
 export default IdeasModal;
