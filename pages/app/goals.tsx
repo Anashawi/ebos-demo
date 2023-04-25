@@ -1,22 +1,104 @@
 import { Field, FieldArray, Form, Formik, ErrorMessage } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import IdeasModal from "../../components/app/ideas-modal";
+import { useEffect, useMemo, useState } from "react";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import { array, object, string } from "yup";
 import Spinner from "../../components/common/spinner";
-
-const goals_dummy = [
-	"5 Consulting Engagement Signed (250,000 JOD)",
-	"A stable training income disruptive",
-	"100 Contingent workforce deployed",
-	"MC Platform - 250,000 Candidates",
-];
+import * as clientApi from "../../http-client/goals.client";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { IGoal } from "../../models/types";
+import { IUserGoal } from "../../models/user-goal";
+import IdeasModal from "../../components/app/ideas-modal";
+import { useSession } from "next-auth/react";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [targetDate, setTargetDate] = useState();
+	const [targetDate, setTargetDate] = useState<Date | string>("");
+
+	const { data: session }: any = useSession();
+
+	const emptyUserGoal = useMemo(() => {
+		return {
+			id: "",
+			userId: session?.user?.id,
+			goals: [],
+		} as IUserGoal;
+	}, []);
+
+	const [userGoal, setUserGoal] = useState<IUserGoal>(emptyUserGoal);
+
+	const queryClient = useQueryClient();
+
+	const { data, isLoading, refetch } = useQuery<IUserGoal>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: () => {
+			const ISODateStr = targetDate
+				? new Date(targetDate).toISOString()
+				: "";
+			return clientApi.getAll(ISODateStr);
+		},
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		refetch();
+	}, [targetDate]);
+
+	useEffect(() => {
+		if (data) {
+			setUserGoal(data);
+		}
+	}, [data]);
+
+	const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } =
+		useMutation(
+			(userGoal: IUserGoal) => {
+				return clientApi.updateOne(userGoal);
+			},
+			{
+				onMutate: (updated) => {
+					queryClient.setQueryData(
+						[clientApi.Keys.UserGoal, userGoal.id],
+						updated
+					);
+				},
+				onSuccess: (updated) => {
+					queryClient.invalidateQueries([
+						clientApi.Keys.UserGoal,
+						userGoal.id,
+					]);
+					queryClient.invalidateQueries([clientApi.Keys.All]);
+				},
+			}
+		);
+
+	const { mutate: createUserGoal, isLoading: isCreatingUserGoal } =
+		useMutation((userGoal: IUserGoal) => clientApi.insertOne(userGoal), {
+			onMutate: (updated) => {
+				queryClient.setQueryData(
+					[clientApi.Keys.UserGoal, userGoal.id],
+					updated
+				);
+			},
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([
+					clientApi.Keys.UserGoal,
+					userGoal.id,
+				]);
+				queryClient.invalidateQueries([clientApi.Keys.All]);
+			},
+		});
+
+	const emptyGoal = useMemo(() => {
+		const ISODateStr = targetDate ? new Date(targetDate).toISOString() : "";
+		return {
+			uuid: "",
+			name: "",
+			date: ISODateStr,
+		};
+	}, [targetDate]);
 
 	return (
 		<>
@@ -39,11 +121,10 @@ const Goals = () => {
 							<h3 className='flex gap-5 flex-wrap items-start text-[2.52rem] mb-6 font-normal'>
 								<p>Choose a target date</p>
 								<input
-									id='datepicker'
 									type='date'
 									placeholder='31-12-2020'
 									className='p-3 bg-gray-100 outline-none caret-dark-blue border-none grow'
-									value={targetDate}
+									value={targetDate + ""}
 									onChange={(e: any) => {
 										setTargetDate(e.target.value);
 									}}
@@ -58,20 +139,44 @@ const Goals = () => {
 							<p className='mb-5'>Things you want to be celebrating:</p>
 							<Formik
 								initialValues={{
-									goals: goals_dummy,
+									goals: userGoal.goals,
 								}}
 								validationSchema={object({
 									goals: array(
-										string().required(
-											"the goal field must not be empty !"
-										)
+										object({
+											uuid: string(),
+											name: string().required("required"),
+										})
 									)
 										.required("Must provide at least one goal !")
 										.min(1, "Must provide at least one goal !"),
 								})}
-								onSubmit={(values) => {
-									console.log(values);
+								onSubmit={async (values, actions) => {
+									userGoal.userId = session.user.id;
+
+									values.goals?.map((goal: IGoal) => {
+										if (!goal.uuid) {
+											goal.uuid = crypto.randomUUID();
+										}
+										const ISODateStr = targetDate
+											? new Date(targetDate).toISOString()
+											: "";
+										goal.date = ISODateStr;
+									});
+									if (userGoal?.id) {
+										await updateUserGoal({
+											...userGoal,
+											...values,
+										});
+									} else {
+										await createUserGoal({
+											...userGoal,
+											...values,
+										});
+									}
+									actions.setSubmitting(false);
 								}}
+								enableReinitialize
 								validateOnMount>
 								{({ values, isSubmitting, isValid, errors }) => (
 									<Form>
@@ -79,37 +184,49 @@ const Goals = () => {
 											{({ remove, push, form }) => (
 												<>
 													<ul className='flex flex-col gap-3 mb-10'>
-														{!!values.goals.length &&
-															values.goals.map((goal, index) => (
-																<div key={index}>
-																	<li>
-																		<Field
-																			type='text'
-																			className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-																			name={`goals.${index}`}
-																			placeholder='Enter goal and add another'
-																		/>
-																		<Link
-																			href=''
-																			onClick={() => {
-																				remove(index);
-																			}}
-																			className='btn-delete mt-2'>
-																			x
-																		</Link>
-																	</li>
-																	<ErrorMessage
-																		name={`goals.${index}`}>
-																		{(msg) => (
-																			<div className='text-lg text-rose-500'>
-																				{msg}
-																			</div>
-																		)}
-																	</ErrorMessage>
-																</div>
-															))}
-														{!values.goals.length &&
-															form.errors?.goals && (
+														{isLoading && (
+															<Spinner
+																className=''
+																message='Loading Goals'
+															/>
+														)}
+														{!!values.goals?.length &&
+															values.goals.map(
+																(
+																	goal: IGoal,
+																	index: number
+																) => (
+																	<div key={index}>
+																		<li>
+																			<Field
+																				type='text'
+																				className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
+																				name={`goals.${index}.name`}
+																				placeholder='Goal name'
+																			/>
+																			<Link
+																				href=''
+																				onClick={() => {
+																					remove(index);
+																				}}
+																				className='btn-delete mt-2'>
+																				x
+																			</Link>
+																		</li>
+																		<ErrorMessage
+																			name={`goals.${index}.name`}>
+																			{(msg) => (
+																				<div className='text-lg text-rose-500'>
+																					{msg}
+																				</div>
+																			)}
+																		</ErrorMessage>
+																	</div>
+																)
+															)}
+														{!values.goals?.length &&
+															form.errors?.goals &&
+															!isLoading && (
 																<p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
 																	<>{form.errors.goals}</>
 																</p>
@@ -120,9 +237,13 @@ const Goals = () => {
 															<Link
 																href=''
 																onClick={() => {
-																	push("");
+																	push(emptyGoal);
 																}}
-																className='btn blue-gradient text-black-eerie hover:text-white'>
+																className={
+																	!targetDate
+																		? "btn blue-gradient text-black-eerie hover:text-white btn-disabled"
+																		: "btn blue-gradient text-black-eerie hover:text-white"
+																}>
 																+ Add
 															</Link>
 															<button
@@ -145,13 +266,21 @@ const Goals = () => {
 																</strong>
 															</Link>
 														</div>
-														{isSubmitting && (
-															<Spinner
-																className=''
-																message='Saving Goals'
-															/>
-														)}
+														{isSubmitting ||
+															isCreatingUserGoal ||
+															(isUpdatingUserGoal && (
+																<Spinner
+																	className=''
+																	message='Saving Goals'
+																/>
+															))}
 													</div>
+													{!targetDate && (
+														<p className='text-xl text-rose-300 py-2'>
+															Must select a target date to add
+															goals
+														</p>
+													)}
 												</>
 											)}
 										</FieldArray>

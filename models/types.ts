@@ -33,6 +33,12 @@ export interface IIdea {
    name: string;
 }
 
+export interface IGoal {
+   uuid: string;
+   name: string;
+   date: string;
+}
+
 export interface ICompetitor {
    uuid: string;
    name: string;
