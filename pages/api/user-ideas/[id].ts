@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import * as service from "../../../services/ideas.service";
+import * as service from "../../../services/user-ideas.service";
 import { getToken } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,9 +10,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function _delete(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
   try {
-    const result = await service.deleteOne(id as string);
+    const { id } = req.query;
+    console.log("uuid !!!!!!!!!!!!!!!!!!!!", id)
+    const sessionUser: any = await getToken({ req });
+
+    const result = await service.deleteOne(id + "", sessionUser);
 
     res.status(201).json(result);
   } catch (error) {

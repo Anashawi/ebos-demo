@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import * as service from "../../../services/ideas.service";
+import * as service from "../../../services/user-ideas.service";
 import { getToken } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -19,7 +19,7 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 
     if (!sessionUser?.id) throw new Error("You are not logged in !");
 
-    const result = await service.getAll();
+    const result = await service.getAll(sessionUser.id);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({
@@ -30,28 +30,17 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const idea = req.body;
-    const result = await service.insertOne(idea);
+    const userIdea = req.body;
+    console.log("userIdea !!!!!!!!!!!!!!!", userIdea);
+
+    const sessionUser: any = await getToken({ req });
+
+    const result = await service.insertOrUpdateOne(userIdea, sessionUser);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
     });
-  }
-}
-
-async function _delete(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
-  try {
-    const result = await service.deleteOne(id as string);
-
-    res.status(201).json(result);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        message: error.message,
-      });
-    }
   }
 }
 

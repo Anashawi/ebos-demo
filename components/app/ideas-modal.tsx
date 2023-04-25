@@ -6,9 +6,10 @@ import Modal from "../common/modal";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { IIdea } from "../../models/idea";
+import { IIdea } from "../../models/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/ideas.client";
+import { IUserIdea } from "../../models/user-idea";
 
 interface Props {
 	isOpen: boolean;
@@ -18,14 +19,17 @@ interface Props {
 const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 	const [ideaFactors, setIdeaFactors] = useState<IIdea[]>([]);
 
-	const { data, isLoading } = useQuery<any>({
+	const { data, isLoading } = useQuery<IUserIdea>({
 		queryKey: [clientApi.Keys.AllLookup],
 		queryFn: clientApi.getAllLookup,
 		refetchOnWindowFocus: false,
+		enabled: isOpen,
 	});
 
 	useEffect(() => {
-		setIdeaFactors(data);
+		if (data) {
+			setIdeaFactors(data.ideas);
+		}
 	}, [data]);
 
 	const queryClient = useQueryClient();
@@ -69,7 +73,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 				</div>
 				<div className='h-[90%] overflow-auto'>
 					<div className='relative flex-auto py-3'>
-						{!!ideaFactors.length && (
+						{!!ideaFactors?.length && (
 							<ul className='flex flex-col gap-2 mb-10'>
 								{ideaFactors.map((idea: IIdea, index: number) => (
 									<li
@@ -78,7 +82,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 										<span> {idea.name} </span>
 										<button
 											onClick={() => {
-												deleteIdea(idea.id);
+												deleteIdea(idea.uuid);
 											}}
 											className='flex items-center gap-3 text-lg p-3 text-rose-200 hover:text-rose-500'
 											type='button'>
@@ -99,7 +103,10 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 								name: string().required("required"),
 							})}
 							onSubmit={async (values, actions) => {
-								await createIdea({ name: values.name } as IIdea);
+								await createIdea({
+									uuid: crypto.randomUUID(),
+									name: values.name,
+								} as IIdea);
 								actions.setSubmitting(false);
 								actions.resetForm();
 							}}

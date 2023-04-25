@@ -28,6 +28,11 @@ export interface IFuture {
    sales: number;
 }
 
+export interface IIdea {
+   uuid: string;
+   name: string;
+}
+
 export interface ICompetitor {
    uuid: string;
    name: string;
