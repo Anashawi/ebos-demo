@@ -101,6 +101,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 							onSubmit={async (values, actions) => {
 								await createIdea({ name: values.name } as IIdea);
 								actions.setSubmitting(false);
+								actions.resetForm();
 							}}
 							validateOnMount>
 							{({ values, isSubmitting, isValid }) => (
