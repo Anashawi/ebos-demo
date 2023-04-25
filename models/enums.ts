@@ -1,4 +1,3 @@
-
 export enum authProviderEnum {
   credentials = 'credentials',
 };
@@ -8,7 +7,9 @@ export enum BlobTypeEnum {
   file = "2"
 }
 
-
 export enum productPagesEnum {
   futures = "futures",
+  competitors = "competitors",
+  factors = "factors",
+  ideaFactors = "idea-factors",
 }

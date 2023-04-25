@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
 import Spinner from "../../components/common/spinner";
 import { IProduct } from "../../models/types";
-import { ICompetitor } from "../../models/competitor";
+import { ICompetitor } from "../../models/types";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
@@ -56,7 +56,10 @@ const Competitors = () => {
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
 			(userProduct: IUserProduct) => {
-				return clientApi.updateOne(userProduct, productPagesEnum.futures);
+				return clientApi.updateOne(
+					userProduct,
+					productPagesEnum.competitors
+				);
 			},
 			{
 				onMutate: (updated) => {
@@ -77,8 +80,9 @@ const Competitors = () => {
 
 	const meAsCompetitor = useMemo(() => {
 		return {
+			uuid: crypto.randomUUID(),
 			name: "Me",
-			marketShare: 0,
+			marketShare: 100,
 		} as ICompetitor;
 	}, []);
 
@@ -159,7 +163,8 @@ const Competitors = () => {
 														),
 												})
 											)
-												.test((competitors: any) => {
+												.test((competitors: any, curr) => {
+													console.log(curr.parent);
 													const sum = competitors.reduce(
 														(acc: number, curr: any) =>
 															curr.marketShare + acc,
@@ -167,9 +172,12 @@ const Competitors = () => {
 													);
 													if (sum !== 100) {
 														return new Yup.ValidationError(
-															`The sum of product market shares must be 100% but you have ${sum}%`,
+															{
+																errorMessage: `The sum of product market shares must be 100% but you have ${sum}%`,
+																product_uuid: curr.parent.uuid,
+															} as any,
 															undefined,
-															"competitors"
+															`competitors`
 														);
 													}
 													return true;

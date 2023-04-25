@@ -8,7 +8,7 @@ import { FieldArray, Field, ErrorMessage } from "formik";
 import Chart from "react-google-charts";
 import { NextPage } from "next";
 import { useMemo } from "react";
-import { IProduct } from "../../models/types";
+import { ICompetitor, IProduct } from "../../models/types";
 import useCompetitorsChart from "../../hooks/use-competitors-chart";
 
 interface Props {
@@ -28,10 +28,10 @@ const CompetitorsProduct: NextPage<Props> = ({
 
 	const emptyCompetitor = useMemo(() => {
 		return {
-			id: "0",
+			uuid: crypto.randomUUID(),
 			name: "",
 			marketShare: 0,
-		};
+		} as ICompetitor;
 	}, []);
 
 	return (
@@ -58,7 +58,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 										product.competitors.map((comp, compIndex) => (
 											<li
 												key={compIndex}
-												className='flex gap-5 border-b border-gray-400 pb-7 spacedout'>
+												className='flex gap-5 border-b border-gray-400 pb-7'>
 												{compIndex > 0 && (
 													<>
 														<div className='w-full md:w-1/2'>
@@ -137,12 +137,16 @@ const CompetitorsProduct: NextPage<Props> = ({
 											</li>
 										))}
 									<div>
-										{typeof formUtilities.errors?.competitors ===
-											"string" && (
-											<p className='text-rose-500'>
-												{formUtilities.errors.competitors}
-											</p>
-										)}
+										{!!formUtilities.errors?.competitors &&
+											formUtilities.errors.competitors
+												.product_uuid === product.uuid && (
+												<p className='text-rose-500'>
+													{
+														formUtilities.errors.competitors
+															.errorMessage
+													}
+												</p>
+											)}
 									</div>
 									<div className='flex justify-center'>
 										<button

@@ -1,4 +1,3 @@
-import { Competitor } from './competitor';
 export interface ConfirmDialog {
    isShown: boolean;
    title: string;
@@ -19,6 +18,8 @@ export interface IProduct {
    name: string;
    futures?: IFuture[];
    competitors?: ICompetitor[];
+   factors?: IFactor[];
+   ideaFactors?: IIdeaFactor[];
 }
 
 export interface IFuture {
@@ -28,6 +29,22 @@ export interface IFuture {
 }
 
 export interface ICompetitor {
+   uuid: string;
    name: string;
    marketShare: number;
+}
+
+export interface IFactorCompetitor {
+   uuid: string;
+   value: number;
+}
+
+export interface IFactor {
+   name: string;
+   competitors: IFactorCompetitor[];
+}
+
+export interface IIdeaFactor {
+   name: string;
+   competitors: IFactorCompetitor[];
 }
