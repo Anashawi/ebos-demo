@@ -8,8 +8,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return await _post(req, res);
     case "GET":
       return _get(req, res);
-    case "DELETE":
-      return _delete(req, res);
   }
 }
 

@@ -73,6 +73,13 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 				</div>
 				<div className='h-[90%] overflow-auto'>
 					<div className='relative flex-auto py-3'>
+						{!ideaFactors?.length && (
+							<div className='flex py-5 w-full h-full justify-center'>
+								<p className='text-xl p-10 text-center text-rose-300'>
+									Add your ideas !
+								</p>
+							</div>
+						)}
 						{!!ideaFactors?.length && (
 							<ul className='flex flex-col gap-2 mb-10'>
 								{ideaFactors.map((idea: IIdea, index: number) => (
