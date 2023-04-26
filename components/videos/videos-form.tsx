@@ -11,7 +11,6 @@ interface Props {
 }
 
 const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
-	console.log(videos);
 	const queryClient = useQueryClient();
 
 	const { mutate: updateVideos, isLoading: isUpdatingVideos } = useMutation(
@@ -64,9 +63,8 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 			buildingCapacity: string().required("required"),
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
-			values.goalsVideos =
-				videos.goalsVideo ??
-				"https://www.youtube.com/watch?v=n3S1pojOENo&ab_channel=AliDawah";
+			values.goalsVideo =
+				videos.goalsVideo ?? "https://www.youtube.com/embed/n3S1pojOENo";
 			console.log("values", values);
 			if (!values.id) {
 				await createVideos(values);

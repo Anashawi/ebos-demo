@@ -33,7 +33,7 @@ export interface IVideos extends VideosAttrs {
 
 const videosSchema = new mongoose.Schema(
   {
-    goalsVideos: {
+    goalsVideo: {
       type: String,
       required: true,
     },

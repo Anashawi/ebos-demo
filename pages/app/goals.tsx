@@ -6,10 +6,12 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import { array, date, object, string } from "yup";
 import Spinner from "../../components/common/spinner";
 import * as clientApi from "../../http-client/goals.client";
+import * as videosClientApi from "../../http-client/videos.client";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { IUserGoal } from "../../models/user-goal";
 import IdeasModal from "../../components/app/ideas-modal";
 import { useSession } from "next-auth/react";
+import { IVideos } from "../../models/videos";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -41,6 +43,20 @@ const Goals = () => {
 			setUserGoal(data);
 		}
 	}, [data]);
+
+	const [goalsVideo, setGoalsVideo] = useState<string>("");
+
+	const { data: videos, isLoading: isVideosLoading } = useQuery<IVideos>({
+		queryKey: [videosClientApi.Keys.all],
+		queryFn: videosClientApi.getOne,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (videos) {
+			setGoalsVideo(videos.goalsVideo);
+		}
+	}, [videos]);
 
 	const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } =
 		useMutation(
@@ -283,9 +299,7 @@ const Goals = () => {
 									/>
 								</div>
 							</Link>
-							<div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 h-3 mb-10'>
-								<iframe width='530' height='315'></iframe>
-							</div>
+							<iframe width='100%' height='400' src={goalsVideo}></iframe>
 							<div className='mx-auto text-center'>
 								<button
 									className='btn text-black-eerie mt-10'
