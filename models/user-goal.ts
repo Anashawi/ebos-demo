@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { IGoal } from "./types";
 
 interface UserGoalAttrs {
    userId: string;
-   goals: IGoal[];
+   targetDate: string;
+   goals: string[];
 }
 
 interface UserGoalDocument extends mongoose.Document, UserGoalAttrs { }
@@ -22,8 +22,12 @@ const userGoalSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
+      targetDate: {
+         type: String,
+         required: true,
+      },
       goals: {
-         type: Array<IGoal>,
+         type: Array<String>,
          required: true,
       },
    },

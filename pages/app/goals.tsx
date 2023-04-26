@@ -3,18 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { array, object, string } from "yup";
+import { array, date, object, string } from "yup";
 import Spinner from "../../components/common/spinner";
 import * as clientApi from "../../http-client/goals.client";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { IGoal } from "../../models/types";
 import { IUserGoal } from "../../models/user-goal";
 import IdeasModal from "../../components/app/ideas-modal";
 import { useSession } from "next-auth/react";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [targetDate, setTargetDate] = useState<Date | string>("");
 
 	const { data: session }: any = useSession();
 
@@ -22,6 +20,7 @@ const Goals = () => {
 		return {
 			id: "",
 			userId: session?.user?.id,
+			targetDate: "",
 			goals: [],
 		} as IUserGoal;
 	}, []);
@@ -32,19 +31,10 @@ const Goals = () => {
 
 	const { data, isLoading, refetch } = useQuery<IUserGoal>({
 		queryKey: [clientApi.Keys.All],
-		queryFn: () => {
-			const ISODateStr = targetDate
-				? new Date(targetDate).toISOString()
-				: "";
-			return clientApi.getAll(ISODateStr);
-		},
+		queryFn: clientApi.getAll,
 		refetchOnWindowFocus: false,
 		enabled: !!session?.user?.id,
 	});
-
-	useEffect(() => {
-		refetch();
-	}, [targetDate]);
 
 	useEffect(() => {
 		if (data) {
@@ -91,15 +81,6 @@ const Goals = () => {
 			},
 		});
 
-	const emptyGoal = useMemo(() => {
-		const ISODateStr = targetDate ? new Date(targetDate).toISOString() : "";
-		return {
-			uuid: "",
-			name: "",
-			date: ISODateStr,
-		};
-	}, [targetDate]);
-
 	return (
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
@@ -118,51 +99,21 @@ const Goals = () => {
 							<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
 								Goals
 							</h3>
-							<h3 className='flex gap-5 flex-wrap items-start text-[2.52rem] mb-6 font-normal'>
-								<p>Choose a target date</p>
-								<input
-									type='date'
-									placeholder='31-12-2020'
-									className='p-3 bg-gray-100 outline-none caret-dark-blue border-none grow'
-									value={targetDate + ""}
-									onChange={(e: any) => {
-										setTargetDate(e.target.value);
-									}}
-								/>
-							</h3>
-							<h3 className='text-[2.52rem] mb-6 font-normal'>
-								Visualize success on this date, What does it look like
-							</h3>
-							<h2 className='text-[4.2rem] mb-6 text-yellow-green'>
-								Celebrating Unequivocal Success!
-							</h2>
-							<p className='mb-5'>Things you want to be celebrating:</p>
 							<Formik
 								initialValues={{
-									goals: userGoal.goals,
+									...userGoal,
 								}}
 								validationSchema={object({
-									goals: array(
-										object({
-											uuid: string(),
-											name: string().required("required"),
-										})
-									)
-										.required("Must provide at least one goal !")
-										.min(1, "Must provide at least one goal !"),
+									goals: array(string())
+										.required("Must add at least one goal !")
+										.min(1, "Must add at least one goal !"),
+									targetDate: date().required(
+										"Must add a target date"
+									),
 								})}
 								onSubmit={async (values, actions) => {
 									userGoal.userId = session.user.id;
-
-									values.goals?.map((goal: IGoal) => {
-										if (!goal.uuid) {
-											goal.uuid = crypto.randomUUID();
-										}
-										const ISODateStr = targetDate
-											? new Date(targetDate).toISOString()
-											: "";
-										goal.date = ISODateStr;
-									});
+									debugger;
 									if (userGoal?.id) {
 										await updateUserGoal({
 											...userGoal,
@@ -179,112 +130,133 @@ const Goals = () => {
 								enableReinitialize
 								validateOnMount>
 								{({ values, isSubmitting, isValid, errors }) => (
-									<Form>
-										<FieldArray name='goals'>
-											{({ remove, push, form }) => (
-												<>
-													<ul className='flex flex-col gap-3 mb-10'>
-														{isLoading && (
-															<Spinner
-																className=''
-																message='Loading Goals'
-															/>
-														)}
-														{!!values.goals?.length &&
-															values.goals.map(
-																(
-																	goal: IGoal,
-																	index: number
-																) => (
-																	<div key={index}>
-																		<li>
-																			<Field
-																				type='text'
-																				className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
-																				name={`goals.${index}.name`}
-																				placeholder='Goal name'
-																			/>
-																			<Link
-																				href=''
-																				onClick={() => {
-																					remove(index);
-																				}}
-																				className='btn-delete mt-2'>
-																				x
-																			</Link>
-																		</li>
-																		<ErrorMessage
-																			name={`goals.${index}.name`}>
-																			{(msg) => (
-																				<div className='text-lg text-rose-500'>
-																					{msg}
-																				</div>
-																			)}
-																		</ErrorMessage>
-																	</div>
-																)
-															)}
-														{!values.goals?.length &&
-															form.errors?.goals &&
-															!isLoading && (
-																<p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
-																	<>{form.errors.goals}</>
-																</p>
-															)}
-													</ul>
-													<div className='flex justify-between items-center'>
-														<div className='flex gap-3'>
-															<Link
-																href=''
-																onClick={() => {
-																	push(emptyGoal);
-																}}
-																className={
-																	!targetDate
-																		? "btn blue-gradient text-black-eerie hover:text-white btn-disabled"
-																		: "btn blue-gradient text-black-eerie hover:text-white"
-																}>
-																+ Add
-															</Link>
-															<button
-																type='submit'
-																className={
-																	isSubmitting || !isValid
-																		? "btn-rev btn-disabled"
-																		: "btn-rev"
-																}
-																disabled={
-																	isSubmitting || !isValid
-																}>
-																Save and submit
-															</button>
-															<Link
-																href='/'
-																className='btn text-black-eerie hover:text-blue-ncs'>
-																<strong>
-																	Back To Dashboard
-																</strong>
-															</Link>
+									<>
+										<h3 className='flex gap-5 flex-wrap items-start text-[2.52rem] mb-6 font-normal'>
+											<p>Choose a target date</p>
+											<div className='grow flex flex-col'>
+												<Field
+													type='date'
+													className='p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+													name='targetDate'
+													placeholder='Goal name'
+												/>
+												<ErrorMessage name={`targetDate`}>
+													{(msg) => (
+														<div className='text-lg text-rose-500'>
+															{msg}
 														</div>
-														{isSubmitting ||
-															isCreatingUserGoal ||
-															(isUpdatingUserGoal && (
+													)}
+												</ErrorMessage>
+											</div>
+										</h3>
+										<h3 className='text-[2.52rem] mb-6 font-normal'>
+											Visualize success on this date, What does it
+											look like
+										</h3>
+										<h2 className='text-[4.2rem] mb-6 text-yellow-green'>
+											Celebrating Unequivocal Success!
+										</h2>
+										<p className='mb-5'>
+											Things you want to be celebrating:
+										</p>
+
+										<Form>
+											<FieldArray name='goals'>
+												{({ remove, push, form }) => (
+													<>
+														<ul className='flex flex-col gap-3 mb-10'>
+															{isLoading && (
 																<Spinner
 																	className=''
-																	message='Saving Goals'
+																	message='Loading Goals'
 																/>
-															))}
-													</div>
-													{!targetDate && (
-														<p className='text-xl text-rose-300 py-2'>
-															Must select a target date to add
-															goals
-														</p>
-													)}
-												</>
-											)}
-										</FieldArray>
-									</Form>
+															)}
+															{!!values.goals?.length &&
+																values.goals.map(
+																	(
+																		goal: string,
+																		index: number
+																	) => (
+																		<div key={index}>
+																			<li>
+																				<Field
+																					type='text'
+																					className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
+																					name={`goals.${index}`}
+																					placeholder='Goal name'
+																				/>
+																				<Link
+																					href=''
+																					onClick={() => {
+																						remove(index);
+																					}}
+																					className='btn-delete mt-2'>
+																					x
+																				</Link>
+																			</li>
+																			<ErrorMessage
+																				name={`goals.${index}`}>
+																				{(msg) => (
+																					<div className='text-lg text-rose-500'>
+																						{msg}
+																					</div>
+																				)}
+																			</ErrorMessage>
+																		</div>
+																	)
+																)}
+															{!values.goals?.length &&
+																form.errors?.goals &&
+																!isLoading && (
+																	<p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
+																		<>{form.errors.goals}</>
+																	</p>
+																)}
+														</ul>
+														<div className='flex justify-between items-center'>
+															<div className='flex gap-3'>
+																<Link
+																	href=''
+																	onClick={() => {
+																		push("");
+																	}}
+																	className='btn blue-gradient text-black-eerie hover:text-white'>
+																	+ Add
+																</Link>
+																<button
+																	type='submit'
+																	className={
+																		isSubmitting || !isValid
+																			? "btn-rev btn-disabled"
+																			: "btn-rev"
+																	}
+																	disabled={
+																		isSubmitting || !isValid
+																	}>
+																	Save and submit
+																</button>
+																<Link
+																	href='/'
+																	className='btn text-black-eerie hover:text-blue-ncs'>
+																	<strong>
+																		Back To Dashboard
+																	</strong>
+																</Link>
+															</div>
+															{isSubmitting ||
+																isCreatingUserGoal ||
+																(isUpdatingUserGoal && (
+																	<Spinner
+																		className=''
+																		message='Saving Goals'
+																	/>
+																))}
+														</div>
+													</>
+												)}
+											</FieldArray>
+										</Form>
+									</>
 								)}
 							</Formik>
 							{/* <script src="/modules/goals.js"></script> */}

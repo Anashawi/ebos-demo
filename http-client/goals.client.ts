@@ -6,9 +6,8 @@ const api = axios.create({
 });
 
 
-export const getAll = (ISODateString: string) => {
-   const queryString = ISODateString ? `?date=${ISODateString}` : '';
-   return api.get(`/user-goals${queryString}`).then((res) => res.data);
+export const getAll = () => {
+   return api.get(`/user-goals`).then((res) => res.data);
 }
 
 // export const getAllLookup = () =>

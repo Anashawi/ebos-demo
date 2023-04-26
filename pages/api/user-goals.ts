@@ -34,6 +34,7 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userGoal = req.body;
+    console.log("user goal from the handler", userGoal)
     const result = await service.insertOne(userGoal);
     res.status(200).json(result);
   } catch (error: any) {
@@ -46,6 +47,7 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { userGoal } = req.body;
+    console.log("user goal from the handler", userGoal)
     const result = await service.updateOne(userGoal);
     res.status(200).json(result);
   } catch (error: any) {
