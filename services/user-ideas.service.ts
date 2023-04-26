@@ -60,7 +60,6 @@ export async function insertOrUpdateOne(idea: IIdea, sessionUser: any) {
 
 export async function deleteOne(uuid: string, sessionUser: any) {
    try {
-      console.log("sdf;kdsjflsdhfljsdlkjlj,jkj")
       if (!sessionUser?.id) throw new Error("You are not logged in !");
 
       const result = await UserIdea.findOne({ userId: sessionUser.id });

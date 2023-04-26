@@ -96,7 +96,6 @@ const Customers = () => {
 			fulfill: array(string()),
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log("values", values);
 			values.userId = session?.user?.id;
 			if (!values.id) {
 				await createUserCustomers(values);

@@ -1,22 +1,10 @@
 import { IUserCustomers, UserCustomers } from "../models/user-customers";
 
-export async function getOne(currentUserId: string, ISODateString: string) {
+export async function getOne(currentUserId: string) {
    try {
       const result = await UserCustomers.findOne({ userId: currentUserId });
 
       return result ? result.toJSON() : result;
-   } catch (error) {
-      console.log(error);
-   }
-}
-
-export async function getAllLookup() {
-   try {
-      const result = await UserCustomers.find({}, 'fullName isActive');
-      result.forEach(item => {
-         item._id = item._id.toString();
-      });
-      return result;
    } catch (error) {
       console.log(error);
    }
@@ -45,15 +33,6 @@ export async function insertOne(userCustomers: IUserCustomers) {
       const frontEndUserCustomers = new UserCustomers(userCustomers)
       await frontEndUserCustomers.save();
       return frontEndUserCustomers.toJSON();
-   } catch (error) {
-      console.log(error);
-   }
-}
-
-export async function deleteOne(id: string) {
-   try {
-      const result = await UserCustomers.findByIdAndDelete(id);
-      return result.toJSON();
    } catch (error) {
       console.log(error);
    }
