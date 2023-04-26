@@ -5,6 +5,7 @@ interface Props {
 };
 
 const Video: NextPage<Props> = ({ url }) => {
+   console.log(url)
    return (
       <>
          <iframe

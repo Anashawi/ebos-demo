@@ -24,10 +24,6 @@ export async function getAllLookup() {
 
 export async function updateOne(frontEndUserGoal: IUserGoal) {
    try {
-      // const findOneResult = await UserGoal.findOne({ _id: frontEndUserGoal.id });
-      // frontEndUserGoal.goals = [...findOneResult.goals, ...frontEndUserGoal.goals]; // has to be replaced
-      console.log("user goal from the service", frontEndUserGoal)
-
       const updateResult = await UserGoal.updateOne(
          { _id: frontEndUserGoal.id },
          {

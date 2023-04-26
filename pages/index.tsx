@@ -26,7 +26,7 @@ export default function Home() {
 		},
 		{
 			text: "Disruption",
-			url: "app/disruption",
+			url: "app/videos",
 		},
 		{
 			text: "Voice of customers",

@@ -113,7 +113,6 @@ const Goals = () => {
 								})}
 								onSubmit={async (values, actions) => {
 									userGoal.userId = session.user.id;
-									debugger;
 									if (userGoal?.id) {
 										await updateUserGoal({
 											...userGoal,
