@@ -11,8 +11,11 @@ import Video from "../../components/videos/video";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/videos.client";
 import { IVideos } from "../../models/videos";
+import { useSession } from "next-auth/react";
 
 const Disruption = () => {
+	const { data: session } = useSession();
+
 	const emptyVideos: IVideos = useMemo(() => {
 		return {
 			id: "",
@@ -235,12 +238,14 @@ const Disruption = () => {
 									className='btn text-black-eerie hover:text-blue-ncs w-max'>
 									<strong>Back To Dashboard</strong>
 								</Link>
-								<button
-									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-									onClick={toggleEditUrlsModal}>
-									<span>Edit videos Urls</span>
-									<FontAwesomeIcon className='w-7' icon={faEdit} />
-								</button>
+								{(session?.user as any)?.role === "admin" && (
+									<button
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleEditUrlsModal}>
+										<span>Edit videos Urls</span>
+										<FontAwesomeIcon className='w-7' icon={faEdit} />
+									</button>
+								)}
 							</div>
 						</div>
 						<div className='md:w-4/12 pane-right-gradient min-h-screen p-12'>
