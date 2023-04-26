@@ -80,9 +80,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 			<form className='grow overflow-auto pt-10 flex gap-5 flex-wrap'>
 				<ul className='grow flex flex-col gap-3 mb-5'>
 					<h2 className='mb-2 text-3xl text-gray-600'>Scale</h2>
-					<li
-						data-key='Staff on Demand'
-						className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Staff on Demand</label>
 						<input
 							type='text'
@@ -97,9 +95,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Community and Crowd'
-						className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Community and Crowd
 						<input
 							type='text'
@@ -114,9 +110,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Algorithms'
-						className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Algorithms</label>
 						<input
 							type='text'
@@ -130,9 +124,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Leveraged Assets'
-						className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Leveraged Assets</label>
 						<input
 							type='text'
@@ -147,9 +139,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Engagement'
-						className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex gap-2 flex-col p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Engagement</label>
 						<input
 							type='text'
@@ -166,9 +156,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 				</ul>
 				<ul className='grow flex flex-col gap-3 mb-5'>
 					<h2 className='mb-2 text-3xl text-gray-600'>Ideas</h2>
-					<li
-						data-key='Interface'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Interface</label>
 						<input
 							type='text'
@@ -182,9 +170,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Dashboard'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Dashboard</label>
 						<input
 							type='text'
@@ -198,9 +184,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Experimentation'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Experimentation</label>
 						<input
 							type='text'
@@ -215,9 +199,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Autonomy'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Autonomy</label>
 						<input
 							type='text'
@@ -231,9 +213,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Social Platforms'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						<label>Social Platforms</label>
 						<input
 							type='text'
@@ -253,9 +233,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 					<h2 className='mb-2 text-3xl text-gray-600'>
 						7 Practical & Quick
 					</h2>
-					<li
-						data-key='Eco Systems'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Eco Systems
 						<input
 							type='text'
@@ -269,9 +247,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Info is Power'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Info is Power
 						<input
 							type='text'
@@ -285,9 +261,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='OTCR'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						OTCR
 						<input
 							type='text'
@@ -301,9 +275,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Value Destruction'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Value Destruction
 						<input
 							type='text'
@@ -318,9 +290,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Customer Journey'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Customer Journey
 						<input
 							type='text'
@@ -335,9 +305,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Digital Platforms'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Digital Platforms
 						<input
 							type='text'
@@ -352,9 +320,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li
-						data-key='Building Capacity'
-						className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+					<li className='flex flex-col gap-2 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 						Building Capacity
 						<input
 							type='text'
