@@ -41,7 +41,7 @@ export interface ICompetitor {
 
 export interface IFactorCompetitor {
    uuid: string;
-   value: number;
+   value: string;
 }
 
 export interface IFactor {

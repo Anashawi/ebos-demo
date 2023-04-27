@@ -52,7 +52,7 @@ const IdeaFactors = () => {
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
-		setLookupProducts(!!data?.products.length ? data.products : []);
+		setLookupProducts(!!data?.products?.length ? data.products : []);
 	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
@@ -136,7 +136,7 @@ const IdeaFactors = () => {
 							</div>
 							<Formik
 								initialValues={{
-									products: userProduct.products.filter(
+									products: userProduct.products?.filter(
 										(prod) =>
 											!lookupProducts.some(
 												(lookupProd) =>
@@ -238,7 +238,7 @@ const IdeaFactors = () => {
 																	value={0}
 																	onChange={(e) => {
 																		const productToBeShown =
-																			userProduct.products.find(
+																			userProduct.products?.find(
 																				(prod) =>
 																					prod.uuid ===
 																					e.target.value
@@ -276,7 +276,7 @@ const IdeaFactors = () => {
 											</FieldArray>
 											<div className='flex gap-3 justify-between items-center mt-10'>
 												<div className='flex gap-3'>
-													{!!userProduct.products.filter(
+													{!!userProduct.products?.filter(
 														(prod) =>
 															!lookupProducts.some(
 																(lookupProd) =>

@@ -5,12 +5,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
-import Spinner from "../common/spinner";
-import { ProductModel } from "../../models/products/product.model";
+import Chart from "react-google-charts";
 import { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
-import { ProductCompetitor } from "../../models/products/competitor.model";
+import { useMemo } from "react";
 import factorValueOptions from "../../samples/lookups/factor-value-options.json";
 import {
 	ICompetitor,
@@ -19,29 +16,24 @@ import {
 	IProduct,
 } from "../../models/types";
 import useFactorsChart from "../../hooks/use-factors-chart";
+import { login } from "../../services/auth.service";
 
 interface Props {
 	product: IProduct;
 	index: number;
 	onRemove: any;
-	formUtilities: any;
 }
 
-const FactorsProduct: NextPage<Props> = ({
-	product,
-	index,
-	onRemove,
-	formUtilities,
-}) => {
+const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 	const [chart] = useFactorsChart(product);
-
+	
 	const emptyFactor = useMemo(() => {
 		return {
 			name: "",
 			competitors: product.competitors?.map((comp) => {
 				return {
 					uuid: crypto.randomUUID(),
-					value: 1,
+					value: "1",
 				} as IFactorCompetitor;
 			}),
 		} as IFactor;
@@ -63,6 +55,13 @@ const FactorsProduct: NextPage<Props> = ({
 						{({ remove, push }) => (
 							<>
 								<ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[350px] overflow-y-auto'>
+									<>
+										{product?.factors
+											? product.factors[0].competitors.map(
+													(c) => c.value + "  "
+											  )
+											: null}
+									</>
 									{!!product.factors?.length &&
 										product.factors.map((factor, factorIndex) => (
 											<li
@@ -126,7 +125,6 @@ const FactorsProduct: NextPage<Props> = ({
 														)
 													)}
 												</div>
-
 												<FontAwesomeIcon
 													icon={faTrash}
 													onClick={() => {

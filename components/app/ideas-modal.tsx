@@ -73,7 +73,12 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 				</div>
 				<div className='h-[90%] overflow-auto'>
 					<div className='relative flex-auto py-3'>
-						{!ideaFactors?.length && (
+						{isLoading && (
+							<Spinner
+								className='text-2xl'
+								message='Loading ...'></Spinner>
+						)}
+						{!ideaFactors?.length && !isLoading && (
 							<div className='flex py-5 w-full h-full justify-center'>
 								<p className='text-xl p-10 text-center text-rose-300'>
 									Add your ideas !
@@ -148,16 +153,16 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 												Add New Idea
 											</button>
 										</div>
-										{isLoading ||
+										{(isLoading ||
 											isCreatingIdea ||
-											(isDeletingIdea && (
-												<div className='flex grow'>
-													<Spinner
-														className=''
-														message='Loading Ideas ...'
-													/>
-												</div>
-											))}
+											isDeletingIdea) && (
+											<div className='flex grow'>
+												<Spinner
+													className=''
+													message='Saving Ideas ...'
+												/>
+											</div>
+										)}
 									</div>
 								</Form>
 							)}

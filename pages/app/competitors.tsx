@@ -41,7 +41,7 @@ const Competitors = () => {
 	});
 
 	useEffect(() => {
-		data?.products.forEach((prod) => {
+		data?.products?.forEach((prod) => {
 			if (
 				!prod.competitors ||
 				(prod.competitors && prod.competitors.length === 0)
@@ -50,7 +50,7 @@ const Competitors = () => {
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
-		setLookupProducts(!!data?.products.length ? data.products : []);
+		setLookupProducts(!!data?.products?.length ? data.products : []);
 	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
@@ -137,7 +137,7 @@ const Competitors = () => {
 							</div>
 							<Formik
 								initialValues={{
-									products: userProduct.products.filter(
+									products: userProduct.products?.filter(
 										(prod: any) =>
 											!lookupProducts.some(
 												(lookupProd) =>
@@ -218,7 +218,7 @@ const Competitors = () => {
 														<div className='flex flex-col gap-12'>
 															<div className='flex flex-col gap-20'>
 																{!values.products?.length && (
-																	<p className='w-max bg-rose-50 text-rose-500 p-5'>
+																	<p className='w-max text-rose-500 py-5'>
 																		make a selection to view
 																		products !
 																	</p>
@@ -268,7 +268,7 @@ const Competitors = () => {
 																	value={0}
 																	onChange={(e) => {
 																		const productToBeShown =
-																			userProduct.products.find(
+																			userProduct.products?.find(
 																				(prod) =>
 																					prod.uuid ===
 																					e.target.value

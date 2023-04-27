@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
-import { IFactorCompetitor, IProduct } from "../models/types";
+import { ICompetitor, IFactorCompetitor, IProduct } from "../models/types";
 
 const useFactorsChart = (product: IProduct) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
@@ -15,8 +15,13 @@ const useFactorsChart = (product: IProduct) => {
 			product.factors?.map((factor) => {
 				return [
 					factor.name,
-					...factor.competitors?.map(
-						(comp: IFactorCompetitor) => +comp.value
+					...(product.competitors ?? ([] as ICompetitor[])).map(
+						(comp: ICompetitor, index) => {
+							if (factor.competitors[index]) {
+								return +factor.competitors[index].value;
+							}
+							return 1;
+						}
 					),
 				];
 			}) ?? [];
@@ -24,6 +29,7 @@ const useFactorsChart = (product: IProduct) => {
 			["Factor", ...(product.competitors?.map((comp) => comp.name) ?? [])],
 			...rows,
 		];
+		console.log("chart.data", chart.data);
 		chart.options = {
 			title: product.name,
 			titleTextStyle: {
@@ -36,9 +42,9 @@ const useFactorsChart = (product: IProduct) => {
 			colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
 			vAxis: {
 				ticks: [
-					{ v: 1, f: "Poor" },
-					{ v: 2, f: "Migrator" },
-					{ v: 3, f: "Settler" },
+					{ v: "1", f: "Poor" },
+					{ v: "2", f: "Migrator" },
+					{ v: "3", f: "Settler" },
 				] as any,
 			},
 		};
@@ -50,6 +56,7 @@ const useFactorsChart = (product: IProduct) => {
 			updateChartProps();
 		}
 	}, [product]);
+
 	return [chart];
 };
 

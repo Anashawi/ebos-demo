@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import * as Yup from "yup";
 import { useEffect, useMemo, useState } from "react";
 import FactorsProduct from "../../components/factors/product";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
@@ -12,6 +11,7 @@ import { productPagesEnum } from "../../models/enums";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
 import { IFactor, IProduct } from "../../models/types";
+import { string, object, array } from "yup";
 
 const Factors = () => {
 	const { data: session }: any = useSession();
@@ -40,19 +40,25 @@ const Factors = () => {
 
 	useEffect(() => {
 		data?.products?.forEach((prod) => {
+			console.log("prod.competitors", prod.competitors);
+			firstFactor.name = "factor 1";
 			firstFactor.competitors =
 				prod.competitors?.map((comp) => {
 					return {
 						uuid: comp.uuid,
-						value: 0,
+						value: "1",
 					};
 				}) ?? [];
 			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
 				prod.factors = [firstFactor];
 			}
 		});
-		setUserProduct(data ?? emptyUserProduct);
-		setLookupProducts(!!data?.products.length ? data.products : []);
+		if (data) {
+			setUserProduct(data);
+			if (data.products?.length) {
+				setLookupProducts(data.products);
+			}
+		}
 	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
@@ -136,7 +142,7 @@ const Factors = () => {
 							</div>
 							<Formik
 								initialValues={{
-									products: userProduct.products.filter(
+									products: userProduct.products?.filter(
 										(prod) =>
 											!lookupProducts.some(
 												(lookupProd) =>
@@ -144,12 +150,12 @@ const Factors = () => {
 											)
 									),
 								}}
-								validationSchema={Yup.object({
-									products: Yup.array(
-										Yup.object({
-											factors: Yup.array(
-												Yup.object({
-													name: Yup.string().required("required"),
+								validationSchema={object({
+									products: array(
+										object({
+											factors: array(
+												object({
+													name: string().required("required"),
 												})
 											)
 												.required(
@@ -219,11 +225,6 @@ const Factors = () => {
 																							productIndex
 																						);
 																					}}
-																					formUtilities={{
-																						isSubmitting,
-																						isValid,
-																						errors,
-																					}}
 																				/>
 																			</div>
 																		)
@@ -238,7 +239,7 @@ const Factors = () => {
 																	value={0}
 																	onChange={(e) => {
 																		const productToBeShown =
-																			userProduct.products.find(
+																			userProduct.products?.find(
 																				(prod) =>
 																					prod.uuid ===
 																					e.target.value
@@ -276,7 +277,7 @@ const Factors = () => {
 											</FieldArray>
 											<div className='flex gap-3 justify-between items-center mt-10'>
 												<div className='flex gap-3'>
-													{!!userProduct.products.filter(
+													{!!userProduct.products?.filter(
 														(prod) =>
 															!lookupProducts.some(
 																(lookupProd) =>

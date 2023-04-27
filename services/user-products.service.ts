@@ -1,7 +1,5 @@
-import objectPath from "object-path";
 import { IUserProduct, UserProduct } from "../models/user-product";
 import { productPagesEnum } from "../models/enums";
-import { IProduct } from "../models/types";
 
 export async function getAll(currentUserId: string) {
    try {
@@ -39,8 +37,8 @@ export async function getAllLookup() {
 //          { _id: frontEndUserProduct.id }
 //       );
 
-//       frontEndUserProduct.products.map((frontProd) => {
-//          const backProd = backEndUserProduct.products.find((backP: IProduct) => backP.uuid === frontProd.uuid);
+//       frontEnduserProduct.products?.map((frontProd) => {
+//          const backProd = backEnduserProduct.products?.find((backP: IProduct) => backP.uuid === frontProd.uuid);
 //          console.log(`backProd`, backProd);
 
 //          if (!backProd) {
@@ -56,8 +54,8 @@ export async function getAllLookup() {
 //       // problem code start
 //       let filteredBEUserProds: (IProduct | null)[] = [];
 
-//       backEndUserProduct.products.map((backProd: IProduct) => {
-//          filteredBEUserProds = frontEndUserProduct.products.map((frontP: IProduct) => {
+//       backEnduserProduct.products?.map((backProd: IProduct) => {
+//          filteredBEUserProds = frontEnduserProduct.products?.map((frontP: IProduct) => {
 //             if (frontP.uuid !== backProd.uuid) {
 //                return null;
 //             }
@@ -100,6 +98,7 @@ export async function insertOne(userProduct: IUserProduct) {
    try {
       const frontEndUserProduct = new UserProduct(userProduct)
       await frontEndUserProduct.save();
+      console.log("frontEndUserProduct", frontEndUserProduct);
       return frontEndUserProduct.toJSON();
    } catch (error) {
       console.log(error);

@@ -42,7 +42,9 @@ const Products = () => {
 	});
 
 	useEffect(() => {
-		setUserProduct(data ?? emptyUserProduct);
+		if (data) {
+			setUserProduct(data);
+		}
 	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
@@ -179,6 +181,7 @@ const Products = () => {
 										product.uuid = crypto.randomUUID();
 									}
 								});
+								userProduct.userId = session?.user?.id;
 								if (userProduct?.id) {
 									await updateUserProduct({
 										...userProduct,
