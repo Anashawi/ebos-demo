@@ -51,4 +51,4 @@ userCustomersSchema.statics.build = (attrs: UserCustomersAttrs) => {
 
 export const UserCustomers =
    mongoose.models.UserCustomers ||
-   mongoose.model<UserCustomersDocument, UserCustomersModel>("UserCustomers", userCustomersSchema);
+   mongoose.model<UserCustomersDocument, UserCustomersModel>("UserCustomers", userCustomersSchema, "userCustomers");

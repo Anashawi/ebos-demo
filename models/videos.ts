@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { authProviderEnum } from "./enums";
 
 interface VideosAttrs {
   goalsVideo: string;
@@ -115,11 +114,10 @@ const videosSchema = new mongoose.Schema(
   }
 );
 
-
 videosSchema.statics.build = (attrs: VideosAttrs) => {
   return new Videos(attrs);
 };
 
 export const Videos =
   mongoose.models.Videos ||
-  mongoose.model<VideosDocument, VideosModel>("Videos", videosSchema);
+  mongoose.model<VideosDocument, VideosModel>("Videos", videosSchema, "videos");

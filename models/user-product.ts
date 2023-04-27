@@ -42,4 +42,4 @@ userProductSchema.statics.build = (attrs: UserProductAttrs) => {
 
 export const UserProduct =
    mongoose.models.UserProduct ||
-   mongoose.model<UserProductDocument, UserProductModel>("UserProduct", userProductSchema);
+   mongoose.model<UserProductDocument, UserProductModel>("UserProduct", userProductSchema, "userProducts");

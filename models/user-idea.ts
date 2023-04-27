@@ -42,4 +42,4 @@ userIdeaSchema.statics.build = (attrs: UserIdeaAttrs) => {
 
 export const UserIdea =
    mongoose.models.UserIdea ||
-   mongoose.model<UserIdeaDocument, UserIdeaModel>("UserIdea", userIdeaSchema);
+   mongoose.model<UserIdeaDocument, UserIdeaModel>("UserIdea", userIdeaSchema, "userIdeas");

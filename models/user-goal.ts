@@ -46,4 +46,4 @@ userGoalSchema.statics.build = (attrs: UserGoalAttrs) => {
 
 export const UserGoal =
    mongoose.models.UserGoal ||
-   mongoose.model<UserGoalDocument, UserGoalModel>("UserGoal", userGoalSchema);
+   mongoose.model<UserGoalDocument, UserGoalModel>("UserGoal", userGoalSchema, "userGoals");
