@@ -7,6 +7,7 @@ export default function Redirect() {
 	const router = useRouter();
 	console.log(session);
 
+	router.replace("./");
 	// if (session && (session as any).role == "admin") {
 	// 	router.replace("/admin");
 	// } else if (session && (session as any).role == "student") {
