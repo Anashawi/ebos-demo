@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
 import { IIdea } from "./types";
 
-interface UserIdeaAttrs {
-   userId: string
+interface UserIdeasAttrs {
+   userId: string;
    ideas: IIdea[];
 }
 
-interface UserIdeaDocument extends mongoose.Document, UserIdeaAttrs { }
+interface UserIdeasDocument extends mongoose.Document, UserIdeasAttrs { }
 
-interface UserIdeaModel extends mongoose.Model<UserIdeaDocument> {
-   build(attrs: UserIdeaAttrs): UserIdeaDocument;
+interface UserIdeasModel extends mongoose.Model<UserIdeasDocument> {
+   build(attrs: UserIdeasAttrs): UserIdeasDocument;
 }
 
-export interface IUserIdea extends UserIdeaAttrs {
+export interface IUserIdeas extends UserIdeasAttrs {
    id: string;
 }
 
-const userIdeaSchema = new mongoose.Schema(
+const userIdeasSchema = new mongoose.Schema(
    {
       userId: {
          type: String,
@@ -36,10 +36,10 @@ const userIdeaSchema = new mongoose.Schema(
    }
 );
 
-userIdeaSchema.statics.build = (attrs: UserIdeaAttrs) => {
-   return new UserIdea(attrs);
+userIdeasSchema.statics.build = (attrs: UserIdeasAttrs) => {
+   return new UserIdeas(attrs);
 };
 
-export const UserIdea =
-   mongoose.models.UserIdea ||
-   mongoose.model<UserIdeaDocument, UserIdeaModel>("UserIdea", userIdeaSchema, "userIdeas");
+export const UserIdeas =
+   mongoose.models.UserIdeas ||
+   mongoose.model<UserIdeasDocument, UserIdeasModel>("UserIdeas", userIdeasSchema, "userIdeas");

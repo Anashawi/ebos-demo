@@ -1,23 +1,26 @@
-import { IIdea } from './../models/types';
 import axios from "axios";
 import { productPagesEnum } from "../models/enums";
+import { IUserIdeas } from '../models/user-idea';
+import { IIdea } from "../models/types";
 
 const api = axios.create({
    baseURL: "/api",
 });
 
-
-export const getAll = () =>
+export const getOne = () =>
    api.get(`/user-ideas`).then((res) => res.data);
 
-export const getAllLookup = () =>
+export const getOneLookup = () =>
    api.get(`/user-ideas/lookup`).then((res) => res.data);
 
-// export const getLookup = (courseId) =>
-//   api.get(`/user-ideas/lookup/${productId}`).then((res) => res.data);
+export const insertOne = (userIdeas: IUserIdeas) =>
+   api.post(`/user-ideas`, userIdeas).then((res) => res.data);
 
-export const insertOne = (idea: IIdea) =>
+export const insertOneLookup = (idea: IIdea) =>
    api.post(`/user-ideas`, idea).then((res) => res.data);
+
+export const updateOne = (userIdeas: IUserIdeas) =>
+   api.put(`/user-ideas`, userIdeas).then((res) => res.data);
 
 export const deleteOne = (uuid: string) =>
    api.delete(`/user-ideas/${uuid}`).then((res) => res.data);

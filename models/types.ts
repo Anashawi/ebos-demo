@@ -31,6 +31,8 @@ export interface IFuture {
 export interface IIdea {
    uuid: string;
    name: string;
+   startMonth: string;
+   durationInMonths: string
 }
 
 export interface ICompetitor {

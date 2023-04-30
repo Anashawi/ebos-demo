@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import * as Yup from "yup";
 import { useEffect, useMemo, useState } from "react";
 import CompetitorsProduct from "../../components/competitors/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,6 +13,7 @@ import { productPagesEnum } from "../../models/enums";
 import Spinner from "../../components/common/spinner";
 import { IProduct } from "../../models/types";
 import { ICompetitor } from "../../models/types";
+import { object, array, string, number, ValidationError } from "yup";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
@@ -145,13 +145,13 @@ const Competitors = () => {
 											)
 									),
 								}}
-								validationSchema={Yup.object({
-									products: Yup.array(
-										Yup.object({
-											competitors: Yup.array(
-												Yup.object({
-													name: Yup.string().required("required"),
-													marketShare: Yup.number()
+								validationSchema={object({
+									products: array(
+										object({
+											competitors: array(
+												object({
+													name: string().required("required"),
+													marketShare: number()
 														.required("required")
 														.min(
 															0,
@@ -164,14 +164,13 @@ const Competitors = () => {
 												})
 											)
 												.test((competitors: any, curr) => {
-													console.log(curr.parent);
 													const sum = competitors.reduce(
 														(acc: number, curr: any) =>
 															curr.marketShare + acc,
 														0
 													);
 													if (sum !== 100) {
-														return new Yup.ValidationError(
+														return new ValidationError(
 															{
 																errorMessage: `The sum of product market shares must be 100% but you have ${sum}%`,
 																product_uuid: curr.parent.uuid,

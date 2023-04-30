@@ -9,7 +9,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { IIdea } from "../../models/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/ideas.client";
-import { IUserIdea } from "../../models/user-idea";
+import { IUserIdeas } from "../../models/user-idea";
 
 interface Props {
 	isOpen: boolean;
@@ -19,9 +19,9 @@ interface Props {
 const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 	const [ideaFactors, setIdeaFactors] = useState<IIdea[]>([]);
 
-	const { data, isLoading } = useQuery<IUserIdea>({
+	const { data, isLoading } = useQuery<IUserIdeas>({
 		queryKey: [clientApi.Keys.AllLookup],
-		queryFn: clientApi.getAllLookup,
+		queryFn: clientApi.getOneLookup,
 		refetchOnWindowFocus: false,
 		enabled: isOpen,
 	});
@@ -36,7 +36,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 
 	const { mutate: createIdea, isLoading: isCreatingIdea } = useMutation(
 		(idea: IIdea) => {
-			return clientApi.insertOne(idea);
+			return clientApi.insertOneLookup(idea);
 		},
 		{
 			onSuccess: (updated) => {

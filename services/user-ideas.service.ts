@@ -1,58 +1,94 @@
-import { IUserIdea, UserIdea } from '../models/user-idea';
+import { IUserIdeas, UserIdeas } from '../models/user-idea';
 import { IIdea } from "../models/types";
 import { ObjectId } from 'mongodb';
 
-export async function getAll(currentUserId: string) {
+export async function getOne(currentUserId: string) {
    try {
-      const result = await UserIdea.findOne({ userId: currentUserId });
+      console.log("user ideas service getOne(userId)")
+      const result = await UserIdeas.findOne({ userId: currentUserId });
       return result.toJSON();
    } catch (error) {
       console.log(error);
    }
 }
 
-export async function getAllLookup(currentUserId: string) {
+export async function getOneLookup(currentUserId: string) {
    try {
-      const result = await UserIdea.findOne({ userId: currentUserId });
+      console.log("get one lookup")
+      let result = await UserIdeas.findOne({ userId: currentUserId });
+      result.ideas = result.ideas.map((idea: IIdea) => {
+         return {
+            uuid: idea.uuid,
+            name: idea.name,
+         }
+      });
       return result;
    } catch (error) {
       console.log(error);
    }
 }
 
-export async function insertOrUpdateOne(idea: IIdea, sessionUser: any) {
+export async function insertOne(userIdeas: IUserIdeas) {
+   try {
+      console.log("user ideas from the service", userIdeas)
+
+      const frontEndUserIdeas = new UserIdeas(userIdeas)
+      await frontEndUserIdeas.save();
+      return frontEndUserIdeas.toJSON();
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+export async function updateOne(frontEndUserIdeas: IUserIdeas) {
+   try {
+      const updateResult = await UserIdeas.updateOne(
+         { _id: frontEndUserIdeas.id },
+         {
+            $set: { ...frontEndUserIdeas },
+         }
+      );
+
+      const updatedUserIdeas = await UserIdeas.findById(frontEndUserIdeas.id);
+      return updatedUserIdeas.toJSON();
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
    try {
 
       if (!sessionUser?.id) throw new Error("You are not logged in !");
 
-      const result = await UserIdea.findOne({ userId: sessionUser.id });
+      const result = await UserIdeas.findOne({ userId: sessionUser.id });
 
-      const userIdea: IUserIdea = {
+      const userIdeas: IUserIdeas = {
          id: result?._id ?? "",
          userId: sessionUser.id,
          ideas: []
       };
 
       if (result?.ideas?.length) {
-         userIdea.ideas = [...result.ideas, { ...idea }];
+         userIdeas.ideas = [...result.ideas, { ...idea }];
       } else {
-         userIdea.ideas = [{ ...idea }];
+         userIdeas.ideas = [{ ...idea }];
       }
 
       if (result) { // update ... otherwise insert 
-         const updateResult = await UserIdea.updateOne(
-            { _id: new ObjectId(userIdea.id) },
+         const updateResult = await UserIdeas.updateOne(
+            { _id: new ObjectId(userIdeas.id) },
             {
-               $set: { ...userIdea },
+               $set: { ...userIdeas },
             }
          );
-         const updatedUserIdea = await UserIdea.findById(userIdea.id);
-         return updatedUserIdea.toJSON();
+         const updatedUserIdeas = await UserIdeas.findById(userIdeas.id);
+         return updatedUserIdeas.toJSON();
       }
 
-      const newUserIdea = new UserIdea(userIdea)
-      await newUserIdea.save();
-      return newUserIdea.toJSON();
+      const newUserIdeas = new UserIdeas(userIdeas)
+      await newUserIdeas.save();
+      return newUserIdeas.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -62,27 +98,27 @@ export async function deleteOne(uuid: string, sessionUser: any) {
    try {
       if (!sessionUser?.id) throw new Error("You are not logged in !");
 
-      const result = await UserIdea.findOne({ userId: sessionUser.id });
+      const result = await UserIdeas.findOne({ userId: sessionUser.id });
 
-      const userIdea: IUserIdea = {
+      const userIdeas: IUserIdeas = {
          id: result?._id ?? "",
          userId: sessionUser.id,
          ideas: []
       };
 
       if (result?.ideas?.length) {
-         userIdea.ideas = result.ideas.filter((idea: IIdea) => idea.uuid !== uuid);
+         userIdeas.ideas = result.ideas.filter((idea: IIdea) => idea.uuid !== uuid);
       }
 
       if (result) {
-         const updateResult = await UserIdea.updateOne(
-            { _id: new ObjectId(userIdea.id) },
+         const updateResult = await UserIdeas.updateOne(
+            { _id: new ObjectId(userIdeas.id) },
             {
-               $set: { ...userIdea },
+               $set: { ...userIdeas },
             }
          );
-         const updatedUserIdea = await UserIdea.findById(userIdea.id);
-         return updatedUserIdea.toJSON();
+         const updatedUserIdeas = await UserIdeas.findById(userIdeas.id);
+         return updatedUserIdeas.toJSON();
       }
 
    } catch (error) {
