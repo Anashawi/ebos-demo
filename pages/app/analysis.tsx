@@ -8,6 +8,7 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import { IUserAnalysis } from "../../models/user-analysis";
 import * as clientApi from "../../http-client/analysis.client";
 import { object, array, string } from "yup";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Analysis = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -263,12 +264,7 @@ const Analysis = () => {
 										</ul>
 									</div>
 								</div>
-								<button
-									className='btn text-black-eerie mt-10'
-									data-name='Goals'
-									id=''>
-									<strong>Request </strong> for consultant review
-								</button>
+								<ConsultantReview pageTitle='Step-up step-down'></ConsultantReview>
 							</div>
 						</div>
 					</div>

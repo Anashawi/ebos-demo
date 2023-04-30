@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/videos.client";
 import { IVideos } from "../../models/videos";
 import { useSession } from "next-auth/react";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Disruption = () => {
 	const { data: session } = useSession();
@@ -364,9 +365,7 @@ const Disruption = () => {
 							</ul>
 
 							<div className='py-3'>
-								<button className='btn text-black-eerie'>
-									<strong>Request </strong> for consultant review
-								</button>
+								<ConsultantReview pageTitle='Disruption'></ConsultantReview>
 							</div>
 						</div>
 					</div>

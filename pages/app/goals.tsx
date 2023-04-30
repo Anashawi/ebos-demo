@@ -12,6 +12,9 @@ import { IUserGoal } from "../../models/user-goal";
 import IdeasModal from "../../components/app/ideas-modal";
 import { useSession } from "next-auth/react";
 import { IVideos } from "../../models/videos";
+import Header from "../../components/common/header";
+import UserInfoHeader from "../../components/common/user-info-header";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -31,7 +34,7 @@ const Goals = () => {
 
 	const queryClient = useQueryClient();
 
-	const { data, isLoading, refetch } = useQuery<IUserGoal>({
+	const { data, isLoading } = useQuery<IUserGoal>({
 		queryKey: [clientApi.Keys.All],
 		queryFn: clientApi.getAll,
 		refetchOnWindowFocus: false,
@@ -105,13 +108,7 @@ const Goals = () => {
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='md:w-1/2 bg-white p-12 relative'>
-							<div className='pb-5'>
-								<strong className='mr-1'>Mustafa Khairy </strong> |
-								<Link href='http://bo.adpadelhouse.com/logout'>
-									{" "}
-									logout{" "}
-								</Link>
-							</div>
+							<UserInfoHeader></UserInfoHeader>
 							<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
 								Goals
 							</h3>
@@ -277,36 +274,15 @@ const Goals = () => {
 							{/* <script src="/modules/goals.js"></script> */}
 						</div>
 						<div className='md:w-1/2 pane-right-gradient min-h-screen p-12'>
-							<div className=''>
-								<button
-									type='button'
-									className='btn text-black-eerie'
-									onClick={toggleIdeasModal}>
-									My ideas
-								</button>
-							</div>
-							<Link href='/' className='logo-pane'>
-								<h4 className='text-[3rem] text-white'>20X</h4>
-								<span className='relative -translate-x-[1.2rem]'>
-									revenue BY
-								</span>
-								<div className='w-[110px] h-[33px]'>
-									<Image
-										width='55'
-										height='30'
-										src='/ilogo.webp'
-										alt='CaseInPoint'
-									/>
-								</div>
-							</Link>
-							<iframe width='100%' height='400' src={goalsVideo}></iframe>
+							<Header
+								className='w-full mb-10'
+								toggleIdeasModal={toggleIdeasModal}></Header>
+							<iframe
+								width='100%'
+								height='400'
+								src={goalsVideo}></iframe>
 							<div className='mx-auto text-center'>
-								<button
-									className='btn text-black-eerie mt-10'
-									data-name='Goals'
-									id='theSubmitBtn'>
-									<strong>Request </strong> for consultant review
-								</button>
+								<ConsultantReview pageTitle='Visualize Success'></ConsultantReview>
 							</div>
 						</div>
 					</div>

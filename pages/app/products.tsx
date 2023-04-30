@@ -15,6 +15,7 @@ import { IUserProduct } from "../../models/user-product";
 import { IFuture } from "../../models/types";
 import Spinner from "../../components/common/spinner";
 import { productPagesEnum } from "../../models/enums";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Products = () => {
 	const { data: session }: any = useSession();
@@ -280,12 +281,7 @@ const Products = () => {
 												)}
 											</div>
 											<div className='py-3'>
-												<button
-													className='btn text-black-eerie mt-10'
-													data-name='Pioneer, Migrate, Settler'>
-													<strong>Request </strong> for consultant
-													review
-												</button>
+												<ConsultantReview pageTitle='Pioneer, Migrator, Settler'></ConsultantReview>
 											</div>
 										</div>
 									</Form>

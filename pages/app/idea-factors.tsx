@@ -12,6 +12,7 @@ import { productPagesEnum } from "../../models/enums";
 import { IFactor, IProduct } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const IdeaFactors = () => {
 	const { data: session }: any = useSession();
@@ -44,7 +45,7 @@ const IdeaFactors = () => {
 				prod.competitors?.map((comp) => {
 					return {
 						uuid: comp.uuid,
-						value: 0,
+						value: "0",
 					};
 				}) ?? [];
 			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
@@ -303,13 +304,7 @@ const IdeaFactors = () => {
 													</Link>
 												</div>
 												<div className='py-3'>
-													<button
-														className='btn text-black-eerie mt-10'
-														data-name='Pioneer, Migrate, Settler'
-														id='theSubmitBtn'>
-														<strong>Request </strong> for
-														consultant review
-													</button>
+													<ConsultantReview pageTitle='Blue Ocean Canvas'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

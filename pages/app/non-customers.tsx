@@ -9,6 +9,7 @@ import * as clientApi from "../../http-client/non-customers.client";
 import { IUserNonCustomers } from "../../models/user-non-customers";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import Spinner from "../../components/common/spinner";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const NonCustomers = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -352,12 +353,7 @@ const NonCustomers = () => {
 								</ul>
 							</div>
 							<div className='py-3'>
-								<button
-									className='btn text-black-eerie'
-									data-name='Non nonCustomers'
-									id='theSubmitBtn'>
-									<strong>Request </strong> for consultant review
-								</button>
+								<ConsultantReview pageTitle='Non Customers'></ConsultantReview>
 							</div>
 						</div>
 					</div>

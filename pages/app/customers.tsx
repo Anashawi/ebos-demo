@@ -10,6 +10,7 @@ import { useMemo, useState, useEffect } from "react";
 import { IUserCustomers } from "../../models/user-customers";
 import * as clientApi from "../../http-client/customers.client";
 import Spinner from "../../components/common/spinner";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Customers = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -315,9 +316,7 @@ const Customers = () => {
 									</div>
 								</div>
 								<div className='py-3'>
-									<button className='btn text-black-eerie'>
-										<strong>Request </strong> for consultant review
-									</button>
+									<ConsultantReview pageTitle='Voice of customers'></ConsultantReview>
 								</div>
 							</div>
 						</div>

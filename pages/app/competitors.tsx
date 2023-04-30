@@ -14,6 +14,7 @@ import Spinner from "../../components/common/spinner";
 import { IProduct } from "../../models/types";
 import { ICompetitor } from "../../models/types";
 import { object, array, string, number, ValidationError } from "yup";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
@@ -329,13 +330,7 @@ const Competitors = () => {
 													)}
 												</div>
 												<div className='py-3'>
-													<button
-														className='btn text-black-eerie mt-10'
-														data-name='Pioneer, Migrate, Settler'
-														id='theSubmitBtn'>
-														<strong>Request </strong> for
-														consultant review
-													</button>
+													<ConsultantReview pageTitle='Market Potential'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

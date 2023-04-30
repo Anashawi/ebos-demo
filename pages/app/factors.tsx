@@ -12,6 +12,9 @@ import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
 import { IFactor, IProduct } from "../../models/types";
 import { string, object, array } from "yup";
+import UserInfoHeader from "../../components/common/user-info-header";
+import Header from "../../components/common/header";
+import ConsultantReview from "../../components/common/consultant-review";
 
 const Factors = () => {
 	const { data: session }: any = useSession();
@@ -101,37 +104,8 @@ const Factors = () => {
 					<div className='flex flex-wrap'>
 						<div className='flex flex-col gap-7 w-full p-12 relative'>
 							<div className='flex gap-5 items-center'>
-								<div className='w-1/2'>
-									<strong className='mr-1'>Mustafa Khairy </strong>
-									<span> | </span>
-									<Link href='http://bo.adpadelhouse.com/logout'>
-										logout
-									</Link>
-								</div>
-								<div className='flex justify-between items-center gap-5 w-1/2'>
-									<div className='ml-5'>
-										<button
-											type='button'
-											onClick={toggleIdeasModal}
-											className='btn text-black-eerie'>
-											My ideas
-										</button>
-									</div>
-									<Link href='/' className='logo-pane mb-0'>
-										<h4 className='text-[3rem] text-white'>20X</h4>
-										<span className='relative -translate-x-[1.2rem]'>
-											revenue BY
-										</span>
-										<div className='w-[110px] h-[33px]'>
-											<Image
-												width='55'
-												height='30'
-												src='/ilogo.webp'
-												alt='CaseInPoint'
-											/>
-										</div>
-									</Link>
-								</div>
+								<UserInfoHeader className='w-1/2'></UserInfoHeader>
+								<Header toggleIdeasModal={toggleIdeasModal}></Header>
 							</div>
 							<div className='flex'>
 								<div className='md:w-1/2 flex gap-12 justify-between pr-12'>
@@ -174,7 +148,6 @@ const Factors = () => {
 											product.uuid = crypto.randomUUID();
 										}
 									});
-
 									if (userProduct?.id) {
 										userProduct.products =
 											values.products.concat(lookupProducts);
@@ -304,13 +277,7 @@ const Factors = () => {
 													</Link>
 												</div>
 												<div className='py-3'>
-													<button
-														className='btn text-black-eerie mt-10'
-														data-name='Pioneer, Migrate, Settler'
-														id='theSubmitBtn'>
-														<strong>Request </strong> for
-														consultant review
-													</button>
+													<ConsultantReview pageTitle='Red Ocean Canvas'></ConsultantReview>
 												</div>
 											</div>
 										</Form>
