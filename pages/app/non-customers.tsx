@@ -10,6 +10,8 @@ import { IUserNonCustomers } from "../../models/user-non-customers";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
+import UserInfoHeader from "../../components/common/user-info-header";
+import Header from "../../components/common/header";
 
 const NonCustomers = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -98,12 +100,8 @@ const NonCustomers = () => {
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='md:w-4/12 bg-white p-12 relative'>
-							<div className='pb-5'>
-								<strong className='mr-1'>Mustafa Khairy </strong> |
-								<Link href='http://bo.adpadelhouse.com/logout'>
-									logout
-								</Link>
-							</div>
+							<UserInfoHeader></UserInfoHeader>
+
 							<h3 className='text-[2.52rem] my-10 text-yellow-green'>
 								Non customers
 							</h3>
@@ -303,20 +301,9 @@ const NonCustomers = () => {
 							</Formik>
 						</div>
 						<div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
-							<Link href='/' className='logo-pane'>
-								<h4 className='text-[3rem] text-white'>20X</h4>
-								<span className='relative -translate-x-[1.2rem]'>
-									revenue BY
-								</span>
-								<div className='w-[110px] h-[33px]'>
-									<Image
-										width='55'
-										height='30'
-										src='/ilogo.webp'
-										alt='CaseInPoint'
-									/>
-								</div>
-							</Link>
+							<Header
+								className='w-full mb-10'
+								toggleIdeasModal={toggleIdeasModal}></Header>
 							<div className='p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 								<div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-gray-300'>
 									<div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-yellow-jasmine text-gray-900'>

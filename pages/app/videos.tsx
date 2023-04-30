@@ -13,6 +13,8 @@ import * as clientApi from "../../http-client/videos.client";
 import { IVideos } from "../../models/videos";
 import { useSession } from "next-auth/react";
 import ConsultantReview from "../../components/common/consultant-review";
+import UserInfoHeader from "../../components/common/user-info-header";
+import Header from "../../components/common/header";
 
 const Disruption = () => {
 	const { data: session } = useSession();
@@ -64,10 +66,7 @@ const Disruption = () => {
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
-							<div className='pb-5'>
-								<strong className='mr-1'>Mustafa Khairy </strong> |
-								<a href='http://bo.adpadelhouse.com/logout'> logout </a>
-							</div>
+							<UserInfoHeader className='w-1/2 mb-10'></UserInfoHeader>
 
 							<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
 								Videos
@@ -249,123 +248,111 @@ const Disruption = () => {
 								)}
 							</div>
 						</div>
-						<div className='md:w-4/12 pane-right-gradient min-h-screen p-12'>
-							<div className=''>
-								<button
-									type='button'
-									className='btn text-black-eerie'
-									onClick={toggleIdeasModal}>
-									My ideas
-								</button>
-							</div>
-							<Link href='/' className='logo-pane'>
-								<h4 className='text-[3rem] text-white'>20X</h4>
-								<span className='relative -translate-x-[1.2rem]'>
-									revenue BY
-								</span>
-								<div className='w-[110px] h-[33px]'>
-									<Image
-										width='55'
-										height='30'
-										src='/ilogo.webp'
-										alt='CaseInPoint'
-									/>
+						<div className='md:w-4/12 pane-right-gradient min-h-screen'>
+							<Header
+								className='w-full p-5 mb-10'
+								toggleIdeasModal={toggleIdeasModal}></Header>
+
+							<div className='p-10'>
+								<h4 className='text-[2.1rem] mb-6'>
+									7 Practical &amp; Quick
+								</h4>
+								<ul className='flex flex-col gap-3 mb-5'>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										Eco Systems
+										<a
+											onClick={() => {
+												setSelectedVideoURL(videos.ecoSystems);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										Info is Power
+										<a
+											onClick={() => {
+												setSelectedVideoURL(videos.infoIsPower);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										OTCR
+										<a
+											onClick={() => {
+												setSelectedVideoURL(videos.OTCR);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										Value Destruction
+										<a
+											onClick={() => {
+												setSelectedVideoURL(
+													videos.valueDestruction
+												);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										Customer Journey
+										<a
+											onClick={() => {
+												setSelectedVideoURL(videos.customerJourney);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										Digital Platforms
+										<a
+											onClick={() => {
+												setSelectedVideoURL(
+													videos.digitalPlatforms
+												);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										Building Capacity
+										<a
+											onClick={() => {
+												setSelectedVideoURL(
+													videos.buildingCapacity
+												);
+												toggleVideoModal();
+											}}
+											className='ml-5 text-[1.2rem]'
+											target='_blank'>
+											Watch video
+										</a>
+									</li>
+								</ul>
+
+								<div className='py-3'>
+									<ConsultantReview pageTitle='Disruption'></ConsultantReview>
 								</div>
-							</Link>
-
-							<h4 className='text-[2.1rem] mb-6'>
-								7 Practical &amp; Quick
-							</h4>
-
-							<ul className='flex flex-col gap-3 mb-5'>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									Eco Systems
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.ecoSystems);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									Info is Power
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.infoIsPower);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									OTCR
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.OTCR);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									Value Destruction
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.valueDestruction);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									Customer Journey
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.customerJourney);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									Digital Platforms
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.digitalPlatforms);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-								<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-									Building Capacity
-									<a
-										onClick={() => {
-											setSelectedVideoURL(videos.buildingCapacity);
-											toggleVideoModal();
-										}}
-										className='ml-5 text-[1.2rem]'
-										target='_blank'>
-										Watch video
-									</a>
-								</li>
-							</ul>
-
-							<div className='py-3'>
-								<ConsultantReview pageTitle='Disruption'></ConsultantReview>
 							</div>
 						</div>
 					</div>

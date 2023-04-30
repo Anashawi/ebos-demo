@@ -15,6 +15,8 @@ import { IProduct } from "../../models/types";
 import { ICompetitor } from "../../models/types";
 import { object, array, string, number, ValidationError } from "yup";
 import ConsultantReview from "../../components/common/consultant-review";
+import Header from "../../components/common/header";
+import UserInfoHeader from "../../components/common/user-info-header";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
@@ -98,36 +100,10 @@ const Competitors = () => {
 					<div className='flex flex-wrap'>
 						<div className='flex flex-col gap-7 w-full p-12 relative'>
 							<div className='flex items-center'>
-								<div className='w-[66%]'>
-									<strong className='mr-1'>Mustafa Khairy </strong> |
-									<Link href='http://bo.adpadelhouse.com/logout'>
-										logout
-									</Link>
-								</div>
-								<div className='flex justify-between items-center gap-5 w-[34%]'>
-									<div className='ml-5'>
-										<button
-											type='button'
-											onClick={toggleIdeasModal}
-											className='btn text-black-eerie'>
-											My ideas
-										</button>
-									</div>
-									<Link href='/' className='logo-pane mb-0'>
-										<h4 className='text-[3rem] text-white'>20X</h4>
-										<span className='relative -translate-x-[1.2rem]'>
-											revenue BY
-										</span>
-										<div className='w-[110px] h-[33px]'>
-											<Image
-												width='55'
-												height='30'
-												src='/ilogo.webp'
-												alt='CaseInPoint'
-											/>
-										</div>
-									</Link>
-								</div>
+								<UserInfoHeader className='w-[66%]'></UserInfoHeader>
+								<Header
+									className='w-[34%]'
+									toggleIdeasModal={toggleIdeasModal}></Header>
 							</div>
 							<div className='flex'>
 								<div className='md:w-[66%] flex gap-12 justify-between pr-12'>

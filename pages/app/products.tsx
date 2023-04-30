@@ -16,6 +16,8 @@ import { IFuture } from "../../models/types";
 import Spinner from "../../components/common/spinner";
 import { productPagesEnum } from "../../models/enums";
 import ConsultantReview from "../../components/common/consultant-review";
+import UserInfoHeader from "../../components/common/user-info-header";
+import Header from "../../components/common/header";
 
 const Products = () => {
 	const { data: session }: any = useSession();
@@ -110,35 +112,11 @@ const Products = () => {
 			<div className='min-h-screen products-gradient w-screen bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='p-12 relative mx-auto max-w-[1920px]'>
-						<div className='flex justify-between gap-5 pb-5'>
-							<div className='flex gap-2 items-center'>
-								<strong className='mr-1'>Mustafa Khairy </strong> |
-								<a href='http://bo.adpadelhouse.com/logout'> logout </a>
-							</div>
-							<div className='flex justify-between items-center gap-5 w-1/2'>
-								<div className='ml-5'>
-									<button
-										type='button'
-										onClick={toggleIdeasModal}
-										className='btn text-black-eerie'>
-										My ideas
-									</button>
-								</div>
-								<Link href='/' className='logo-pane mb-0'>
-									<h4 className='text-[3rem] text-white'>20X</h4>
-									<span className='relative -translate-x-[1.2rem]'>
-										revenue BY
-									</span>
-									<div className='w-[110px] h-[33px]'>
-										<Image
-											width='55'
-											height='30'
-											src='/ilogo.webp'
-											alt='CaseInPoint'
-										/>
-									</div>
-								</Link>
-							</div>
+						<div className='flex justify-between items-center gap-5 pb-5'>
+							<UserInfoHeader className='w-1/2'></UserInfoHeader>
+							<Header
+								className='w-1/2'
+								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 						<h3 className='text-[2.52rem] mb-10 text-yellow-green'>
 							Pioneer, Migrator, Settler

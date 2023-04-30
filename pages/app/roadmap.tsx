@@ -14,6 +14,9 @@ import Chart from "react-google-charts";
 import useRoadmapChart from "../../hooks/use-roadmap-chart";
 import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
+import Header from "../../components/common/header";
+import UserInfoHeader from "../../components/common/user-info-header";
+import useModalToggler from "../../hooks/use-modal-toggler";
 
 const Roadmap = () => {
 	const { data: session }: any = useSession();
@@ -92,26 +95,8 @@ const Roadmap = () => {
 				<div className='pane-upper flex flex-col'>
 					<div className='px-12 py-8 flex flex-col gap-5 mx-auto lg:w-11/12'>
 						<div className='flex gap-5 justify-between items-center pb-5'>
-							<div>
-								<strong className='mr-1'>Mustafa Khairy </strong> |
-								<Link href='http://bo.adpadelhouse.com/logout'>
-									logout
-								</Link>
-							</div>
-							<Link href='/' className='logo-pane mb-0'>
-								<h4 className='text-[3rem] text-yellow-green'>20X</h4>
-								<span className='relative -translate-x-[1.2rem]'>
-									revenue BY
-								</span>
-								<div className='w-[110px] h-[33px]'>
-									<Image
-										width='55'
-										height='30'
-										src='/ilogo.webp'
-										alt='CaseInPoint'
-									/>
-								</div>
-							</Link>
+							<UserInfoHeader className='w-1/2'></UserInfoHeader>
+							<Header className='w-full mb-10'></Header>
 						</div>
 						<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
 							Roadmap

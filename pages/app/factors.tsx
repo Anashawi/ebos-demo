@@ -105,7 +105,9 @@ const Factors = () => {
 						<div className='flex flex-col gap-7 w-full p-12 relative'>
 							<div className='flex gap-5 items-center'>
 								<UserInfoHeader className='w-1/2'></UserInfoHeader>
-								<Header toggleIdeasModal={toggleIdeasModal}></Header>
+								<Header
+									className='w-1/2'
+									toggleIdeasModal={toggleIdeasModal}></Header>
 							</div>
 							<div className='flex'>
 								<div className='md:w-1/2 flex gap-12 justify-between pr-12'>
