@@ -29,7 +29,6 @@ const useFactorsChart = (product: IProduct) => {
 			["Factor", ...(product.competitors?.map((comp) => comp.name) ?? [])],
 			...rows,
 		];
-		console.log("chart.data", chart.data);
 		chart.options = {
 			title: product.name,
 			titleTextStyle: {

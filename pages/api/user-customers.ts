@@ -32,7 +32,6 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userCustomer = req.body;
-    console.log("user customer from the handler", userCustomer)
     const result = await service.insertOne(userCustomer);
     res.status(200).json(result);
   } catch (error: any) {
@@ -44,8 +43,7 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { userCustomer } = req.body;
-    console.log("user customer from the handler", userCustomer)
+    const userCustomer = req.body;
     const result = await service.updateOne(userCustomer);
     res.status(200).json(result);
   } catch (error: any) {

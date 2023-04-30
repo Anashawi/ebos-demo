@@ -43,7 +43,6 @@ const Factors = () => {
 
 	useEffect(() => {
 		data?.products?.forEach((prod) => {
-			console.log("prod.competitors", prod.competitors);
 			firstFactor.name = "factor 1";
 			firstFactor.competitors =
 				prod.competitors?.map((comp) => {

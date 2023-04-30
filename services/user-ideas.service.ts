@@ -4,7 +4,6 @@ import { ObjectId } from 'mongodb';
 
 export async function getOne(currentUserId: string) {
    try {
-      console.log("user ideas service getOne(userId)")
       const result = await UserIdeas.findOne({ userId: currentUserId });
       return result.toJSON();
    } catch (error) {
@@ -14,7 +13,6 @@ export async function getOne(currentUserId: string) {
 
 export async function getOneLookup(currentUserId: string) {
    try {
-      console.log("get one lookup")
       let result = await UserIdeas.findOne({ userId: currentUserId });
       result.ideas = result.ideas.map((idea: IIdea) => {
          return {
@@ -30,8 +28,6 @@ export async function getOneLookup(currentUserId: string) {
 
 export async function insertOne(userIdeas: IUserIdeas) {
    try {
-      console.log("user ideas from the service", userIdeas)
-
       const frontEndUserIdeas = new UserIdeas(userIdeas)
       await frontEndUserIdeas.save();
       return frontEndUserIdeas.toJSON();

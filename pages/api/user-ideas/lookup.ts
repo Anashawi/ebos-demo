@@ -29,7 +29,6 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
     const idea = req.body;
-    console.log("idea !!!!!!!!!!!!!!!", idea);
 
     const sessionUser: any = await getToken({ req });
 

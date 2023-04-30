@@ -65,7 +65,6 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 		onSubmit: async (values, { setSubmitting }) => {
 			values.goalsVideo =
 				videos.goalsVideo ?? "https://www.youtube.com/embed/n3S1pojOENo";
-			console.log("values", values);
 			if (!values.id) {
 				await createVideos(values);
 			} else {

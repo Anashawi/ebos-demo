@@ -12,7 +12,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 async function _delete(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query;
-    console.log("uuid !!!!!!!!!!!!!!!!!!!!", id)
     const sessionUser: any = await getToken({ req });
 
     const result = await service.deleteOne(id + "", sessionUser);

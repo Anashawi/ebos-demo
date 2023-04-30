@@ -28,8 +28,6 @@ export async function updateOne(frontEndUserCustomers: IUserCustomers) {
 
 export async function insertOne(userCustomers: IUserCustomers) {
    try {
-      console.log("user customer from the service", userCustomers)
-
       const frontEndUserCustomers = new UserCustomers(userCustomers)
       await frontEndUserCustomers.save();
       return frontEndUserCustomers.toJSON();

@@ -31,7 +31,6 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userIdeas = req.body;
-    console.log("userIdeas !!!!!!!!!!!!!!!", userIdeas);
 
     const sessionUser: any = await getToken({ req });
 
@@ -47,7 +46,6 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userIdeas = req.body;
-    console.log("userIdeas !!!!!!!!!!!!!!!", userIdeas);
 
     const sessionUser: any = await getToken({ req });
 

@@ -11,8 +11,6 @@ interface Props {
 const ConfirmModal = ({ config, toggle }: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 
-	console.log("delete dialog from inside", config);
-
 	return (
 		<Modal
 			config={{

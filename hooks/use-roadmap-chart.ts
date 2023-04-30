@@ -25,7 +25,6 @@ const useRoadmapChart = (ideas: IIdea[]) => {
 			["Idea", "Start Month", "End Month"],
 			...rows,
 		];
-		console.log("chart.data", chart.data);
 		chart.options = {
 			title: "Ideas Timeline",
 			titleTextStyle: {

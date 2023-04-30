@@ -28,7 +28,6 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
     const videos = req.body;
-    console.log("videos from the handler", videos)
     const result = await service.insertOne(videos);
     res.status(200).json(result);
   } catch (error: any) {
@@ -41,7 +40,6 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const videos = req.body;
-    console.log("videos from the handler", videos)
     const result = await service.updateOne(videos);
     res.status(200).json(result);
   } catch (error: any) {

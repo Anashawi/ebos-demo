@@ -129,7 +129,6 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 										<button
 											type='button'
 											onClick={() => {
-												console.log("emptyFactor", emptyFactor);
 												push(emptyFactor);
 											}}
 											className='inline-flex items-center gap-3 mb-5 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>

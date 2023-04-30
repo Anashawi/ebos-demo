@@ -1,21 +1,17 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
-import { Field, FieldArray, Form, Formik, useFormik } from "formik";
+import { Field, FieldArray, Form, Formik } from "formik";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { object, array, string } from "yup";
 import * as clientApi from "../../http-client/non-customers.client";
 import { IUserNonCustomers } from "../../models/user-non-customers";
-import useModalToggler from "../../hooks/use-modal-toggler";
 import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 
 const NonCustomers = () => {
-	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-
 	const { data: session }: any = useSession();
 
 	const emptyUserNonCustomers = useMemo(() => {
@@ -301,9 +297,7 @@ const NonCustomers = () => {
 							</Formik>
 						</div>
 						<div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
-							<Header
-								className='w-full mb-10'
-								toggleIdeasModal={toggleIdeasModal}></Header>
+							<Header className='w-full mb-10'></Header>
 							<div className='p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 								<div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-gray-300'>
 									<div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-yellow-jasmine text-gray-900'>

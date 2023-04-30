@@ -98,7 +98,6 @@ export async function insertOne(userProduct: IUserProduct) {
    try {
       const frontEndUserProduct = new UserProduct(userProduct)
       await frontEndUserProduct.save();
-      console.log("frontEndUserProduct", frontEndUserProduct);
       return frontEndUserProduct.toJSON();
    } catch (error) {
       console.log(error);

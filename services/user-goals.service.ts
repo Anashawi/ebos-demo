@@ -28,8 +28,6 @@ export async function updateOne(frontEndUserGoal: IUserGoal) {
 
 export async function insertOne(userGoal: IUserGoal) {
    try {
-      console.log("user goal from the service", userGoal)
-
       const frontEndUserGoal = new UserGoal(userGoal)
       await frontEndUserGoal.save();
       return frontEndUserGoal.toJSON();

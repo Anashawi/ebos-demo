@@ -12,7 +12,6 @@ export async function getOne(currentUserId: string) {
 
 export async function updateOne(frontEndUserNonCustomers: IUserNonCustomers) {
    try {
-      console.log("frontEndUserNonCustomers from service ", frontEndUserNonCustomers);
       const updateResult = await UserNonCustomers.updateOne(
          { _id: frontEndUserNonCustomers.id },
          {
@@ -29,8 +28,6 @@ export async function updateOne(frontEndUserNonCustomers: IUserNonCustomers) {
 
 export async function insertOne(userNonCustomers: IUserNonCustomers) {
    try {
-      console.log("user customer from the service", userNonCustomers)
-
       const frontEndUserNonCustomers = new UserNonCustomers(userNonCustomers)
       await frontEndUserNonCustomers.save();
       return frontEndUserNonCustomers.toJSON();

@@ -1,5 +1,5 @@
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+import { Router, useRouter } from "next/router";
 
 interface Props {
 	className?: string;
@@ -7,11 +7,19 @@ interface Props {
 
 const UserInfoHeader = ({ className }: Props) => {
 	const { data: session } = useSession();
+	const router = useRouter();
+
 	return (
 		<div className={className ?? ""}>
 			<strong className='mr-1'>{(session?.user as any)?.fullName}</strong>
 			<span> | </span>
-			<Link href='http://bo.adpadelhouse.com/logout'>logout</Link>
+			<a
+				onClick={async () => {
+					await signOut();
+					router.push("/redirect");
+				}}>
+				logout
+			</a>
 		</div>
 	);
 };
