@@ -306,7 +306,7 @@ const Competitors = () => {
 													)}
 												</div>
 												<div className='py-3'>
-													<ConsultantReview pageTitle='Market Potential'></ConsultantReview>
+													<ConsultantReview className='mt-10' pageTitle='Market Potential'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

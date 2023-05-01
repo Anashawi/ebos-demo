@@ -296,7 +296,7 @@ const Customers = () => {
 									</div>
 								</div>
 								<div className='py-3'>
-									<ConsultantReview pageTitle='Voice of customers'></ConsultantReview>
+									<ConsultantReview className='mt-10' pageTitle='Voice of customers'></ConsultantReview>
 								</div>
 							</div>
 						</div>

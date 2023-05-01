@@ -279,7 +279,7 @@ const IdeaFactors = () => {
 													</Link>
 												</div>
 												<div className='py-3'>
-													<ConsultantReview pageTitle='Blue Ocean Canvas'></ConsultantReview>
+													<ConsultantReview className='mt-10' pageTitle='Blue Ocean Canvas'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

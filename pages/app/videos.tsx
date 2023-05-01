@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import Modal from "../../components/common/modal";
@@ -8,7 +7,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import VideosForm from "../../components/videos/videos-form";
 import Video from "../../components/videos/video";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/videos.client";
 import { IVideos } from "../../models/videos";
 import { useSession } from "next-auth/react";
@@ -351,7 +350,9 @@ const Disruption = () => {
 								</ul>
 
 								<div className='py-3'>
-									<ConsultantReview pageTitle='Disruption'></ConsultantReview>
+									<ConsultantReview
+										className='mt-10'
+										pageTitle='Disruption'></ConsultantReview>
 								</div>
 							</div>
 						</div>

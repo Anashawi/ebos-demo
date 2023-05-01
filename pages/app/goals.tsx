@@ -15,9 +15,15 @@ import { IVideos } from "../../models/videos";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import ConsultantReview from "../../components/common/consultant-review";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import Modal from "../../components/common/modal";
+import VideosForm from "../../components/videos/videos-form";
+import GoalsVideoForm from "../../components/videos/goals-video-form";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 
 	const { data: session }: any = useSession();
 
@@ -281,13 +287,32 @@ const Goals = () => {
 								width='100%'
 								height='400'
 								src={goalsVideo}></iframe>
-							<div className='mx-auto text-center'>
+							<div className='flex justify-between items-center py-10 mx-auto text-center'>
+								{(session?.user as any)?.role === "admin" && (
+									<button
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleEditVideoModal}>
+										<span>Edit video Url</span>
+										<FontAwesomeIcon className='w-7' icon={faEdit} />
+									</button>
+								)}
 								<ConsultantReview pageTitle='Visualize Success'></ConsultantReview>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* video urls form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<GoalsVideoForm toggleEditVideoModal={toggleEditVideoModal} />
+			</Modal>
 		</>
 	);
 };

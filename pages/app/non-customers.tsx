@@ -334,7 +334,7 @@ const NonCustomers = () => {
 								</ul>
 							</div>
 							<div className='py-3'>
-								<ConsultantReview pageTitle='Non Customers'></ConsultantReview>
+								<ConsultantReview className='mt-10' pageTitle='Non Customers'></ConsultantReview>
 							</div>
 						</div>
 					</div>

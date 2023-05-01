@@ -250,7 +250,7 @@ const Analysis = () => {
 										</ul>
 									</div>
 								</div>
-								<ConsultantReview pageTitle='Step-up step-down'></ConsultantReview>
+								<ConsultantReview className='mt-10' pageTitle='Step-up step-down'></ConsultantReview>
 							</div>
 						</div>
 					</div>

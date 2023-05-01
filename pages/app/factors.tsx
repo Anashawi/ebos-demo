@@ -278,7 +278,7 @@ const Factors = () => {
 													</Link>
 												</div>
 												<div className='py-3'>
-													<ConsultantReview pageTitle='Red Ocean Canvas'></ConsultantReview>
+													<ConsultantReview className='mt-10' pageTitle='Red Ocean Canvas'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

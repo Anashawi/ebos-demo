@@ -12,6 +12,13 @@ export async function getOne() {
 
 export async function updateOne(videos: IVideos) {
    try {
+      console.log("videos", videos);
+      const getByIdResult = await Videos.findById(videos.id);
+      videos = { ...getByIdResult.toJSON(), ...videos };
+
+      console.log("getByIdResult from inside the service", getByIdResult);
+      console.log("videos from inside the service", videos);
+
       const updateResult = await Videos.updateOne(
          { _id: videos.id },
          {
@@ -20,7 +27,7 @@ export async function updateOne(videos: IVideos) {
       );
 
       const updatedVideos = await Videos.findById(videos.id);
-      return updatedVideos.toJSON();
+      return updatedVideos.toJSON() ?? false;
    } catch (error) {
       console.log(error);
    }

@@ -125,10 +125,15 @@ const Roadmap = () => {
 														new Date().setHours(0, 0, 0, 0)
 													),
 													"Date cannot be in the past"
-												),
+												).test((e, curr) => {
+													console.log(curr);
+												}),
 											durationInMonths: date().required("start"),
 										})
 									)
+										// .test(function (e, curr) {
+										// 	console.log(curr);
+										// })
 										.required("Must provide at least one idea !")
 										.min(1, "Must provide at least one idea !"),
 								})}
@@ -343,7 +348,9 @@ const Roadmap = () => {
 				<div className='pane-lower-gradient grow'>
 					<div className='px-12 py-8 mx-auto lg:w-11/12'>
 						<Chart {...chart} legendToggle />
-						<ConsultantReview pageTitle='Roadmap'></ConsultantReview>
+						<ConsultantReview
+							className='mt-10'
+							pageTitle='Roadmap'></ConsultantReview>
 					</div>
 				</div>
 			</div>

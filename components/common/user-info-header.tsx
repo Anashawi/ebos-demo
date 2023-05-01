@@ -1,5 +1,5 @@
 import { signOut, useSession } from "next-auth/react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 interface Props {
 	className?: string;
@@ -14,9 +14,10 @@ const UserInfoHeader = ({ className }: Props) => {
 			<strong className='mr-1'>{(session?.user as any)?.fullName}</strong>
 			<span> | </span>
 			<a
-				onClick={async () => {
-					await signOut();
-					router.push("/redirect");
+				onClick={() => {
+					signOut({
+						callbackUrl: "/",
+					});
 				}}>
 				logout
 			</a>

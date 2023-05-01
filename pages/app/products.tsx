@@ -259,7 +259,7 @@ const Products = () => {
 												)}
 											</div>
 											<div className='py-3'>
-												<ConsultantReview pageTitle='Pioneer, Migrator, Settler'></ConsultantReview>
+												<ConsultantReview className='mt-10' pageTitle='Pioneer, Migrator, Settler'></ConsultantReview>
 											</div>
 										</div>
 									</Form>

@@ -11,8 +11,9 @@ export const getOne = () =>
 export const insertOne = (videos: IVideos) =>
    api.post(`/videos`, videos).then((res) => res.data);
 
-export const updateOne = (videos: IVideos) =>
-   api.put(`/videos`, videos).then((res) => res.data);
+export const updateOne = (videos: IVideos) => {
+   return api.put(`/videos`, videos).then((res) => res.data);
+}
 
 export const Keys = {
    all: "all",
