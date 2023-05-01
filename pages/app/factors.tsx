@@ -1,5 +1,4 @@
 import { FieldArray, Form, Formik } from "formik";
-import Image from "next/image";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
@@ -57,9 +56,6 @@ const Factors = () => {
 		});
 		if (data) {
 			setUserProduct(data);
-			if (data.products?.length) {
-				setLookupProducts(data.products);
-			}
 		}
 	}, [data]);
 
@@ -117,13 +113,7 @@ const Factors = () => {
 							</div>
 							<Formik
 								initialValues={{
-									products: userProduct.products?.filter(
-										(prod) =>
-											!lookupProducts.some(
-												(lookupProd) =>
-													lookupProd.uuid === prod.uuid
-											)
-									),
+									products: userProduct.products,
 								}}
 								validationSchema={object({
 									products: array(
@@ -158,6 +148,7 @@ const Factors = () => {
 									}
 									actions.setSubmitting(false);
 								}}
+								enableReinitialize
 								validateOnMount>
 								{({ values, isSubmitting, isValid, errors }) => {
 									return (
@@ -278,7 +269,9 @@ const Factors = () => {
 													</Link>
 												</div>
 												<div className='py-3'>
-													<ConsultantReview className='mt-10' pageTitle='Red Ocean Canvas'></ConsultantReview>
+													<ConsultantReview
+														className='mt-10'
+														pageTitle='Red Ocean Canvas'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

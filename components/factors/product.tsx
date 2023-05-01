@@ -16,7 +16,6 @@ import {
 	IProduct,
 } from "../../models/types";
 import useFactorsChart from "../../hooks/use-factors-chart";
-import { login } from "../../services/auth.service";
 
 interface Props {
 	product: IProduct;
@@ -55,24 +54,17 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 						{({ remove, push }) => (
 							<>
 								<ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[350px] overflow-y-auto'>
-									<>
-										{product?.factors
-											? product.factors[0].competitors.map(
-													(c) => c.value + "  "
-											  )
-											: null}
-									</>
 									{!!product.factors?.length &&
 										product.factors.map((factor, factorIndex) => (
 											<li
 												key={factorIndex}
-												className='flex gap-5 items-start border-b border-gray-400 pb-7'>
-												<div className=''>
+												className='flex gap-5 items-start border-b border-gray-200 pb-7 w-max'>
+												<div className='flex flex-col'>
 													<label>Factor</label>
 													<Field
 														type='text'
 														placeholder='name'
-														className='w-full factor-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+														className='w-[140px] factor-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
 														name={`products.${index}.factors.${factorIndex}.name`}
 													/>
 													<ErrorMessage
@@ -130,7 +122,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 													onClick={() => {
 														remove(factorIndex);
 													}}
-													className='self-center w-5 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+													className='self-center w-[1.5rem] h-auto cursor-pointer text-rose-200 hover:text-rose-800'
 												/>
 											</li>
 										))}
