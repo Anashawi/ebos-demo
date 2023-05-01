@@ -36,7 +36,10 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 
 	const emptyFuture = useMemo(() => {
 		return {
-			year: (product.futures ? product.futures[product.futures?.length - 1]?.year ?? 2022 : 2022) + 1,
+			year:
+				(product.futures
+					? product.futures[product.futures?.length - 1]?.year ?? 2022
+					: 2022) + 1,
 			level: 2,
 			sales: 50,
 		} as IFuture;
@@ -104,6 +107,25 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																	max='2099'
 																	className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
 																	placeholder='year'
+																	// onChange={(e: any) => {
+																	// 	console.log(
+																	// 		e,
+																	// 		product.futures
+																	// 	);
+																	// 	if (product.futures) {
+																	// 		if (futureIndex > 0) {
+																	// 			if (
+																	// 				+e.target.value >
+																	// 				product.futures[
+																	// 					futureIndex -
+																	// 						1
+																	// 				].year
+																	// 			) {
+																	// 				e.preventDefault();
+																	// 			}
+																	// 		}
+																	// 	}
+																	// }}
 																	name={`products.${index}.futures.${futureIndex}.year`}
 																/>
 																<ErrorMessage
@@ -230,7 +252,14 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 											<button
 												type='button'
 												onClick={() => {
-													push(emptyFuture);
+													const newFuture = { ...emptyFuture };
+													if (product.futures?.length) {
+														newFuture.year =
+															product.futures[
+																product.futures.length - 1
+															].year + 1;
+													}
+													push(newFuture);
 												}}
 												className='inline-flex items-center gap-3 text-lg p-5 btn blue-gradient text-black-eerie hover:text-white'>
 												<FontAwesomeIcon

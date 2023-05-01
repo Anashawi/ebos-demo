@@ -50,7 +50,6 @@ const useFuturesChart = (product: IProduct) => {
 
 		chart.options = {
 			title: product.name,
-			colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
 			legend: {
 				position: "right",
 				textStyle: {

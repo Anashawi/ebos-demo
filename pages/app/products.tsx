@@ -2,10 +2,8 @@ import { FieldArray, Form, Formik } from "formik";
 import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import * as Yup from "yup";
 import Product from "../../components/products/product";
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -18,10 +16,10 @@ import { productPagesEnum } from "../../models/enums";
 import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
+import { object, array, string, number } from "yup";
 
 const Products = () => {
 	const { data: session }: any = useSession();
-
 	const emptyUserProduct = useMemo(() => {
 		return {
 			id: "",
@@ -100,7 +98,7 @@ const Products = () => {
 				{
 					year: 2023,
 					level: 1,
-					sales: 55,
+					sales: 50,
 				} as IFuture,
 			],
 		};
@@ -125,24 +123,24 @@ const Products = () => {
 							initialValues={{
 								products: userProduct?.products,
 							}}
-							validationSchema={Yup.object({
-								products: Yup.array(
-									Yup.object({
-										// id: Yup.string("must be a string").required(
+							validationSchema={object({
+								products: array(
+									object({
+										// id: string("must be a string").required(
 										//    "required"
 										// ),
-										name: Yup.string().required("Name is required"),
-										futures: Yup.array(
-											Yup.object({
-												year: Yup.number()
+										name: string().required("Name is required"),
+										futures: array(
+											object({
+												year: number()
 													.typeError("you must specify a year")
 													.min(2023, "min year is 2023")
 													.max(2099, "max year is 2099")
 													.required("Year is required"),
-												level: Yup.number().required(
+												level: number().required(
 													"Level is required"
 												),
-												sales: Yup.number().required(
+												sales: number().required(
 													"sales percentage is required"
 												),
 											})
@@ -201,6 +199,7 @@ const Products = () => {
 																	)
 																)}
 															{!values.products?.length &&
+																!isLoading &&
 																form.errors?.products && (
 																	<div className='w-full flex justify-center items-center'>
 																		<p className='text-2xl p-10 text-center bg-rose-50 text-rose-500'>
@@ -213,6 +212,11 @@ const Products = () => {
 																		</p>
 																	</div>
 																)}
+															{isLoading && (
+																<Spinner
+																	className='text-3xl'
+																	message='Loading ...'></Spinner>
+															)}
 														</div>
 														<div className='w-1/2 flex gap-5 items-center justify-end pr-5 md:pr-10 py-10'>
 															<button
@@ -259,7 +263,9 @@ const Products = () => {
 												)}
 											</div>
 											<div className='py-3'>
-												<ConsultantReview className='mt-10' pageTitle='Pioneer, Migrator, Settler'></ConsultantReview>
+												<ConsultantReview
+													className='mt-10'
+													pageTitle='Pioneer, Migrator, Settler'></ConsultantReview>
 											</div>
 										</div>
 									</Form>

@@ -107,11 +107,13 @@ const Roadmap = () => {
 							</h4>
 							<Formik
 								initialValues={{
-									startDate: new Date(""),
+									startDate: new Date(),
 									ideas: userIdeas.ideas,
 								}}
 								validationSchema={object({
 									startDate: date()
+										.required()
+										.transform((v: any) => (!isNaN(v) ? v : null))
 										.typeError("The value must be a date (MM-yyyy)")
 										.required("required"),
 									ideas: array(
@@ -125,15 +127,10 @@ const Roadmap = () => {
 														new Date().setHours(0, 0, 0, 0)
 													),
 													"Date cannot be in the past"
-												).test((e, curr) => {
-													console.log(curr);
-												}),
+												),
 											durationInMonths: date().required("start"),
 										})
 									)
-										// .test(function (e, curr) {
-										// 	console.log(curr);
-										// })
 										.required("Must provide at least one idea !")
 										.min(1, "Must provide at least one idea !"),
 								})}
