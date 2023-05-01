@@ -53,7 +53,6 @@ const Competitors = () => {
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
-		setLookupProducts(!!data?.products?.length ? data.products : []);
 	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
@@ -114,13 +113,7 @@ const Competitors = () => {
 							</div>
 							<Formik
 								initialValues={{
-									products: userProduct.products?.filter(
-										(prod: any) =>
-											!lookupProducts.some(
-												(lookupProd) =>
-													lookupProd.uuid === prod.uuid
-											)
-									),
+									products: userProduct.products,
 								}}
 								validationSchema={object({
 									products: array(
@@ -147,9 +140,19 @@ const Competitors = () => {
 														0
 													);
 													if (sum !== 100) {
+														let msg = "";
+														if (100 - sum > 0) {
+															msg = `you have ${
+																100 - sum
+															}% left `;
+														} else {
+															msg = `you have ${
+																sum - 100
+															}% more`;
+														}
 														return new ValidationError(
 															{
-																errorMessage: `The sum of product market shares must be 100% but you have ${sum}%`,
+																errorMessage: `The sum of product market shares must be 100% ${msg}`,
 																product_uuid: curr.parent.uuid,
 															} as any,
 															undefined,
@@ -184,6 +187,7 @@ const Competitors = () => {
 									}
 									actions.setSubmitting(false);
 								}}
+								enableReinitialize
 								validateOnMount>
 								{({ values, isSubmitting, isValid, errors }) => {
 									return (
@@ -193,11 +197,17 @@ const Competitors = () => {
 													return (
 														<div className='flex flex-col gap-12'>
 															<div className='flex flex-col gap-20'>
-																{!values.products?.length && (
-																	<p className='w-max text-rose-500 py-5'>
-																		make a selection to view
-																		products !
-																	</p>
+																{!values.products?.length &&
+																	!isLoading && (
+																		<p className='w-max text-rose-500 py-5'>
+																			make a selection to
+																			view products !
+																		</p>
+																	)}
+																{isLoading && (
+																	<Spinner
+																		className='text-3xl'
+																		message='loading ...'></Spinner>
 																)}
 																{!!values.products.length &&
 																	values.products.map(
@@ -306,7 +316,9 @@ const Competitors = () => {
 													)}
 												</div>
 												<div className='py-3'>
-													<ConsultantReview className='mt-10' pageTitle='Market Potential'></ConsultantReview>
+													<ConsultantReview
+														className='mt-10'
+														pageTitle='Market Potential'></ConsultantReview>
 												</div>
 											</div>
 										</Form>

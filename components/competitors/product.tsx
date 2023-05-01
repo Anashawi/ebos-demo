@@ -131,7 +131,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 														onClick={() => {
 															remove(compIndex);
 														}}
-														className='w-5 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+														className='w-[1.5rem] h-auto cursor-pointer text-rose-200 hover:text-rose-800'
 													/>
 												)}
 											</li>
