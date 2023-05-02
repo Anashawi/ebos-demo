@@ -86,7 +86,9 @@ const useFuturesChart = (product: IProduct) => {
 			},
 			chartArea: {
 				left: 80,
-				top: 0,
+				top: 80,
+				bottom: 60,
+				right: 100,
 				width: "100%",
 				height: "90%",
 			},

@@ -107,7 +107,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 				</div>
 
 				{authState.error && (
-					<div className='bg-red-100 p-2 mt-2 rounded-md text-red-900'>
+					<div className='bg-red-100 p-2 mt-2  text-red-900'>
 						{authState.error}
 					</div>
 				)}
@@ -139,7 +139,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='fullName'
 								type='text'
 								placeholder='Full Name'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
 								{...formik.getFieldProps("fullName")}
 							/>
 							{formik.errors?.fullName && (
@@ -153,7 +153,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='email'
 								type='email'
 								placeholder='Email'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
 								{...formik.getFieldProps("email")}
 							/>
 							{formik.errors.email && (
@@ -167,7 +167,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='phoneNumber'
 								type='text'
 								placeholder='Phone Number'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
 								{...formik.getFieldProps("phoneNumber")}
 							/>
 							{formik.errors?.phoneNumber && (
@@ -181,7 +181,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='password'
 								type='password'
 								placeholder='Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
 								{...formik.getFieldProps("password")}
 							/>
 							{formik.errors?.password && (
@@ -195,7 +195,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='confirmPassword'
 								type='password'
 								placeholder='Confirm Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
 								{...formik.getFieldProps("confirmPassword")}
 							/>
 							{formik.errors?.confirmPassword && (
@@ -207,7 +207,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 						<div>
 							<button
 								type='submit'
-								className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-br from-yellow-green to-[#A5C036] rounded-md'>
+								className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x rounded-md bg-gradient-to-br from-yellow-green to-[#A5C036] '>
 								Register
 							</button>
 						</div>
