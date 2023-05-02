@@ -46,7 +46,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 		} as IFuture;
 	}, []);
 
-	const [chart] = useFuturesChart(product);
+	const [chart] = useFuturesChart(JSON.parse(JSON.stringify(product)));
 
 	return (
 		<>
