@@ -17,7 +17,7 @@ const UserInfoHeader = ({ className }: Props) => {
 				className='hover:text-black-eerie text-blue-ncs'>
 				<strong>Back To Dashboard</strong>
 			</Link>
-			<div>
+			<div className="mr-5">
 				<strong className='mr-1'>{(session?.user as any)?.fullName.toUpperCase()}</strong>
 				<span> | </span>
 				<button

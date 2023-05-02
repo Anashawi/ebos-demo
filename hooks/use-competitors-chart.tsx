@@ -25,7 +25,11 @@ const useCompetitorsChart = (product: IProduct) => {
 				// {/* bold: <boolean>,    // true or false
 				// italic: <boolean>   // true of false */}
 			},
-			is3D: true,
+			is3D: false,
+			backgroundColor: '#eee',
+
+			colors: ["#25AC54", "#3F6BAA", "#FACC15", "orange", "gray"],
+			pieHole: 0.4,
 			legend: {
 				position: "right",
 				alignment: "start",
@@ -39,7 +43,7 @@ const useCompetitorsChart = (product: IProduct) => {
 					fontSize: 11,
 				},
 			},
-			chartArea: { left: 50, top: 70, width: "100%", height: "100%" },
+			chartArea: { left: 10, top: 40, bottom: 40, width: "100%", height: "100%" },
 		};
 		setChart({ ...chart });
 	};

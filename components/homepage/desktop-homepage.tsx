@@ -23,14 +23,14 @@ const DesktopHomepage: NextPage<Props> = ({
 	const curve = {
 		p_0: {
 			x: 55,
-			y: 500,
+			y: 480,
 		},
 		p_1: {
-			x: 1200,
-			y: 500,
+			x: 1100,
+			y: 480,
 		},
 		p_2: {
-			x: 1300,
+			x: 1200,
 			y: 0,
 		},
 		getWidth: function () {
@@ -47,7 +47,7 @@ const DesktopHomepage: NextPage<Props> = ({
 	const delta_x = curve.getWidth() / (nodes.length + 2 - 1); // curve width / number of gaps between nodes [nodes.length + 2 other nodes (the first node and the last node)]
 	const t_1 = 0.05 / nodes.length;
 	const t_values = [t_1];
-	const nodeWidth = 105;
+	const nodeWidth = 100;
 
 	const getX = (t: number, flag = false) => {
 		if (flag) {
@@ -198,7 +198,7 @@ const DesktopHomepage: NextPage<Props> = ({
 						{nodes.map((node: any, index: number) => (
 							<div
 								key={index}
-								className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
+								className='text-xl -translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center aspect-square p-2 lg:p-3 break-words bg-white drop-shadow-lg rounded-full z-[9999]'
 								style={{
 									width: nodeWidth + "px",
 									left:
@@ -220,7 +220,7 @@ const DesktopHomepage: NextPage<Props> = ({
 								{
 									!session && <span
 
-										className='text-center text-yellow-green hover:text-yellow-green'>
+										className='text-center  text-yellow-green hover:text-yellow-green'>
 										{node.text}
 									</span>
 								}
@@ -257,7 +257,7 @@ const DesktopHomepage: NextPage<Props> = ({
 							cx={`${getRelativeXInPixels(
 								getRelativeXInPixels(
 									getX((t_values[2] - t_values[1]) / 2 + t_values[1])
-								) - 40
+								) - 20
 							)}px`}
 							cy='590'
 							r='4'></circle>
@@ -276,7 +276,7 @@ const DesktopHomepage: NextPage<Props> = ({
 							d={`M ${getRelativeXInPixels(
 								getRelativeXInPixels(
 									getX((t_values[2] - t_values[1]) / 2 + t_values[1]) -
-									40
+									20
 								)
 							)} 590 L ${getRelativeXInPixels(
 								getX((t_values[2] - t_values[1]) / 2 + t_values[1])
