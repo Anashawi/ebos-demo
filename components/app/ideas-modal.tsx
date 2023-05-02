@@ -18,6 +18,7 @@ interface Props {
 
 const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 	const [ideaFactors, setIdeaFactors] = useState<IIdea[]>([]);
+	const [userIdeasId, setUserIdeasId] = useState<string>("");
 
 	const { data, isLoading } = useQuery<IUserIdeas>({
 		queryKey: [clientApi.Keys.AllLookup],
@@ -29,10 +30,22 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 	useEffect(() => {
 		if (data) {
 			setIdeaFactors(data.ideas);
+			setUserIdeasId(data.id);
 		}
 	}, [data]);
 
 	const queryClient = useQueryClient();
+
+	const { mutate: updateIdea, isLoading: isUpdatingIdea } = useMutation(
+		(idea: IIdea) => {
+			return clientApi.updateOneLookup(idea);
+		},
+		{
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
+			},
+		}
+	);
 
 	const { mutate: createIdea, isLoading: isCreatingIdea } = useMutation(
 		(idea: IIdea) => {
@@ -69,13 +82,24 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 				}}>
 				<div className='flex flex-col gap-7'>
 					<h2 className='text-4xl text-gray-700'>Ideas</h2>
-					<h3 className='text-gray-400 text-2xl'>Add ideas</h3>
+					<h3 className='min-h-[3rem] flex text-gray-400 text-2xl'>
+						Add ideas{" "}
+						{(isLoading ||
+							isCreatingIdea ||
+							isDeletingIdea ||
+							isUpdatingIdea) && (
+							<Spinner
+								className='ml-12 text-2xl'
+								message='Saving Ideas ...'
+							/>
+						)}
+					</h3>
 				</div>
-				<div className='h-[90%] overflow-auto'>
+				<div className='h-[85%] overflow-auto'>
 					<div className='relative flex-auto py-3'>
 						{isLoading && (
 							<Spinner
-								className='text-2xl'
+								className='text-lg'
 								message='Loading ...'></Spinner>
 						)}
 						{!ideaFactors?.length && !isLoading && (
@@ -86,7 +110,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 							</div>
 						)}
 						{!!ideaFactors?.length && (
-							<ul className='flex flex-col gap-2 mb-10'>
+							<ul className='flex flex-col gap-2 mb-10 max-h-[350px] overflow-auto'>
 								{ideaFactors.map((idea: IIdea, index: number) => (
 									<li
 										key={index}
@@ -115,10 +139,17 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 								name: string().required("required"),
 							})}
 							onSubmit={async (values, actions) => {
-								await createIdea({
-									uuid: crypto.randomUUID(),
-									name: values.name,
-								} as IIdea);
+								if (userIdeasId) {
+									await updateIdea({
+										uuid: crypto.randomUUID(),
+										name: values.name,
+									} as IIdea);
+								} else {
+									await createIdea({
+										uuid: crypto.randomUUID(),
+										name: values.name,
+									} as IIdea);
+								}
 								actions.setSubmitting(false);
 								actions.resetForm();
 							}}
@@ -153,16 +184,6 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 												Add New Idea
 											</button>
 										</div>
-										{(isLoading ||
-											isCreatingIdea ||
-											isDeletingIdea) && (
-											<div className='flex grow'>
-												<Spinner
-													className=''
-													message='Saving Ideas ...'
-												/>
-											</div>
-										)}
 									</div>
 								</Form>
 							)}

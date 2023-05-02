@@ -26,6 +26,21 @@ export async function getOneLookup(currentUserId: string) {
    }
 }
 
+// export async function insertOneLookup(userIdeasId: string, newIdea: IIdea) {
+//    try {
+//       const getByIdResult = await UserIdeas.findById(userIdeasId);
+//       let newUserIdeas = {
+//          ideas: [newIdea]
+//       }
+//       newUserIdeas = { ...getByIdResult, ...newUserIdeas };
+//       const frontEndUserIdeas = new UserIdeas(newUserIdeas)
+//       await frontEndUserIdeas.save();
+//       return frontEndUserIdeas.toJSON();
+//    } catch (error) {
+//       console.log(error);
+//    }
+// }
+
 export async function insertOne(userIdeas: IUserIdeas) {
    try {
       const frontEndUserIdeas = new UserIdeas(userIdeas)
