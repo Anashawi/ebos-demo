@@ -55,15 +55,15 @@ const DesktopHomepage: NextPage<Props> = ({
 		}
 		return Math.round(
 			Math.pow(1 - t, 2) * curve.p_0.x +
-				2 * (1 - t) * t * curve.p_1.x +
-				Math.pow(t, 2) * curve.p_2.x
+			2 * (1 - t) * t * curve.p_1.x +
+			Math.pow(t, 2) * curve.p_2.x
 		);
 	};
 	const getY = (t: number) =>
 		Math.round(
 			Math.pow(1 - t, 2) * curve.p_0.y +
-				2 * (1 - t) * t * curve.p_1.y +
-				Math.pow(t, 2) * curve.p_2.y
+			2 * (1 - t) * t * curve.p_1.y +
+			Math.pow(t, 2) * curve.p_2.y
 		);
 
 	const getRelativeXInPixels = (x_pos: number) => {
@@ -81,7 +81,7 @@ const DesktopHomepage: NextPage<Props> = ({
 			-1 * (curr_T * linearEquation_1 + linearEquation_2) +
 			Math.sqrt(
 				Math.pow(curr_T * linearEquation_1 + linearEquation_2, 2) +
-					linearEquation_1 * delta_x
+				linearEquation_1 * delta_x
 			);
 		const denominator = linearEquation_1;
 
@@ -156,7 +156,7 @@ const DesktopHomepage: NextPage<Props> = ({
 							Subscribers only
 						</span>
 						<div
-							className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[10rem] aspect-square p-2 lg:p-3 break-words bg-aquamarine drop-shadow-lg rounded-full z-[99999]'
+							className='-translate-x-1/2 -translate-y-1/2 absolute flex items-center justify-center w-[10rem] aspect-square p-2 lg:p-3 break-words bg-[#1DAB52] drop-shadow-lg rounded-full z-[99999]'
 							style={{
 								left: getRelativeXInPixels(curve.p_0.x) + "px",
 								top: curve.p_0.y,
@@ -164,13 +164,13 @@ const DesktopHomepage: NextPage<Props> = ({
 							<div className='text-center'>
 								{!(session?.user as any)?.id && (
 									<>
-										<div className='text-slate-700'>Start here</div>
+										<div className='text-slate-700 font-bold'>Start</div>
 										<div
 											onClick={openSignupScreen}
 											className='font-bold text-white text-center cursor-pointer'>
 											Register
 										</div>
-										<div className='text-slate-700 font-bold'>Or</div>
+										<div className='text-slate-700'>- OR -</div>
 										<div
 											onClick={openLoginScreen}
 											className='font-bold text-white text-center cursor-pointer'>
@@ -180,14 +180,15 @@ const DesktopHomepage: NextPage<Props> = ({
 								)}
 								{!!(session?.user as any)?.id && (
 									<>
+										<div className="text-lg font-bold">WELCOME</div>
 										<div className='text-slate-700'>
-											{(session?.user as any).fullName}
+											{(session?.user as any).fullName.toUpperCase()}
 										</div>
 										<div
 											onClick={() => {
 												signOut();
 											}}
-											className='font-bold text-white text-center cursor-pointer'>
+											className='font-bold text-white text-center cursor-pointer text-lg'>
 											Logout
 										</div>
 									</>
@@ -204,18 +205,26 @@ const DesktopHomepage: NextPage<Props> = ({
 										getRelativeXInPixels(
 											getX(
 												t_values[index] +
-													getDelta_T(t_values[index])
+												getDelta_T(t_values[index])
 											)
 										) + "px",
 									top: getY(
 										t_values[index] + getDelta_T(t_values[index])
 									),
 								}}>
-								<Link
+								{session && <Link
 									href={node.url}
 									className='text-center text-yellow-green hover:text-yellow-green'>
 									{node.text}
-								</Link>
+								</Link>}
+								{
+									!session && <span
+
+										className='text-center text-yellow-green hover:text-yellow-green'>
+										{node.text}
+									</span>
+								}
+
 							</div>
 						))}
 						<div
@@ -232,13 +241,10 @@ const DesktopHomepage: NextPage<Props> = ({
 					<svg className='home-line absolute bottom-0 w-full h-[52rem]'>
 						<path
 							className='stroke-[5px] stroke-gray-gunmetal fill-none'
-							d={`M ${getRelativeXInPixels(curve.p_0.x)} ${
-								curve.p_0.y
-							} Q ${getRelativeXInPixels(curve.p_1.x)} ${
-								curve.p_1.y
-							} ${getRelativeXInPixels(curve.p_2.x)} ${
-								curve.p_2.y
-							}`}></path>
+							d={`M ${getRelativeXInPixels(curve.p_0.x)} ${curve.p_0.y
+								} Q ${getRelativeXInPixels(curve.p_1.x)} ${curve.p_1.y
+								} ${getRelativeXInPixels(curve.p_2.x)} ${curve.p_2.y
+								}`}></path>
 						<path
 							className='stroke-[5px] stroke-white fill-none'
 							d={`M ${getRelativeXInPixels(
@@ -270,7 +276,7 @@ const DesktopHomepage: NextPage<Props> = ({
 							d={`M ${getRelativeXInPixels(
 								getRelativeXInPixels(
 									getX((t_values[2] - t_values[1]) / 2 + t_values[1]) -
-										40
+									40
 								)
 							)} 590 L ${getRelativeXInPixels(
 								getX((t_values[2] - t_values[1]) / 2 + t_values[1])

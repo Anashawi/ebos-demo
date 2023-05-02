@@ -98,7 +98,7 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 							id='email'
 							type='email'
 							placeholder='Email'
-							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 							{...formik.getFieldProps("email")}
 						/>
 						{formik.errors.email && (
@@ -112,7 +112,7 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 							id='password'
 							type='password'
 							placeholder='Password'
-							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 							{...formik.getFieldProps("password")}
 						/>
 						{formik.errors?.password && (
@@ -124,7 +124,7 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 					<div>
 						<button
 							type='submit'
-							className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-yellow-mikado rounded-md'>
+							className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-br from-yellow-green to-[#A5C036] rounded-md'>
 							Login
 						</button>
 					</div>

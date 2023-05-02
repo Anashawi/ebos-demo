@@ -100,7 +100,7 @@ export default function Home() {
 						closeCallback: toggleLoginModal,
 						className: "w-full min-w-[320px] max-w-[700px] p-5",
 					}}>
-					<Login closeCallback={toggleLoginModal}></Login>
+					<Login closeCallback={toggleLoginModal} />
 				</Modal>
 
 				{/* signup modal */}
@@ -110,7 +110,7 @@ export default function Home() {
 						closeCallback: toggleSignupModal,
 						className: "w-full min-w-[320px] max-w-[700px]",
 					}}>
-					<Signup></Signup>
+					<Signup closeCallback={toggleSignupModal} />
 				</Modal>
 			</div>
 		</>

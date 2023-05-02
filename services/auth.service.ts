@@ -28,6 +28,7 @@ export async function createUser(user: IUser) {
 
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 

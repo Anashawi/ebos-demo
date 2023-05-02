@@ -12,22 +12,42 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 async function post(req: NextApiRequest, res: NextApiResponse) {
   const user: IUser = req.body;
 
+
   if (
     !user.email ||
-    !user.email.includes("@") ||
+    !user.email.includes("@")
+  ) {
+    res.status(422).json({
+      message: "invalid email address",
+    });
+  }
+
+  if (
     !user.password ||
     user.password.trim().length < 4 ||
     !user.fullName
   ) {
     res.status(422).json({
-      message: "invalid data",
+      message: "Password must be at least 4 characters",
     });
   }
+
+  if (
+    !user.fullName
+  ) {
+    res.status(422).json({
+      message: "Provide a valid full name",
+    });
+  }
+
+
+
+
   try {
     var result = await authService.createUser(user);
 
     res.status(201).json(result);
-    
+
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({

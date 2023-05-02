@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { authProviderEnum } from "../../models/enums";
 import { IUser } from "../../models/user";
 import { signIn } from "next-auth/react";
@@ -9,7 +8,7 @@ import Spinner from "../common/spinner";
 import { useFormik } from "formik";
 import { object, string } from "yup";
 
-const Signup = () => {
+const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -48,8 +47,6 @@ const Signup = () => {
 		},
 	});
 
-	const router = useRouter();
-
 	const {
 		mutate,
 		isLoading: signUpLoading,
@@ -65,6 +62,15 @@ const Signup = () => {
 				);
 			}
 		},
+		onError: async (err) => {
+			const { data: error } = (err as any)?.response;
+			if (error) {
+				setAuthState({
+					isLoading: false,
+					error: error.message
+				})
+			}
+		}
 	});
 
 	async function trySignIn(email: string, password: string) {
@@ -75,7 +81,8 @@ const Signup = () => {
 		});
 
 		if (!result?.error) {
-			router.push("/redirect");
+			//handle successful login.. close sign up modal, and stay in place.
+			closeCallback();
 		} else {
 			setAuthState((old) => ({
 				...old,
@@ -85,15 +92,7 @@ const Signup = () => {
 		}
 	}
 
-	if (isError) {
-		return (
-			<div className='h-full flex flex-col stretch'>
-				<div className='bg-red-400 bg-opacity-100 p-5 rounded shadow-xl'>
-					A server error has occurred, try again:
-				</div>
-			</div>
-		);
-	}
+
 
 	return (
 		<>
@@ -135,16 +134,12 @@ const Signup = () => {
 					<form
 						onSubmit={formik.handleSubmit}
 						className='flex flex-col gap-10'>
-						<input
-							type='hidden'
-							value='flLpueuWiW4yYQhFv42duLSPTHXIub8XYUjHG5lR'
-						/>
 						<div>
 							<input
 								id='fullName'
 								type='text'
 								placeholder='Full Name'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 								{...formik.getFieldProps("fullName")}
 							/>
 							{formik.errors?.fullName && (
@@ -158,7 +153,7 @@ const Signup = () => {
 								id='email'
 								type='email'
 								placeholder='Email'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 								{...formik.getFieldProps("email")}
 							/>
 							{formik.errors.email && (
@@ -172,7 +167,7 @@ const Signup = () => {
 								id='phoneNumber'
 								type='text'
 								placeholder='Phone Number'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 								{...formik.getFieldProps("phoneNumber")}
 							/>
 							{formik.errors?.phoneNumber && (
@@ -186,7 +181,7 @@ const Signup = () => {
 								id='password'
 								type='password'
 								placeholder='Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 								{...formik.getFieldProps("password")}
 							/>
 							{formik.errors?.password && (
@@ -200,7 +195,7 @@ const Signup = () => {
 								id='confirmPassword'
 								type='password'
 								placeholder='Confirm Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue'
+								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
 								{...formik.getFieldProps("confirmPassword")}
 							/>
 							{formik.errors?.confirmPassword && (
@@ -212,7 +207,7 @@ const Signup = () => {
 						<div>
 							<button
 								type='submit'
-								className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-yellow-mikado rounded-full'>
+								className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-br from-yellow-green to-[#A5C036] rounded-md'>
 								Register
 							</button>
 						</div>
@@ -222,5 +217,4 @@ const Signup = () => {
 		</>
 	);
 };
-
 export default Signup;
