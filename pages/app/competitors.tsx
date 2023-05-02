@@ -49,7 +49,7 @@ const Competitors = () => {
 				!prod.competitors ||
 				(prod.competitors && prod.competitors.length === 0)
 			) {
-				prod.competitors = [meAsCompetitor, { ...meAsCompetitor, name: '' }, { ...meAsCompetitor, name: '' }];
+				prod.competitors = [{ ...emptyCompetitor, name: '', isUntapped: true }, emptyCompetitor, { ...emptyCompetitor, name: '' }, { ...emptyCompetitor, name: '' }];
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
@@ -80,7 +80,7 @@ const Competitors = () => {
 			}
 		);
 
-	const meAsCompetitor = useMemo(() => {
+	const emptyCompetitor = useMemo(() => {
 		return {
 			uuid: crypto.randomUUID(),
 			name: "Me",
