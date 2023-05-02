@@ -45,7 +45,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 		} as IFuture;
 	}, []);
 
-	const [chart] = useFuturesChart(JSON.parse(JSON.stringify(product)));
+	const [chart] = useFuturesChart(product);
 
 	return (
 		<>
@@ -64,9 +64,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 									/>
 									<ErrorMessage name={`products.${index}.name`}>
 										{(msg) => (
-											<div className='text-lg text-rose-500'>
-												{msg}
-											</div>
+											<div className='text-rose-500'>{msg}</div>
 										)}
 									</ErrorMessage>
 									<FontAwesomeIcon
@@ -105,31 +103,12 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																	max='2099'
 																	className='w-full text-lg p-2 bg-gray-100 outline-none caret-dark-blue border-none'
 																	placeholder='year'
-																	// onChange={(e: any) => {
-																	// 	console.log(
-																	// 		e,
-																	// 		product.futures
-																	// 	);
-																	// 	if (product.futures) {
-																	// 		if (futureIndex > 0) {
-																	// 			if (
-																	// 				+e.target.value >
-																	// 				product.futures[
-																	// 					futureIndex -
-																	// 						1
-																	// 				].year
-																	// 			) {
-																	// 				e.preventDefault();
-																	// 			}
-																	// 		}
-																	// 	}
-																	// }}
 																	name={`products.${index}.futures.${futureIndex}.year`}
 																/>
 																<ErrorMessage
 																	name={`products.${index}.futures.${futureIndex}.year`}>
 																	{(msg) => (
-																		<div className='text-lg text-rose-500'>
+																		<div className='text-rose-500'>
 																			{msg}
 																		</div>
 																	)}
@@ -154,14 +133,14 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																<ErrorMessage
 																	name={`products.${index}.futures.${futureIndex}.level`}>
 																	{(msg) => (
-																		<div className='text-lg text-rose-500'>
+																		<div className='text-rose-500'>
 																			{msg}
 																		</div>
 																	)}
 																</ErrorMessage>
 															</div>
 															<div className='grow p-2 flex flex-col'>
-																<label>Sales (%)</label>
+																<label>Sales</label>
 																<Field
 																	type='number'
 																	name={`products.${index}.futures.${futureIndex}.sales`}
@@ -172,7 +151,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																<ErrorMessage
 																	name={`products.${index}.futures.${futureIndex}.sales`}>
 																	{(msg) => (
-																		<div className='text-lg text-rose-500'>
+																		<div className='text-rose-500'>
 																			{msg}
 																		</div>
 																	)}
@@ -203,9 +182,16 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 													const newFuture = { ...emptyFuture };
 													if (product.futures?.length) {
 														newFuture.year =
-															product.futures[
-																product.futures.length - 1
-															].year + 1;
+															product.futures.reduce(
+																(max, future) =>
+																	future.year <= 2099 &&
+																	max.year > future.year
+																		? max
+																		: future
+															).year + 1; // to get the greatest year + 1
+														if (newFuture.year > 2099) {
+															newFuture.year = 2099;
+														}
 													}
 													push(newFuture);
 												}}

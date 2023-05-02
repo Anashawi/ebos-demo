@@ -16,8 +16,9 @@ const useFuturesChart = (product: IProduct) => {
 	}, [product]);
 
 	const updateChartProps = () => {
+		const productFutures = [...(product.futures ?? [])];
 		const rows =
-			product.futures
+			productFutures
 				?.sort((a, b) => {
 					if (a.year < b.year) return -1;
 					return 1;

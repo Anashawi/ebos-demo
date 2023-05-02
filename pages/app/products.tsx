@@ -137,7 +137,9 @@ const Products = () => {
 													.max(2099, "max year is 2099")
 													.required("required"),
 												level: number().required("required"),
-												sales: number().required("required"),
+												sales: number()
+													.min(0, "must be greater than 0")
+													.required("required"),
 											})
 										)
 											.required("Must provide at least one future!")
