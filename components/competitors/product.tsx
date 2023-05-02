@@ -74,7 +74,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 															<Field
 																type='text'
 																placeholder='name'
-																className='w-full comp-name text-lg p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																className='w-full text-lg p-3 bg-gray-100 outline-none caret-dark-blue border-none'
 																name={`products.${index}.competitors.${compIndex}.name`}
 															/>
 															<ErrorMessage

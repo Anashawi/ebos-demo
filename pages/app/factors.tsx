@@ -14,6 +14,7 @@ import { string, object, array } from "yup";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import ConsultantReview from "../../components/common/consultant-review";
+import Spinner from "../../components/common/spinner";
 
 const Factors = () => {
 	const { data: session }: any = useSession();
@@ -106,7 +107,7 @@ const Factors = () => {
 							</div>
 							<div className='flex'>
 								<div className='md:w-1/2 flex gap-12 justify-between pr-12'>
-									<h3 className='text-[2.52rem] text-yellow-green'>
+									<h3 className='mb-10 text-4xl text-yellow-green'>
 										Red Ocean Canvas
 									</h3>
 								</div>
@@ -241,7 +242,7 @@ const Factors = () => {
 												}}
 											</FieldArray>
 											<div className='flex gap-3 justify-between items-center mt-10'>
-												<div className='flex gap-3'>
+												<div className='w-1/2 flex gap-3 justify-between'>
 													{!!userProduct.products?.filter(
 														(prod) =>
 															!lookupProducts.some(
@@ -259,14 +260,19 @@ const Factors = () => {
 															disabled={
 																isSubmitting || !isValid
 															}>
-															Save and submit
+															Save
 														</button>
 													)}
-													<Link
-														href='/'
-														className='btn text-black-eerie hover:text-blue-ncs'>
-														<strong>Back To Dashboard</strong>
-													</Link>
+													{userProduct?.products?.length > 0 && (
+														<Link href={"/"}>
+															<span className='text-md text-gray-400 italic pr-12'>
+																go to next →{" "}
+																<span className='text-gray-500 pr-2'>
+																	Disruption
+																</span>
+															</span>
+														</Link>
+													)}
 												</div>
 												<div className='py-3'>
 													<ConsultantReview
@@ -274,6 +280,12 @@ const Factors = () => {
 														pageTitle='Red Ocean Canvas'></ConsultantReview>
 												</div>
 											</div>
+											{(!!isLoading || isUpdatingUserProduct) && (
+												<Spinner
+													className='flex items-center text-xl'
+													message='Saving Market Potential'
+												/>
+											)}
 										</Form>
 									);
 								}}

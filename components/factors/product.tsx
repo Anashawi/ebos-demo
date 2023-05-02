@@ -8,7 +8,6 @@ import { FieldArray, Field, ErrorMessage } from "formik";
 import Chart from "react-google-charts";
 import { NextPage } from "next";
 import { useMemo } from "react";
-import factorValueOptions from "../../samples/lookups/factor-value-options.json";
 import {
 	ICompetitor,
 	IFactorCompetitor,
@@ -39,14 +38,14 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 	}, []);
 
 	return (
-		<div className='flex justify-between'>
+		<div className='flex justify-between text-lg'>
 			<div className='md:w-1/2 pr-12'>
-				<div key={index} className='border shadow p-10'>
+				<div key={index} className='border p-5'>
 					<div className='flex justify-between mb-10'>
-						<h2 className='text-2xl font-normal'>{product.name}</h2>
+						<h2 className='text-xl font-normal'>{product.name}</h2>
 						<FontAwesomeIcon
 							onClick={onRemove}
-							className='w-9 cursor-pointer text-rose-200 hover:text-rose-500'
+							className='w-[2rem] cursor-pointer text-gray-200 hover:text-rose-500'
 							icon={faEyeSlash}
 						/>
 					</div>
@@ -58,13 +57,13 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 										product.factors.map((factor, factorIndex) => (
 											<li
 												key={factorIndex}
-												className='flex gap-5 items-start border-b border-gray-200 pb-7 w-max'>
+												className='flex gap-5 items-start w-max'>
 												<div className='flex flex-col'>
 													<label>Factor</label>
 													<Field
 														type='text'
 														placeholder='name'
-														className='w-[140px] factor-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+														className='w-[140px] text-lg p-3 bg-gray-100 outline-none caret-dark-blue border-none'
 														name={`products.${index}.factors.${factorIndex}.name`}
 													/>
 													<ErrorMessage
@@ -85,25 +84,34 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 															<div
 																key={compIndex}
 																className='flex-1 flex flex-col min-w-[140px]'>
-																<label>{comp.name}</label>
+																<label className='block max-w-[90%] text-ellipsis overflow-hidden break-keep'>
+																	<span>{comp.name}</span>
+																</label>
 																<Field
 																	as='select'
 																	placeholder={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
-																	className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																	className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 																	name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
-																	{factorValueOptions.map(
-																		(option: any) => (
-																			<option
-																				key={option.id}
-																				value={
-																					+option.value
-																				}>
-																				{
-																					option.displayValue
-																				}
-																			</option>
-																		)
-																	)}
+																	<option
+																		className='text-lg'
+																		value={1}>
+																		Poor
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={2}>
+																		moderate
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={3}>
+																		Good
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={4}>
+																		Excellent
+																	</option>
 																</Field>
 																<ErrorMessage
 																	name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}>
@@ -132,11 +140,12 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 											onClick={() => {
 												push(emptyFactor);
 											}}
-											className='inline-flex items-center gap-3 mb-5 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>
+											className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
 											<FontAwesomeIcon
-												className='w-7 h-auto cursor-pointer text-white'
+												className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 												icon={faCirclePlus}
 											/>
+											Add more factors
 										</button>
 									</div>
 								</ul>

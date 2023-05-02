@@ -106,7 +106,7 @@ const Competitors = () => {
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 
-						<h3 className='text-[2.52rem] text-yellow-green'>
+						<h3 className='text-4xl text-yellow-green'>
 							Market potential
 						</h3>
 						<Formik
