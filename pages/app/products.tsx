@@ -5,7 +5,7 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import Product from "../../components/products/product";
 import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
@@ -145,12 +145,12 @@ const Products = () => {
 												),
 											})
 										)
-											.required("Must provide at least one future !")
-											.min(1, "Must provide at least one future !"),
+											.required("Must provide at least one future!")
+											.min(1, "Must provide at least one future!"),
 									})
 								)
-									.required("Must provide at least one product !")
-									.min(1, "Must provide at least one product !"),
+									.required("Start adding your products...")
+									.min(1, "Start adding your products..."),
 							})}
 							onSubmit={async (values, actions) => {
 								values.products?.map((product) => {
@@ -201,8 +201,8 @@ const Products = () => {
 															{!values.products?.length &&
 																!isLoading &&
 																form.errors?.products && (
-																	<div className='w-full flex justify-center items-center'>
-																		<p className='text-2xl p-10 text-center bg-rose-50 text-rose-500'>
+																	<div className='w-full flex justify-start items-center'>
+																		<p className='text-2xl text-center italic'>
 																			<>
 																				{
 																					form.errors
@@ -218,56 +218,48 @@ const Products = () => {
 																	message='Loading ...'></Spinner>
 															)}
 														</div>
-														<div className='w-1/2 flex gap-5 items-center justify-end pr-5 md:pr-10 py-10'>
+														<div className='w-1/2 flex gap-5 items-center justify-start pr-5 md:pr-10 py-10'>
+															<button
+																type='submit'
+																className={
+																	isSubmitting || !isValid
+																		? "btn-rev btn-disabled"
+																		: "btn-rev"
+																}
+																disabled={isSubmitting || !isValid}>
+																Save
+															</button>
 															<button
 																type='button'
 																onClick={() => {
 																	push(emptyProduct);
 																}}
-																className='inline-flex items-center gap-3 btn blue-gradient text-black-eerie hover:text-white'>
+																className='inline-flex items-center gap-3 btn text-black-eerie'>
 																<FontAwesomeIcon
-																	className='w-7 h-auto cursor-pointer text-white'
-																	icon={faCirclePlus}
+																	className='w-5 h-auto cursor-pointer'
+																	icon={faPlus}
 																/>
 																<span>Add New Product</span>
 															</button>
+
+															<div className="flex gap-5">
+																{(!!isLoading ||
+																	isUpdatingUserProduct ||
+																	isCreatingUserProduct) && (
+																		<Spinner
+																			className='flex items-center px-10 text-2xl'
+																			message='Saving Products'
+																		/>
+																	)}
+
+
+															</div>
+
 														</div>
 													</div>
 												);
 											}}
 										</FieldArray>
-										<div className='flex gap-3 justify-between items-center mt-10'>
-											<div className='flex gap-3'>
-												<button
-													type='submit'
-													className={
-														isSubmitting || !isValid
-															? "btn-rev btn-disabled"
-															: "btn-rev"
-													}
-													disabled={isSubmitting || !isValid}>
-													Save
-												</button>
-												<Link
-													href='/'
-													className='btn text-black-eerie hover:text-blue-ncs'>
-													<strong>Back To Dashboard</strong>
-												</Link>
-												{(!!isLoading ||
-													isUpdatingUserProduct ||
-													isCreatingUserProduct) && (
-													<Spinner
-														className='flex items-center px-10 text-2xl'
-														message='Loading Products'
-													/>
-												)}
-											</div>
-											<div className='py-3'>
-												<ConsultantReview
-													className='mt-10'
-													pageTitle='Pioneer, Migrator, Settler'></ConsultantReview>
-											</div>
-										</div>
 									</Form>
 								);
 							}}

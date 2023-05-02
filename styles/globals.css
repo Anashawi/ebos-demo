@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: Roboto-bold;
   src: url("../public/fonts/Roboto/Roboto-Bold.ttf");
@@ -27,7 +26,8 @@ textarea,
 select,
 option,
 input {
-  font-family: "Work Sans", "Roboto", "Segoe UI", -apple-system, system-ui, BlinkMacSystemFont, "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Work Sans", "Roboto", "Segoe UI", -apple-system, system-ui,
+    BlinkMacSystemFont, "Fira Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 1.4rem;
   color: #202020;
 }
@@ -43,7 +43,6 @@ a:hover,
 .a:hover {
   color: #048bca;
 }
-
 
 button {
   border: 0;
@@ -70,31 +69,73 @@ li {
 }
 
 .homepage-bg-gradient {
-  background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #fff 50%,
+    #86bf44 50%,
+    #1caa55 100%
+  );
 }
 
 .products-gradient {
-  background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #fff 50%,
+    #86bf44 50%,
+    #1caa55 100%
+  );
 }
 
 .products-revese-gradient {
-  background: linear-gradient(270deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
+  background: linear-gradient(
+    270deg,
+    #fff 0%,
+    #fff 50%,
+    #86bf44 50%,
+    #1caa55 100%
+  );
 }
 
 .market-potential-gradient {
-  background: linear-gradient(90deg, #fff 0%, #fff 64%, #86bf44 64%, #1caa55 100%);
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #fff 64%,
+    #86bf44 64%,
+    #1caa55 100%
+  );
 }
 
 .factors-gradient {
-  background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #fff 50%,
+    #86bf44 50%,
+    #1caa55 100%
+  );
 }
 
 .pane-right-gradient {
-  background: linear-gradient(90deg, #86bf44 0%, #86bf44 50%, #86bf44 50%, rgba(253, 198, 29, 0) 100%);
+  background: linear-gradient(
+    90deg,
+    #86bf44 0%,
+    #86bf44 50%,
+    #86bf44 50%,
+    rgba(253, 198, 29, 0) 100%
+  );
 }
 
 .pane-lower-gradient {
-  background: linear-gradient(90deg, #86bf44 0%, #86bf44 50%, #86bf44 50%, rgba(253, 198, 29, 0) 100%);
+  background: linear-gradient(
+    90deg,
+    #86bf44 0%,
+    #86bf44 50%,
+    #86bf44 50%,
+    rgba(253, 198, 29, 0) 100%
+  );
 }
 
 .backdrop-blur {
@@ -105,14 +146,13 @@ li {
   stroke-dasharray: 5, 2;
 }
 
-input[type='text']:focus {
+input[type="text"]:focus {
   outline: none;
   border-bottom-color: #263238;
   box-shadow: 0 1px 0px 0px #263238;
 }
 
 @layer components {
-
   .logo-pane {
     @apply text-gray-900 mb-10 flex flex-nowrap justify-end items-center;
   }
@@ -129,7 +169,7 @@ input[type='text']:focus {
   }
 
   .btn-rev {
-    @apply text-black-eerie bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-mikado hover:text-white
+    @apply text-black-eerie bg-mustard hover:text-gray-600 hover:shadow-lg hover:bg-yellow-400;
   }
 
   .btn {

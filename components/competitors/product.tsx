@@ -36,7 +36,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 
 	return (
 		<div className='flex justify-between'>
-			<div className='md:w-[66%] pr-12'>
+			<div className='md:w-1/2 pr-12'>
 				<div key={index} className='border shadow p-10'>
 					<div className='flex justify-end mb-10'>
 						<FontAwesomeIcon
@@ -51,7 +51,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 								<ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[315px] overflow-y-auto'>
 									{!product.competitors?.length && (
 										<div className='text-center bg-rose-50 text-lg text-rose-500 p-5'>
-											Must add at least one competitor
+											Please, add at least one competitor
 										</div>
 									)}
 									{!!product.competitors?.length &&
@@ -167,7 +167,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 					</FieldArray>
 				</div>
 			</div>
-			<div className='flex flex-col justify-between gap-12 md:w-[34%] px-10'>
+			<div className='flex flex-col justify-between gap-12 md:w-1/2 px-10'>
 				<Chart {...chart} legendToggle />
 			</div>
 		</div>
