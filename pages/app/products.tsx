@@ -5,7 +5,7 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import Product from "../../components/products/product";
 import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
@@ -13,7 +13,6 @@ import { IUserProduct } from "../../models/user-product";
 import { IFuture } from "../../models/types";
 import Spinner from "../../components/common/spinner";
 import { productPagesEnum } from "../../models/enums";
-import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import { object, array, string, number } from "yup";
@@ -129,20 +128,16 @@ const Products = () => {
 										// id: string("must be a string").required(
 										//    "required"
 										// ),
-										name: string().required("Name is required"),
+										name: string().required("required"),
 										futures: array(
 											object({
 												year: number()
-													.typeError("you must specify a year")
+													.typeError("specify a year")
 													.min(2023, "min year is 2023")
 													.max(2099, "max year is 2099")
-													.required("Year is required"),
-												level: number().required(
-													"Level is required"
-												),
-												sales: number().required(
-													"sales percentage is required"
-												),
+													.required("required"),
+												level: number().required("required"),
+												sales: number().required("required"),
 											})
 										)
 											.required("Must provide at least one future!")
@@ -180,7 +175,7 @@ const Products = () => {
 										<FieldArray name='products'>
 											{({ push, remove, form }) => {
 												return (
-													<div className='flex flex-col gap-12'>
+													<div className='flex flex-col gap-5'>
 														<div className='py-5 flex flex-col gap-20'>
 															{!!values.products?.length &&
 																values.products?.map(
@@ -218,9 +213,8 @@ const Products = () => {
 																	message='Loading ...'></Spinner>
 															)}
 														</div>
-														<div className='w-1/2 flex gap-5 items-center justify-between pr-5 md:pr-10 py-10'>
-															<div className="flex gap-5">
-
+														<div className='w-1/2 flex gap-5 items-center justify-between pr-5 md:pr-10 pt-10'>
+															<div className='flex gap-5'>
 																<button
 																	type='submit'
 																	className={
@@ -228,7 +222,9 @@ const Products = () => {
 																			? "btn-rev btn-disabled"
 																			: "btn-rev"
 																	}
-																	disabled={isSubmitting || !isValid}>
+																	disabled={
+																		isSubmitting || !isValid
+																	}>
 																	Save
 																</button>
 																<button
@@ -243,27 +239,29 @@ const Products = () => {
 																	/>
 																	<span>Add New Product</span>
 																</button>
-
-																<div className="flex gap-5">
-																	{(!!isLoading ||
-																		isUpdatingUserProduct ||
-																		isCreatingUserProduct) && (
-																			<Spinner
-																				className='flex items-center px-10 text-2xl'
-																				message='Saving Products'
-																			/>
-																		)}
-
-
-																</div>
 															</div>
 
-															{userProduct?.products?.length > 0 && <Link href={'/'}>
-																<span className="text-md text-gray-400 italic">
-																	go to next → <span className="text-gray-500">market potential</span>
-																</span>
-															</Link>}
-
+															{userProduct?.products?.length >
+																0 && (
+																<Link href={"/"}>
+																	<span className='text-md text-gray-400 italic'>
+																		go to next →{" "}
+																		<span className='text-gray-500'>
+																			market potential
+																		</span>
+																	</span>
+																</Link>
+															)}
+														</div>
+														<div className='flex gap-5'>
+															{(!!isLoading ||
+																isUpdatingUserProduct ||
+																isCreatingUserProduct) && (
+																<Spinner
+																	className='flex items-center text-lg'
+																	message='Saving Products'
+																/>
+															)}
 														</div>
 													</div>
 												);

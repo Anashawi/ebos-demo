@@ -6,7 +6,6 @@ import Chart from "react-google-charts";
 import {
 	faCirclePlus,
 	faMinusCircle,
-	faRemove,
 	faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useMemo } from "react";
@@ -29,7 +28,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 			confirmMessage: "Are you sure to delete this product ?",
 			okBtnText: "Delete",
 			cancelBtnText: "Cancel",
-			okCallback: () => { },
+			okCallback: () => {},
 		};
 	}, []);
 	const [deleteDialogConfig, toggleDeleteDialog] =
@@ -81,7 +80,6 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 										icon={faTrash}
 									/>
 								</div>
-
 							</div>
 						</div>
 						<FieldArray name={`products.${index}.futures`}>
@@ -95,7 +93,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 														key={futureIndex}
 														className='flex flex-col border-b border-gray-300 pb-3'>
 														<div className='flex'>
-															<div className='grow p-2'>
+															<div className='grow p-2 flex flex-col'>
 																<label>
 																	{futureIndex === 0
 																		? `Present`
@@ -137,7 +135,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																	)}
 																</ErrorMessage>
 															</div>
-															<div className='grow p-2'>
+															<div className='grow p-2 flex flex-col'>
 																<label>Level</label>
 																<Field
 																	as='select'
@@ -165,43 +163,12 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 															<div className='grow p-2 flex flex-col'>
 																<label>Sales (%)</label>
 																<Field
-																	as='select'
+																	type='number'
 																	name={`products.${index}.futures.${futureIndex}.sales`}
 																	min='0'
 																	max='100'
-																	className='accent-blue-true w-full p-2 text-lg bg-gray-100 outline-none caret-dark-blue border-none'>
-																	<option value='0'>0</option>
-																	<option value='10'>
-																		10
-																	</option>
-																	<option value='20'>
-																		20
-																	</option>
-																	<option value='30'>
-																		30
-																	</option>
-																	<option value='40'>
-																		40
-																	</option>
-																	<option value='50'>
-																		50
-																	</option>
-																	<option value='60'>
-																		60
-																	</option>
-																	<option value='70'>
-																		70
-																	</option>
-																	<option value='80'>
-																		80
-																	</option>
-																	<option value='90'>
-																		90
-																	</option>
-																	<option value='100'>
-																		100
-																	</option>
-																</Field>
+																	className='accent-blue-true w-full p-2 text-lg bg-gray-100 outline-none caret-dark-blue border-none'
+																/>
 																<ErrorMessage
 																	name={`products.${index}.futures.${futureIndex}.sales`}>
 																	{(msg) => (
@@ -261,7 +228,6 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 															}
 														}}
 														className='inline-flex items-center gap-3 text-lg px-3 text-rose-400 hover:text-rose-500'>
-
 														<FontAwesomeIcon
 															className='w-5 h-auto cursor-pointer hover:text-rose-500'
 															icon={faMinusCircle}
@@ -269,7 +235,6 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 														<span>remove last future</span>
 													</button>
 												)}
-
 										</div>
 									</div>
 								);

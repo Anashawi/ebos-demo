@@ -273,15 +273,6 @@ const Goals = () => {
 																		<span>Add New Goal</span>
 																	</button>
 																</div>
-																{isSubmitting ||
-																	isCreatingUserGoal ||
-																	(isUpdatingUserGoal && (
-																		<Spinner
-																			className=''
-																			message='Saving Goals'
-																		/>
-																	))}
-
 																{userGoals?.goals?.length >
 																	0 && (
 																	<Link href={"/"}>
@@ -295,6 +286,14 @@ const Goals = () => {
 																	</Link>
 																)}
 															</div>
+															{isSubmitting ||
+																isCreatingUserGoal ||
+																(isUpdatingUserGoal && (
+																	<Spinner
+																		className='text-lg py-3'
+																		message='Saving Goals'
+																	/>
+																))}
 														</>
 													)}
 												</FieldArray>
