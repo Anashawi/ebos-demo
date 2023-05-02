@@ -49,7 +49,7 @@ const Competitors = () => {
 				!prod.competitors ||
 				(prod.competitors && prod.competitors.length === 0)
 			) {
-				prod.competitors = [meAsCompetitor];
+				prod.competitors = [meAsCompetitor, { ...meAsCompetitor, name: '' }, { ...meAsCompetitor, name: '' }];
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
@@ -289,6 +289,9 @@ const Competitors = () => {
 																		message='Saving Market Potential'
 																	/>
 																)}
+
+
+
 
 														</div>
 													</div>

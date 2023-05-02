@@ -13,7 +13,7 @@ export default function Home() {
 			url: "app/goals",
 		},
 		{
-			text: "Pioneer Migrater Settler",
+			text: "Pioneer Migrator Settler",
 			url: "app/products",
 		},
 		{
