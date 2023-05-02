@@ -65,8 +65,8 @@ const GoalsVideoForm = ({ toggleEditVideoModal }: Props) => {
 	return (
 		<>
 			<h1 className='text-4xl text-gray-800 mb-5'>Edit Video Url</h1>
-			<form className='grow overflow-auto pt-10 flex gap-5 flex-wrap'>
-				<div>
+			<form className='pt-10 flex gap-5 flex-col'>
+				<div className="flex flex-col">
 					<label>Goals Video</label>
 					<input
 						type='text'
