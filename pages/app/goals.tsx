@@ -131,7 +131,7 @@ const Goals = () => {
 									validationSchema={object({
 										goals: array(string())
 											.required("Start defining your goals toward success, click Add New Goal!")
-											.min(1, "Start defining your goals toward success, click Add New Goal!"),
+											.min(0, "Start defining your goals toward success, click Add New Goal!"),
 										targetDate: date().required(
 											"Must add a target date"
 										),
@@ -232,7 +232,7 @@ const Goals = () => {
 																		</p>
 																	)}
 															</ul>
-															<div className='flex justify-start gap-5 items-center'>
+															<div className='flex justify-between gap-5 items-center'>
 																<div className='flex gap-3'>
 																	<button
 																		type='submit'
@@ -258,6 +258,7 @@ const Goals = () => {
 																		/>
 																		<span>Add New Goal</span>
 																	</button>
+
 																</div>
 																{isSubmitting ||
 																	isCreatingUserGoal ||
@@ -267,6 +268,12 @@ const Goals = () => {
 																			message='Saving Goals'
 																		/>
 																	))}
+
+																{userGoal?.goals?.length > 0 && <Link href={'/'}>
+																	<span className="text-md text-gray-400 italic">
+																		go to next → <span className="text-gray-500">pioneer, migrator, settler</span>
+																	</span>
+																</Link>}
 															</div>
 														</>
 													)}
