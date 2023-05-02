@@ -1,4 +1,4 @@
-import { IUserGoal } from '../models/user-goal';
+import { IUserGoals } from '../models/user-goal';
 import axios from "axios";
 
 const api = axios.create({
@@ -16,15 +16,14 @@ export const getAll = () => {
 // export const getLookup = (courseId) =>
 //   api.get(`/goals/lookup/${goalId}`).then((res) => res.data);
 
-export const insertOne = (userGoal: IUserGoal) =>
-   api.post(`/user-goals`, userGoal).then((res) => res.data);
+export const insertOne = (userGoals: IUserGoals) => { return api.post(`/user-goals`, userGoals).then((res) => res.data) }
 
-export const updateOne = (userGoal: IUserGoal) =>
-   api.put(`/user-goals`, { userGoal }).then((res) => res.data);
+export const updateOne = (userGoals: IUserGoals) =>
+   api.put(`/user-goals`, { userGoals }).then((res) => res.data);
 
 export const Keys = {
    All: "USER_GOALS_LIST",
-   UserGoal: "USER_GOAL",
+   UserGoals: "USER_GOAL",
    Lookup: "USER_GOAL_LOOKUP",
    AllLookup: "ALL_USER_GOALS_LOOKUP",
 };

@@ -1,8 +1,8 @@
-import { IUserGoal, UserGoal } from "../models/user-goal";
+import { IUserGoals, UserGoals as UserGoals } from "../models/user-goal";
 
 export async function getOne(currentUserId: string, ISODateString: string) {
    try {
-      const result = await UserGoal.findOne({ userId: currentUserId });
+      const result = await UserGoals.findOne({ userId: currentUserId });
 
       return result ? result.toJSON() : result;
    } catch (error) {
@@ -10,27 +10,28 @@ export async function getOne(currentUserId: string, ISODateString: string) {
    }
 }
 
-export async function updateOne(frontEndUserGoal: IUserGoal) {
+export async function updateOne(frontEndUserGoals: IUserGoals) {
    try {
-      const updateResult = await UserGoal.updateOne(
-         { _id: frontEndUserGoal.id },
+      const updateResult = await UserGoals.updateOne(
+         { _id: frontEndUserGoals.id },
          {
-            $set: { ...frontEndUserGoal },
+            $set: { ...frontEndUserGoals },
          }
       );
 
-      const updatedUserGoal = await UserGoal.findById(frontEndUserGoal.id);
+      const updatedUserGoal = await UserGoals.findById(frontEndUserGoals.id);
       return updatedUserGoal.toJSON();
    } catch (error) {
       console.log(error);
    }
 }
 
-export async function insertOne(userGoal: IUserGoal) {
+export async function insertOne(userGoals: IUserGoals) {
    try {
-      const frontEndUserGoal = new UserGoal(userGoal)
-      await frontEndUserGoal.save();
-      return frontEndUserGoal.toJSON();
+      console.log(userGoals);
+      const frontEndUserGoals = new UserGoals(userGoals)
+      await frontEndUserGoals.save();
+      return frontEndUserGoals.toJSON();
    } catch (error) {
       console.log(error);
    }

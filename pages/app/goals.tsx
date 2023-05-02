@@ -1,6 +1,4 @@
 import { Field, FieldArray, Form, Formik, ErrorMessage } from "formik";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import { array, date, object, string } from "yup";
@@ -8,7 +6,7 @@ import Spinner from "../../components/common/spinner";
 import * as clientApi from "../../http-client/goals.client";
 import * as videosClientApi from "../../http-client/videos.client";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { IUserGoal } from "../../models/user-goal";
+import { IUserGoals } from "../../models/user-goal";
 import IdeasModal from "../../components/app/ideas-modal";
 import { useSession } from "next-auth/react";
 import { IVideos } from "../../models/videos";
@@ -18,7 +16,6 @@ import ConsultantReview from "../../components/common/consultant-review";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../components/common/modal";
-import VideosForm from "../../components/videos/videos-form";
 import GoalsVideoForm from "../../components/videos/goals-video-form";
 
 const Goals = () => {
@@ -33,14 +30,14 @@ const Goals = () => {
 			userId: session?.user?.id,
 			targetDate: "",
 			goals: [],
-		} as IUserGoal;
+		} as IUserGoals;
 	}, []);
 
-	const [userGoal, setUserGoal] = useState<IUserGoal>(emptyUserGoal);
+	const [userGoals, setUserGoal] = useState<IUserGoals>(emptyUserGoal);
 
 	const queryClient = useQueryClient();
 
-	const { data, isLoading } = useQuery<IUserGoal>({
+	const { data, isLoading } = useQuery<IUserGoals>({
 		queryKey: [clientApi.Keys.All],
 		queryFn: clientApi.getAll,
 		refetchOnWindowFocus: false,
@@ -69,20 +66,20 @@ const Goals = () => {
 
 	const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } =
 		useMutation(
-			(userGoal: IUserGoal) => {
-				return clientApi.updateOne(userGoal);
+			(userGoals: IUserGoals) => {
+				return clientApi.updateOne(userGoals);
 			},
 			{
 				onMutate: (updated) => {
 					queryClient.setQueryData(
-						[clientApi.Keys.UserGoal, userGoal.id],
+						[clientApi.Keys.UserGoals, userGoals.id],
 						updated
 					);
 				},
 				onSuccess: (updated) => {
 					queryClient.invalidateQueries([
-						clientApi.Keys.UserGoal,
-						userGoal.id,
+						clientApi.Keys.UserGoals,
+						userGoals.id,
 					]);
 					queryClient.invalidateQueries([clientApi.Keys.All]);
 				},
@@ -90,17 +87,17 @@ const Goals = () => {
 		);
 
 	const { mutate: createUserGoal, isLoading: isCreatingUserGoal } =
-		useMutation((userGoal: IUserGoal) => clientApi.insertOne(userGoal), {
+		useMutation((userGoals: IUserGoals) => clientApi.insertOne(userGoals), {
 			onMutate: (updated) => {
 				queryClient.setQueryData(
-					[clientApi.Keys.UserGoal, userGoal.id],
+					[clientApi.Keys.UserGoals, userGoals.id],
 					updated
 				);
 			},
 			onSuccess: (updated) => {
 				queryClient.invalidateQueries([
-					clientApi.Keys.UserGoal,
-					userGoal.id,
+					clientApi.Keys.UserGoals,
+					userGoals.id,
 				]);
 				queryClient.invalidateQueries([clientApi.Keys.All]);
 			},
@@ -112,7 +109,7 @@ const Goals = () => {
 
 			<div className='homepage-bg-gradient w-screen bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
-					<div className="flex flex-col py-12">
+					<div className='flex flex-col py-12'>
 						<div className='flex justify-between items-center gap-12 px-12'>
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
 							<Header
@@ -126,27 +123,33 @@ const Goals = () => {
 								</h3>
 								<Formik
 									initialValues={{
-										...userGoal,
+										...userGoals,
 									}}
 									validationSchema={object({
 										goals: array(string())
-											.required("Start defining your goals toward success, click Add New Goal!")
-											.min(1, "Start defining your goals toward success, click Add New Goal!"),
+											.required(
+												"Start defining your goals toward success, click Add New Goal!"
+											)
+											.min(
+												1,
+												"Start defining your goals toward success, click Add New Goal!"
+											),
 										targetDate: date().required(
 											"Must add a target date"
 										),
 									})}
 									onSubmit={async (values, actions) => {
-										userGoal.userId = session.user.id;
-										if (userGoal?.id) {
+										userGoals.userId = session?.user?.id;
+										if (userGoals?.id) {
 											await updateUserGoal({
-												...userGoal,
+												...userGoals,
 												...values,
 											});
 										} else {
+											const { userId, ...newValues } = values;
 											await createUserGoal({
-												...userGoal,
-												...values,
+												...userGoals,
+												...newValues,
 											});
 										}
 										actions.setSubmitting(false);
@@ -202,16 +205,22 @@ const Goals = () => {
 																			index: number
 																		) => (
 																			<div key={index}>
-																				<li className="relative">
+																				<li className='relative'>
 																					<Field
 																						type='text'
 																						className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
 																						name={`goals.${index}`}
 																						placeholder='Goal name'
 																					/>
-																					<FontAwesomeIcon icon={faTimes} className="w-4 cursor-pointer absolute right-4 top-4" onClick={() => {
-																						remove(index);
-																					}} />
+																					<FontAwesomeIcon
+																						icon={faTimes}
+																						className='w-4 cursor-pointer absolute right-4 top-4'
+																						onClick={() => {
+																							remove(
+																								index
+																							);
+																						}}
+																					/>
 																				</li>
 																				<ErrorMessage
 																					name={`goals.${index}`}>
@@ -228,7 +237,9 @@ const Goals = () => {
 																	form.errors?.goals &&
 																	!isLoading && (
 																		<p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
-																			<>{form.errors.goals}</>
+																			<>
+																				{form.errors.goals}
+																			</>
 																		</p>
 																	)}
 															</ul>
@@ -237,12 +248,14 @@ const Goals = () => {
 																	<button
 																		type='submit'
 																		className={
-																			isSubmitting || !isValid
+																			isSubmitting ||
+																			!isValid
 																				? "btn-rev btn-disabled"
 																				: "btn-rev"
 																		}
 																		disabled={
-																			isSubmitting || !isValid
+																			isSubmitting ||
+																			!isValid
 																		}>
 																		Save
 																	</button>
@@ -278,27 +291,30 @@ const Goals = () => {
 								{/* <script src="/modules/goals.js"></script> */}
 							</div>
 							<div className='md:w-1/2 pane-right-gradient min-h-screen px-12 flex flex-col gap-5 mt-14'>
-
 								<iframe
 									width='100%'
 									height='400'
 									src={goalsVideo}></iframe>
 								<div className='flex justify-start items-center w-full gap-4 py-10 mx-auto'>
 									<ConsultantReview
-										pageTitle={"Visualize Success"}></ConsultantReview>
+										pageTitle={
+											"Visualize Success"
+										}></ConsultantReview>
 									{(session?.user as any)?.role === "admin" && (
 										<button
 											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
 											onClick={toggleEditVideoModal}>
 											<span>Edit video Url</span>
-											<FontAwesomeIcon className='w-7' icon={faEdit} />
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
 										</button>
 									)}
 								</div>
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 
