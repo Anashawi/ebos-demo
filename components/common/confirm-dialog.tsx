@@ -30,13 +30,13 @@ const ConfirmModal = ({ config, toggle }: Props) => {
 				)}
 				<button
 					type='button'
-					className='btn-rev text-gray-800 px-7 font-semibold'
+					className='btn text-gray-800 px-7 font-semibold'
 					onClick={toggle}>
 					{config.cancelBtnText}
 				</button>
 				<button
 					type='button'
-					className='btn text-gray-800 px-7 font-semibold'
+					className='btn-rev text-gray-800 px-7 font-semibold'
 					onClick={async () => {
 						setIsLoading((prevVal) => true);
 						await config.okCallback();

@@ -19,15 +19,10 @@ const useCompetitorsChart = (product: IProduct) => {
 		chart.options = {
 			title: product.name,
 			titleTextStyle: {
-				// color: <string>,    // any HTML string color ('red', '#cc00cc')
-				// fontName: <string>, // i.e. 'Times New Roman'
 				fontSize: 16, // 12, 18 whatever you want (don't specify px)
-				// {/* bold: <boolean>,    // true or false
-				// italic: <boolean>   // true of false */}
 			},
 			is3D: false,
-			backgroundColor: '#eee',
-
+			backgroundColor: "#eee",
 			colors: ["#25AC54", "#3F6BAA", "#FACC15", "orange", "gray"],
 			pieHole: 0.4,
 			legend: {
@@ -43,7 +38,13 @@ const useCompetitorsChart = (product: IProduct) => {
 					fontSize: 11,
 				},
 			},
-			chartArea: { left: 10, top: 40, bottom: 40, width: "100%", height: "100%" },
+			chartArea: {
+				left: 10,
+				top: 40,
+				bottom: 40,
+				width: "100%",
+				height: "100%",
+			},
 		};
 		setChart({ ...chart });
 	};

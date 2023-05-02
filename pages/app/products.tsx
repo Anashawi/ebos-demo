@@ -242,7 +242,6 @@ const Products = () => {
 																	<span>Add New Product</span>
 																</button>
 															</div>
-
 															{userProduct?.products?.length >
 																0 && (
 																<Link href={"/"}>

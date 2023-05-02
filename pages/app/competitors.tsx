@@ -1,6 +1,4 @@
 import { FieldArray, Form, Formik } from "formik";
-import Image from "next/image";
-import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import { useEffect, useMemo, useState } from "react";
@@ -13,10 +11,10 @@ import { productPagesEnum } from "../../models/enums";
 import Spinner from "../../components/common/spinner";
 import { IProduct } from "../../models/types";
 import { ICompetitor } from "../../models/types";
-import { object, array, string, number, ValidationError } from "yup";
-import ConsultantReview from "../../components/common/consultant-review";
+import { object, array, string, number } from "yup";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
+import Link from "next/link";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
@@ -49,7 +47,11 @@ const Competitors = () => {
 				!prod.competitors ||
 				(prod.competitors && prod.competitors.length === 0)
 			) {
-				prod.competitors = [{ ...emptyCompetitor, name: '', isUntapped: true }, emptyCompetitor, { ...emptyCompetitor, name: '' }, { ...emptyCompetitor, name: '' }];
+				prod.competitors = [
+					{ ...emptyCompetitor, name: "Me" },
+					{ ...emptyCompetitor, name: "", isUntapped: true },
+					{ ...emptyCompetitor, name: "" },
+				];
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
@@ -83,8 +85,8 @@ const Competitors = () => {
 	const emptyCompetitor = useMemo(() => {
 		return {
 			uuid: crypto.randomUUID(),
-			name: "Me",
-			marketShare: 100,
+			name: "",
+			marketShare: 0,
 		} as ICompetitor;
 	}, []);
 
@@ -122,36 +124,9 @@ const Competitors = () => {
 													.min(
 														0,
 														"Market share must be 0 or greater"
-													)
-
+													),
 											})
 										)
-											.test((competitors: any, curr) => {
-												const sum = competitors.reduce(
-													(acc: number, curr: any) =>
-														curr.marketShare + acc,
-													0
-												);
-												if (sum !== 100) {
-													let msg = "";
-													if (100 - sum > 0) {
-														msg = `you have ${100 - sum
-															}% left `;
-													} else {
-														msg = `you have ${sum - 100
-															}% more`;
-													}
-													return new ValidationError(
-														{
-															errorMessage: `The sum of product market shares must be 100% ${msg}`,
-															product_uuid: curr.parent.uuid,
-														} as any,
-														undefined,
-														`competitors`
-													);
-												}
-												return true;
-											})
 											.required(
 												"Must provide at least one competitor !"
 											)
@@ -186,12 +161,14 @@ const Competitors = () => {
 										<FieldArray name='products'>
 											{({ push, remove }) => {
 												return (
-													<div className='flex flex-col gap-12 mt-20'>
+													<div className='flex flex-col gap-3 mt-20'>
 														<div className='flex flex-col gap-20'>
 															{!values.products?.length &&
 																!isLoading && (
 																	<p className='w-max italic py-5'>
-																		Select a product to start analyzing its market potential ...
+																		Select a product to start
+																		analyzing its market
+																		potential ...
 																	</p>
 																)}
 															{isLoading && (
@@ -201,25 +178,19 @@ const Competitors = () => {
 															)}
 															{!!values.products.length &&
 																values.products.map(
-																	(
-																		product,
-																		productIndex
-																	) => (
-																		<div
-																			key={productIndex}>
+																	(product, productIndex) => (
+																		<div key={productIndex}>
 																			<CompetitorsProduct
 																				product={product}
-																				index={
-																					productIndex
-																				}
+																				index={productIndex}
 																				onRemove={() => {
 																					setLookupProducts(
 																						(
 																							prevValue
 																						) => [
-																								...prevValue,
-																								product,
-																							]
+																							...prevValue,
+																							product,
+																						]
 																					);
 																					remove(
 																						productIndex
@@ -235,65 +206,79 @@ const Competitors = () => {
 																	)
 																)}
 														</div>
-														<div className='pr-12 flex items-center gap-5'>
-															<button
-																type='submit'
-																className={
-																	isSubmitting || !isValid
-																		? "btn-rev btn-disabled"
-																		: "btn-rev"
-																}
-																disabled={isSubmitting || !isValid}>
-																Save
-															</button>
-
-															{lookupProducts.length > 0 && <select
-																className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																value={0}
-																onChange={(e) => {
-																	const productToBeShown =
-																		userProduct.products?.find(
-																			(prod) =>
-																				prod.uuid ===
-																				e.target.value
-																		);
-																	push(productToBeShown);
-																	setLookupProducts(
-																		(prevValue) =>
-																			prevValue.filter(
-																				(prod) =>
-																					prod.uuid !==
-																					e.target.value
-																			)
-																	);
-																}}>
-																<option value={0}>
-																	Add one of existing products
-																</option>
-																{lookupProducts.map(
-																	(product, index) => (
-																		<option
-																			key={index}
-																			value={
-																				product.uuid
-																			}>
-																			{product.name}
+														<div className='w-1/2 pr-12 flex gap-5 items-center justify-between'>
+															<div className='flex items-center'>
+																<button
+																	type='submit'
+																	className={
+																		isSubmitting || !isValid
+																			? "btn-rev btn-disabled"
+																			: "btn-rev"
+																	}
+																	disabled={
+																		isSubmitting || !isValid
+																	}>
+																	Save
+																</button>
+																{lookupProducts.length > 0 && (
+																	<select
+																		className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																		value={0}
+																		onChange={(e) => {
+																			const productToBeShown =
+																				userProduct.products?.find(
+																					(prod) =>
+																						prod.uuid ===
+																						e.target.value
+																				);
+																			push(productToBeShown);
+																			setLookupProducts(
+																				(prevValue) =>
+																					prevValue.filter(
+																						(prod) =>
+																							prod.uuid !==
+																							e.target
+																								.value
+																					)
+																			);
+																		}}>
+																		<option value={0}>
+																			Add one of existing
+																			products
 																		</option>
-																	)
+																		{lookupProducts.map(
+																			(product, index) => (
+																				<option
+																					key={index}
+																					value={
+																						product.uuid
+																					}>
+																					{product.name}
+																				</option>
+																			)
+																		)}
+																	</select>
 																)}
-															</select>}
-															{(!!isLoading ||
-																isUpdatingUserProduct) && (
-																	<Spinner
-																		className='flex items-center px-10 text-2xl'
-																		message='Saving Market Potential'
-																	/>
-																)}
-
-
-
-
+															</div>
+															{userProduct?.products?.length >
+																0 && (
+																<Link href={"/"}>
+																	<span className='text-md text-gray-400 italic'>
+																		go to next →{" "}
+																		<span className='text-gray-500'>
+																			Red Ocean Canvas
+																		</span>
+																	</span>
+																</Link>
+															)}
 														</div>
+														{(!!isLoading ||
+															isUpdatingUserProduct) && (
+															<Spinner
+																className='flex items-center text-xl'
+																message='Saving Market Potential'
+															/>
+														)}
 													</div>
 												);
 											}}

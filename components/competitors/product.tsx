@@ -1,6 +1,5 @@
 import {
 	faEyeSlash,
-	faTrash,
 	faCirclePlus,
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
@@ -39,18 +38,16 @@ const CompetitorsProduct: NextPage<Props> = ({
 		<div className='flex justify-between text-lg'>
 			<div className='md:w-1/2 pr-12'>
 				<div key={index} className=''>
-
 					<FieldArray name={`products.${index}.competitors`}>
 						{({ remove, push }) => (
-							<div className="relative">
-
+							<div className='relative'>
 								<ul className='flex flex-col gap-3 mb-10 pr-5 border p-5 h-[355px] overflow-y-auto'>
 									{!product.competitors?.length && (
-										<div className='text-center bg-rose-50 text-lg text-rose-500 p-5'>
+										<div className='text-center bg-rose-50 text-sm text-rose-500 p-5'>
 											Please, add at least one competitor
 										</div>
 									)}
-									<li className="flex justify-end">
+									<li className='flex justify-end'>
 										<FontAwesomeIcon
 											onClick={onRemove}
 											className='w-9 cursor-pointer text-gray-200 hover:text-rose-500'
@@ -60,7 +57,6 @@ const CompetitorsProduct: NextPage<Props> = ({
 
 									{!!product.competitors?.length &&
 										product.competitors.map((comp, compIndex) => (
-
 											<li
 												key={compIndex}
 												className='flex gap-5 items-start relative'>
@@ -68,7 +64,12 @@ const CompetitorsProduct: NextPage<Props> = ({
 													<>
 														<div className='w-full md:w-1/2 flex flex-col gap-2'>
 															<label>
-																Competitor {compIndex}
+																{!comp.isUntapped && (
+																	<>Competitor {compIndex}</>
+																)}
+																{comp.isUntapped && (
+																	<>Untapped Market</>
+																)}
 															</label>
 															<Field
 																type='text'
@@ -79,7 +80,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 															<ErrorMessage
 																name={`products.${index}.competitors.${compIndex}.name`}>
 																{(msg) => (
-																	<div className='text-lg text-rose-500'>
+																	<div className='text-sm text-rose-500'>
 																		{msg}
 																	</div>
 																)}
@@ -118,28 +119,24 @@ const CompetitorsProduct: NextPage<Props> = ({
 															className='grow comp-share p-3 text-lg bg-gray-100 outline-none caret-dark-blue border-none'
 															name={`products.${index}.competitors.${compIndex}.marketShare`}
 															min='0'
-
 														/>
-														<ErrorMessage
-															name={`products.${index}.competitors.${compIndex}.marketShare`}>
-															{(msg) => (
-																<div className='w-full text-lg text-rose-500'>
-																	{msg}
-																</div>
-															)}
-														</ErrorMessage>
 													</div>
+													<ErrorMessage
+														name={`products.${index}.competitors.${compIndex}.marketShare`}>
+														{(msg) => (
+															<div className='w-full text-sm text-rose-500'>
+																{msg}
+															</div>
+														)}
+													</ErrorMessage>
 												</div>
-
 												<FontAwesomeIcon
 													icon={faTimes}
 													onClick={() => {
-														if (compIndex > 0)
-															remove(compIndex);
+														if (compIndex > 0) remove(compIndex);
 													}}
 													className='w-4 h-auto absolute top-12 right-4 cursor-pointer text-gray-500 hover:text-rose-800'
 												/>
-
 											</li>
 										))}
 									<div>
