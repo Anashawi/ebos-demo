@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../components/common/modal";
 import GoalsVideoForm from "../../components/videos/goals-video-form";
+import Link from "next/link";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -127,8 +128,13 @@ const Goals = () => {
 									}}
 									validationSchema={object({
 										goals: array(string())
-											.required("Start defining your goals toward success, click Add New Goal!")
-											.min(0, "Start defining your goals toward success, click Add New Goal!"),
+											.required(
+												"Start defining your goals toward success, click Add New Goal!"
+											)
+											.min(
+												0,
+												"Start defining your goals toward success, click Add New Goal!"
+											),
 										targetDate: date().required(
 											"Must add a target date"
 										),
@@ -266,7 +272,6 @@ const Goals = () => {
 																		/>
 																		<span>Add New Goal</span>
 																	</button>
-
 																</div>
 																{isSubmitting ||
 																	isCreatingUserGoal ||
@@ -277,11 +282,18 @@ const Goals = () => {
 																		/>
 																	))}
 
-																{userGoal?.goals?.length > 0 && <Link href={'/'}>
-																	<span className="text-md text-gray-400 italic">
-																		go to next → <span className="text-gray-500">pioneer, migrator, settler</span>
-																	</span>
-																</Link>}
+																{userGoals?.goals?.length >
+																	0 && (
+																	<Link href={"/"}>
+																		<span className='text-md text-gray-400 italic'>
+																			go to next →{" "}
+																			<span className='text-gray-500'>
+																				pioneer, migrator,
+																				settler
+																			</span>
+																		</span>
+																	</Link>
+																)}
 															</div>
 														</>
 													)}
