@@ -101,6 +101,7 @@ const Competitors = () => {
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
 							<Header
 								className='w-1/2'
+								pageTitle="Market Potential"
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 
@@ -123,10 +124,7 @@ const Competitors = () => {
 														0,
 														"Market share must be 0 or greater"
 													)
-													.max(
-														100,
-														"Market share must be less than 100"
-													),
+
 											})
 										)
 											.test((competitors: any, curr) => {
@@ -193,9 +191,8 @@ const Competitors = () => {
 														<div className='flex flex-col gap-20'>
 															{!values.products?.length &&
 																!isLoading && (
-																	<p className='w-max text-rose-500 py-5'>
-																		make a selection to
-																		view products !
+																	<p className='w-max italic py-5'>
+																		Select a product to start analyzing its market potential ...
 																	</p>
 																)}
 															{isLoading && (
@@ -239,11 +236,19 @@ const Competitors = () => {
 																	)
 																)}
 														</div>
-														<div className='py-10 md:w-[66%] pr-12 flex items-center gap-5'>
-															<label className='text-yellow-green font-semibold text-3xl'>
-																Show more products
-															</label>
-															<select
+														<div className='pr-12 flex items-center gap-5'>
+															<button
+																type='submit'
+																className={
+																	isSubmitting || !isValid
+																		? "btn-rev btn-disabled"
+																		: "btn-rev"
+																}
+																disabled={isSubmitting || !isValid}>
+																Save
+															</button>
+
+															{lookupProducts.length > 0 && <select
 																className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
 																value={0}
 																onChange={(e) => {
@@ -264,8 +269,7 @@ const Competitors = () => {
 																	);
 																}}>
 																<option value={0}>
-																	select a product to be
-																	displayed
+																	Add one of existing products
 																</option>
 																{lookupProducts.map(
 																	(product, index) => (
@@ -278,43 +282,20 @@ const Competitors = () => {
 																		</option>
 																	)
 																)}
-															</select>
+															</select>}
+															{(!!isLoading ||
+																isUpdatingUserProduct) && (
+																	<Spinner
+																		className='flex items-center px-10 text-2xl'
+																		message='Saving Market Potential'
+																	/>
+																)}
+
 														</div>
 													</div>
 												);
 											}}
 										</FieldArray>
-										<div className='flex gap-3 justify-between items-center mt-10'>
-											<div className='flex gap-3'>
-												<button
-													type='submit'
-													className={
-														isSubmitting || !isValid
-															? "btn-rev btn-disabled"
-															: "btn-rev"
-													}
-													disabled={isSubmitting || !isValid}>
-													Save
-												</button>
-												<Link
-													href='/'
-													className='btn text-black-eerie hover:text-blue-ncs'>
-													<strong>Back To Dashboard</strong>
-												</Link>
-												{(!!isLoading ||
-													isUpdatingUserProduct) && (
-														<Spinner
-															className='flex items-center px-10 text-2xl'
-															message='Loading Products'
-														/>
-													)}
-											</div>
-											<div className='py-3'>
-												<ConsultantReview
-													className='mt-10'
-													pageTitle='Market Potential'></ConsultantReview>
-											</div>
-										</div>
 									</Form>
 								);
 							}}
