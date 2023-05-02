@@ -41,19 +41,19 @@ const Factors = () => {
 	});
 
 	useEffect(() => {
-		data?.products?.forEach((prod) => {
-			firstFactor.name = "factor 1";
-			firstFactor.competitors =
-				prod.competitors?.map((comp) => {
-					return {
-						uuid: comp.uuid,
-						value: "1",
-					};
-				}) ?? [];
-			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
-				prod.factors = [firstFactor];
-			}
-		});
+		// data?.products?.forEach((prod) => {
+		// 	firstFactor.name = "factor 1";
+		// 	firstFactor.competitors =
+		// 		prod.competitors?.map((comp) => {
+		// 			return {
+		// 				uuid: comp.uuid,
+		// 				value: "1",
+		// 			};
+		// 		}) ?? [];
+		// 	if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
+		// 		prod.factors = [firstFactor];
+		// 	}
+		// });
 		if (data) {
 			setUserProduct(data);
 		}

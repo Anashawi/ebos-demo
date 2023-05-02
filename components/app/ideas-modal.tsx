@@ -18,6 +18,7 @@ interface Props {
 
 const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 	const [ideaFactors, setIdeaFactors] = useState<IIdea[]>([]);
+	const [userIdeasId, setUserIdeasId] = useState<string>("");
 
 	const { data, isLoading } = useQuery<IUserIdeas>({
 		queryKey: [clientApi.Keys.AllLookup],
@@ -29,10 +30,22 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 	useEffect(() => {
 		if (data) {
 			setIdeaFactors(data.ideas);
+			setUserIdeasId(data.id);
 		}
 	}, [data]);
 
 	const queryClient = useQueryClient();
+
+	const { mutate: updateIdea, isLoading: isUpdatingIdea } = useMutation(
+		(idea: IIdea) => {
+			return clientApi.updateOneLookup(idea);
+		},
+		{
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
+			},
+		}
+	);
 
 	const { mutate: createIdea, isLoading: isCreatingIdea } = useMutation(
 		(idea: IIdea) => {
@@ -115,10 +128,17 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 								name: string().required("required"),
 							})}
 							onSubmit={async (values, actions) => {
-								await createIdea({
-									uuid: crypto.randomUUID(),
-									name: values.name,
-								} as IIdea);
+								if (userIdeasId) {
+									await updateIdea({
+										uuid: crypto.randomUUID(),
+										name: values.name,
+									} as IIdea);
+								} else {
+									await createIdea({
+										uuid: crypto.randomUUID(),
+										name: values.name,
+									} as IIdea);
+								}
 								actions.setSubmitting(false);
 								actions.resetForm();
 							}}
