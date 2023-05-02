@@ -218,42 +218,51 @@ const Products = () => {
 																	message='Loading ...'></Spinner>
 															)}
 														</div>
-														<div className='w-1/2 flex gap-5 items-center justify-start pr-5 md:pr-10 py-10'>
-															<button
-																type='submit'
-																className={
-																	isSubmitting || !isValid
-																		? "btn-rev btn-disabled"
-																		: "btn-rev"
-																}
-																disabled={isSubmitting || !isValid}>
-																Save
-															</button>
-															<button
-																type='button'
-																onClick={() => {
-																	push(emptyProduct);
-																}}
-																className='inline-flex items-center gap-3 btn text-black-eerie'>
-																<FontAwesomeIcon
-																	className='w-5 h-auto cursor-pointer'
-																	icon={faPlus}
-																/>
-																<span>Add New Product</span>
-															</button>
-
+														<div className='w-1/2 flex gap-5 items-center justify-between pr-5 md:pr-10 py-10'>
 															<div className="flex gap-5">
-																{(!!isLoading ||
-																	isUpdatingUserProduct ||
-																	isCreatingUserProduct) && (
-																		<Spinner
-																			className='flex items-center px-10 text-2xl'
-																			message='Saving Products'
-																		/>
-																	)}
+
+																<button
+																	type='submit'
+																	className={
+																		isSubmitting || !isValid
+																			? "btn-rev btn-disabled"
+																			: "btn-rev"
+																	}
+																	disabled={isSubmitting || !isValid}>
+																	Save
+																</button>
+																<button
+																	type='button'
+																	onClick={() => {
+																		push(emptyProduct);
+																	}}
+																	className='inline-flex items-center gap-3 btn text-black-eerie'>
+																	<FontAwesomeIcon
+																		className='w-5 h-auto cursor-pointer'
+																		icon={faPlus}
+																	/>
+																	<span>Add New Product</span>
+																</button>
+
+																<div className="flex gap-5">
+																	{(!!isLoading ||
+																		isUpdatingUserProduct ||
+																		isCreatingUserProduct) && (
+																			<Spinner
+																				className='flex items-center px-10 text-2xl'
+																				message='Saving Products'
+																			/>
+																		)}
 
 
+																</div>
 															</div>
+
+															{userProduct?.products?.length > 0 && <Link href={'/'}>
+																<span className="text-md text-gray-400 italic">
+																	go to next → <span className="text-gray-500">market potential</span>
+																</span>
+															</Link>}
 
 														</div>
 													</div>

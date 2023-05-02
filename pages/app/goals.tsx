@@ -130,8 +130,8 @@ const Goals = () => {
 									}}
 									validationSchema={object({
 										goals: array(string())
-											.required("Must add at least one goal !")
-											.min(1, "Must add at least one goal !"),
+											.required("Start defining your goals toward success, click Add New Goal!")
+											.min(1, "Start defining your goals toward success, click Add New Goal!"),
 										targetDate: date().required(
 											"Must add a target date"
 										),
