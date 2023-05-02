@@ -5,7 +5,7 @@ import { useState } from "react";
 import { object, string } from "yup";
 import Spinner from "../common/spinner";
 
-const Login = () => {
+const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -48,7 +48,8 @@ const Login = () => {
 		});
 
 		if (!result?.error) {
-			router.push("/redirect");
+			//login is successful.. close login model
+			closeCallback();
 		} else {
 			setAuthState((old) => ({
 				...old,
@@ -123,7 +124,7 @@ const Login = () => {
 					<div>
 						<button
 							type='submit'
-							className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-yellow-mikado rounded-full'>
+							className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-b from-mustard to-yellow-yellow-mikado rounded-md'>
 							Login
 						</button>
 					</div>
