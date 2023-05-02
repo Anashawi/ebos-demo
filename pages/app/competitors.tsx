@@ -101,7 +101,6 @@ const Competitors = () => {
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
 							<Header
 								className='w-1/2'
-								pageTitle="Market Potential"
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 

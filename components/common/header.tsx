@@ -5,10 +5,9 @@ import ConsultantReview from "./consultant-review";
 interface Props {
 	toggleIdeasModal?: () => void;
 	className?: string;
-	pageTitle?: string
 }
 
-const Header = ({ toggleIdeasModal, className, pageTitle }: Props) => {
+const Header = ({ toggleIdeasModal, className }: Props) => {
 	return (
 		<div
 			className={`flex justify-between items-center gap-5 ${className ?? ""
@@ -21,8 +20,7 @@ const Header = ({ toggleIdeasModal, className, pageTitle }: Props) => {
 						className='btn text-black-eerie hover:text-blue-ncs mr-5 shadow-md'>
 						<strong>My Ideas</strong>
 					</button>
-					<ConsultantReview
-						pageTitle={pageTitle ?? ""}></ConsultantReview>
+
 				</div>
 			)}
 			<Link href='/' className='logo-pane mb-0 flex'>

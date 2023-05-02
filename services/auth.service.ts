@@ -21,6 +21,7 @@ export async function createUser(user: IUser) {
       fullName: user.fullName,
       phoneNumber: user.phoneNumber,
       provider: 'credentials',
+      role: 'client'
     } as IUser);
 
     await newUser.save();
@@ -45,7 +46,7 @@ export async function login(credentials: { email: string, password: string }) {
       throw new Error("invalid password");
     }
     const user = result.toJSON();
-    return { email: user.email, role: "admin", id: user.id, fullName: user.fullName };
+    return { email: user.email, role: user.role, id: user.id, fullName: user.fullName };
   } catch (error) {
     console.log(error);
   }

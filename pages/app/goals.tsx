@@ -117,7 +117,6 @@ const Goals = () => {
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
 							<Header
 								className='w-1/2'
-								pageTitle="pageTitle='Visualize Success'"
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 						<div className='flex flex-wrap'>
@@ -284,7 +283,9 @@ const Goals = () => {
 									width='100%'
 									height='400'
 									src={goalsVideo}></iframe>
-								<div className='flex justify-start items-center py-10 mx-auto text-center'>
+								<div className='flex justify-start items-center w-full gap-4 py-10 mx-auto'>
+									<ConsultantReview
+										pageTitle={"Visualize Success"}></ConsultantReview>
 									{(session?.user as any)?.role === "admin" && (
 										<button
 											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
