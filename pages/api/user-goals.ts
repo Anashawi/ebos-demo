@@ -32,8 +32,8 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const userGoal = req.body;
-    const result = await service.insertOne(userGoal);
+    const userGoals = req.body;
+    const result = await service.insertOne(userGoals);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({
@@ -44,8 +44,8 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { userGoal } = req.body;
-    const result = await service.updateOne(userGoal);
+    const { userGoals } = req.body;
+    const result = await service.updateOne(userGoals);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({

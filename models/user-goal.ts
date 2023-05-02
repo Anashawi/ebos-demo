@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 
-interface UserGoalAttrs {
+interface UserGoalsAttrs {
    userId: string;
    targetDate: string;
    goals: string[];
 }
 
-interface UserGoalDocument extends mongoose.Document, UserGoalAttrs { }
+interface UserGoalDocument extends mongoose.Document, UserGoalsAttrs { }
 
 interface UserGoalModel extends mongoose.Model<UserGoalDocument> {
-   build(attrs: UserGoalAttrs): UserGoalDocument;
+   build(attrs: UserGoalsAttrs): UserGoalDocument;
 }
 
-export interface IUserGoal extends UserGoalAttrs {
+export interface IUserGoals extends UserGoalsAttrs {
    id: string;
 }
 
@@ -40,10 +40,10 @@ const userGoalSchema = new mongoose.Schema(
    }
 );
 
-userGoalSchema.statics.build = (attrs: UserGoalAttrs) => {
-   return new UserGoal(attrs);
+userGoalSchema.statics.build = (attrs: UserGoalsAttrs) => {
+   return new UserGoals(attrs);
 };
 
-export const UserGoal =
-   mongoose.models.UserGoal ||
-   mongoose.model<UserGoalDocument, UserGoalModel>("UserGoal", userGoalSchema, "userGoals");
+export const UserGoals =
+   mongoose.models.UserGoals ||
+   mongoose.model<UserGoalDocument, UserGoalModel>("UserGoals", userGoalSchema, "userGoals");
