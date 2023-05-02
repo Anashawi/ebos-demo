@@ -39,6 +39,7 @@ export interface ICompetitor {
    uuid: string;
    name: string;
    marketShare: number;
+   isUntapped: boolean;
 }
 
 export interface IFactorCompetitor {
