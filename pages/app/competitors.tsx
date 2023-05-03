@@ -15,6 +15,7 @@ import { object, array, string, number } from "yup";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Link from "next/link";
+import crypto from "crypto";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
