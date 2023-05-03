@@ -82,13 +82,11 @@ const Competitors = () => {
 			}
 		);
 
-	const emptyCompetitor =
-		{
-			uuid: crypto.randomUUID(),
-			name: "",
-			marketShare: 0,
-		} as ICompetitor;
-
+	const emptyCompetitor = {
+		uuid: crypto.randomUUID(),
+		name: "",
+		marketShare: 0,
+	} as ICompetitor;
 
 	const [lookupProducts, setLookupProducts] = useState<IProduct[]>([]);
 
@@ -145,8 +143,7 @@ const Competitors = () => {
 								});
 
 								if (userProduct?.id) {
-									userProduct.products =
-										values.products.concat(lookupProducts);
+									userProduct.products = values.products;
 									await updateUserProduct({
 										...userProduct,
 									});
@@ -188,9 +185,9 @@ const Competitors = () => {
 																						(
 																							prevValue
 																						) => [
-																								...prevValue,
-																								product,
-																							]
+																							...prevValue,
+																							product,
+																						]
 																					);
 																					remove(
 																						productIndex
@@ -207,7 +204,7 @@ const Competitors = () => {
 																)}
 														</div>
 														<div className='w-1/2 pr-12 flex gap-5 items-center justify-between'>
-															<div className='flex items-center'>
+															<div className='flex items-center gap-5'>
 																<button
 																	type='submit'
 																	className={
@@ -262,23 +259,23 @@ const Competitors = () => {
 															</div>
 															{userProduct?.products?.length >
 																0 && (
-																	<Link href={"/"}>
-																		<span className='text-md text-gray-400 italic'>
-																			go to next →{" "}
-																			<span className='text-gray-500'>
-																				Red Ocean Canvas
-																			</span>
+																<Link href={"/"}>
+																	<span className='text-md text-gray-400 italic'>
+																		go to next →{" "}
+																		<span className='text-gray-500'>
+																			Red Ocean Canvas
 																		</span>
-																	</Link>
-																)}
+																	</span>
+																</Link>
+															)}
 														</div>
 														{(!!isLoading ||
 															isUpdatingUserProduct) && (
-																<Spinner
-																	className='flex items-center text-xl'
-																	message='Saving Market Potential'
-																/>
-															)}
+															<Spinner
+																className='flex items-center text-xl'
+																message='Saving Market Potential'
+															/>
+														)}
 													</div>
 												);
 											}}

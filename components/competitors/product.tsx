@@ -65,7 +65,9 @@ const CompetitorsProduct: NextPage<Props> = ({
 														<div className='w-full md:w-1/2 flex flex-col gap-2'>
 															<label>
 																{!comp.isUntapped && (
-																	<>Competitor {compIndex}</>
+																	<>
+																		Competitor {compIndex - 1}
+																	</>
 																)}
 																{comp.isUntapped && (
 																	<>Untapped Market</>

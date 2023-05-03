@@ -22,7 +22,7 @@ export default function Home() {
 		},
 		{
 			text: "Red ocean canvas",
-			url: "app/factors",
+			url: "app/red-ocean",
 		},
 		{
 			text: "Disruption",
@@ -34,7 +34,7 @@ export default function Home() {
 		},
 		{
 			text: "Blue ocean",
-			url: "app/idea-factors",
+			url: "app/blue-ocean",
 		},
 		{
 			text: "Non customers",

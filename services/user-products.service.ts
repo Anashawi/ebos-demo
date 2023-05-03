@@ -19,18 +19,6 @@ export async function getOne(id: string) {
    }
 }
 
-export async function getAllLookup() {
-   try {
-      const result = await UserProduct.find({}, 'fullName isActive');
-      result.forEach(item => {
-         item._id = item._id.toString();
-      });
-      return result;
-   } catch (error) {
-      console.log(error);
-   }
-}
-
 // export async function updateOne(frontEndUserProduct: IUserProduct, path: productPagesEnum) {
 //    try {
 //       const backEndUserProduct = await UserProduct.findById(
@@ -79,15 +67,20 @@ export async function getAllLookup() {
 //    }
 // }
 
-export async function updateOne(frontEndUserProduct: IUserProduct, path: productPagesEnum) {
+export async function updateOne(newUserProduct: IUserProduct, path: productPagesEnum) {
    try {
-      const updateResult = await UserProduct.updateOne(
-         { _id: frontEndUserProduct.id },
+      const findByIdResult = await UserProduct.findById(newUserProduct.id);
+      console.log("newUserProduct before", newUserProduct)
+      console.log("findByIdResult.toJSON() before", findByIdResult.toJSON())
+      newUserProduct = { ...findByIdResult.toJSON(), ...newUserProduct };
+      console.log("newUserProduct after", newUserProduct)
+      await UserProduct.updateOne(
+         { _id: newUserProduct.id },
          {
-            $set: { ...frontEndUserProduct },
+            $set: { ...newUserProduct },
          }
       );
-      const updatedUserProduct = await UserProduct.findById(frontEndUserProduct.id);
+      const updatedUserProduct = await UserProduct.findById(newUserProduct.id);
       return updatedUserProduct.toJSON();
    } catch (error) {
       console.log(error);
