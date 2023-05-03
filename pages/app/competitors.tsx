@@ -82,13 +82,13 @@ const Competitors = () => {
 			}
 		);
 
-	const emptyCompetitor = useMemo(() => {
-		return {
+	const emptyCompetitor =
+		{
 			uuid: crypto.randomUUID(),
 			name: "",
 			marketShare: 0,
 		} as ICompetitor;
-	}, []);
+
 
 	const [lookupProducts, setLookupProducts] = useState<IProduct[]>([]);
 
@@ -188,9 +188,9 @@ const Competitors = () => {
 																						(
 																							prevValue
 																						) => [
-																							...prevValue,
-																							product,
-																						]
+																								...prevValue,
+																								product,
+																							]
 																					);
 																					remove(
 																						productIndex
@@ -262,23 +262,23 @@ const Competitors = () => {
 															</div>
 															{userProduct?.products?.length >
 																0 && (
-																<Link href={"/"}>
-																	<span className='text-md text-gray-400 italic'>
-																		go to next →{" "}
-																		<span className='text-gray-500'>
-																			Red Ocean Canvas
+																	<Link href={"/"}>
+																		<span className='text-md text-gray-400 italic'>
+																			go to next →{" "}
+																			<span className='text-gray-500'>
+																				Red Ocean Canvas
+																			</span>
 																		</span>
-																	</span>
-																</Link>
-															)}
+																	</Link>
+																)}
 														</div>
 														{(!!isLoading ||
 															isUpdatingUserProduct) && (
-															<Spinner
-																className='flex items-center text-xl'
-																message='Saving Market Potential'
-															/>
-														)}
+																<Spinner
+																	className='flex items-center text-xl'
+																	message='Saving Market Potential'
+																/>
+															)}
 													</div>
 												);
 											}}
