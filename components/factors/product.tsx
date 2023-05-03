@@ -100,7 +100,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 																	<option
 																		className='text-lg'
 																		value={2}>
-																		moderate
+																		Moderate
 																	</option>
 																	<option
 																		className='text-lg'

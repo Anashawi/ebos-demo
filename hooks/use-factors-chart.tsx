@@ -4,7 +4,7 @@ import { ICompetitor, IFactorCompetitor, IProduct } from "../models/types";
 
 const useFactorsChart = (product: IProduct) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
-		chartType: "Line",
+		chartType: "LineChart",
 		width: "100%",
 		height: "100%",
 		options: {},
@@ -32,19 +32,34 @@ const useFactorsChart = (product: IProduct) => {
 		chart.options = {
 			title: product.name,
 			titleTextStyle: {
-				// color: <string>,    // any HTML string color ('red', '#cc00cc')
-				// fontName: <string>, // i.e. 'Times New Roman'
-				fontSize: 16, // 12, 18 whatever you want (don't specify px)
-				// {/* bold: <boolean>,    // true or false
-				// italic: <boolean>   // true of false */}
+				fontSize: 14, // 12, 18 whatever you want (don't specify px)
 			},
-			colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
+			is3D: false,
+			backgroundColor: "#eee",
+			colors: ["#046D35", "#E51061", "#0DB1D7", "#E51061", "#FFAA00", "gray"],
+			legend: {
+				position: "right",
+				alignment: "start",
+				textStyle: {
+					fontSize: 12,
+				},
+			},
+			tooltip: { trigger: "none" },
+			bubble: {
+				textStyle: {
+					fontSize: 11,
+				},
+			},
 			vAxis: {
-				ticks: [
-					{ v: "1", f: "Poor" },
-					{ v: "2", f: "Migrator" },
-					{ v: "3", f: "Settler" },
-				] as any,
+				ticks: [{ v: "0", f: "" }, { v: "1", f: "Poor" }, { v: "2", f: "Moderate" }, { v: "3", f: "Good" }, { v: "4", f: "Excellent" }] as any
+			},
+			chartArea: {
+				left: 100,
+				top: 70,
+				bottom: 60,
+				right: 200,
+				width: "100%",
+				height: "100%",
 			},
 		};
 		setChart({ ...chart });

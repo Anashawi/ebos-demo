@@ -30,7 +30,7 @@ const Goals = () => {
 			id: "",
 			userId: session?.user?.id,
 			targetDate: "",
-			goals: [],
+			goals: ["", "", ""],
 		} as IUserGoals;
 	}, []);
 
@@ -250,7 +250,7 @@ const Goals = () => {
 																		type='submit'
 																		className={
 																			isSubmitting ||
-																			!isValid
+																				!isValid
 																				? "btn-rev btn-disabled"
 																				: "btn-rev"
 																		}
@@ -273,18 +273,18 @@ const Goals = () => {
 																		<span>Add New Goal</span>
 																	</button>
 																</div>
-																{userGoals?.goals?.length >
+																{userGoals?.goals.filter(str => str?.length > 0)?.length >
 																	0 && (
-																	<Link href={"/"}>
-																		<span className='text-md text-gray-400 italic'>
-																			go to next →{" "}
-																			<span className='text-gray-500'>
-																				pioneer, migrator,
-																				settler
+																		<Link href={"/"}>
+																			<span className='text-md text-gray-400 italic'>
+																				go to next →{" "}
+																				<span className='text-gray-500'>
+																					pioneer, migrator,
+																					settler
+																				</span>
 																			</span>
-																		</span>
-																	</Link>
-																)}
+																		</Link>
+																	)}
 															</div>
 															{isSubmitting ||
 																isCreatingUserGoal ||
