@@ -42,7 +42,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 						{({ remove, push }) => (
 							<div className='relative'>
 								<ul className='flex flex-col gap-3 mb-10 pr-5 border p-5 h-[355px] overflow-y-auto'>
-									{!product.competitors?.length && (
+									{!product?.competitors?.length && (
 										<div className='text-center bg-rose-50 text-sm text-rose-500 p-5'>
 											Please, add at least one competitor
 										</div>
@@ -55,8 +55,8 @@ const CompetitorsProduct: NextPage<Props> = ({
 										/>
 									</li>
 
-									{!!product.competitors?.length &&
-										product.competitors.map((comp, compIndex) => (
+									{!!product?.competitors?.length &&
+										product?.competitors.map((comp, compIndex) => (
 											<li
 												key={compIndex}
 												className='flex gap-5 items-start relative'>
@@ -144,7 +144,7 @@ const CompetitorsProduct: NextPage<Props> = ({
 									<div>
 										{!!formUtilities.errors?.competitors &&
 											formUtilities.errors.competitors
-												.product_uuid === product.uuid && (
+												.product_uuid === product?.uuid && (
 												<p className='text-rose-500'>
 													{
 														formUtilities.errors.competitors

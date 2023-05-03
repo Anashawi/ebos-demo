@@ -17,9 +17,6 @@ import UserInfoHeader from "../../components/common/user-info-header";
 import Link from "next/link";
 import * as _ from "lodash";
 
-
-
-
 const Competitors = () => {
 	let dbProduct: IUserProduct | undefined;
 
@@ -61,11 +58,11 @@ const Competitors = () => {
 			}
 		});
 		setUserProduct(data ?? emptyUserProduct);
-
-
 	}, [data]);
 
-	dbProduct = useMemo(() => { return _.cloneDeep(data) }, [data]);
+	dbProduct = useMemo(() => {
+		return _.cloneDeep(data);
+	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
@@ -119,7 +116,12 @@ const Competitors = () => {
 						</h3>
 						<Formik
 							initialValues={{
-								products: userProduct.products,
+								products: userProduct.products.filter(
+									(p) =>
+										!lookupProducts.some(
+											(lookupProd) => lookupProd.uuid === p.uuid
+										)
+								),
 							}}
 							validationSchema={object({
 								products: array(
@@ -152,11 +154,17 @@ const Competitors = () => {
 									}
 								});
 
-
-								const untappedProducts = dbProduct?.products.filter(i => !!lookupProducts.find(o => o.uuid == i.uuid));
-								console.log(untappedProducts);
+								const untouchedProducts = dbProduct?.products.filter(
+									(i) => !!lookupProducts.find((o) => o.uuid == i.uuid)
+								);
+								console.log(untouchedProducts);
 								if (userProduct?.id) {
-									userProduct.products = { ...values.products, ...untappedProducts };
+									values.products = [
+										...values.products.concat(
+											untouchedProducts ?? []
+										),
+									];
+									userProduct.products = [...values.products];
 									await updateUserProduct({
 										...userProduct,
 									});
@@ -198,9 +206,9 @@ const Competitors = () => {
 																						(
 																							prevValue
 																						) => [
-																								...prevValue,
-																								product,
-																							]
+																							...prevValue,
+																							product,
+																						]
 																					);
 																					remove(
 																						productIndex
@@ -272,23 +280,23 @@ const Competitors = () => {
 															</div>
 															{userProduct?.products?.length >
 																0 && (
-																	<Link href={"/"}>
-																		<span className='text-md text-gray-400 italic'>
-																			go to next →{" "}
-																			<span className='text-gray-500'>
-																				Red Ocean Canvas
-																			</span>
+																<Link href={"/"}>
+																	<span className='text-md text-gray-400 italic'>
+																		go to next →{" "}
+																		<span className='text-gray-500'>
+																			Red Ocean Canvas
 																		</span>
-																	</Link>
-																)}
+																	</span>
+																</Link>
+															)}
 														</div>
 														{(!!isLoading ||
 															isUpdatingUserProduct) && (
-																<Spinner
-																	className='flex items-center text-xl'
-																	message='Saving Market Potential'
-																/>
-															)}
+															<Spinner
+																className='flex items-center text-xl'
+																message='Saving Market Potential'
+															/>
+														)}
 													</div>
 												);
 											}}

@@ -35,7 +35,7 @@ const Products = () => {
 	const queryClient = useQueryClient();
 
 	const { data, isLoading } = useQuery<IUserProduct>({
-		queryKey: [clientApi.Keys.All],
+		queryKey: [clientApi.Keys.UserProduct, userProduct.id],
 		queryFn: clientApi.getAll,
 		refetchOnWindowFocus: false,
 		enabled: !!session?.user?.id,
@@ -84,7 +84,10 @@ const Products = () => {
 						clientApi.Keys.UserProduct,
 						userProduct.id,
 					]);
-					queryClient.invalidateQueries([clientApi.Keys.All]);
+					queryClient.invalidateQueries([
+						clientApi.Keys.UserProduct,
+						userProduct.id,
+					]);
 				},
 			}
 		);
