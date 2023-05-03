@@ -70,10 +70,18 @@ export async function getOne(id: string) {
 export async function updateOne(newUserProduct: IUserProduct, path: productPagesEnum) {
    try {
       const findByIdResult = await UserProduct.findById(newUserProduct.id);
-      console.log("newUserProduct before", newUserProduct)
-      console.log("findByIdResult.toJSON() before", findByIdResult.toJSON())
-      newUserProduct = { ...findByIdResult.toJSON(), ...newUserProduct };
-      console.log("newUserProduct after", newUserProduct)
+      const result = findByIdResult.toJSON() as IUserProduct;
+      console.log("newUserProduct before", newUserProduct);
+      console.log("findByIdResult.toJSON() before", result);
+
+      // result.products.map((p) => {
+      //    const payloadObj = newUserProduct.products.filter(o => o.uuid == p.uuid);
+      //    if (payloadObj?.length > 0) p = payloadObj[0];
+      // })
+
+      console.log("findByIdResult.toJSON() before", result);
+
+
       await UserProduct.updateOne(
          { _id: newUserProduct.id },
          {
