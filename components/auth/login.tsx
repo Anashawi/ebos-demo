@@ -63,9 +63,9 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 		<>
 			<div className='flex items-center justify-between min-h-[58px] p-3'>
 				<div className='flex flex-col gap-3'>
-					<h2 className='text-5xl'>Register now</h2>
+					<h2 className='text-5xl'>Login</h2>
 					<h3 className='text-2xl text-gray-gunmetal'>
-						to start your free sessions
+						login to your existing account
 					</h3>
 				</div>
 			</div>
