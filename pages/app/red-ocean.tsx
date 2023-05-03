@@ -42,19 +42,23 @@ const Factors = () => {
 	});
 
 	useEffect(() => {
-		// data?.products?.forEach((prod) => {
-		// 	firstFactor.name = "factor 1";
-		// 	firstFactor.competitors =
-		// 		prod.competitors?.map((comp) => {
-		// 			return {
-		// 				uuid: comp.uuid,
-		// 				value: "1",
-		// 			};
-		// 		}) ?? [];
-		// 	if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
-		// 		prod.factors = [firstFactor];
-		// 	}
-		// });
+		data?.products?.forEach((prod) => {
+			emptyFactor.name = "factor 1";
+			emptyFactor.competitors =
+				prod.competitors?.map((comp) => {
+					return {
+						uuid: comp.uuid,
+						value: "1",
+					};
+				}) ?? [];
+			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
+				prod.factors = [
+					{ ...emptyFactor, name: "factor example 1" },
+					{ ...emptyFactor, name: "factor example 2" },
+					{ ...emptyFactor, name: "factor example 3" },
+				];
+			}
+		});
 		if (data) {
 			setUserProduct(data);
 		}
@@ -82,7 +86,7 @@ const Factors = () => {
 			}
 		);
 
-	const firstFactor = useMemo(() => {
+	const emptyFactor = useMemo(() => {
 		return {
 			name: "",
 			competitors: [],
@@ -157,7 +161,7 @@ const Factors = () => {
 											<FieldArray name='products'>
 												{({ push, remove }) => {
 													return (
-														<div className='flex flex-col gap-12'>
+														<>
 															<div className='flex flex-col gap-20'>
 																{!values.products?.length && (
 																	<p className='text-rose-300'>
@@ -196,96 +200,108 @@ const Factors = () => {
 																		)
 																	)}
 															</div>
-															<div className='py-10 md:w-1/2 pr-12 flex items-center gap-5'>
-																<label className='text-yellow-green font-semibold text-3xl'>
-																	Show more products
-																</label>
-																<select
-																	className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																	value={0}
-																	onChange={(e) => {
-																		const productToBeShown =
-																			userProduct.products?.find(
-																				(prod) =>
-																					prod.uuid ===
-																					e.target.value
-																			);
-																		push(productToBeShown);
-																		setLookupProducts(
-																			(prevValue) =>
-																				prevValue.filter(
-																					(prod) =>
-																						prod.uuid !==
-																						e.target.value
-																				)
-																		);
-																	}}>
-																	<option value={0}>
-																		select a product to be
-																		displayed
-																	</option>
-																	{lookupProducts.map(
-																		(product, index) => (
-																			<option
-																				key={index}
-																				value={
-																					product.uuid
+															<div className='flex gap-3 items-center mt-10'>
+																<div className='w-1/2 flex gap-5 flex-wrap justify-between items-center pr-12'>
+																	{!!userProduct.products?.filter(
+																		(prod) =>
+																			!lookupProducts.some(
+																				(lookupProd) =>
+																					lookupProd.uuid ===
+																					prod.uuid
+																			)
+																	).length && (
+																		<>
+																			<button
+																				type='submit'
+																				className={
+																					isSubmitting ||
+																					!isValid
+																						? "btn-rev btn-disabled"
+																						: "btn-rev"
+																				}
+																				disabled={
+																					isSubmitting ||
+																					!isValid
 																				}>
-																				{product.name}
-																			</option>
-																		)
+																				Save
+																			</button>
+																			<select
+																				className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																				value={0}
+																				onChange={(e) => {
+																					const productToBeShown =
+																						userProduct.products?.find(
+																							(prod) =>
+																								prod.uuid ===
+																								e.target
+																									.value
+																						);
+																					push(
+																						productToBeShown
+																					);
+																					setLookupProducts(
+																						(prevValue) =>
+																							prevValue.filter(
+																								(
+																									prod
+																								) =>
+																									prod.uuid !==
+																									e
+																										.target
+																										.value
+																							)
+																					);
+																				}}>
+																				<option value={0}>
+																					select a product
+																					to be displayed
+																				</option>
+																				{lookupProducts.map(
+																					(
+																						product,
+																						index
+																					) => (
+																						<option
+																							key={index}
+																							value={
+																								product.uuid
+																							}>
+																							{
+																								product.name
+																							}
+																						</option>
+																					)
+																				)}
+																			</select>
+																		</>
 																	)}
-																</select>
+																	{userProduct?.products
+																		?.length > 0 && (
+																		<Link href={"/"}>
+																			<span className='text-md text-gray-400 italic pr-12'>
+																				go to next →{" "}
+																				<span className='text-gray-500 pr-2'>
+																					Disruption
+																				</span>
+																			</span>
+																		</Link>
+																	)}
+																</div>
+																<div className='w-1/2 pl-7 py-3'>
+																	<ConsultantReview pageTitle='Red Ocean Canvas'></ConsultantReview>
+																</div>
 															</div>
-														</div>
+															{(!!isLoading ||
+																isUpdatingUserProduct) && (
+																<Spinner
+																	className='flex items-center text-xl'
+																	message='Saving Market Potential'
+																/>
+															)}
+														</>
 													);
 												}}
 											</FieldArray>
-											<div className='flex gap-3 justify-between items-center mt-10'>
-												<div className='w-1/2 flex gap-3 justify-between'>
-													{!!userProduct.products?.filter(
-														(prod) =>
-															!lookupProducts.some(
-																(lookupProd) =>
-																	lookupProd.uuid === prod.uuid
-															)
-													).length && (
-														<button
-															type='submit'
-															className={
-																isSubmitting || !isValid
-																	? "btn-rev btn-disabled"
-																	: "btn-rev"
-															}
-															disabled={
-																isSubmitting || !isValid
-															}>
-															Save
-														</button>
-													)}
-													{userProduct?.products?.length > 0 && (
-														<Link href={"/"}>
-															<span className='text-md text-gray-400 italic pr-12'>
-																go to next →{" "}
-																<span className='text-gray-500 pr-2'>
-																	Disruption
-																</span>
-															</span>
-														</Link>
-													)}
-												</div>
-												<div className='py-3'>
-													<ConsultantReview
-														className='mt-10'
-														pageTitle='Red Ocean Canvas'></ConsultantReview>
-												</div>
-											</div>
-											{(!!isLoading || isUpdatingUserProduct) && (
-												<Spinner
-													className='flex items-center text-xl'
-													message='Saving Market Potential'
-												/>
-											)}
 										</Form>
 									);
 								}}

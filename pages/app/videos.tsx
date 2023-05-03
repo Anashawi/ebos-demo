@@ -71,10 +71,10 @@ const Disruption = () => {
 								Videos
 							</h3>
 
-							<h3 className='text-[2.52rem] mb-6 font-normal'>
+							<h3 className='text-3xl mb-6 font-normal'>
 								10 Comprehensives
 							</h3>
-							<p className='mb-10'>
+							<p className='mb-10 text-xl'>
 								Watch help videos then update your ideas accordingly.
 								Submit for feedback.
 							</p>
@@ -82,10 +82,10 @@ const Disruption = () => {
 								<div className='col-1/2 grow'>
 									<h4 className='text-[2.1rem] mb-6'>Scale</h4>
 									<ul className='flex flex-col gap-3 mb-5'>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Staff on Demand
 											<a
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												data-video='1'
 												onClick={() => {
@@ -97,11 +97,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Community and Crowd
 											<a
 												data-video='1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(
@@ -112,11 +112,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Algorithms
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(videos.algorithms);
@@ -125,11 +125,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Leveraged Assets
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(
@@ -140,11 +140,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Engagement
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(videos.Engagement);
@@ -159,11 +159,11 @@ const Disruption = () => {
 									<h4 className='text-[2.1rem] mb-6'>Ideas</h4>
 
 									<ul className='flex flex-col gap-3 mb-5'>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Interface
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(videos.interface);
@@ -172,11 +172,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Dashboard
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(videos.dashboard);
@@ -185,11 +185,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Experimentation
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(
@@ -200,11 +200,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Autonomy
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(videos.autonomy);
@@ -213,11 +213,11 @@ const Disruption = () => {
 												Watch video
 											</a>
 										</li>
-										<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+										<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 											Social Platforms
 											<a
 												data-video=' 1'
-												className='ml-5 text-[1.2rem]'
+												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
 													setSelectedVideoURL(
@@ -232,16 +232,11 @@ const Disruption = () => {
 								</div>
 							</div>
 							<div className='mt-5 flex gap-5 justify-between'>
-								<Link
-									href='/'
-									className='btn text-black-eerie hover:text-blue-ncs w-max'>
-									<strong>Back To Dashboard</strong>
-								</Link>
-								{(session?.user as any)?.role === "admin" && (
+								{(session?.user as any)?.role !== "admin" && (
 									<button
 										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
 										onClick={toggleEditUrlsModal}>
-										<span>Edit videos Urls</span>
+										<span>Edit video Urls</span>
 										<FontAwesomeIcon className='w-7' icon={faEdit} />
 									</button>
 								)}
@@ -257,43 +252,43 @@ const Disruption = () => {
 									7 Practical &amp; Quick
 								</h4>
 								<ul className='flex flex-col gap-3 mb-5'>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										Eco Systems
 										<a
 											onClick={() => {
 												setSelectedVideoURL(videos.ecoSystems);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>
 									</li>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										Info is Power
 										<a
 											onClick={() => {
 												setSelectedVideoURL(videos.infoIsPower);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>
 									</li>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										OTCR
 										<a
 											onClick={() => {
 												setSelectedVideoURL(videos.OTCR);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>
 									</li>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										Value Destruction
 										<a
 											onClick={() => {
@@ -302,24 +297,24 @@ const Disruption = () => {
 												);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>
 									</li>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										Customer Journey
 										<a
 											onClick={() => {
 												setSelectedVideoURL(videos.customerJourney);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>
 									</li>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										Digital Platforms
 										<a
 											onClick={() => {
@@ -328,12 +323,12 @@ const Disruption = () => {
 												);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>
 									</li>
-									<li className='flex gap-5 justify-between items-center p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+									<li className='flex gap-5 justify-between items-center p-5 relative bg-gray-100 text-gray-800 text-lg'>
 										Building Capacity
 										<a
 											onClick={() => {
@@ -342,7 +337,7 @@ const Disruption = () => {
 												);
 												toggleVideoModal();
 											}}
-											className='ml-5 text-[1.2rem]'
+											className='ml-5 text-[1.1rem]'
 											target='_blank'>
 											Watch video
 										</a>

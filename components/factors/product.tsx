@@ -59,7 +59,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 												key={factorIndex}
 												className='flex gap-5 items-start w-max'>
 												<div className='flex flex-col'>
-													<label>Factor</label>
+													<label>Factor {factorIndex + 1}</label>
 													<Field
 														type='text'
 														placeholder='name'
@@ -130,7 +130,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 													onClick={() => {
 														remove(factorIndex);
 													}}
-													className='self-center w-[1.5rem] h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+													className='self-center w-[1.2rem] h-auto cursor-pointer text-gray-200 hover:text-rose-500'
 												/>
 											</li>
 										))}
