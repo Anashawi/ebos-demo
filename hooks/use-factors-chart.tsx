@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
 import { ICompetitor, IFactorCompetitor, IProduct } from "../models/types";
+import { title } from "process";
 
 const useFactorsChart = (product: IProduct) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
@@ -30,9 +31,9 @@ const useFactorsChart = (product: IProduct) => {
 			...rows,
 		];
 		chart.options = {
-			title: product.name,
+			title: `Red Ocean: ${product.name}`,
 			titleTextStyle: {
-				fontSize: 14, // 12, 18 whatever you want (don't specify px)
+				fontSize: 12, // 12, 18 whatever you want (don't specify px),
 			},
 			is3D: false,
 			backgroundColor: "#eee",
@@ -41,7 +42,7 @@ const useFactorsChart = (product: IProduct) => {
 				position: "right",
 				alignment: "start",
 				textStyle: {
-					fontSize: 12,
+					fontSize: 10,
 				},
 			},
 			tooltip: { trigger: "none" },
@@ -51,13 +52,17 @@ const useFactorsChart = (product: IProduct) => {
 				},
 			},
 			vAxis: {
-				ticks: [{ v: "0", f: "" }, { v: "1", f: "Poor" }, { v: "2", f: "Moderate" }, { v: "3", f: "Good" }, { v: "4", f: "Excellent" }] as any
+				ticks: [{ v: "1", f: "Poor" }, { v: "2", f: "Moderate" }, { v: "3", f: "Good" }, { v: "4", f: "Excellent" }] as any,
+				title: "Competency Level",
+			},
+			hAxis: {
+				title: "Competency Factors"
 			},
 			chartArea: {
 				left: 100,
 				top: 70,
 				bottom: 60,
-				right: 200,
+				right: 100,
 				width: "100%",
 				height: "100%",
 			},
