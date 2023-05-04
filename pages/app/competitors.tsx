@@ -9,8 +9,7 @@ import { IUserProduct } from "../../models/user-product";
 import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
 import Spinner from "../../components/common/spinner";
-import { IProduct } from "../../models/types";
-import { ICompetitor } from "../../models/types";
+import { ICompetitor, IProduct } from "../../models/types";
 import { object, array, string, number } from "yup";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
@@ -52,9 +51,9 @@ const Competitors = () => {
 				(prod.competitors && prod.competitors.length === 0)
 			) {
 				prod.competitors = [
-					{ ...emptyCompetitor, name: "Me" },
-					{ ...emptyCompetitor, name: "", isUntapped: true },
-					{ ...emptyCompetitor, name: "" },
+					{ ...emptyCompetitor(), name: "Me" },
+					{ ...emptyCompetitor(), name: "", isUntapped: true },
+					{ ...emptyCompetitor(), name: "" },
 				];
 			}
 		});
@@ -90,12 +89,15 @@ const Competitors = () => {
 			}
 		);
 
-	const emptyCompetitor = {
-		//@ts-ignore
-		uuid: global.crypto.randomUUID(),
-		name: "",
-		marketShare: 0,
-	} as ICompetitor;
+
+	const emptyCompetitor = () => {
+		const uuid = crypto.randomUUID();
+		return {
+			uuid: uuid,
+			name: "",
+			marketShare: 0,
+		} as ICompetitor;
+	}
 
 	const [lookupProducts, setLookupProducts] = useState<IProduct[]>([]);
 
