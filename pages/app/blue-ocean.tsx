@@ -96,8 +96,6 @@ const IdeaFactors = () => {
 		} as IIdeaFactor;
 	}, []);
 
-	const [lookupProducts, setLookupProducts] = useState<IProduct[]>([]);
-
 	return (
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
@@ -119,13 +117,7 @@ const IdeaFactors = () => {
 							</div>
 							<Formik
 								initialValues={{
-									products: userProduct.products?.filter(
-										(prod) =>
-											!lookupProducts.some(
-												(lookupProd) =>
-													lookupProd.uuid === prod.uuid
-											)
-									),
+									products: userProduct.products,
 								}}
 								validationSchema={Yup.object({
 									products: Yup.array(
@@ -153,8 +145,7 @@ const IdeaFactors = () => {
 									});
 
 									if (userProduct?.id) {
-										userProduct.products =
-											values.products.concat(lookupProducts);
+										userProduct.products = values.products;
 										await updateUserProduct({
 											...userProduct,
 										});
@@ -196,19 +187,6 @@ const IdeaFactors = () => {
 																						index={
 																							productIndex
 																						}
-																						onRemove={() => {
-																							setLookupProducts(
-																								(
-																									prevValue
-																								) => [
-																									...prevValue,
-																									product,
-																								]
-																							);
-																							remove(
-																								productIndex
-																							);
-																						}}
 																						formUtilities={{
 																							isSubmitting,
 																							isValid,
@@ -222,94 +200,33 @@ const IdeaFactors = () => {
 															</div>
 															<div className='flex gap-3 items-center mt-10'>
 																<div className='w-1/2 flex flex-col gap-3 pr-11'>
-																	<div className='flex gap-5'>
-																		{!!userProduct.products?.filter(
-																			(prod) =>
-																				!lookupProducts.some(
-																					(lookupProd) =>
-																						lookupProd.uuid ===
-																						prod.uuid
-																				)
-																		).length && (
-																			<button
-																				type='submit'
-																				className={
-																					isSubmitting ||
-																					!isValid
-																						? "btn-rev btn-disabled"
-																						: "btn-rev"
-																				}
-																				disabled={
-																					isSubmitting ||
-																					!isValid
-																				}>
-																				Save
-																			</button>
-																		)}
-																		<select
-																			className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																			value={0}
-																			onChange={(e) => {
-																				const productToBeShown =
-																					userProduct.products?.find(
-																						(prod) =>
-																							prod.uuid ===
-																							e.target
-																								.value
-																					);
-																				push(
-																					productToBeShown
-																				);
-																				setLookupProducts(
-																					(prevValue) =>
-																						prevValue.filter(
-																							(prod) =>
-																								prod.uuid !==
-																								e.target
-																									.value
-																						)
-																				);
-																			}}>
-																			<option value={0}>
-																				select a product to
-																				be displayed
-																			</option>
-																			{lookupProducts.map(
-																				(
-																					product,
-																					index
-																				) => (
-																					<option
-																						key={index}
-																						value={
-																							product.uuid
-																						}>
-																						{product.name}
-																					</option>
-																				)
-																			)}
-																		</select>
-																	</div>
-																	{userProduct?.products
-																		?.length > 0 && (
-																		<Link
-																			href={"/"}
-																			className='self-end'>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					Non Customers
+																	<div className='flex gap-5 justify-between items-center'>
+																		<button
+																			type='submit'
+																			className={
+																				isSubmitting ||
+																				!isValid
+																					? "btn-rev btn-disabled"
+																					: "btn-rev"
+																			}
+																			disabled={
+																				isSubmitting ||
+																				!isValid
+																			}>
+																			Save
+																		</button>
+																		{userProduct?.products
+																			?.length > 0 && (
+																			<Link href={"/"}>
+																				<span className='text-md text-gray-400 italic'>
+																					go to next →{" "}
+																					<span className='text-gray-500'>
+																						Non Customers
+																					</span>
 																				</span>
-																			</span>
-																		</Link>
-																	)}
-																	{(!!isLoading ||
-																		isUpdatingUserProduct) && (
-																		<Spinner
-																			className='flex items-center text-xl'
-																			message='Saving Market Potential'
-																		/>
-																	)}
+																			</Link>
+																		)}
+																	</div>
 																</div>
 																<div className='w-1/2 pl-9 py-3'>
 																	<ConsultantReview pageTitle='Blue Ocean Canvas'></ConsultantReview>

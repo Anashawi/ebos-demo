@@ -1,12 +1,7 @@
-import {
-	faEyeSlash,
-	faTrash,
-	faCirclePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import Chart from "react-google-charts";
-import { NextPage } from "next";
 import { useMemo } from "react";
 import { ICompetitor, IProduct } from "../../models/types";
 import useIdeaFactorsChart from "../../hooks/use-idea-factors-chart";
@@ -14,11 +9,10 @@ import useIdeaFactorsChart from "../../hooks/use-idea-factors-chart";
 interface Props {
 	product: IProduct;
 	index: number;
-	onRemove: any;
 	formUtilities: any;
 }
 
-const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
+const IdeaFactorsProduct = ({ product, index }: Props) => {
 	const [chart] = useIdeaFactorsChart(product);
 
 	const emptyFactor = useMemo(() => {
@@ -28,7 +22,7 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 			competitors: product.competitors?.map((comp) => {
 				return {
 					id: "0",
-					value: 1,
+					value: "1",
 				};
 			}),
 		};
@@ -38,14 +32,7 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 		<div className='flex justify-between'>
 			<div className='md:w-1/2 pr-12'>
 				<div key={index} className='border p-5'>
-					<div className='flex justify-between mb-10'>
-						<h2 className='text-xl font-normal'>{product.name}</h2>
-						<FontAwesomeIcon
-							onClick={onRemove}
-							className='w-[2rem] cursor-pointer text-gray-200 hover:text-rose-500'
-							icon={faEyeSlash}
-						/>
-					</div>
+					<h2 className='text-xl font-normal mb-10'>{product.name}</h2>
 					<FieldArray name={`products.${index}.ideaFactors`}>
 						{({ remove, push }) => (
 							<>
@@ -75,54 +62,56 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 													</ErrorMessage>
 												</div>
 												<div className='flex-1 flex gap-5'>
-													{product.competitors?.filter(c => !c.isUntapped)?.map(
-														(
-															comp: ICompetitor,
-															compIndex: number
-														) => (
-															<div
-																key={compIndex}
-																className='flex-1 flex flex-col min-w-[140px]'>
-																<label className='text-lg'>
-																	{comp.name}
-																</label>
-																<Field
-																	as='select'
-																	placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
-																	className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
-																	name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}>
-																	<option
-																		className='text-lg'
-																		value={1}>
-																		Poor
-																	</option>
-																	<option
-																		className='text-lg'
-																		value={2}>
-																		Moderate
-																	</option>
-																	<option
-																		className='text-lg'
-																		value={3}>
-																		Good
-																	</option>
-																	<option
-																		className='text-lg'
-																		value={4}>
-																		Excellent
-																	</option>
-																</Field>
-																<ErrorMessage
-																	name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}>
-																	{(msg) => (
-																		<div className='w-full text-sm text-rose-500'>
-																			{msg}
-																		</div>
-																	)}
-																</ErrorMessage>
-															</div>
-														)
-													)}
+													{product.competitors
+														?.filter((c) => !c.isUntapped)
+														?.map(
+															(
+																comp: ICompetitor,
+																compIndex: number
+															) => (
+																<div
+																	key={compIndex}
+																	className='flex-1 flex flex-col min-w-[140px]'>
+																	<label className='text-lg'>
+																		{comp.name}
+																	</label>
+																	<Field
+																		as='select'
+																		placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
+																		className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
+																		name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}>
+																		<option
+																			className='text-lg'
+																			value={1}>
+																			Poor
+																		</option>
+																		<option
+																			className='text-lg'
+																			value={2}>
+																			Moderate
+																		</option>
+																		<option
+																			className='text-lg'
+																			value={3}>
+																			Good
+																		</option>
+																		<option
+																			className='text-lg'
+																			value={4}>
+																			Excellent
+																		</option>
+																	</Field>
+																	<ErrorMessage
+																		name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}>
+																		{(msg) => (
+																			<div className='w-full text-sm text-rose-500'>
+																				{msg}
+																			</div>
+																		)}
+																	</ErrorMessage>
+																</div>
+															)
+														)}
 												</div>
 												<FontAwesomeIcon
 													icon={faTrash}
