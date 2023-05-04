@@ -32,7 +32,7 @@ export interface IIdea {
    uuid: string;
    name: string;
    startMonth: string;
-   durationInMonths: string
+   durationInMonths: number;
 }
 
 export interface ICompetitor {

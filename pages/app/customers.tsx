@@ -115,15 +115,7 @@ const Customers = () => {
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
 			<div className='homepage-bg-gradient bg-white'>
-				<form
-					method='post'
-					action='http://bo.adpadelhouse.com/app/customers'
-					encType='multipart/form-data'>
-					<input
-						type='hidden'
-						name='_token'
-						value='E6vydmJoblEw5asasVKo4Ehneri0ZmjnuHJ03vSY'
-					/>
+				<form>
 					<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 						<div className='flex flex-wrap'>
 							<div className='grow md:w-4/12 bg-white p-12 relative'>

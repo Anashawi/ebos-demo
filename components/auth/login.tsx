@@ -88,11 +88,6 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 				<form
 					onSubmit={formik.handleSubmit}
 					className='flex flex-col gap-10 text-gray-700'>
-					<input
-						type='hidden'
-						name='_token'
-						value='flLpueuWiW4yYQhFv42duLSPTHXIub8XYUjHG5lR'
-					/>
 					<div>
 						<input
 							id='email'

@@ -7,7 +7,7 @@ import IdeaFactorsProduct from "../../components/idea-factors/product";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
-import { IIdeaFactor, IProduct } from "../../models/types";
+import { IIdeaFactor } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
 import ConsultantReview from "../../components/common/consultant-review";

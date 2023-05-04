@@ -24,7 +24,7 @@ const Header = ({ toggleIdeasModal, className }: Props) => {
 				</div>
 			)}
 			<Link href='/' className='logo-pane mb-0 flex'>
-				<h4 className='text-[3rem] text-white'>20X</h4>
+				<h4 className='text-[3rem] text-white drop-shadow-lg'>20X</h4>
 				<span className='relative -translate-x-[1.2rem]'>revenue BY</span>
 				<div className='w-[110px] h-[33px]'>
 					<Image
