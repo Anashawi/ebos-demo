@@ -137,10 +137,12 @@ const NonCustomers = () => {
 											{!!userNonCustomers.soonNonCustomers?.length &&
 												userNonCustomers.soonNonCustomers.map(
 													(nonCustomer, index) => (
-														<li key={index}>
+														<li
+															key={index}
+															className='flex items-center'>
 															<input
 																type='text'
-																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers text-xl'
+																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
 																value={nonCustomer}
 																onChange={(e) => {
 																	setUserNonCustomers(
@@ -170,7 +172,7 @@ const NonCustomers = () => {
 																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
-																	className='w-[0.75rem]'
+																	className='w-4 hover:text-rose-800'
 																/>
 															</button>
 														</li>
@@ -188,7 +190,7 @@ const NonCustomers = () => {
 														...userNonCustomers,
 													});
 												}}
-												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												className='inline-flex items-center gap-2 text-lg p-3 text-black-eerie hover:text-gray-600'>
 												<FontAwesomeIcon
 													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 													icon={faCirclePlus}
@@ -214,7 +216,9 @@ const NonCustomers = () => {
 												?.length &&
 												userNonCustomers.refusingCustomers.map(
 													(refusingCustomer, index) => (
-														<li key={index}>
+														<li
+															key={index}
+															className='flex items-center'>
 															<input
 																type='text'
 																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers text-xl'
@@ -247,7 +251,7 @@ const NonCustomers = () => {
 																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
-																	className='w-[0.75rem]'
+																	className='w-4 hover:text-rose-800'
 																/>
 															</button>
 														</li>
@@ -292,7 +296,9 @@ const NonCustomers = () => {
 												?.length &&
 												userNonCustomers.unwantedCustomers.map(
 													(unwantedCustomer, index) => (
-														<li key={index}>
+														<li
+															key={index}
+															className='flex items-center'>
 															<input
 																type='text'
 																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers text-xl'
@@ -325,7 +331,7 @@ const NonCustomers = () => {
 																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
-																	className='w-[0.75rem]'
+																	className='w-4 hover:text-rose-800'
 																/>
 															</button>
 														</li>
@@ -406,7 +412,11 @@ const NonCustomers = () => {
 											{!!userNonCustomers.soonNonCustomers?.length &&
 												userNonCustomers.soonNonCustomers.map(
 													(nonCustomers, index) => (
-														<li key={index}>{nonCustomers}</li>
+														<li
+															key={index}
+															className='flex items-center'>
+															{nonCustomers}
+														</li>
 													)
 												)}
 										</ul>

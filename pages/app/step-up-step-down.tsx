@@ -102,7 +102,7 @@ const Analysis = () => {
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='w-1/2 bg-white p-12 relative'>
-							<UserInfoHeader className='w-1/2'></UserInfoHeader>
+							<UserInfoHeader></UserInfoHeader>
 							<h3 className='text-[2.8rem] my-10 text-yellow-green'>
 								Step-up step-down
 							</h3>
@@ -119,10 +119,12 @@ const Analysis = () => {
 										<ul className='flex flex-col gap-5'>
 											{!!userAnalysis.above?.length &&
 												userAnalysis.above.map((item, index) => (
-													<li key={index}>
+													<li
+														key={index}
+														className='flex items-center'>
 														<input
 															type='text'
-															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
 															value={item}
 															onChange={(e) => {
 																setUserAnalysis((prevValue) => {
@@ -146,7 +148,7 @@ const Analysis = () => {
 															className='btn-delete'>
 															<FontAwesomeIcon
 																icon={faTimes}
-																className='w-[0.75rem]'
+																className='w-4 hover:text-rose-800'
 															/>
 														</button>
 													</li>
@@ -161,12 +163,12 @@ const Analysis = () => {
 														return { ...prevValue };
 													});
 												}}
-												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												className='inline-flex items-center gap-2 text-xl p-3 mb-7 text-black-eerie hover:text-gray-600'>
 												<FontAwesomeIcon
 													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 													icon={faCirclePlus}
 												/>
-												Add more above items
+												Add more
 											</button>
 										</div>
 									</div>
@@ -178,10 +180,12 @@ const Analysis = () => {
 											{!!userAnalysis.customers?.length &&
 												userAnalysis.customers.map(
 													(item, index) => (
-														<li key={index}>
+														<li
+															key={index}
+															className='flex items-center'>
 															<input
 																type='text'
-																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
+																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
 																value={item}
 																onChange={(e) => {
 																	userAnalysis.customers[
@@ -215,7 +219,7 @@ const Analysis = () => {
 																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
-																	className='w-[0.75rem]'
+																	className='w-4 hover:text-rose-800'
 																/>
 															</button>
 														</li>
@@ -231,12 +235,12 @@ const Analysis = () => {
 														...userAnalysis,
 													});
 												}}
-												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												className='inline-flex items-center gap-2 text-xl p-3 mb-7 text-black-eerie hover:text-gray-600'>
 												<FontAwesomeIcon
 													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 													icon={faCirclePlus}
 												/>
-												Add more customers
+												Add more
 											</button>
 										</div>
 									</div>
@@ -245,10 +249,12 @@ const Analysis = () => {
 										<ul className='flex flex-col gap-5'>
 											{!!userAnalysis.below?.length &&
 												userAnalysis.below.map((item, index) => (
-													<li key={index}>
+													<li
+														key={index}
+														className='flex items-center'>
 														<input
 															type='text'
-															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
 															value={item}
 															onChange={(e) => {
 																setUserAnalysis((prevValue) => {
@@ -272,7 +278,7 @@ const Analysis = () => {
 															className='btn-delete'>
 															<FontAwesomeIcon
 																icon={faTimes}
-																className='w-[0.75rem]'
+																className='w-4 hover:text-rose-800'
 															/>
 														</button>
 													</li>
@@ -287,12 +293,12 @@ const Analysis = () => {
 														return { ...prevValue };
 													});
 												}}
-												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												className='inline-flex items-center gap-2 text-xl p-3 mb-7 text-black-eerie hover:text-gray-600'>
 												<FontAwesomeIcon
 													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 													icon={faCirclePlus}
 												/>
-												Add more below items
+												Add more
 											</button>
 										</div>
 									</div>
