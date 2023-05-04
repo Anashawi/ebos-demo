@@ -5,11 +5,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
-import Spinner from "../common/spinner";
+import Chart from "react-google-charts";
 import { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
-import ideaValueOptions from "../../samples/lookups/idea-factor-value-options.json";
+import { useMemo } from "react";
 import { ICompetitor, IProduct } from "../../models/types";
 import useIdeaFactorsChart from "../../hooks/use-idea-factors-chart";
 
@@ -39,36 +37,38 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 	return (
 		<div className='flex justify-between'>
 			<div className='md:w-1/2 pr-12'>
-				<div key={index} className='border shadow p-10'>
+				<div key={index} className='border p-5'>
 					<div className='flex justify-between mb-10'>
-						<h2 className='text-2xl font-normal'>{product.name}</h2>
+						<h2 className='text-xl font-normal'>{product.name}</h2>
 						<FontAwesomeIcon
 							onClick={onRemove}
-							className='w-9 cursor-pointer text-rose-200 hover:text-rose-500'
+							className='w-[2rem] cursor-pointer text-gray-200 hover:text-rose-500'
 							icon={faEyeSlash}
 						/>
 					</div>
 					<FieldArray name={`products.${index}.ideaFactors`}>
 						{({ remove, push }) => (
 							<>
-								<ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[350px] overflow-y-auto'>
+								<ul className='flex flex-col gap-5 mb-10 pr-2 bg-white h-[350px] overflow-y-auto'>
 									{!!product.ideaFactors?.length &&
 										product.ideaFactors.map((idea, ideaIndex) => (
 											<li
 												key={ideaIndex}
-												className='flex gap-5 items-start border-b border-gray-400 pb-7 spacedout'>
-												<div className=''>
-													<label>Idea</label>
+												className='flex gap-5 items-start'>
+												<div className='flex flex-col'>
+													<label className='text-lg'>
+														Idea {ideaIndex + 1}
+													</label>
 													<Field
 														type='text'
 														placeholder='name'
-														className='w-full idea-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+														className='w-[140px] text-lg p-3 bg-gray-100 outline-none border-none'
 														name={`products.${index}.ideaFactors.${ideaIndex}.name`}
 													/>
 													<ErrorMessage
 														name={`products.${index}.ideaFactors.${ideaIndex}.name`}>
 														{(msg) => (
-															<div className='text-lg text-rose-500'>
+															<div className='text-sm text-rose-500'>
 																{msg}
 															</div>
 														)}
@@ -83,30 +83,39 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 															<div
 																key={compIndex}
 																className='flex-1 flex flex-col min-w-[140px]'>
-																<label>{comp.name}</label>
+																<label className='text-lg'>
+																	{comp.name}
+																</label>
 																<Field
 																	as='select'
 																	placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
-																	className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																	className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 																	name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}>
-																	{ideaValueOptions.map(
-																		(option: any) => (
-																			<option
-																				key={option.id}
-																				value={
-																					+option.value
-																				}>
-																				{
-																					option.displayValue
-																				}
-																			</option>
-																		)
-																	)}
+																	<option
+																		className='text-lg'
+																		value={1}>
+																		Poor
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={2}>
+																		Moderate
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={3}>
+																		Good
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={4}>
+																		Excellent
+																	</option>
 																</Field>
 																<ErrorMessage
 																	name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}>
 																	{(msg) => (
-																		<div className='w-full text-lg text-rose-500'>
+																		<div className='w-full text-sm text-rose-500'>
 																			{msg}
 																		</div>
 																	)}
@@ -115,13 +124,12 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 														)
 													)}
 												</div>
-
 												<FontAwesomeIcon
 													icon={faTrash}
 													onClick={() => {
 														remove(ideaIndex);
 													}}
-													className='self-center w-5 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
+													className='self-center w-[1.2rem] h-auto cursor-pointer text-gray-200 hover:text-rose-500'
 												/>
 											</li>
 										))}
@@ -131,11 +139,12 @@ const IdeaFactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 											onClick={() => {
 												push(emptyFactor);
 											}}
-											className='inline-flex items-center gap-3 mb-5 text-lg p-3 btn blue-gradient text-black-eerie hover:text-white'>
+											className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
 											<FontAwesomeIcon
-												className='w-7 h-auto cursor-pointer text-white'
+												className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 												icon={faCirclePlus}
 											/>
+											Add more idea factors
 										</button>
 									</div>
 								</ul>

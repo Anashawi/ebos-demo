@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
-import { ICompetitor, IFactorCompetitor, IProduct } from "../models/types";
-import { title } from "process";
+import { ICompetitor, IProduct } from "../models/types";
 
 const useFactorsChart = (product: IProduct) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
@@ -37,7 +36,14 @@ const useFactorsChart = (product: IProduct) => {
 			},
 			is3D: false,
 			backgroundColor: "#eee",
-			colors: ["#046D35", "#E51061", "#0DB1D7", "#E51061", "#FFAA00", "gray"],
+			colors: [
+				"#046D35",
+				"#E51061",
+				"#0DB1D7",
+				"#E51061",
+				"#FFAA00",
+				"gray",
+			],
 			legend: {
 				position: "right",
 				alignment: "start",
@@ -52,11 +58,16 @@ const useFactorsChart = (product: IProduct) => {
 				},
 			},
 			vAxis: {
-				ticks: [{ v: "1", f: "Poor" }, { v: "2", f: "Moderate" }, { v: "3", f: "Good" }, { v: "4", f: "Excellent" }] as any,
+				ticks: [
+					{ v: "1", f: "Poor" },
+					{ v: "2", f: "Moderate" },
+					{ v: "3", f: "Good" },
+					{ v: "4", f: "Excellent" },
+				] as any,
 				title: "Competency Level",
 			},
 			hAxis: {
-				title: "Competency Factors"
+				title: "Competency Factors",
 			},
 			chartArea: {
 				left: 100,

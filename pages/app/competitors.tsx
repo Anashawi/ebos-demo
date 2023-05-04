@@ -116,7 +116,7 @@ const Competitors = () => {
 						</h3>
 						<Formik
 							initialValues={{
-								products: userProduct.products.filter(
+								products: userProduct.products?.filter(
 									(p) =>
 										!lookupProducts.some(
 											(lookupProd) => lookupProd.uuid === p.uuid

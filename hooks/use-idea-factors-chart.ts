@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
-import { IFactorCompetitor, IProduct } from "../models/types";
+import { ICompetitor, IProduct } from "../models/types";
 
 const useIdeaFactorsChart = (product: IProduct) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
-		chartType: "Line",
+		chartType: "LineChart",
 		width: "100%",
 		height: "100%",
 		options: {},
@@ -15,34 +15,67 @@ const useIdeaFactorsChart = (product: IProduct) => {
 			product.ideaFactors?.map((ideaFactor) => {
 				return [
 					ideaFactor.name,
-					...ideaFactor.competitors?.map(
-						(comp: IFactorCompetitor) => +comp.value
+					...(product.competitors ?? ([] as ICompetitor[])).map(
+						(comp: ICompetitor, index) => {
+							if (ideaFactor.competitors[index]) {
+								return +ideaFactor.competitors[index].value;
+							}
+							return 1;
+						}
 					),
 				];
 			}) ?? [];
 		chart.data = [
-			[
-				"Idea Factor",
-				...(product.competitors?.map((comp) => comp.name) ?? []),
-			],
+			["IdeaFactor", ...(product.competitors?.map((comp) => comp.name) ?? [])],
 			...rows,
 		];
 		chart.options = {
-			title: product.name,
+			title: `Red Ocean: ${product.name}`,
 			titleTextStyle: {
-				// color: <string>,    // any HTML string color ('red', '#cc00cc')
-				// fontName: <string>, // i.e. 'Times New Roman'
-				fontSize: 16, // 12, 18 whatever you want (don't specify px)
-				// {/* bold: <boolean>,    // true or false
-				// italic: <boolean>   // true of false */}
+				fontSize: 12, // 12, 18 whatever you want (don't specify px),
 			},
-			colors: ["#FFDA57", "#FDC10E", "#1CE6A1"],
+			is3D: false,
+			backgroundColor: "#eee",
+			colors: [
+				"#046D35",
+				"#E51061",
+				"#0DB1D7",
+				"#E51061",
+				"#FFAA00",
+				"gray",
+			],
+			legend: {
+				position: "right",
+				alignment: "start",
+				textStyle: {
+					fontSize: 10,
+				},
+			},
+			tooltip: { trigger: "none" },
+			bubble: {
+				textStyle: {
+					fontSize: 11,
+				},
+			},
 			vAxis: {
 				ticks: [
-					{ v: 1, f: "Poor" },
-					{ v: 2, f: "Migrator" },
-					{ v: 3, f: "Settler" },
+					{ v: "1", f: "Poor" },
+					{ v: "2", f: "Moderate" },
+					{ v: "3", f: "Good" },
+					{ v: "4", f: "Excellent" },
 				] as any,
+				// title: "Competency Level",
+			},
+			hAxis: {
+				title: "Competency IdeaFactors",
+			},
+			chartArea: {
+				left: 100,
+				top: 70,
+				bottom: 60,
+				right: 100,
+				width: "100%",
+				height: "100%",
 			},
 		};
 		setChart({ ...chart });
@@ -53,6 +86,7 @@ const useIdeaFactorsChart = (product: IProduct) => {
 			updateChartProps();
 		}
 	}, [product]);
+
 	return [chart];
 };
 

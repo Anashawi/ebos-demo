@@ -43,7 +43,6 @@ const Factors = () => {
 
 	useEffect(() => {
 		data?.products?.forEach((prod) => {
-			emptyFactor.name = "factor 1";
 			emptyFactor.competitors =
 				prod.competitors?.map((comp) => {
 					return {
@@ -201,16 +200,16 @@ const Factors = () => {
 																	)}
 															</div>
 															<div className='flex gap-3 items-center mt-10'>
-																<div className='w-1/2 flex gap-5 flex-wrap justify-between items-center pr-12'>
-																	{!!userProduct.products?.filter(
-																		(prod) =>
-																			!lookupProducts.some(
-																				(lookupProd) =>
-																					lookupProd.uuid ===
-																					prod.uuid
-																			)
-																	).length && (
-																		<>
+																<div className='w-1/2 flex flex-col gap-3 pr-12'>
+																	<div className='flex gap-5 flex-wrap justify-between items-center'>
+																		{!!userProduct.products?.filter(
+																			(prod) =>
+																				!lookupProducts.some(
+																					(lookupProd) =>
+																						lookupProd.uuid ===
+																						prod.uuid
+																				)
+																		).length && (
 																			<button
 																				type='submit'
 																				className={
@@ -225,59 +224,56 @@ const Factors = () => {
 																				}>
 																				Save
 																			</button>
-																			<select
-																				className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																				value={0}
-																				onChange={(e) => {
-																					const productToBeShown =
-																						userProduct.products?.find(
+																		)}
+																		<select
+																			className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																			value={0}
+																			onChange={(e) => {
+																				const productToBeShown =
+																					userProduct.products?.find(
+																						(prod) =>
+																							prod.uuid ===
+																							e.target
+																								.value
+																					);
+																				push(
+																					productToBeShown
+																				);
+																				setLookupProducts(
+																					(prevValue) =>
+																						prevValue.filter(
 																							(prod) =>
-																								prod.uuid ===
+																								prod.uuid !==
 																								e.target
 																									.value
-																						);
-																					push(
-																						productToBeShown
-																					);
-																					setLookupProducts(
-																						(prevValue) =>
-																							prevValue.filter(
-																								(
-																									prod
-																								) =>
-																									prod.uuid !==
-																									e
-																										.target
-																										.value
-																							)
-																					);
-																				}}>
-																				<option value={0}>
-																					select a product
-																					to be displayed
-																				</option>
-																				{lookupProducts.map(
-																					(
-																						product,
-																						index
-																					) => (
-																						<option
-																							key={index}
-																							value={
-																								product.uuid
-																							}>
-																							{
-																								product.name
-																							}
-																						</option>
-																					)
-																				)}
-																			</select>
-																		</>
-																	)}
+																						)
+																				);
+																			}}>
+																			<option value={0}>
+																				select a product to
+																				be displayed
+																			</option>
+																			{lookupProducts.map(
+																				(
+																					product,
+																					index
+																				) => (
+																					<option
+																						key={index}
+																						value={
+																							product.uuid
+																						}>
+																						{product.name}
+																					</option>
+																				)
+																			)}
+																		</select>
+																	</div>
 																	{userProduct?.products
 																		?.length > 0 && (
-																		<Link href={"/"}>
+																		<Link
+																			href={"/"}
+																			className='self-end'>
 																			<span className='text-md text-gray-400 italic'>
 																				go to next →{" "}
 																				<span className='text-gray-500'>
