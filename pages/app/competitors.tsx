@@ -91,7 +91,7 @@ const Competitors = () => {
 		);
 
 	const emptyCompetitor = {
-		uuid: new Crypto().randomUUID(),
+		uuid: global.crypto.randomUUID(),
 		name: "",
 		marketShare: 0,
 	} as ICompetitor;
