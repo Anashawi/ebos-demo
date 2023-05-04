@@ -193,7 +193,7 @@ const NonCustomers = () => {
 													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 													icon={faCirclePlus}
 												/>
-												Add more factors
+												Add more non customes
 											</button>
 										</div>
 									</div>
@@ -254,8 +254,9 @@ const NonCustomers = () => {
 													)
 												)}
 										</ul>
-										<div>
-											<a
+										<div className='flex justify-center'>
+											<button
+												type='button'
 												onClick={() => {
 													userNonCustomers.refusingCustomers.push(
 														""
@@ -264,9 +265,13 @@ const NonCustomers = () => {
 														...userNonCustomers,
 													});
 												}}
-												className='btn px-5 py-2 blue-gradient text-lg text-black-eerie hover:text-white'>
-												+ Add
-											</a>
+												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												<FontAwesomeIcon
+													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+													icon={faCirclePlus}
+												/>
+												Add more refusing customers
+											</button>
 										</div>
 									</div>
 									<div className='flex flex-col gap-3 my-5'>
@@ -327,8 +332,9 @@ const NonCustomers = () => {
 													)
 												)}
 										</ul>
-										<div>
-											<a
+										<div className='flex justify-center'>
+											<button
+												type='button'
 												onClick={() => {
 													userNonCustomers.unwantedCustomers.push(
 														""
@@ -337,9 +343,13 @@ const NonCustomers = () => {
 														...userNonCustomers,
 													});
 												}}
-												className='btn px-5 py-2 blue-gradient text-lg text-black-eerie hover:text-white'>
-												+ Add
-											</a>
+												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												<FontAwesomeIcon
+													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+													icon={faCirclePlus}
+												/>
+												Add more unwanted customers
+											</button>
 										</div>
 									</div>
 									<div className='h-10'>
