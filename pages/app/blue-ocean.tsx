@@ -163,12 +163,18 @@ const IdeaFactors = () => {
 														<>
 															<div className='flex flex-col gap-12'>
 																<div className='flex flex-col gap-20'>
-																	{!values.products
-																		?.length && (
-																		<p className='text-rose-300'>
-																			make a selection to
-																			view products !
-																		</p>
+																	{!values.products?.length &&
+																		!isLoading && (
+																			<p className='text-rose-300'>
+																				make a selection to
+																				view products !
+																			</p>
+																		)}
+																	{!!isLoading && (
+																		<Spinner
+																			className='flex items-center text-2xl'
+																			message='Loading Blue Ocean'
+																		/>
 																	)}
 																	{!!values.products.length &&
 																		values.products.map(
@@ -200,6 +206,14 @@ const IdeaFactors = () => {
 															</div>
 															<div className='flex gap-3 items-center mt-10'>
 																<div className='w-1/2 flex flex-col gap-3 pr-11'>
+																	<div className='h-10'>
+																		{isUpdatingUserProduct && (
+																			<Spinner
+																				className='flex items-center text-xl'
+																				message='Saving Blue Ocean'
+																			/>
+																		)}
+																	</div>
 																	<div className='flex gap-5 justify-between items-center'>
 																		<button
 																			type='submit'

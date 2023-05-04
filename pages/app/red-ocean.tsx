@@ -191,7 +191,7 @@ const Factors = () => {
 																			isUpdatingUserProduct) && (
 																				<Spinner
 																					className='flex items-center text-xl'
-																					message='Saving Rad Ocean'
+																					message='Saving Red Ocean'
 																				/>
 																			)}
 																	</div>
