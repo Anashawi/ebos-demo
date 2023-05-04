@@ -129,10 +129,10 @@ const Customers = () => {
 							<div className='grow md:w-4/12 bg-white p-12 relative'>
 								<UserInfoHeader></UserInfoHeader>
 
-								<h3 className='mt-10 text-[2.52rem] text-yellow-green'>
+								<h3 className='my-10 text-4xl text-yellow-green'>
 									Voice of customers
 								</h3>
-								<h4 className='text-[2.1rem] font-normal mb-6'>
+								<h4 className='text-3xl font-normal mb-6'>
 									Top customer categories
 								</h4>
 								<ul className='flex flex-col gap-5 mb-5'>
@@ -172,46 +172,47 @@ const Customers = () => {
 										/>
 									</li>
 								</ul>
-								<div className='flex flex-wrap gap-5 py-3'>
-									<div className='flex gap-5'>
-										<button
-											type='button'
-											onClick={() => {
-												formik.handleSubmit();
-											}}
-											className={
-												formik.isSubmitting || !formik.isValid
-													? "btn-rev btn-disabled"
-													: "btn-rev"
-											}
-											disabled={
-												formik.isSubmitting || !formik.isValid
-											}>
-											Submit
-										</button>
-										<Link
-											href='/'
-											className='btn text-black-eerie hover:text-blue-ncs'>
-											<strong>Back To Dashboard</strong>
+								<div className='flex gap-5 justify-between items-center'>
+									<button
+										type='button'
+										onClick={() => {
+											formik.handleSubmit();
+										}}
+										className={
+											formik.isSubmitting || !formik.isValid
+												? "btn-rev btn-disabled"
+												: "btn-rev"
+										}
+										disabled={formik.isSubmitting || !formik.isValid}>
+										Submit
+									</button>
+									{!!userCustomers.id && (
+										<Link href={"/"}>
+											<span className='text-md text-gray-400 italic'>
+												go to next →{" "}
+												<span className='text-gray-500'>
+													Blue Ocean
+												</span>
+											</span>
 										</Link>
-									</div>
-									{(!!isLoading ||
-										isUpdatingUserCustomers ||
-										isCreatingUserCustomers) && (
-										<Spinner
-											className='flex items-center px-1 text-2xl'
-											message='Loading ...'
-										/>
 									)}
 								</div>
+								{(!!isLoading ||
+									isUpdatingUserCustomers ||
+									isCreatingUserCustomers) && (
+									<Spinner
+										className='flex items-center px-1 pt-3 text-xl'
+										message='Loading ...'
+									/>
+								)}
 							</div>
 							<div className='grow md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
 								<Header
 									className='w-full mb-10'
 									toggleIdeasModal={toggleIdeasModal}></Header>
-								<div className='flex flex-wrap gap-5'>
+								<div className='flex flex-wrap gap-5 mt-[7.2rem]'>
 									<div className='col-1/2 grow'>
-										<h4 className='text-[2.1rem] font-normal mb-6'>
+										<h4 className='text-3xl font-normal mb-6'>
 											What do they want
 										</h4>
 										<ul className='flex flex-col gap-5 mb-5'>
@@ -253,7 +254,7 @@ const Customers = () => {
 										</ul>
 									</div>
 									<div className='col-1/2 grow'>
-										<h4 className='text-[2.1rem] font-normal mb-6'>
+										<h4 className='text-3xl font-normal mb-6'>
 											How to fulfill it
 										</h4>
 										<ul className='flex flex-col gap-5 mb-5'>
@@ -296,7 +297,9 @@ const Customers = () => {
 									</div>
 								</div>
 								<div className='py-3'>
-									<ConsultantReview className='mt-10' pageTitle='Voice of customers'></ConsultantReview>
+									<ConsultantReview
+										className='mt-10'
+										pageTitle='Voice of customers'></ConsultantReview>
 								</div>
 							</div>
 						</div>

@@ -240,6 +240,16 @@ const Disruption = () => {
 										<FontAwesomeIcon className='w-7' icon={faEdit} />
 									</button>
 								)}
+								{!!videos.id && (
+									<Link href={"/"}>
+										<span className='text-md text-gray-400 italic'>
+											go to next →{" "}
+											<span className='text-gray-500'>
+												Voice of Customers
+											</span>
+										</span>
+									</Link>
+								)}
 							</div>
 						</div>
 						<div className='md:w-4/12 pane-right-gradient min-h-screen'>

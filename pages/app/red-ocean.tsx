@@ -278,9 +278,9 @@ const Factors = () => {
 																	{userProduct?.products
 																		?.length > 0 && (
 																		<Link href={"/"}>
-																			<span className='text-md text-gray-400 italic pr-12'>
+																			<span className='text-md text-gray-400 italic'>
 																				go to next →{" "}
-																				<span className='text-gray-500 pr-2'>
+																				<span className='text-gray-500'>
 																					Disruption
 																				</span>
 																			</span>
