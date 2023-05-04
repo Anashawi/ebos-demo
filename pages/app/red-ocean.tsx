@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
-import { IFactor, IProduct } from "../../models/types";
+import { IFactor } from "../../models/types";
 import { string, object, array } from "yup";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";

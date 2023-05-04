@@ -1,7 +1,5 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
-import { Field, FieldArray } from "formik";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import * as clientApi from "../../http-client/non-customers.client";
 import { IUserNonCustomers } from "../../models/user-non-customers";
@@ -10,7 +8,7 @@ import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
 
@@ -179,8 +177,9 @@ const NonCustomers = () => {
 													)
 												)}
 										</ul>
-										<div>
-											<a
+										<div className='flex justify-center'>
+											<button
+												type='button'
 												onClick={() => {
 													userNonCustomers.soonNonCustomers.push(
 														""
@@ -189,9 +188,13 @@ const NonCustomers = () => {
 														...userNonCustomers,
 													});
 												}}
-												className='btn px-5 py-2 blue-gradient text-lg text-black-eerie hover:text-white'>
-												+ Add
-											</a>
+												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												<FontAwesomeIcon
+													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+													icon={faCirclePlus}
+												/>
+												Add more factors
+											</button>
 										</div>
 									</div>
 									<div className='flex flex-col gap-3 my-5'>
