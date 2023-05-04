@@ -159,11 +159,18 @@ const Factors = () => {
 													return (
 														<>
 															<div className='flex flex-col gap-20'>
-																{!values.products?.length && (
-																	<p className='text-rose-300'>
-																		make a selection to view
-																		products !
-																	</p>
+																{!values.products?.length &&
+																	!isLoading && (
+																		<p className='text-rose-300'>
+																			make a selection to
+																			view products !
+																		</p>
+																	)}
+																{!!isLoading && (
+																	<Spinner
+																		className='flex items-center text-2xl'
+																		message='Loading Red Ocean...'
+																	/>
 																)}
 																{!!values.products.length &&
 																	values.products.map(
@@ -178,7 +185,6 @@ const Factors = () => {
 																					index={
 																						productIndex
 																					}
-
 																				/>
 																			</div>
 																		)
@@ -186,22 +192,22 @@ const Factors = () => {
 															</div>
 															<div className='flex gap-3 items-center mt-10'>
 																<div className='w-1/2 pr-12'>
-																	<div className="h-10">
-																		{(!!isLoading ||
-																			isUpdatingUserProduct) && (
-																				<Spinner
-																					className='flex items-center text-xl'
-																					message='Saving Red Ocean'
-																				/>
-																			)}
+																	<div className='h-10'>
+																		{isUpdatingUserProduct && (
+																			<Spinner
+																				className='flex items-center text-xl'
+																				message='Saving Red Ocean'
+																			/>
+																		)}
 																	</div>
 																	<div className='flex gap-5 flex-wrap justify-between items-center'>
-																		{!!userProduct.products?.length && (
+																		{!!userProduct.products
+																			?.length && (
 																			<button
 																				type='submit'
 																				className={
 																					isSubmitting ||
-																						!isValid
+																					!isValid
 																						? "btn-rev btn-disabled"
 																						: "btn-rev"
 																				}
@@ -215,26 +221,21 @@ const Factors = () => {
 
 																		{userProduct?.products
 																			?.length > 0 && (
-																				<Link
-																					href={"/"}
-																					className='self-end'>
-																					<span className='text-md text-gray-400 italic'>
-																						go to next →{" "}
-																						<span className='text-gray-500'>
-																							Disruption
-																						</span>
+																			<Link href={"/"}>
+																				<span className='text-md text-gray-400 italic'>
+																					go to next →{" "}
+																					<span className='text-gray-500'>
+																						Disruption
 																					</span>
-																				</Link>
-																			)}
-
+																				</span>
+																			</Link>
+																		)}
 																	</div>
-
 																</div>
 																<div className='w-1/2 pl-7 py-3'>
 																	<ConsultantReview pageTitle='Red Ocean Canvas'></ConsultantReview>
 																</div>
 															</div>
-
 														</>
 													);
 												}}

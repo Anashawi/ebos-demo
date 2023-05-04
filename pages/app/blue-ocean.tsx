@@ -173,7 +173,7 @@ const IdeaFactors = () => {
 																	{!!isLoading && (
 																		<Spinner
 																			className='flex items-center text-2xl'
-																			message='Loading Blue Ocean'
+																			message='Loading Blue Ocean...'
 																		/>
 																	)}
 																	{!!values.products.length &&
