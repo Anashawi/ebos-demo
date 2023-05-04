@@ -244,7 +244,18 @@ const Goals = () => {
 																		</p>
 																	)}
 															</ul>
+															<div className="h-12">
+																{isSubmitting ||
+																	isCreatingUserGoal ||
+																	(isUpdatingUserGoal && (
+																		<Spinner
+																			className='text-lg py-3'
+																			message='Saving Goals'
+																		/>
+																	))}
+															</div>
 															<div className='flex justify-between gap-5 items-center'>
+
 																<div className='flex gap-3'>
 																	<button
 																		type='submit'
@@ -286,14 +297,7 @@ const Goals = () => {
 																		</Link>
 																	)}
 															</div>
-															{isSubmitting ||
-																isCreatingUserGoal ||
-																(isUpdatingUserGoal && (
-																	<Spinner
-																		className='text-lg py-3'
-																		message='Saving Goals'
-																	/>
-																))}
+
 														</>
 													)}
 												</FieldArray>

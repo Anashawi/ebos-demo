@@ -19,10 +19,9 @@ import useFactorsChart from "../../hooks/use-factors-chart";
 interface Props {
 	product: IProduct;
 	index: number;
-	onRemove: any;
 }
 
-const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
+const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 	const [chart] = useFactorsChart(product);
 
 	const emptyFactor = useMemo(() => {
@@ -43,11 +42,6 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 				<div key={index} className='border p-5'>
 					<div className='flex justify-between mb-10'>
 						<h2 className='text-xl font-normal'>{product.name}</h2>
-						<FontAwesomeIcon
-							onClick={onRemove}
-							className='w-[2rem] cursor-pointer text-gray-200 hover:text-rose-500'
-							icon={faEyeSlash}
-						/>
 					</div>
 					<FieldArray name={`products.${index}.factors`}>
 						{({ remove, push }) => (

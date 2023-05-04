@@ -13,7 +13,7 @@ const Spinner: NextPage<Props> = (
    }
 ) => {
    return (
-      <div className={`flex mt-1 ${props.className}`}>
+      <div className={`flex ${props.className}`}>
          <svg
             className='animate-spin -ml-1 mr-3 h-5 w-5 text-white'
             xmlns='http://www.w3.org/2000/svg'

@@ -206,9 +206,9 @@ const Competitors = () => {
 																						(
 																							prevValue
 																						) => [
-																							...prevValue,
-																							product,
-																						]
+																								...prevValue,
+																								product,
+																							]
 																					);
 																					remove(
 																						productIndex
@@ -224,79 +224,83 @@ const Competitors = () => {
 																	)
 																)}
 														</div>
-														<div className='w-1/2 pr-12 flex gap-5 items-center justify-between'>
-															<div className='flex items-center gap-5'>
-																<button
-																	type='submit'
-																	className={
-																		isSubmitting || !isValid
-																			? "btn-rev btn-disabled"
-																			: "btn-rev"
-																	}
-																	disabled={
-																		isSubmitting || !isValid
-																	}>
-																	Save
-																</button>
-																{lookupProducts.length > 0 && (
-																	<select
-																		className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																		value={0}
-																		onChange={(e) => {
-																			const productToBeShown =
-																				userProduct.products?.find(
-																					(prod) =>
-																						prod.uuid ===
-																						e.target.value
-																				);
-																			push(productToBeShown);
-																			setLookupProducts(
-																				(prevValue) =>
-																					prevValue.filter(
-																						(prod) =>
-																							prod.uuid !==
-																							e.target
-																								.value
-																					)
-																			);
-																		}}>
-																		<option value={0}>
-																			Add one of existing
-																			products
-																		</option>
-																		{lookupProducts.map(
-																			(product, index) => (
-																				<option
-																					key={index}
-																					value={
-																						product.uuid
-																					}>
-																					{product.name}
-																				</option>
-																			)
-																		)}
-																	</select>
-																)}
+														<div>
+															<div className="h-10">
+																{(!!isLoading ||
+																	isUpdatingUserProduct) && (
+																		<Spinner
+																			className='flex items-center text-xl'
+																			message='Saving Market Potential'
+																		/>
+																	)}
 															</div>
-															{userProduct?.products?.length >
-																0 && (
-																<Link href={"/"}>
-																	<span className='text-md text-gray-400 italic'>
-																		go to next →{" "}
-																		<span className='text-gray-500'>
-																			Red Ocean Canvas
-																		</span>
-																	</span>
-																</Link>
-															)}
+															<div className='w-1/2 pr-12 flex gap-5 items-center justify-between'>
+																<div className='flex items-center gap-5'>
+																	<button
+																		type='submit'
+																		className={
+																			isSubmitting || !isValid
+																				? "btn-rev btn-disabled"
+																				: "btn-rev"
+																		}
+																		disabled={
+																			isSubmitting || !isValid
+																		}>
+																		Save
+																	</button>
+																	{lookupProducts.length > 0 && (
+																		<select
+																			className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																			value={0}
+																			onChange={(e) => {
+																				const productToBeShown =
+																					userProduct.products?.find(
+																						(prod) =>
+																							prod.uuid ===
+																							e.target.value
+																					);
+																				push(productToBeShown);
+																				setLookupProducts(
+																					(prevValue) =>
+																						prevValue.filter(
+																							(prod) =>
+																								prod.uuid !==
+																								e.target
+																									.value
+																						)
+																				);
+																			}}>
+																			<option value={0}>
+																				Add one of existing
+																				products
+																			</option>
+																			{lookupProducts.map(
+																				(product, index) => (
+																					<option
+																						key={index}
+																						value={
+																							product.uuid
+																						}>
+																						{product.name}
+																					</option>
+																				)
+																			)}
+																		</select>
+																	)}
+																</div>
+																{userProduct?.products?.length >
+																	0 && (
+																		<Link href={"/"}>
+																			<span className='text-md text-gray-400 italic'>
+																				go to next →{" "}
+																				<span className='text-gray-500'>
+																					Red Ocean Canvas
+																				</span>
+																			</span>
+																		</Link>
+																	)}
+															</div>
 														</div>
-														{(!!isLoading ||
-															isUpdatingUserProduct) && (
-															<Spinner
-																className='flex items-center text-xl'
-																message='Saving Market Potential'
-															/>
-														)}
 													</div>
 												);
 											}}

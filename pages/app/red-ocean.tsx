@@ -92,8 +92,6 @@ const Factors = () => {
 		} as IFactor;
 	}, []);
 
-	const [lookupProducts, setLookupProducts] = useState<IProduct[]>([]);
-
 	return (
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
@@ -144,8 +142,7 @@ const Factors = () => {
 										}
 									});
 									if (userProduct?.id) {
-										userProduct.products =
-											values.products.concat(lookupProducts);
+										userProduct.products = values.products;
 										await updateUserProduct({
 											...userProduct,
 										});
@@ -181,40 +178,30 @@ const Factors = () => {
 																					index={
 																						productIndex
 																					}
-																					onRemove={() => {
-																						setLookupProducts(
-																							(
-																								prevValue
-																							) => [
-																								...prevValue,
-																								product,
-																							]
-																						);
-																						remove(
-																							productIndex
-																						);
-																					}}
+
 																				/>
 																			</div>
 																		)
 																	)}
 															</div>
 															<div className='flex gap-3 items-center mt-10'>
-																<div className='w-1/2 flex flex-col gap-3 pr-12'>
+																<div className='w-1/2 pr-12'>
+																	<div className="h-10">
+																		{(!!isLoading ||
+																			isUpdatingUserProduct) && (
+																				<Spinner
+																					className='flex items-center text-xl'
+																					message='Saving Rad Ocean'
+																				/>
+																			)}
+																	</div>
 																	<div className='flex gap-5 flex-wrap justify-between items-center'>
-																		{!!userProduct.products?.filter(
-																			(prod) =>
-																				!lookupProducts.some(
-																					(lookupProd) =>
-																						lookupProd.uuid ===
-																						prod.uuid
-																				)
-																		).length && (
+																		{!!userProduct.products?.length && (
 																			<button
 																				type='submit'
 																				className={
 																					isSubmitting ||
-																					!isValid
+																						!isValid
 																						? "btn-rev btn-disabled"
 																						: "btn-rev"
 																				}
@@ -225,75 +212,29 @@ const Factors = () => {
 																				Save
 																			</button>
 																		)}
-																		<select
-																			className='min-w-[200px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																			value={0}
-																			onChange={(e) => {
-																				const productToBeShown =
-																					userProduct.products?.find(
-																						(prod) =>
-																							prod.uuid ===
-																							e.target
-																								.value
-																					);
-																				push(
-																					productToBeShown
-																				);
-																				setLookupProducts(
-																					(prevValue) =>
-																						prevValue.filter(
-																							(prod) =>
-																								prod.uuid !==
-																								e.target
-																									.value
-																						)
-																				);
-																			}}>
-																			<option value={0}>
-																				select a product to
-																				be displayed
-																			</option>
-																			{lookupProducts.map(
-																				(
-																					product,
-																					index
-																				) => (
-																					<option
-																						key={index}
-																						value={
-																							product.uuid
-																						}>
-																						{product.name}
-																					</option>
-																				)
+
+																		{userProduct?.products
+																			?.length > 0 && (
+																				<Link
+																					href={"/"}
+																					className='self-end'>
+																					<span className='text-md text-gray-400 italic'>
+																						go to next →{" "}
+																						<span className='text-gray-500'>
+																							Disruption
+																						</span>
+																					</span>
+																				</Link>
 																			)}
-																		</select>
+
 																	</div>
-																	{userProduct?.products
-																		?.length > 0 && (
-																		<Link
-																			href={"/"}
-																			className='self-end'>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					Disruption
-																				</span>
-																			</span>
-																		</Link>
-																	)}
+
 																</div>
 																<div className='w-1/2 pl-7 py-3'>
 																	<ConsultantReview pageTitle='Red Ocean Canvas'></ConsultantReview>
 																</div>
 															</div>
-															{(!!isLoading ||
-																isUpdatingUserProduct) && (
-																<Spinner
-																	className='flex items-center text-xl'
-																	message='Saving Market Potential'
-																/>
-															)}
+
 														</>
 													);
 												}}
