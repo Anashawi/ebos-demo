@@ -17,6 +17,7 @@ import UserInfoHeader from "../../components/common/user-info-header";
 import Link from "next/link";
 import * as _ from "lodash";
 
+
 const Competitors = () => {
 	let dbProduct: IUserProduct | undefined;
 
@@ -90,7 +91,7 @@ const Competitors = () => {
 		);
 
 	const emptyCompetitor = {
-		uuid: crypto.randomUUID(),
+		uuid: new Crypto().randomUUID(),
 		name: "",
 		marketShare: 0,
 	} as ICompetitor;
