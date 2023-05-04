@@ -91,7 +91,7 @@ const Analysis = () => {
 			<div className='homepage-bg-gradient w-screen bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
-						<div className='md:w-4/12 bg-white p-12 relative'>
+						<div className='w-1/2 bg-white p-12 relative'>
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
 							<h3 className='text-[2.52rem] my-10 text-yellow-green'>
 								Step-up step-down
@@ -222,7 +222,7 @@ const Analysis = () => {
 								}}
 							</Formik>
 						</div>
-						<div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
+						<div className='w-1/2 pane-right-gradient min-h-screen px-12 py-8'>
 							<Header className='w-full mb-10'></Header>
 							<div className='py-3'>
 								<div className='p-5 relative rounded-lg bg-gray-100 text-gray-800 mb-2'>
@@ -250,7 +250,9 @@ const Analysis = () => {
 										</ul>
 									</div>
 								</div>
-								<ConsultantReview className='mt-10' pageTitle='Step-up step-down'></ConsultantReview>
+								<ConsultantReview
+									className='mt-10'
+									pageTitle='Step-up step-down'></ConsultantReview>
 							</div>
 						</div>
 					</div>

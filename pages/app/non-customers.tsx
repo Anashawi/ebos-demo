@@ -95,7 +95,7 @@ const NonCustomers = () => {
 			<div className='homepage-bg-gradient w-screen bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
-						<div className='md:w-4/12 bg-white p-12 relative'>
+						<div className='w-1/2 bg-white p-12 relative'>
 							<UserInfoHeader></UserInfoHeader>
 
 							<h3 className='text-[2.52rem] my-10 text-yellow-green'>
@@ -296,7 +296,7 @@ const NonCustomers = () => {
 								}}
 							</Formik>
 						</div>
-						<div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
+						<div className='w-1/2 pane-right-gradient min-h-screen px-12 py-8'>
 							<Header className='w-full mb-10'></Header>
 							<div className='p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 								<div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-gray-300'>
@@ -334,7 +334,9 @@ const NonCustomers = () => {
 								</ul>
 							</div>
 							<div className='py-3'>
-								<ConsultantReview className='mt-10' pageTitle='Non Customers'></ConsultantReview>
+								<ConsultantReview
+									className='mt-10'
+									pageTitle='Non Customers'></ConsultantReview>
 							</div>
 						</div>
 					</div>
