@@ -182,6 +182,12 @@ const Products = () => {
 												return (
 													<div className='flex flex-col gap-5'>
 														<div className='py-5 flex flex-col gap-20'>
+															{!!isLoading && (
+																<Spinner
+																	className='flex items-center text-2xl'
+																	message='Loading Products...'
+																/>
+															)}
 															{!!values.products?.length &&
 																values.products?.map(
 																	(product, productIndex) => (
@@ -212,34 +218,30 @@ const Products = () => {
 																		</p>
 																	</div>
 																)}
-															{isLoading && (
-																<Spinner
-																	className='text-3xl'
-																	message='Loading ...'></Spinner>
-															)}
 														</div>
 														<div>
 															<div className='h-10'>
-																{(!!isLoading ||
-																	isUpdatingUserProduct ||
+																{(isUpdatingUserProduct ||
 																	isCreatingUserProduct) && (
-																		<Spinner
-																			className='flex items-center text-lg'
-																			message='Saving Products'
-																		/>
-																	)}
+																	<Spinner
+																		className='flex items-center text-lg'
+																		message='Saving Products'
+																	/>
+																)}
 															</div>
 															<div className='w-1/2 flex gap-5 items-center justify-between pr-5'>
 																<div className='flex gap-5'>
 																	<button
 																		type='submit'
 																		className={
-																			isSubmitting || !isValid
+																			isSubmitting ||
+																			!isValid
 																				? "btn-rev btn-disabled"
 																				: "btn-rev"
 																		}
 																		disabled={
-																			isSubmitting || !isValid
+																			isSubmitting ||
+																			!isValid
 																		}>
 																		Save
 																	</button>
@@ -253,23 +255,24 @@ const Products = () => {
 																			className='w-5 h-auto cursor-pointer'
 																			icon={faPlus}
 																		/>
-																		<span>Add New Product</span>
+																		<span>
+																			Add New Product
+																		</span>
 																	</button>
 																</div>
 																{userProduct?.products?.length >
 																	0 && (
-																		<Link href={"/"}>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					market potential
-																				</span>
+																	<Link href={"/"}>
+																		<span className='text-md text-gray-400 italic'>
+																			go to next →{" "}
+																			<span className='text-gray-500'>
+																				market potential
 																			</span>
-																		</Link>
-																	)}
+																		</span>
+																	</Link>
+																)}
 															</div>
 														</div>
-
 													</div>
 												);
 											}}
