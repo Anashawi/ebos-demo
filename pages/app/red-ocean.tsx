@@ -52,9 +52,9 @@ const Factors = () => {
 				}) ?? [];
 			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
 				prod.factors = [
-					{ ...emptyFactor, name: "factor example 1" },
-					{ ...emptyFactor, name: "factor example 2" },
-					{ ...emptyFactor, name: "factor example 3" },
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
 				];
 			}
 		});

@@ -55,9 +55,9 @@ const IdeaFactors = () => {
 				(prod.ideaFactors && prod.ideaFactors.length === 0)
 			) {
 				prod.ideaFactors = [
-					{ ...emptyFactor, name: "idea example 1" },
-					{ ...emptyFactor, name: "idea example 2" },
-					{ ...emptyFactor, name: "idea example 3" },
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
 				];
 			}
 		});
