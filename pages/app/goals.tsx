@@ -108,7 +108,7 @@ const Goals = () => {
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
-			<div className='homepage-bg-gradient w-screen bg-white'>
+			<div className='homepage-bg-gradient bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-col py-12'>
 						<div className='flex justify-between items-center gap-12 px-12'>
@@ -119,7 +119,7 @@ const Goals = () => {
 						</div>
 						<div className='flex flex-wrap'>
 							<div className='md:w-1/2 bg-white relative px-12 flex flex-col gap-5 mt-5'>
-								<h3 className='text-[2.52rem] text-yellow-green'>
+								<h3 className='mb-10 text-[2.8rem] text-yellow-green'>
 									Goals
 								</h3>
 								<Formik
@@ -159,12 +159,14 @@ const Goals = () => {
 									validateOnMount>
 									{({ values, isSubmitting, isValid, errors }) => (
 										<>
-											<h3 className='flex gap-5 flex-wrap items-start text-[2.52rem] mb-6 font-normal'>
-												<p>Choose a target date</p>
+											<h3 className='flex gap-5 flex-wrap items-center text-2xl mb-6 font-normal'>
+												<p className='font-semibold'>
+													Choose a target date
+												</p>
 												<div className='grow flex flex-col'>
 													<Field
 														type='date'
-														className='p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+														className='p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
 														name='targetDate'
 														placeholder='Goal name'
 													/>
@@ -177,11 +179,11 @@ const Goals = () => {
 													</ErrorMessage>
 												</div>
 											</h3>
-											<h3 className='text-[2.52rem] mb-6 font-normal'>
+											<h3 className='text-2xl mb-6 font-normal'>
 												Visualize success on this date, What does it
 												look like
 											</h3>
-											<h2 className='text-[4.2rem] mb-6 text-yellow-green'>
+											<h2 className='text-3xl mb-6 text-yellow-green'>
 												Celebrating Unequivocal Success!
 											</h2>
 											<p className='mb-5'>
@@ -209,7 +211,7 @@ const Goals = () => {
 																				<li className='relative'>
 																					<Field
 																						type='text'
-																						className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none goals'
+																						className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl goals'
 																						name={`goals.${index}`}
 																						placeholder='Goal name'
 																					/>
@@ -244,7 +246,7 @@ const Goals = () => {
 																		</p>
 																	)}
 															</ul>
-															<div className="h-12">
+															<div className='h-12'>
 																{isSubmitting ||
 																	isCreatingUserGoal ||
 																	(isUpdatingUserGoal && (
@@ -255,13 +257,12 @@ const Goals = () => {
 																	))}
 															</div>
 															<div className='flex justify-between gap-5 items-center'>
-
 																<div className='flex gap-3'>
 																	<button
 																		type='submit'
 																		className={
 																			isSubmitting ||
-																				!isValid
+																			!isValid
 																				? "btn-rev btn-disabled"
 																				: "btn-rev"
 																		}
@@ -276,28 +277,28 @@ const Goals = () => {
 																		onClick={() => {
 																			push("");
 																		}}
-																		className='inline-flex items-center gap-3 btn text-black-eerie'>
+																		className='inline-flex items-center gap-2 btn text-black-eerie text-lg'>
 																		<FontAwesomeIcon
-																			className='w-5 h-auto cursor-pointer'
+																			className='w-[1rem] h-auto cursor-pointer'
 																			icon={faPlus}
 																		/>
 																		<span>Add New Goal</span>
 																	</button>
 																</div>
-																{userGoals?.goals.filter(str => str?.length > 0)?.length >
-																	0 && (
-																		<Link href={"/"}>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					pioneer, migrator,
-																					settler
-																				</span>
+																{userGoals?.goals.filter(
+																	(str) => str?.length > 0
+																)?.length > 0 && (
+																	<Link href={"/"}>
+																		<span className='text-md text-gray-400 italic'>
+																			go to next →{" "}
+																			<span className='text-gray-500'>
+																				pioneer, migrator,
+																				settler
 																			</span>
-																		</Link>
-																	)}
+																		</span>
+																	</Link>
+																)}
 															</div>
-
 														</>
 													)}
 												</FieldArray>

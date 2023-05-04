@@ -41,7 +41,7 @@ const IdeaFactorsProduct = ({ product, index }: Props) => {
 										product.ideaFactors.map((idea, ideaIndex) => (
 											<li
 												key={ideaIndex}
-												className='flex gap-5 items-start'>
+												className='flex gap-5 items-start w-max'>
 												<div className='flex flex-col'>
 													<label className='text-lg'>
 														Idea {ideaIndex + 1}
@@ -118,7 +118,7 @@ const IdeaFactorsProduct = ({ product, index }: Props) => {
 													onClick={() => {
 														remove(ideaIndex);
 													}}
-													className='self-center w-[1.2rem] h-auto cursor-pointer text-gray-200 hover:text-rose-500'
+													className='self-center w-[1.2rem] h-auto relative cursor-pointer text-gray-200 hover:text-rose-500'
 												/>
 											</li>
 										))}

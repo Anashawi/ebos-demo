@@ -1,12 +1,7 @@
-import {
-	faEyeSlash,
-	faCirclePlus,
-	faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import Chart from "react-google-charts";
-import { NextPage } from "next";
 import { useMemo } from "react";
 import { ICompetitor, IProduct } from "../../models/types";
 import useCompetitorsChart from "../../hooks/use-competitors-chart";
@@ -14,16 +9,10 @@ import useCompetitorsChart from "../../hooks/use-competitors-chart";
 interface Props {
 	product: IProduct;
 	index: number;
-	onRemove: any;
 	formUtilities: any;
 }
 
-const CompetitorsProduct: NextPage<Props> = ({
-	product,
-	index,
-	onRemove,
-	formUtilities,
-}) => {
+const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 	const [chart] = useCompetitorsChart(product);
 
 	const emptyCompetitor = useMemo(() => {
@@ -47,14 +36,6 @@ const CompetitorsProduct: NextPage<Props> = ({
 											Please, add at least one competitor
 										</div>
 									)}
-									<li className='flex justify-end'>
-										<FontAwesomeIcon
-											onClick={onRemove}
-											className='w-9 cursor-pointer text-gray-200 hover:text-rose-500'
-											icon={faEyeSlash}
-										/>
-									</li>
-
 									{!!product?.competitors?.length &&
 										product?.competitors.map((comp, compIndex) => (
 											<li
@@ -132,13 +113,16 @@ const CompetitorsProduct: NextPage<Props> = ({
 														)}
 													</ErrorMessage>
 												</div>
-												<FontAwesomeIcon
-													icon={faTimes}
-													onClick={() => {
-														if (compIndex > 0) remove(compIndex);
-													}}
-													className='w-4 h-auto absolute top-12 right-4 cursor-pointer text-gray-500 hover:text-rose-800'
-												/>
+												{compIndex > 1 && (
+													<FontAwesomeIcon
+														icon={faTimes}
+														onClick={() => {
+															if (compIndex > 0)
+																remove(compIndex);
+														}}
+														className='w-4 h-auto absolute top-12 right-4 cursor-pointer text-gray-500 hover:text-rose-800'
+													/>
+												)}
 											</li>
 										))}
 									<div>

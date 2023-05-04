@@ -205,9 +205,7 @@ input[type="text"]:focus {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(to bottom right, #406ca9, #74a6ec);
-  background-image: #406ca9;
-  outline: 1px solid slategrey;
+  background-color: #d1d2d3;
 }
 
 @media only screen and (min-width: 720px) {

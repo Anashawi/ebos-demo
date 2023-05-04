@@ -120,7 +120,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 											onClick={() => {
 												deleteIdea(idea.uuid);
 											}}
-											className='flex items-center gap-3 text-lg p-3 text-rose-200 hover:text-rose-500'
+											className='flex items-center gap-3 text-lg p-3 text-gray-200 hover:text-rose-500'
 											type='button'>
 											<FontAwesomeIcon
 												className='w-4 h-auto cursor-pointer hover:text-rose-500'

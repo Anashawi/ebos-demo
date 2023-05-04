@@ -114,7 +114,7 @@ const Customers = () => {
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
-			<div className='homepage-bg-gradient w-screen bg-white'>
+			<div className='homepage-bg-gradient bg-white'>
 				<form
 					method='post'
 					action='http://bo.adpadelhouse.com/app/customers'
@@ -129,178 +129,225 @@ const Customers = () => {
 							<div className='grow md:w-4/12 bg-white p-12 relative'>
 								<UserInfoHeader></UserInfoHeader>
 
-								<h3 className='my-10 text-4xl text-yellow-green'>
+								<h3 className='my-10 text-[2.8rem] text-yellow-green'>
 									Voice of customers
 								</h3>
-								<h4 className='text-3xl font-normal mb-6'>
-									Top customer categories
-								</h4>
-								<ul className='flex flex-col gap-5 mb-5'>
-									<li>
-										<input
-											type='text'
-											{...formik.getFieldProps("topCategories.0")}
-											className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-										/>
-									</li>
-									<li>
-										<input
-											type='text'
-											{...formik.getFieldProps("topCategories.1")}
-											className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-										/>
-									</li>
-									<li>
-										<input
-											type='text'
-											{...formik.getFieldProps("topCategories.2")}
-											className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-										/>
-									</li>
-									<li>
-										<input
-											type='text'
-											{...formik.getFieldProps("topCategories.3")}
-											className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-										/>
-									</li>
-									<li>
-										<input
-											type='text'
-											{...formik.getFieldProps("topCategories.4")}
-											className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-										/>
-									</li>
-								</ul>
-								<div className='flex gap-5 justify-between items-center'>
-									<button
-										type='button'
-										onClick={() => {
-											formik.handleSubmit();
-										}}
-										className={
-											formik.isSubmitting || !formik.isValid
-												? "btn-rev btn-disabled"
-												: "btn-rev"
-										}
-										disabled={formik.isSubmitting || !formik.isValid}>
-										Submit
-									</button>
-									{!!userCustomers.id && (
-										<Link href={"/"}>
-											<span className='text-md text-gray-400 italic'>
-												go to next →{" "}
-												<span className='text-gray-500'>
-													Blue Ocean
-												</span>
-											</span>
-										</Link>
-									)}
-								</div>
-								{(!!isLoading ||
-									isUpdatingUserCustomers ||
-									isCreatingUserCustomers) && (
+								{isLoading && (
 									<Spinner
-										className='flex items-center px-1 pt-3 text-xl'
-										message='Loading ...'
+										className='flex items-center text-2xl'
+										message='Loading Customers...'
 									/>
+								)}
+								{!isLoading && (
+									<>
+										<h4 className='text-3xl font-normal mb-6'>
+											Top customer categories
+										</h4>
+										<ul className='flex flex-col gap-5 mb-5'>
+											<li>
+												<input
+													type='text'
+													{...formik.getFieldProps(
+														"topCategories.0"
+													)}
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+												/>
+											</li>
+											<li>
+												<input
+													type='text'
+													{...formik.getFieldProps(
+														"topCategories.1"
+													)}
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+												/>
+											</li>
+											<li>
+												<input
+													type='text'
+													{...formik.getFieldProps(
+														"topCategories.2"
+													)}
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+												/>
+											</li>
+											<li>
+												<input
+													type='text'
+													{...formik.getFieldProps(
+														"topCategories.3"
+													)}
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+												/>
+											</li>
+											<li>
+												<input
+													type='text'
+													{...formik.getFieldProps(
+														"topCategories.4"
+													)}
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+												/>
+											</li>
+										</ul>
+										<div className='h-10'>
+											{(isUpdatingUserCustomers ||
+												isCreatingUserCustomers) && (
+												<Spinner
+													className='flex items-center text-xl'
+													message='Saving Customers...'
+												/>
+											)}
+										</div>
+										<div className='flex gap-5 justify-between items-center'>
+											<button
+												type='button'
+												onClick={() => {
+													formik.handleSubmit();
+												}}
+												className={
+													formik.isSubmitting || !formik.isValid
+														? "btn-rev btn-disabled"
+														: "btn-rev"
+												}
+												disabled={
+													formik.isSubmitting || !formik.isValid
+												}>
+												Submit
+											</button>
+											{!!userCustomers.id && (
+												<Link href={"/"}>
+													<span className='text-md text-gray-400 italic'>
+														go to next →{" "}
+														<span className='text-gray-500'>
+															Blue Ocean
+														</span>
+													</span>
+												</Link>
+											)}
+										</div>
+									</>
 								)}
 							</div>
 							<div className='grow md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
 								<Header
 									className='w-full mb-10'
 									toggleIdeasModal={toggleIdeasModal}></Header>
-								<div className='flex flex-wrap gap-5 mt-[7.2rem]'>
-									<div className='col-1/2 grow'>
-										<h4 className='text-3xl font-normal mb-6'>
-											What do they want
-										</h4>
-										<ul className='flex flex-col gap-5 mb-5'>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("wishlist.0")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("wishlist.1")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("wishlist.2")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("wishlist.3")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("wishlist.4")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-										</ul>
-									</div>
-									<div className='col-1/2 grow'>
-										<h4 className='text-3xl font-normal mb-6'>
-											How to fulfill it
-										</h4>
-										<ul className='flex flex-col gap-5 mb-5'>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("fulfill.0")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("fulfill.1")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("fulfill.2")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("fulfill.3")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-											<li>
-												<input
-													type='text'
-													{...formik.getFieldProps("fulfill.4")}
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-												/>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div className='py-3'>
-									<ConsultantReview
-										className='mt-10'
-										pageTitle='Voice of customers'></ConsultantReview>
-								</div>
+								{!isLoading && (
+									<>
+										<div className='flex flex-wrap gap-5 mt-[8.9rem]'>
+											<div className='col-1/2 grow'>
+												<h4 className='text-3xl font-normal mb-6'>
+													What do they want
+												</h4>
+												<ul className='flex flex-col gap-5 mb-5'>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"wishlist.0"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"wishlist.1"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"wishlist.2"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"wishlist.3"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"wishlist.4"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+												</ul>
+											</div>
+											<div className='col-1/2 grow'>
+												<h4 className='text-3xl font-normal mb-6'>
+													How to fulfill it
+												</h4>
+												<ul className='flex flex-col gap-5 mb-5'>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"fulfill.0"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"fulfill.1"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"fulfill.2"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"fulfill.3"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+													<li>
+														<input
+															type='text'
+															{...formik.getFieldProps(
+																"fulfill.4"
+															)}
+															className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														/>
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div className='py-3'>
+											<ConsultantReview
+												className='mt-7'
+												pageTitle='Voice of customers'></ConsultantReview>
+										</div>
+									</>
+								)}
 							</div>
 						</div>
 					</div>

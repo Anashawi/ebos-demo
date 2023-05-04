@@ -96,7 +96,7 @@ const Factors = () => {
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
-			<div className='factors-gradient w-screen bg-white'>
+			<div className='factors-gradient bg-white'>
 				<div className='min-h-screen px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='flex flex-col gap-7 w-full p-12 relative'>
@@ -108,7 +108,7 @@ const Factors = () => {
 							</div>
 							<div className='flex'>
 								<div className='md:w-1/2 flex gap-12 justify-between pr-12'>
-									<h3 className='mb-10 text-4xl text-yellow-green'>
+									<h3 className='mb-10 text-[2.8rem] text-yellow-green'>
 										Red Ocean Canvas
 									</h3>
 								</div>

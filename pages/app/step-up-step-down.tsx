@@ -98,12 +98,12 @@ const Analysis = () => {
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
-			<div className='homepage-bg-gradient w-screen bg-white'>
+			<div className='homepage-bg-gradient bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='w-1/2 bg-white p-12 relative'>
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
-							<h3 className='text-3xl my-10 text-yellow-green'>
+							<h3 className='text-[2.8rem] my-10 text-yellow-green'>
 								Step-up step-down
 							</h3>
 							{isLoading && (

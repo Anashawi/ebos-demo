@@ -18,7 +18,7 @@ export default function Home() {
 		},
 		{
 			text: "Market potential",
-			url: "app/competitors",
+			url: "app/market-potential",
 		},
 		{
 			text: "Red ocean canvas",
@@ -77,7 +77,7 @@ export default function Home() {
 
 	return (
 		<>
-			<div className='relative flex flex-col justify-center items-center homepage-bg-gradient pt-[10rem] pb-5 w-screen h-screen mx-auto'>
+			<div className='relative flex flex-col justify-center items-center homepage-bg-gradient pt-[10rem] pb-5 h-screen mx-auto'>
 				{isScreenSmall && <PhabletHomepage nodes={nodes} />}
 				{!isScreenSmall && (
 					<DesktopHomepage

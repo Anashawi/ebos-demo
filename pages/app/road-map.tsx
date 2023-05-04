@@ -99,7 +99,7 @@ const roadMap = () => {
 							<Header className='w-full mb-10'></Header>
 						</div>
 						<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
-							roadMap
+							Road Map
 						</h3>
 						<div className='flex flex-col gap-5'>
 							<h4 className='text-[2.1rem] mb-6'>
@@ -347,7 +347,7 @@ const roadMap = () => {
 						<Chart {...chart} legendToggle />
 						<ConsultantReview
 							className='mt-10'
-							pageTitle='roadMap'></ConsultantReview>
+							pageTitle='Road Map'></ConsultantReview>
 					</div>
 				</div>
 			</div>

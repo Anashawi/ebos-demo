@@ -16,19 +16,16 @@ import UserInfoHeader from "../../components/common/user-info-header";
 import Link from "next/link";
 import * as _ from "lodash";
 
-
 const Competitors = () => {
 	let dbProduct: IUserProduct | undefined;
 
 	const { data: session }: any = useSession();
 
-	const emptyUserProduct = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			products: [],
-		} as IUserProduct;
-	}, []);
+	const emptyUserProduct = {
+		id: "",
+		userId: session?.user?.id,
+		products: [],
+	} as IUserProduct;
 
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 
@@ -89,7 +86,6 @@ const Competitors = () => {
 			}
 		);
 
-
 	const emptyCompetitor = () => {
 		const uuid = crypto.randomUUID();
 		return {
@@ -97,15 +93,13 @@ const Competitors = () => {
 			name: "",
 			marketShare: 0,
 		} as ICompetitor;
-	}
-
-	const [lookupProducts, setLookupProducts] = useState<IProduct[]>([]);
+	};
 
 	return (
 		<>
 			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
 
-			<div className='min-h-screen products-gradient w-screen bg-white'>
+			<div className='min-h-screen products-gradient bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='p-12 relative mx-auto max-w-[1920px]'>
 						<div className='flex justify-between items-center gap-5 pb-5'>
@@ -115,17 +109,12 @@ const Competitors = () => {
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 
-						<h3 className='text-4xl text-yellow-green'>
+						<h3 className='text-[2.8rem] text-yellow-green'>
 							Market potential
 						</h3>
 						<Formik
 							initialValues={{
-								products: userProduct.products?.filter(
-									(p) =>
-										!lookupProducts.some(
-											(lookupProd) => lookupProd.uuid === p.uuid
-										)
-								),
+								products: userProduct.products,
 							}}
 							validationSchema={object({
 								products: array(
@@ -158,16 +147,8 @@ const Competitors = () => {
 									}
 								});
 
-								const untouchedProducts = dbProduct?.products.filter(
-									(i) => !!lookupProducts.find((o) => o.uuid == i.uuid)
-								);
-								console.log(untouchedProducts);
 								if (userProduct?.id) {
-									values.products = [
-										...values.products.concat(
-											untouchedProducts ?? []
-										),
-									];
+									values.products = [...values.products];
 									userProduct.products = [...values.products];
 									await updateUserProduct({
 										...userProduct,
@@ -181,7 +162,7 @@ const Competitors = () => {
 								return (
 									<Form>
 										<FieldArray name='products'>
-											{({ push, remove }) => {
+											{() => {
 												return (
 													<div className='flex flex-col gap-3 mt-20'>
 														<div className='flex flex-col gap-20'>
@@ -195,8 +176,8 @@ const Competitors = () => {
 																)}
 															{isLoading && (
 																<Spinner
-																	className='text-3xl'
-																	message='Loading ...'></Spinner>
+																	className='text-2xl items-center'
+																	message='Loading Market Potential...'></Spinner>
 															)}
 															{!!values.products.length &&
 																values.products.map(
@@ -205,19 +186,6 @@ const Competitors = () => {
 																			<CompetitorsProduct
 																				product={product}
 																				index={productIndex}
-																				onRemove={() => {
-																					setLookupProducts(
-																						(
-																							prevValue
-																						) => [
-																								...prevValue,
-																								product,
-																							]
-																					);
-																					remove(
-																						productIndex
-																					);
-																				}}
 																				formUtilities={{
 																					isSubmitting,
 																					isValid,
@@ -229,80 +197,42 @@ const Competitors = () => {
 																)}
 														</div>
 														<div>
-															<div className="h-10">
-																{(!!isLoading ||
-																	isUpdatingUserProduct) && (
-																		<Spinner
-																			className='flex items-center text-xl'
-																			message='Saving Market Potential'
-																		/>
-																	)}
+															<div className='h-10'>
+																{isUpdatingUserProduct && (
+																	<Spinner
+																		className='flex items-center text-xl'
+																		message='Saving Market Potential...'
+																	/>
+																)}
 															</div>
 															<div className='w-1/2 pr-12 flex gap-5 items-center justify-between'>
 																<div className='flex items-center gap-5'>
 																	<button
 																		type='submit'
 																		className={
-																			isSubmitting || !isValid
+																			isSubmitting ||
+																			!isValid
 																				? "btn-rev btn-disabled"
 																				: "btn-rev"
 																		}
 																		disabled={
-																			isSubmitting || !isValid
+																			isSubmitting ||
+																			!isValid
 																		}>
 																		Save
 																	</button>
-																	{lookupProducts.length > 0 && (
-																		<select
-																			className='min-w-[200px] max-w-[330px] grow p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-																			value={0}
-																			onChange={(e) => {
-																				const productToBeShown =
-																					userProduct.products?.find(
-																						(prod) =>
-																							prod.uuid ===
-																							e.target.value
-																					);
-																				push(productToBeShown);
-																				setLookupProducts(
-																					(prevValue) =>
-																						prevValue.filter(
-																							(prod) =>
-																								prod.uuid !==
-																								e.target
-																									.value
-																						)
-																				);
-																			}}>
-																			<option value={0}>
-																				Add one of existing
-																				products
-																			</option>
-																			{lookupProducts.map(
-																				(product, index) => (
-																					<option
-																						key={index}
-																						value={
-																							product.uuid
-																						}>
-																						{product.name}
-																					</option>
-																				)
-																			)}
-																		</select>
-																	)}
 																</div>
 																{userProduct?.products?.length >
 																	0 && (
-																		<Link href={"/"}>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					Red Ocean Canvas
-																				</span>
+																	<Link href={"/"}>
+																		<span className='text-md text-gray-400 italic'>
+																			go to next →{" "}
+																			<span className='text-gray-500'>
+																				Red Ocean Canvas
 																			</span>
-																		</Link>
-																	)}
+																		</span>
+																	</Link>
+																)}
 															</div>
 														</div>
 													</div>

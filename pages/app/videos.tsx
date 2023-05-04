@@ -61,13 +61,13 @@ const Disruption = () => {
 
 	return (
 		<>
-			<div className='homepage-bg-gradient w-screen bg-white'>
+			<div className='homepage-bg-gradient bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
 							<UserInfoHeader className='w-1/2 mb-10'></UserInfoHeader>
 
-							<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+							<h3 className='text-[2.8rem] mb-6 text-yellow-green'>
 								Videos
 							</h3>
 
