@@ -218,7 +218,6 @@ const Factors = () => {
 																				Save
 																			</button>
 																		)}
-
 																		{userProduct?.products
 																			?.length > 0 && (
 																			<Link href={"/"}>

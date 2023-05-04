@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
+import Link from "next/link";
 
 const NonCustomers = () => {
 	const { data: session }: any = useSession();
@@ -361,7 +362,7 @@ const NonCustomers = () => {
 											/>
 										)}
 									</div>
-									<div className='flex flex-wrap gap-5 py-3'>
+									<div className='flex flex-wrap gap-5 justify-between py-3'>
 										<button
 											type='button'
 											onClick={() => {
@@ -378,6 +379,16 @@ const NonCustomers = () => {
 											className='btn-rev'>
 											Save
 										</button>
+										{!!userNonCustomers.id && (
+											<Link href={"/"}>
+												<span className='text-md text-gray-400 italic'>
+													go to next →{" "}
+													<span className='text-gray-500'>
+														Step-up step-down model
+													</span>
+												</span>
+											</Link>
+										)}
 									</div>
 								</form>
 							)}
