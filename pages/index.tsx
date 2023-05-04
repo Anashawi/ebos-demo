@@ -42,11 +42,11 @@ export default function Home() {
 		},
 		{
 			text: "Step-up, Step-down model",
-			url: "app/analysis",
+			url: "app/step-up-step-down",
 		},
 		{
 			text: "Road map",
-			url: "app/roadmap",
+			url: "app/road-map",
 		},
 	];
 

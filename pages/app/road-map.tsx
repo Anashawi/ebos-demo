@@ -11,14 +11,14 @@ import { useSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import Chart from "react-google-charts";
-import useRoadmapChart from "../../hooks/use-roadmap-chart";
+import useRoadMapChart from "../../hooks/use-road-map-chart";
 import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import useModalToggler from "../../hooks/use-modal-toggler";
 
-const Roadmap = () => {
+const roadMap = () => {
 	const { data: session }: any = useSession();
 
 	const emptyUserIdeas: IUserIdeas = useMemo(() => {
@@ -46,7 +46,7 @@ const Roadmap = () => {
 		return new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
 	}, []);
 
-	const [chart] = useRoadmapChart(userIdeas.ideas);
+	const [chart] = useRoadMapChart(userIdeas.ideas);
 
 	const { data, isLoading } = useQuery<IUserIdeas>({
 		queryKey: [clientApi.Keys.All],
@@ -99,7 +99,7 @@ const Roadmap = () => {
 							<Header className='w-full mb-10'></Header>
 						</div>
 						<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
-							Roadmap
+							roadMap
 						</h3>
 						<div className='flex flex-col gap-5'>
 							<h4 className='text-[2.1rem] mb-6'>
@@ -347,7 +347,7 @@ const Roadmap = () => {
 						<Chart {...chart} legendToggle />
 						<ConsultantReview
 							className='mt-10'
-							pageTitle='Roadmap'></ConsultantReview>
+							pageTitle='roadMap'></ConsultantReview>
 					</div>
 				</div>
 			</div>
@@ -355,4 +355,4 @@ const Roadmap = () => {
 	);
 };
 
-export default Roadmap;
+export default roadMap;

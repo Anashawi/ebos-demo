@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 interface UserAnalysisAttrs {
    userId: string;
    above: string[],
+   customers: string[],
    below: string[],
 }
 
@@ -23,6 +24,10 @@ const userAnalysisSchema = new mongoose.Schema(
          required: true,
       },
       above: {
+         type: Array<String>,
+         required: true
+      },
+      customers: {
          type: Array<String>,
          required: true
       },

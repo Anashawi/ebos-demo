@@ -40,7 +40,6 @@ const NonCustomers = () => {
 	});
 
 	useEffect(() => {
-		console.log(userNonCustomers);
 		if (!data) {
 			setUserNonCustomers((prevValue) => {
 				prevValue.soonNonCustomers = ["", "", ""];
@@ -168,7 +167,7 @@ const NonCustomers = () => {
 																		...userNonCustomers,
 																	});
 																}}
-																className='btn-delete deleteItem'>
+																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
 																	className='w-[0.75rem]'
@@ -194,7 +193,7 @@ const NonCustomers = () => {
 													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
 													icon={faCirclePlus}
 												/>
-												Add more non customes
+												Add more non customers
 											</button>
 										</div>
 									</div>
@@ -245,7 +244,7 @@ const NonCustomers = () => {
 																		...userNonCustomers,
 																	});
 																}}
-																className='btn-delete deleteItem'>
+																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
 																	className='w-[0.75rem]'
@@ -323,7 +322,7 @@ const NonCustomers = () => {
 																		...userNonCustomers,
 																	});
 																}}
-																className='btn-delete deleteItem'>
+																className='btn-delete'>
 																<FontAwesomeIcon
 																	icon={faTimes}
 																	className='w-[0.75rem]'

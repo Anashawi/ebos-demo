@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
 import { IIdea } from "../models/types";
 
-const useRoadmapChart = (ideas: IIdea[]) => {
+const useRoadMapChart = (ideas: IIdea[]) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "Timeline",
 		width: "100%",
@@ -55,4 +55,4 @@ const useRoadmapChart = (ideas: IIdea[]) => {
 	return [chart];
 };
 
-export default useRoadmapChart;
+export default useRoadMapChart;

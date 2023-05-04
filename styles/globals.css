@@ -165,7 +165,7 @@ input[type="text"]:focus {
   }
 
   .btn-delete {
-    @apply absolute font-bold mt-[2%] right-[44px];
+    @apply absolute font-bold right-[44px];
   }
 
   .btn-rev {
