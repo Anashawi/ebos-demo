@@ -18,7 +18,7 @@ import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import useModalToggler from "../../hooks/use-modal-toggler";
 
-const roadMap = () => {
+const RoadMap = () => {
 	const { data: session }: any = useSession();
 
 	const emptyUserIdeas: IUserIdeas = useMemo(() => {
@@ -107,12 +107,11 @@ const roadMap = () => {
 							</h4>
 							<Formik
 								initialValues={{
-									startDate: new Date(),
+									startDate: new Date().toISOString().slice(0, 7),
 									ideas: userIdeas.ideas,
 								}}
 								validationSchema={object({
 									startDate: date()
-										.required()
 										.transform((v: any) => (!isNaN(v) ? v : null))
 										.typeError("The value must be a date (MM-yyyy)")
 										.required("required"),
@@ -355,4 +354,4 @@ const roadMap = () => {
 	);
 };
 
-export default roadMap;
+export default RoadMap;
