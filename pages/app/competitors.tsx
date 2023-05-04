@@ -16,7 +16,6 @@ import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Link from "next/link";
 import * as _ from "lodash";
-import crypto from "crypto"
 
 
 const Competitors = () => {
@@ -92,7 +91,8 @@ const Competitors = () => {
 		);
 
 	const emptyCompetitor = {
-		uuid: crypto.randomUUID(),
+		//@ts-ignore
+		uuid: global.crypto.randomUUID(),
 		name: "",
 		marketShare: 0,
 	} as ICompetitor;
