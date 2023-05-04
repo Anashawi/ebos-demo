@@ -11,11 +11,14 @@ const useIdeaFactorsChart = (product: IProduct) => {
 		data: [],
 	});
 	const updateChartProps = () => {
+
+		const competitors = product.competitors?.filter(c => !c.isUntapped) ?? [];
+
 		const rows =
 			product.ideaFactors?.map((ideaFactor) => {
 				return [
 					ideaFactor.name,
-					...(product.competitors ?? ([] as ICompetitor[])).map(
+					...competitors.map(
 						(comp: ICompetitor, index) => {
 							if (ideaFactor.competitors[index]) {
 								return +ideaFactor.competitors[index].value;
@@ -26,7 +29,7 @@ const useIdeaFactorsChart = (product: IProduct) => {
 				];
 			}) ?? [];
 		chart.data = [
-			["IdeaFactor", ...(product.competitors?.map((comp) => comp.name) ?? [])],
+			["IdeaFactor", ...(competitors?.map((comp) => comp.name) ?? [])],
 			...rows,
 		];
 		chart.options = {

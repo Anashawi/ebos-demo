@@ -76,7 +76,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index, onRemove }) => {
 													</ErrorMessage>
 												</div>
 												<div className='flex-1 flex gap-5'>
-													{product.competitors?.map(
+													{product.competitors?.filter(comp => !comp.isUntapped).map(
 														(
 															comp: ICompetitor,
 															compIndex: number

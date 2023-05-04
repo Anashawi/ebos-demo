@@ -11,11 +11,14 @@ const useFactorsChart = (product: IProduct) => {
 		data: [],
 	});
 	const updateChartProps = () => {
+
+		const competitors = product.competitors?.filter(c => !c.isUntapped) ?? []
+
 		const rows =
 			product.factors?.map((factor) => {
 				return [
 					factor.name,
-					...(product.competitors ?? ([] as ICompetitor[])).map(
+					...competitors.map(
 						(comp: ICompetitor, index) => {
 							if (factor.competitors[index]) {
 								return +factor.competitors[index].value;
@@ -26,7 +29,7 @@ const useFactorsChart = (product: IProduct) => {
 				];
 			}) ?? [];
 		chart.data = [
-			["Factor", ...(product.competitors?.map((comp) => comp.name) ?? [])],
+			["Factor", ...(competitors?.map((comp) => comp.name) ?? [])],
 			...rows,
 		];
 		chart.options = {
