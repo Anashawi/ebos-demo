@@ -167,6 +167,9 @@ const Goals = () => {
 													<Field
 														type='date'
 														className='p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														min={new Date()
+															.toISOString()
+															.slice(0, 10)} // 10 chars for dd/mm/yyyy
 														name='targetDate'
 														placeholder='Goal name'
 													/>
@@ -183,7 +186,7 @@ const Goals = () => {
 												Visualize success on this date, What does it
 												look like
 											</h3>
-											<h2 className='text-3xl mb-6 text-yellow-green'>
+											<h2 className='text-4xl mb-6 text-yellow-green'>
 												Celebrating Unequivocal Success!
 											</h2>
 											<p className='mb-5'>
@@ -201,7 +204,17 @@ const Goals = () => {
 																		message='Loading Goals'
 																	/>
 																)}
+																{!values.goals?.length &&
+																	!isLoading && (
+																		<div className='w-full flex items-center'>
+																			<p className='text-2xl text-center italic'>
+																				Start adding your
+																				goals...
+																			</p>
+																		</div>
+																	)}
 																{!!values.goals?.length &&
+																	!isLoading &&
 																	values.goals.map(
 																		(
 																			goal: string,
@@ -217,7 +230,7 @@ const Goals = () => {
 																					/>
 																					<FontAwesomeIcon
 																						icon={faTimes}
-																						className='w-4 cursor-pointer absolute right-4 top-4'
+																						className='w-4 cursor-pointer absolute right-4 top-3 hover:text-rose-800'
 																						onClick={() => {
 																							remove(
 																								index

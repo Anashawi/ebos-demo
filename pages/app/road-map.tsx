@@ -1,11 +1,8 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import Link from "next/link";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { IIdea } from "../../models/types";
 import { IUserIdeas } from "../../models/user-idea";
 import * as clientApi from "../../http-client/ideas.client";
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import { array, date, object, string } from "yup";
 import { useSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -19,8 +16,11 @@ import UserInfoHeader from "../../components/common/user-info-header";
 const RoadMap = () => {
 	const { data: session }: any = useSession();
 
+	const minStartDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
+
 	const emptyUserIdeas: IUserIdeas = {
 		id: "",
+		startDate: minStartDateStr,
 		userId: session?.user?.id,
 		ideas: [],
 	} as IUserIdeas;
@@ -36,9 +36,7 @@ const RoadMap = () => {
 
 	const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
 
-	const minStartDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
-
-	const [chart] = useRoadMapChart(userIdeas.ideas);
+	const [chart] = useRoadMapChart(userIdeas);
 
 	const { data, isLoading } = useQuery<IUserIdeas>({
 		queryKey: [clientApi.Keys.All],
@@ -48,6 +46,9 @@ const RoadMap = () => {
 
 	useEffect(() => {
 		if (data) {
+			data.ideas.forEach((idea) => {
+				!idea.durationInMonths ? (idea.durationInMonths = 6) : null;
+			});
 			setUserIdeas(data);
 		}
 	}, [data]);
@@ -82,7 +83,7 @@ const RoadMap = () => {
 				<div className='pane-upper flex flex-col'>
 					<div className='px-12 py-8 flex flex-col gap-5 mx-auto lg:w-11/12'>
 						<div className='flex gap-5 justify-between items-center pb-5'>
-							<UserInfoHeader className='w-1/2'></UserInfoHeader>
+							<UserInfoHeader className='gap-10'></UserInfoHeader>
 							<Header></Header>
 						</div>
 						<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
@@ -92,259 +93,231 @@ const RoadMap = () => {
 							<h4 className='text-[2.1rem] mb-6'>
 								Create a timeline for your ideas
 							</h4>
-							<Formik
-								initialValues={{
-									startDate: minStartDateStr,
-									ideas: [...userIdeas.ideas],
-								}}
-								validationSchema={object({
-									startDate: date()
-										.transform((v: any) => (!isNaN(v) ? v : null))
-										.typeError("The value must be a date (MM-yyyy)")
-										.required("required"),
-									ideas: array(
-										object({
-											uuid: string(),
-											name: string().required("required"),
-											startMonth: date()
-												.required("start")
-												.min(
-													new Date(
-														new Date(minStartDateStr).setHours(
-															0,
-															0,
-															0,
-															0
-														)
-													),
-													"Date cannot be in the past"
-												),
-											durationInMonths: date().required("start"),
-										})
-									)
-										.required("Must provide at least one idea !")
-										.min(1, "Must provide at least one idea !"),
-								})}
-								onSubmit={async (values, actions) => {
-									userIdeas.userId = session?.user?.id;
-									values.ideas?.map((idea) => {
-										if (!idea.uuid) {
-											idea.uuid = crypto.randomUUID();
-										}
-									});
-									if (userIdeas?.id) {
-										await updateUserIdeas({
-											...userIdeas,
-											ideas: values.ideas,
-										});
-									} else {
-										await createUserIdeas({
-											...userIdeas,
-											ideas: values.ideas,
-										});
-									}
-									actions.setSubmitting(false);
-								}}
-								enableReinitialize
-								validateOnMount>
-								{({ values, isSubmitting, isValid }) => (
-									<Form>
-										<div className='flex gap-5 items-center mb-10'>
-											<label className='text-xl'>Start date</label>
-											<div className='grow'>
-												<Field
-													type='month'
-													name='startDate'
-													min={minStartDateStr}
-													className='w-full md:w-[250px] grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
-												/>
-												<ErrorMessage name='startDate'>
-													{(msg) => (
-														<div className='text-lg text-rose-500'>
-															{msg}
-														</div>
-													)}
-												</ErrorMessage>
-											</div>
+							<form>
+								<div className='flex gap-5 items-center mb-10'>
+									<label className='text-xl'>Start date</label>
+									<div className='grow'>
+										<input
+											type='month'
+											value={userIdeas.startDate}
+											onChange={(e) => {
+												userIdeas.startDate = e.target.value;
+												setUserIdeas({ ...userIdeas });
+											}}
+											min={minStartDateStr}
+											className='w-full md:w-[250px] grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+										/>
+									</div>
+								</div>
+								<ul className='flex flex-col gap-3'>
+									{!userIdeas.ideas.length && !isLoading && (
+										<div className='w-full flex items-center'>
+											<p className='text-2xl text-center italic'>
+												Start adding your ideas...
+											</p>
 										</div>
-										<FieldArray name='ideas'>
-											{({ push, remove }) => (
-												<>
-													<ul className='flex flex-col gap-3'>
-														{!!values.ideas?.length &&
-															values.ideas.map((idea, index) => (
-																<li
-																	key={index}
-																	className='flex gap-5 items-start'>
-																	<div className='w-[250px]'>
-																		<label className='text-xl'>
-																			Idea
-																		</label>
-																		<Field
-																			name={`ideas.${index}.name`}
-																			className='w-full grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
-																		/>
-																		<ErrorMessage
-																			name={`ideas.${index}.name`}>
-																			{(msg) => (
-																				<div className='text-lg text-rose-500'>
-																					{msg}
-																				</div>
-																			)}
-																		</ErrorMessage>
-																	</div>
-																	<div className='w-[250px]'>
-																		<label className='text-xl'>
-																			Start (month)
-																		</label>
-																		<Field
-																			type='month'
-																			name={`ideas.${index}.startMonth`}
-																			min={new Date(
-																				values.startDate
-																			)
-																				.toISOString()
-																				.slice(0, 7)}
-																			className='w-full grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
-																		/>
-																		<ErrorMessage
-																			name={`ideas.${index}.startMonth`}>
-																			{(msg) => (
-																				<div className='text-lg text-rose-500'>
-																					{msg}
-																				</div>
-																			)}
-																		</ErrorMessage>
-																	</div>
-																	<div className='grow'>
-																		<label className='text-xl'>
-																			Duration (months)
-																		</label>
-																		<Field
-																			type='range'
-																			min={1}
-																			max={12}
-																			name={`ideas.${index}.durationInMonths`}
-																			list='duration'
-																			className='w-full grow bg-gray-100 outline-none caret-dark-blue border-none'
-																			step={1}
-																		/>
-																		<datalist
-																			id='duration'
-																			className='flex items-center justify-between text-lg w-full'>
-																			<option
-																				value={1}
-																				label='01'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={2}
-																				label='02'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={3}
-																				label='03'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={4}
-																				label='04'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={5}
-																				label='05'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={6}
-																				label='06'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={7}
-																				label='07'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={8}
-																				label='08'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={9}
-																				label='09'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={10}
-																				label='10'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={11}
-																				label='11'
-																				className='text-[1.12rem]'></option>
-																			<option
-																				value={12}
-																				label='12'
-																				className='text-[1.12rem]'></option>
-																		</datalist>
-																	</div>
-																	<div className='col-2/12'>
-																		<div
-																			onClick={() => {
-																				remove(index);
-																			}}>
-																			<FontAwesomeIcon
-																				icon={faTimes}
-																				className='w-[1rem] cursor-pointer hover:text-rose-800'
-																			/>
-																		</div>
-																	</div>
-																</li>
-															))}
-													</ul>
-													<div className='h-10'>
-														{(isUpdatingIdeas ||
-															isCreatingIdeas) && (
-															<Spinner
-																className=''
-																message='Saving Ideas ...'
-															/>
-														)}
+									)}
+									{isLoading && (
+										<Spinner
+											className='flex items-center px-1 text-2xl'
+											message='Loading ideas...'
+										/>
+									)}
+									{!!userIdeas.ideas?.length &&
+										!isLoading &&
+										userIdeas.ideas.map((idea, index) => (
+											<li
+												key={index}
+												className='flex gap-5 items-center'>
+												<div className='w-[250px]'>
+													<label className='text-xl'>Idea</label>
+													<input
+														value={idea.name}
+														onChange={(e) => {
+															userIdeas.ideas[index].name =
+																e.target.value;
+															setUserIdeas({ ...userIdeas });
+														}}
+														className='w-full grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+													/>
+												</div>
+												<div className='w-[250px]'>
+													<label className='text-xl'>
+														Start (month)
+													</label>
+													<input
+														type='month'
+														value={idea.startMonth}
+														onChange={(e) => {
+															userIdeas.ideas[index].startMonth =
+																e.target.value;
+															setUserIdeas({ ...userIdeas });
+														}}
+														min={
+															userIdeas.startDate ||
+															minStartDateStr
+														}
+														className='w-full grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+													/>
+												</div>
+												<div className='grow'>
+													<label className='text-xl'>
+														Duration (months)
+													</label>
+													<input
+														type='range'
+														min={1}
+														max={12}
+														value={idea.durationInMonths}
+														onChange={(e) => {
+															userIdeas.ideas[
+																index
+															].durationInMonths =
+																+e.target.value;
+															setUserIdeas({ ...userIdeas });
+														}}
+														list='duration'
+														className='w-full grow bg-gray-100 outline-none caret-dark-blue border-none'
+														step={1}
+													/>
+													<datalist
+														id='duration'
+														className='flex items-center justify-between text-lg w-full'>
+														<option
+															value={1}
+															label='01'
+															className='text-[1.12rem]'></option>
+														<option
+															value={2}
+															label='02'
+															className='text-[1.12rem]'></option>
+														<option
+															value={3}
+															label='03'
+															className='text-[1.12rem]'></option>
+														<option
+															value={4}
+															label='04'
+															className='text-[1.12rem]'></option>
+														<option
+															value={5}
+															label='05'
+															className='text-[1.12rem]'></option>
+														<option
+															value={6}
+															label='06'
+															className='text-[1.12rem]'></option>
+														<option
+															value={7}
+															label='07'
+															className='text-[1.12rem]'></option>
+														<option
+															value={8}
+															label='08'
+															className='text-[1.12rem]'></option>
+														<option
+															value={9}
+															label='09'
+															className='text-[1.12rem]'></option>
+														<option
+															value={10}
+															label='10'
+															className='text-[1.12rem]'></option>
+														<option
+															value={11}
+															label='11'
+															className='text-[1.12rem]'></option>
+														<option
+															value={12}
+															label='12'
+															className='text-[1.12rem]'></option>
+													</datalist>
+												</div>
+												<div className='col-2/12'>
+													<div
+														onClick={() => {
+															userIdeas.ideas =
+																userIdeas.ideas.filter(
+																	(idea, ideaIndex) =>
+																		ideaIndex !== index
+																);
+															setUserIdeas({ ...userIdeas });
+														}}>
+														<FontAwesomeIcon
+															icon={faTimes}
+															className='w-5 cursor-pointer hover:text-rose-800'
+														/>
 													</div>
-													<div className='flex justify-center mb-10'>
-														<button
-															type='button'
-															onClick={() => {
-																push(emptyIdea);
-															}}
-															className='inline-flex items-center gap-2 text-xl p-3 mb-7 text-black-eerie hover:text-gray-600'>
-															<FontAwesomeIcon
-																className='w-6 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
-																icon={faCirclePlus}
-															/>
-															Add more ideas
-														</button>
-													</div>
-													<div className='flex gap-5 mb-10'>
-														<button
-															type='submit'
-															className={
-																isSubmitting || !isValid
-																	? "btn-rev btn-disabled"
-																	: "btn-rev"
-															}
-															disabled={
-																isSubmitting || !isValid
-															}>
-															Save
-														</button>
-													</div>
-												</>
-											)}
-										</FieldArray>
-									</Form>
-								)}
-							</Formik>
+												</div>
+											</li>
+										))}
+								</ul>
+								<div className='flex justify-center my-10'>
+									<button
+										type='button'
+										onClick={() => {
+											const newIdea = { ...emptyIdea };
+											newIdea.name = `example ${
+												userIdeas.ideas.length + 1
+											}`;
+											userIdeas.ideas.push(newIdea);
+											setUserIdeas({ ...userIdeas });
+										}}
+										className='inline-flex items-center gap-2 text-xl p-3 mb-7 text-black-eerie hover:text-gray-600'>
+										<FontAwesomeIcon
+											className='w-6 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+											icon={faCirclePlus}
+										/>
+										Add idea
+									</button>
+								</div>
+								<div className='h-10'>
+									{(isUpdatingIdeas || isCreatingIdeas) && (
+										<Spinner
+											className=''
+											message='Saving Ideas ...'
+										/>
+									)}
+								</div>
+								<div className='flex gap-5 mb-10'>
+									<button
+										type='button'
+										onClick={() => {
+											userIdeas.userId = session?.user?.id;
+											userIdeas.ideas?.map((idea) => {
+												if (!idea.uuid) {
+													idea.uuid = crypto.randomUUID();
+												}
+											});
+											if (userIdeas?.id) {
+												updateUserIdeas({
+													...userIdeas,
+												});
+											} else {
+												createUserIdeas({
+													...userIdeas,
+												});
+											}
+										}}
+										className='btn-rev'>
+										Save
+									</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
 				<div className='pane-lower-gradient grow'>
-					<div className='px-12 py-8 mx-auto lg:w-11/12'>
-						<Chart {...chart} legendToggle />
+					<div className='grow px-12 py-8 mx-auto lg:w-11/12'>
+						{isLoading && (
+							<Spinner
+								className='flex items-center px-1 text-2xl'
+								message='Loading ideas chart...'
+							/>
+						)}
+						{!!userIdeas.ideas.length && !isLoading && (
+							<Chart {...chart} legendToggle />
+						)}
 						<ConsultantReview
 							className='mt-10'
 							pageTitle='Road Map'></ConsultantReview>

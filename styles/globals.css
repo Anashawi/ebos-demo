@@ -223,3 +223,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.text-stroke {
+  -webkit-text-stroke: 1px #86bf44;
+}

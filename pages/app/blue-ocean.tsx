@@ -15,6 +15,7 @@ import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import Link from "next/link";
 import Spinner from "../../components/common/spinner";
+import ZeroProductsWarning from "../../components/common/zero-products-warning";
 
 const IdeaFactors = () => {
 	const { data: session }: any = useSession();
@@ -163,7 +164,14 @@ const IdeaFactors = () => {
 														<>
 															<div className='flex flex-col gap-12'>
 																<div className='flex flex-col gap-20'>
+																	{!userProduct.products
+																		?.length &&
+																		!isLoading && (
+																			<ZeroProductsWarning />
+																		)}
 																	{!values.products?.length &&
+																		!!userProduct.products
+																			?.length &&
 																		!isLoading && (
 																			<p className='text-rose-300'>
 																				make a selection to
@@ -176,7 +184,7 @@ const IdeaFactors = () => {
 																			message='Loading Blue Ocean...'
 																		/>
 																	)}
-																	{!!values.products.length &&
+																	{!!values.products?.length &&
 																		values.products.map(
 																			(
 																				product,
@@ -215,20 +223,23 @@ const IdeaFactors = () => {
 																		)}
 																	</div>
 																	<div className='flex gap-5 justify-between items-center'>
-																		<button
-																			type='submit'
-																			className={
-																				isSubmitting ||
-																				!isValid
-																					? "btn-rev btn-disabled"
-																					: "btn-rev"
-																			}
-																			disabled={
-																				isSubmitting ||
-																				!isValid
-																			}>
-																			Save
-																		</button>
+																		{!!values.products
+																			?.length && (
+																			<button
+																				type='submit'
+																				className={
+																					isSubmitting ||
+																					!isValid
+																						? "btn-rev btn-disabled"
+																						: "btn-rev"
+																				}
+																				disabled={
+																					isSubmitting ||
+																					!isValid
+																				}>
+																				Save
+																			</button>
+																		)}
 																		{userProduct?.products
 																			?.length > 0 && (
 																			<Link href={"/"}>

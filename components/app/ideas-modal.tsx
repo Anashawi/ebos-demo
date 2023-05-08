@@ -81,49 +81,45 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 					closeCallback: toggle,
 				}}>
 				<div className='flex flex-col gap-7'>
-					<h2 className='text-4xl text-gray-700'>Ideas</h2>
-					<h3 className='min-h-[3rem] flex text-gray-400 text-2xl'>
-						Add ideas{" "}
-						{(isLoading ||
-							isCreatingIdea ||
-							isDeletingIdea ||
-							isUpdatingIdea) && (
+					<h2 className='flex gap-5 items-center text-4xl text-gray-700 mb-5'>
+						ideas{" "}
+						{(isCreatingIdea || isDeletingIdea || isUpdatingIdea) && (
 							<Spinner
-								className='ml-12 text-2xl'
+								className='text-lg items-center font-normal'
 								message='Saving Ideas ...'
 							/>
 						)}
-					</h3>
+					</h2>
 				</div>
 				<div className='h-[85%] overflow-auto'>
 					<div className='relative flex-auto py-3'>
 						{isLoading && (
 							<Spinner
-								className='text-lg'
-								message='Loading ...'></Spinner>
+								className='mb-10 text-lg'
+								message='Loading ideas ...'></Spinner>
 						)}
 						{!ideaFactors?.length && !isLoading && (
-							<div className='flex py-5 w-full h-full justify-center'>
-								<p className='text-xl p-10 text-center text-rose-300'>
-									Add your ideas !
+							<div className='w-full flex items-center'>
+								<p className='mb-10 text-xl text-center italic'>
+									Start adding your ideas...
 								</p>
 							</div>
 						)}
 						{!!ideaFactors?.length && (
-							<ul className='flex flex-col gap-2 mb-10 max-h-[350px] overflow-auto'>
+							<ul className='flex flex-col gap-2 mb-5 max-h-[350px] overflow-auto'>
 								{ideaFactors.map((idea: IIdea, index: number) => (
 									<li
 										key={index}
-										className='flex gap-5 justify-between text-gray-800 '>
-										<span> {idea.name} </span>
+										className='flex gap-5 justify-between items-center text-gray-800 border-t'>
+										<span className='text-xl'> {idea.name} </span>
 										<button
 											onClick={() => {
 												deleteIdea(idea.uuid);
 											}}
-											className='flex items-center gap-3 text-lg p-3 text-gray-200 hover:text-rose-500'
+											className='flex items-center gap-3 text-lg p-3'
 											type='button'>
 											<FontAwesomeIcon
-												className='w-4 h-auto cursor-pointer hover:text-rose-500'
+												className='w-4 h-auto cursor-pointer hover:text-rose-800'
 												icon={faTimes}
 											/>
 										</button>
@@ -136,7 +132,9 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 								name: "",
 							}}
 							validationSchema={object({
-								name: string().required("required"),
+								name: string().required("required").test((e) => {
+									return !!e.trim();
+								}),
 							})}
 							onSubmit={async (values, actions) => {
 								if (userIdeasId) {
@@ -160,7 +158,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 										<div className='grow'>
 											<Field
 												type='text'
-												className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+												className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
 												placeholder='New idea'
 												name='name'
 											/>
@@ -172,11 +170,11 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 												)}
 											</ErrorMessage>
 										</div>
-										<div className='flex justify-end'>
+										<div className='flex justify-end text-xl'>
 											<button
 												type='submit'
 												className={
-													isSubmitting || !isValid
+													isSubmitting
 														? "btn-rev btn-disabled"
 														: "btn-rev"
 												}

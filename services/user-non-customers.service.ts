@@ -4,7 +4,7 @@ export async function getOne(currentUserId: string) {
    try {
       const result = await UserNonCustomers.findOne({ userId: currentUserId });
 
-      return result ? result.toJSON() : result;
+      return result ? result?.toJSON() : result;
    } catch (error) {
       console.log(error);
    }
@@ -20,7 +20,7 @@ export async function updateOne(frontEndUserNonCustomers: IUserNonCustomers) {
       );
 
       const updatedUserNonCustomers = await UserNonCustomers.findById(frontEndUserNonCustomers.id);
-      return updatedUserNonCustomers.toJSON();
+      return updatedUserNonCustomers?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -30,7 +30,7 @@ export async function insertOne(userNonCustomers: IUserNonCustomers) {
    try {
       const frontEndUserNonCustomers = new UserNonCustomers(userNonCustomers)
       await frontEndUserNonCustomers.save();
-      return frontEndUserNonCustomers.toJSON();
+      return frontEndUserNonCustomers?.toJSON();
    } catch (error) {
       console.log(error);
    }

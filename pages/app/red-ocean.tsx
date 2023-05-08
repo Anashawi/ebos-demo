@@ -15,6 +15,7 @@ import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import ConsultantReview from "../../components/common/consultant-review";
 import Spinner from "../../components/common/spinner";
+import ZeroProductsWarning from "../../components/common/zero-products-warning";
 
 const Factors = () => {
 	const { data: session }: any = useSession();
@@ -159,7 +160,14 @@ const Factors = () => {
 													return (
 														<>
 															<div className='flex flex-col gap-20'>
+																{!userProduct.products
+																	?.length &&
+																	!isLoading && (
+																		<ZeroProductsWarning />
+																	)}
 																{!values.products?.length &&
+																	!!userProduct.products
+																		?.length &&
 																	!isLoading && (
 																		<p className='text-rose-300'>
 																			make a selection to
@@ -172,7 +180,7 @@ const Factors = () => {
 																		message='Loading Red Ocean...'
 																	/>
 																)}
-																{!!values.products.length &&
+																{!!values.products?.length &&
 																	values.products.map(
 																		(
 																			product,

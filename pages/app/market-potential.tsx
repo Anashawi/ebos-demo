@@ -15,6 +15,7 @@ import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Link from "next/link";
 import * as _ from "lodash";
+import ZeroProductsWarning from "../../components/common/zero-products-warning";
 
 const Competitors = () => {
 	let dbProduct: IUserProduct | undefined;
@@ -166,7 +167,13 @@ const Competitors = () => {
 												return (
 													<div className='flex flex-col gap-3 mt-20'>
 														<div className='flex flex-col gap-20'>
+															{!userProduct.products?.length &&
+																!isLoading && (
+																	<ZeroProductsWarning />
+																)}
 															{!values.products?.length &&
+																!!userProduct.products
+																	?.length &&
 																!isLoading && (
 																	<p className='w-max italic py-5'>
 																		Select a product to start
@@ -179,7 +186,7 @@ const Competitors = () => {
 																	className='text-2xl items-center'
 																	message='Loading Market Potential...'></Spinner>
 															)}
-															{!!values.products.length &&
+															{!!values.products?.length &&
 																values.products.map(
 																	(product, productIndex) => (
 																		<div key={productIndex}>
@@ -206,22 +213,24 @@ const Competitors = () => {
 																)}
 															</div>
 															<div className='w-1/2 pr-12 flex gap-5 items-center justify-between'>
-																<div className='flex items-center gap-5'>
-																	<button
-																		type='submit'
-																		className={
-																			isSubmitting ||
-																			!isValid
-																				? "btn-rev btn-disabled"
-																				: "btn-rev"
-																		}
-																		disabled={
-																			isSubmitting ||
-																			!isValid
-																		}>
-																		Save
-																	</button>
-																</div>
+																{!!values.products?.length && (
+																	<div className='flex items-center gap-5'>
+																		<button
+																			type='submit'
+																			className={
+																				isSubmitting ||
+																				!isValid
+																					? "btn-rev btn-disabled"
+																					: "btn-rev"
+																			}
+																			disabled={
+																				isSubmitting ||
+																				!isValid
+																			}>
+																			Save
+																		</button>
+																	</div>
+																)}
 																{userProduct?.products?.length >
 																	0 && (
 																	<Link href={"/"}>

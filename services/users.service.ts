@@ -17,7 +17,7 @@ export async function getAll(query: { searchText?: any; }) {
 export async function getOne(id: string) {
    try {
       const result = await User.findById(id);
-      return result.toJSON();
+      return result?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -44,7 +44,7 @@ export async function updateOne(user: IUser) {
          { $set: { ...user } }
       );
       const updatedUser = await User.findById(user.id);
-      return updatedUser.toJSON();
+      return updatedUser?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -54,7 +54,7 @@ export async function insertOne(user: IUser) {
    try {
       const newUser = new User(user)
       await newUser.save();
-      return newUser.toJSON();
+      return newUser?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -63,7 +63,7 @@ export async function insertOne(user: IUser) {
 export async function deleteOne(id: string) {
    try {
       const result = await User.findByIdAndDelete(id);
-      return result.toJSON();
+      return result?.toJSON();
    } catch (error) {
       console.log(error);
    }

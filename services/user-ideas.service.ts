@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 export async function getOne(currentUserId: string) {
    try {
       const result = await UserIdeas.findOne({ userId: currentUserId });
-      return result.toJSON();
+      return result?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -14,38 +14,26 @@ export async function getOne(currentUserId: string) {
 export async function getOneLookup(currentUserId: string) {
    try {
       let result = await UserIdeas.findOne({ userId: currentUserId });
-      result.ideas = result.ideas.map((idea: IIdea) => {
-         return {
-            uuid: idea.uuid,
-            name: idea.name,
-         }
-      });
+      if (result) {
+         result.ideas = result.ideas.map((idea: IIdea) => {
+            return {
+               uuid: idea.uuid,
+               name: idea.name,
+            }
+         });
+      }
       return result;
    } catch (error) {
       console.log(error);
    }
 }
 
-// export async function insertOneLookup(userIdeasId: string, newIdea: IIdea) {
-//    try {
-//       const getByIdResult = await UserIdeas.findById(userIdeasId);
-//       let newUserIdeas = {
-//          ideas: [newIdea]
-//       }
-//       newUserIdeas = { ...getByIdResult, ...newUserIdeas };
-//       const frontEndUserIdeas = new UserIdeas(newUserIdeas)
-//       await frontEndUserIdeas.save();
-//       return frontEndUserIdeas.toJSON();
-//    } catch (error) {
-//       console.log(error);
-//    }
-// }
-
 export async function insertOne(userIdeas: IUserIdeas) {
    try {
+
       const frontEndUserIdeas = new UserIdeas(userIdeas)
       await frontEndUserIdeas.save();
-      return frontEndUserIdeas.toJSON();
+      return frontEndUserIdeas?.toJSON() ?? "faild to create userIdeas collection";
    } catch (error) {
       console.log(error);
    }
@@ -61,7 +49,7 @@ export async function updateOne(frontEndUserIdeas: IUserIdeas) {
       );
 
       const updatedUserIdeas = await UserIdeas.findById(frontEndUserIdeas.id);
-      return updatedUserIdeas.toJSON();
+      return updatedUserIdeas?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -94,12 +82,12 @@ export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
             }
          );
          const updatedUserIdeas = await UserIdeas.findById(userIdeas.id);
-         return updatedUserIdeas.toJSON();
+         return updatedUserIdeas?.toJSON();
       }
 
       const newUserIdeas = new UserIdeas(userIdeas)
       await newUserIdeas.save();
-      return newUserIdeas.toJSON();
+      return newUserIdeas?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -129,7 +117,7 @@ export async function deleteOne(uuid: string, sessionUser: any) {
             }
          );
          const updatedUserIdeas = await UserIdeas.findById(userIdeas.id);
-         return updatedUserIdeas.toJSON();
+         return updatedUserIdeas?.toJSON();
       }
 
    } catch (error) {

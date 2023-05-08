@@ -3,6 +3,7 @@ import { IIdea } from "./types";
 
 interface UserIdeasAttrs {
    userId: string;
+   startDate?: string;
    ideas: IIdea[];
 }
 
@@ -19,6 +20,10 @@ export interface IUserIdeas extends UserIdeasAttrs {
 const userIdeasSchema = new mongoose.Schema(
    {
       userId: {
+         type: String,
+         required: true,
+      },
+      startDate: {
          type: String,
          required: false,
       },

@@ -4,7 +4,7 @@ export async function getOne(currentUserId: string, ISODateString: string) {
    try {
       const result = await UserGoals.findOne({ userId: currentUserId });
 
-      return result ? result.toJSON() : result;
+      return result?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -20,7 +20,7 @@ export async function updateOne(frontEndUserGoals: IUserGoals) {
       );
 
       const updatedUserGoal = await UserGoals.findById(frontEndUserGoals.id);
-      return updatedUserGoal.toJSON();
+      return updatedUserGoal?.toJSON();
    } catch (error) {
       console.log(error);
    }
@@ -31,7 +31,7 @@ export async function insertOne(userGoals: IUserGoals) {
       console.log(userGoals);
       const frontEndUserGoals = new UserGoals(userGoals)
       await frontEndUserGoals.save();
-      return frontEndUserGoals.toJSON();
+      return frontEndUserGoals?.toJSON();
    } catch (error) {
       console.log(error);
    }

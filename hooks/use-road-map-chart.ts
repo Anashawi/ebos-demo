@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
-import { IIdea } from "../models/types";
+import { IUserIdeas } from "../models/user-idea";
 
-const useRoadMapChart = (ideas: IIdea[]) => {
+const useRoadMapChart = (userIdeas: IUserIdeas) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "Timeline",
 		width: "100%",
@@ -12,7 +12,7 @@ const useRoadMapChart = (ideas: IIdea[]) => {
 	});
 	const updateChartProps = () => {
 		const rows =
-			ideas?.map((idea) => {
+			userIdeas.ideas?.map((idea) => {
 				const startMonthDate = new Date(idea.startMonth);
 				const endMonthDate = new Date(idea.startMonth).setMonth(startMonthDate.getMonth() + +idea.durationInMonths)
 				return [
@@ -25,8 +25,10 @@ const useRoadMapChart = (ideas: IIdea[]) => {
 			["Idea", "Start Month", "End Month"],
 			...rows,
 		];
+		const dynamicHeight = ((userIdeas.ideas?.length + 1 ?? 0) * 44) + 3;
 		chart.options = {
 			title: "Ideas Timeline",
+			height: dynamicHeight,
 			titleTextStyle: {
 				// color: <string>,    // any HTML string color ('red', '#cc00cc')
 				// fontName: <string>, // i.e. 'Times New Roman'
@@ -47,10 +49,10 @@ const useRoadMapChart = (ideas: IIdea[]) => {
 	};
 
 	useEffect(() => {
-		if (ideas?.length) {
+		if (userIdeas.ideas?.length) {
 			updateChartProps();
 		}
-	}, [ideas]);
+	}, [userIdeas]);
 
 	return [chart];
 };

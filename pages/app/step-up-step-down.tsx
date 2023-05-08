@@ -350,7 +350,7 @@ const Analysis = () => {
 										<h6 className='f6 mb-2 text-xl'>10% Above</h6>
 										<ul className='normal mb-2'>
 											{userAnalysis.above.map((item, index) => (
-												<li key={index} className='p-3'>
+												<li key={index} className='p-2'>
 													{item}
 												</li>
 											))}
@@ -365,7 +365,7 @@ const Analysis = () => {
 												(customer, index) => (
 													<li
 														key={index}
-														className='text-gray-50 p-3'>
+														className='text-gray-50 p-2'>
 														{customer}
 													</li>
 												)
@@ -376,7 +376,7 @@ const Analysis = () => {
 										<h6 className='f6 mb-2 text-xl'>10% below</h6>
 										<ul className='normal mb-2'>
 											{userAnalysis.below.map((item, index) => (
-												<li key={index} className='p-3'>
+												<li key={index} className='p-2'>
 													{item}
 												</li>
 											))}
