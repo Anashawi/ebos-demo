@@ -10,43 +10,43 @@ export default function Home() {
 	const nodes = [
 		{
 			text: "Visualize success",
-			url: "app/goals",
+			url: "org/goals",
 		},
 		{
 			text: "Pioneer Migrator Settler",
-			url: "app/products",
+			url: "org/products",
 		},
 		{
 			text: "Market potential",
-			url: "app/market-potential",
+			url: "org/market-potential",
 		},
 		{
 			text: "Red ocean canvas",
-			url: "app/red-ocean",
+			url: "org/red-ocean",
 		},
 		{
 			text: "Disruption",
-			url: "app/videos",
+			url: "org/videos",
 		},
 		{
 			text: "Voice of customers",
-			url: "app/customers",
+			url: "org/customers",
 		},
 		{
 			text: "Blue ocean",
-			url: "app/blue-ocean",
+			url: "org/blue-ocean",
 		},
 		{
 			text: "Non customers",
-			url: "app/non-customers",
+			url: "org/non-customers",
 		},
 		{
 			text: "Step-up, Step-down model",
-			url: "app/step-up-step-down",
+			url: "org/step-up-step-down",
 		},
 		{
 			text: "Road map",
-			url: "app/road-map",
+			url: "org/road-map",
 		},
 	];
 
