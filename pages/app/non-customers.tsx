@@ -1,220 +1,461 @@
-import Image from "next/image";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import * as clientApi from "../../http-client/non-customers.client";
+import { IUserNonCustomers } from "../../models/user-non-customers";
+import Spinner from "../../components/common/spinner";
+import ConsultantReview from "../../components/common/consultant-review";
+import UserInfoHeader from "../../components/common/user-info-header";
+import Header from "../../components/common/header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import useModalToggler from "../../hooks/use-modal-toggler";
+import IdeasModal from "../../components/app/ideas-modal";
 import Link from "next/link";
 
 const NonCustomers = () => {
-   return (
-      <>
-         <div className='homepage-bg-gradient w-screen bg-white'>
-            <form action='/'>
-               <div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
-                  <div className='flex flex-wrap'>
-                     <div className='md:w-4/12 bg-white p-12 relative'>
-                        <div className='pb-5'>
-                           <strong className='mr-1'>Mustafa Khairy </strong> |
-                           <Link href='http://bo.adpadelhouse.com/logout'>
-                              logout
-                           </Link>
-                        </div>
-                        <h3 className='text-[2.52rem] my-10 text-yellow-green'>
-                           Non customers
-                        </h3>
-                        <div className='flex flex-col gap-3 mb-5'>
-                           <h6 className='f6  mb-2'>
-                              Soon to be non customers
-                           </h6>
-                           <ul className='flex flex-col gap-3 non'>
-                              <li>
-                                 <input
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers'
-                                    autoComplete='off'
-                                 />
-                                 <Link
-                                    href=''
-                                    className='btn-delete deleteItem'>
-                                    X
-                                 </Link>
-                              </li>
-                           </ul>
-                           <div>
-                              <a
-                                 id='non'
-                                 href='#'
-                                 className='btn blue-gradient text-black-eerie hover:text-white'>
-                                 + Add
-                              </a>
-                           </div>
-                        </div>
-                        <div className='flex flex-col gap-3 mb-5'>
-                           <h6 className='f6  mb-2'>Refusing customers</h6>
-                           <ul className='flex flex-col gap-3 ref'>
-                              <li>
-                                 <input
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none refusingCustomers'
-                                    autoComplete='off'
-                                 />
-                                 <a className='btn-delete deleteItem'> X </a>
-                              </li>
-                           </ul>
-                           <div>
-                              <a
-                                 id='ref'
-                                 className='btn blue-gradient text-black-eerie hover:text-white'>
-                                 + Add
-                              </a>
-                           </div>
-                        </div>
-                        <div className='flex flex-col gap-3 mb-5'>
-                           <h6 className='f6  mb-2'>Unwanted customers</h6>
-                           <ul className='flex flex-col gap-3 unwant'>
-                              <li>
-                                 <input
-                                    type='text'
-                                    className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none unwantedCustomers'
-                                    autoComplete='off'
-                                 />
-                                 <a className='btn-delete deleteItem'> X </a>
-                              </li>
-                           </ul>
-                           <div>
-                              <a
-                                 id='unwant'
-                                 className='btn blue-gradient text-black-eerie hover:text-white'>
-                                 + Add
-                              </a>
-                           </div>
-                        </div>
-                        <div className='flex gap-5 flex-wrap mt-10'>
-                           <button id='generate' className='btn'>
-                              Save
-                           </button>
-                           <Link
-                              href='/'
-                              className='btn text-black-eerie hover:text-blue-ncs'>
-                              <strong>Back To Dashboard</strong>
-                           </Link>
-                        </div>
-                     </div>
-                     <div className='md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
-                        <Link href='/' className='logo-pane'>
-                           <h4 className='text-[3rem] text-white'>20X</h4>
-                           <span className='relative -translate-x-[1.2rem]'>
-                              revenue BY
-                           </span>
-                           <div className='w-[110px] h-[33px]'>
-                              <Image
-                                 width='55'
-                                 height='30'
-                                 src='/ilogo.webp'
-                                 alt='CaseInPoint'
-                              />
-                           </div>
-                        </Link>
-                        <div className='p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-                           <div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-gray-300'>
-                              <div className='p-6 relative rounded-lg mb-10 p-6 relative rounded-lg bg-yellow-jasmine text-gray-900'>
-                                 <h6 className='f6 mb-2'>
-                                    Soon to be non customers
-                                 </h6>
-                                 <ul className='normal mb-2 noncustomersli'></ul>
-                              </div>
-                              <h6 className='f6 mb-2'>Refusing customers</h6>
-                              <ul className='normal mb-2 refusingcustomersli'></ul>
-                           </div>
-                           <h6 className='f6 mb-2'>Unwanted customers</h6>
-                           <ul className='normal mb-2 unwantedcustomersli'></ul>
-                        </div>
-                        <div className='py-3'>
-                           <button
-                              className='btn text-black-eerie'
-                              data-name='Non customers'
-                              id='theSubmitBtn'>
-                              <strong>Request </strong> for consultant review
-                           </button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </form>
-         </div>
-         {/* modal!*/}
-         {/* <div
-            className='fixed inset-0 z-[1030] bg-gray-battleship modal-center modal-overlay backdrop-blur'
-            data-trigger='.openideas'>
-            <div
-               className='fixed inset-0 overflow-hidden outline-none z-[1040px] dr-window'
-               role='dialog'
-               aria-labelledby='modaltitle'
-               tabindex='-1'>
-               <div className='relative w-auto m-6 pointer-events-none flex items-center h-[calc(100vh_-_1.5rem_*_2)] md:max-w-[700px] md:ml-auto md:mr-auto'>
-                  <div className='modal-content dr-content'>
-                     <div className='flex items-center justify-between p-3 h-12'>
-                        <div className='modal-title'>
-                           <h2 className='text-[2.8rem]'>Ideas</h2>
-                           <h3 className='flex flex-col gap-3 mb-5 f6 text-gray-gunmetal mb-5'>Add your ideas</h3>
-                        </div>
-                        <button
-                           type='button'
-                           className='modal-close dr-close'
-                           aria-label='Close'></button>
-                     </div>
-                     <div className='relative flex-auto p-3 overflow-auto' id='ideas-app'>
-                        <div className='idea-list'>
-                           <ul className='flex flex-col gap-3 mb-5'>
-                              <li>
-                                 <span> some ideas </span>
-                                 <button
-                                    className='deleteIdea'
-                                    data-id='1'
-                                    type='button'>
-                                    remove
-                                 </button>
-                              </li>
-                              <li>
-                                 <span> idea 2 </span>
-                                 <button
-                                    className='deleteIdea'
-                                    data-id='2'
-                                    type='button'>
-                                    remove
-                                 </button>
-                              </li>
-                              <li>
-                                 <span> idea 3 </span>
-                                 <button
-                                    className='deleteIdea'
-                                    data-id='3'
-                                    type='button'>
-                                    remove
-                                 </button>
-                              </li>
-                           </ul>
-                           <li>
-                              <input
-                                 type='text'
-                                 className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none newIdea'
-                                 placeholder='New idea'
-                              />
-                           </li>
-                        </div>
+	const { data: session }: any = useSession();
 
-                        <div className='flex flex-col gap-3 mb-5'>
-                           <br />
-                           <button
-                              type='button'
-                              id='saveIdea'
-                              className='add-idea btn-rev'>
-                              Save
-                           </button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div> */}
-      </>
-   );
+	const emptyUserNonCustomers = {
+		id: "",
+		userId: session?.user?.id,
+		soonNonCustomers: [],
+		refusingCustomers: [],
+		unwantedCustomers: [],
+	} as IUserNonCustomers;
+
+	const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(
+		emptyUserNonCustomers
+	);
+
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+
+	const queryClient = useQueryClient();
+
+	const { data, isLoading } = useQuery<IUserNonCustomers>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getOne,
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		if (!data) {
+			setUserNonCustomers((prevValue) => {
+				prevValue.soonNonCustomers = ["", "", ""];
+				prevValue.refusingCustomers = ["", "", ""];
+				prevValue.unwantedCustomers = ["", "", ""];
+				return prevValue;
+			});
+		}
+		if (data) {
+			setUserNonCustomers(data);
+		}
+	}, [data]);
+
+	const {
+		mutate: updateUserNonCustomers,
+		isLoading: isUpdatingUserNonCustomers,
+	} = useMutation(
+		(userNonCustomers: IUserNonCustomers) => {
+			return clientApi.updateOne(userNonCustomers);
+		},
+		{
+			onMutate: (updated) => {
+				queryClient.setQueryData(
+					[clientApi.Keys.All, userNonCustomers.id],
+					updated
+				);
+			},
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([
+					clientApi.Keys.All,
+					userNonCustomers.id,
+				]);
+				queryClient.invalidateQueries([clientApi.Keys.All]);
+			},
+		}
+	);
+
+	const {
+		mutate: createUserNonCustomers,
+		isLoading: isCreatingUserNonCustomers,
+	} = useMutation(
+		(userNonCustomers: IUserNonCustomers) =>
+			clientApi.insertOne(userNonCustomers),
+		{
+			onMutate: (updated) => {
+				queryClient.setQueryData(
+					[clientApi.Keys.All, userNonCustomers.id],
+					updated
+				);
+			},
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([
+					clientApi.Keys.All,
+					userNonCustomers.id,
+				]);
+				queryClient.invalidateQueries([clientApi.Keys.All]);
+			},
+		}
+	);
+
+	return (
+		<>
+			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+
+			<div className='homepage-bg-gradient bg-white'>
+				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
+					<div className='flex flex-wrap'>
+						<div className='w-1/2 bg-white p-12 relative'>
+							<UserInfoHeader></UserInfoHeader>
+
+							<h3 className='text-[2.8rem] my-10 text-yellow-green'>
+								Non customers
+							</h3>
+							{isLoading && (
+								<Spinner
+									className='flex items-center px-1 text-2xl'
+									message='Loading non customers...'
+								/>
+							)}
+							{!isLoading && (
+								<form className='flex flex-col'>
+									<div className='flex flex-col gap-3 my-5'>
+										<h6 className='f6 mb-2 text-xl'>
+											Soon to be non Customers
+										</h6>
+										<ul className='flex flex-col gap-5'>
+											{!userNonCustomers.soonNonCustomers?.length &&
+												!isLoading && (
+													<div className='w-full flex justify-start items-center'>
+														<p className='py-5 text-lg text-center italic'>
+															Start adding soon non customers...
+														</p>
+													</div>
+												)}
+											{!!userNonCustomers.soonNonCustomers?.length &&
+												userNonCustomers.soonNonCustomers.map(
+													(nonCustomer, index) => (
+														<li
+															key={index}
+															className='flex items-center'>
+															<input
+																type='text'
+																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+																value={nonCustomer}
+																onChange={(e) => {
+																	setUserNonCustomers(
+																		(prevValue) => {
+																			prevValue.soonNonCustomers[
+																				index
+																			] = e.target.value;
+																			return {
+																				...prevValue,
+																			};
+																		}
+																	);
+																}}
+															/>
+															<button
+																type='button'
+																onClick={() => {
+																	userNonCustomers.soonNonCustomers =
+																		userNonCustomers.soonNonCustomers.filter(
+																			(nonC, i) =>
+																				i !== index
+																		);
+																	setUserNonCustomers({
+																		...userNonCustomers,
+																	});
+																}}
+																className='btn-delete'>
+																<FontAwesomeIcon
+																	icon={faTimes}
+																	className='w-4 hover:text-rose-800'
+																/>
+															</button>
+														</li>
+													)
+												)}
+										</ul>
+										<div className='flex justify-center'>
+											<button
+												type='button'
+												onClick={() => {
+													userNonCustomers.soonNonCustomers.push(
+														""
+													);
+													setUserNonCustomers({
+														...userNonCustomers,
+													});
+												}}
+												className='inline-flex items-center gap-2 text-lg p-3 text-black-eerie hover:text-gray-600'>
+												<FontAwesomeIcon
+													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+													icon={faCirclePlus}
+												/>
+												Add more non customers
+											</button>
+										</div>
+									</div>
+									<div className='flex flex-col gap-3 my-5'>
+										<h6 className='f6 mb-2 text-xl'>
+											Refusing customers
+										</h6>
+										<ul className='flex flex-col gap-5'>
+											{!userNonCustomers.refusingCustomers?.length &&
+												!isLoading && (
+													<div className='w-full flex justify-start items-center'>
+														<p className='py-5 text-lg text-center italic'>
+															Start adding refusing customers...
+														</p>
+													</div>
+												)}
+											{!!userNonCustomers.refusingCustomers
+												?.length &&
+												userNonCustomers.refusingCustomers.map(
+													(refusingCustomer, index) => (
+														<li
+															key={index}
+															className='flex items-center'>
+															<input
+																type='text'
+																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers text-xl'
+																value={refusingCustomer}
+																onChange={(e) => {
+																	setUserNonCustomers(
+																		(prevValue) => {
+																			prevValue.refusingCustomers[
+																				index
+																			] = e.target.value;
+																			return {
+																				...prevValue,
+																			};
+																		}
+																	);
+																}}
+															/>
+															<button
+																type='button'
+																onClick={() => {
+																	userNonCustomers.refusingCustomers =
+																		userNonCustomers.refusingCustomers.filter(
+																			(nonC, i) =>
+																				i !== index
+																		);
+																	setUserNonCustomers({
+																		...userNonCustomers,
+																	});
+																}}
+																className='btn-delete'>
+																<FontAwesomeIcon
+																	icon={faTimes}
+																	className='w-4 hover:text-rose-800'
+																/>
+															</button>
+														</li>
+													)
+												)}
+										</ul>
+										<div className='flex justify-center'>
+											<button
+												type='button'
+												onClick={() => {
+													userNonCustomers.refusingCustomers.push(
+														""
+													);
+													setUserNonCustomers({
+														...userNonCustomers,
+													});
+												}}
+												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												<FontAwesomeIcon
+													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+													icon={faCirclePlus}
+												/>
+												Add more refusing customers
+											</button>
+										</div>
+									</div>
+									<div className='flex flex-col gap-3 my-5'>
+										<h6 className='f6 mb-2 text-xl'>
+											Unwanted customers
+										</h6>
+
+										<ul className='flex flex-col gap-5'>
+											{!userNonCustomers.unwantedCustomers?.length &&
+												!isLoading && (
+													<div className='w-full flex justify-start items-center'>
+														<p className='py-5 text-lg text-center italic'>
+															Start adding unwanted customers...
+														</p>
+													</div>
+												)}
+											{!!userNonCustomers.unwantedCustomers
+												?.length &&
+												userNonCustomers.unwantedCustomers.map(
+													(unwantedCustomer, index) => (
+														<li
+															key={index}
+															className='flex items-center'>
+															<input
+																type='text'
+																className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none nonCustomers text-xl'
+																value={unwantedCustomer}
+																onChange={(e) => {
+																	setUserNonCustomers(
+																		(prevValue) => {
+																			prevValue.unwantedCustomers[
+																				index
+																			] = e.target.value;
+																			return {
+																				...prevValue,
+																			};
+																		}
+																	);
+																}}
+															/>
+															<button
+																type='button'
+																onClick={() => {
+																	userNonCustomers.unwantedCustomers =
+																		userNonCustomers.unwantedCustomers.filter(
+																			(nonC, i) =>
+																				i !== index
+																		);
+																	setUserNonCustomers({
+																		...userNonCustomers,
+																	});
+																}}
+																className='btn-delete'>
+																<FontAwesomeIcon
+																	icon={faTimes}
+																	className='w-4 hover:text-rose-800'
+																/>
+															</button>
+														</li>
+													)
+												)}
+										</ul>
+										<div className='flex justify-center'>
+											<button
+												type='button'
+												onClick={() => {
+													userNonCustomers.unwantedCustomers.push(
+														""
+													);
+													setUserNonCustomers({
+														...userNonCustomers,
+													});
+												}}
+												className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+												<FontAwesomeIcon
+													className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
+													icon={faCirclePlus}
+												/>
+												Add more unwanted customers
+											</button>
+										</div>
+									</div>
+									<div className='h-10'>
+										{(isUpdatingUserNonCustomers ||
+											isCreatingUserNonCustomers) && (
+											<Spinner
+												className='flex items-center px-1 text-xl'
+												message='Saving non customers...'
+											/>
+										)}
+									</div>
+									<div className='flex flex-wrap gap-5 justify-between py-3'>
+										<button
+											type='button'
+											onClick={() => {
+												const newObj = {
+													...userNonCustomers,
+												};
+												newObj.userId = session?.user?.id;
+												if (!userNonCustomers.id) {
+													createUserNonCustomers(newObj);
+												} else {
+													updateUserNonCustomers(newObj);
+												}
+											}}
+											className='btn-rev'>
+											Save
+										</button>
+										{!!userNonCustomers.id && (
+											<Link href={"/"}>
+												<span className='text-md text-gray-400 italic'>
+													go to next →{" "}
+													<span className='text-gray-500'>
+														Step-up step-down model
+													</span>
+												</span>
+											</Link>
+										)}
+									</div>
+								</form>
+							)}
+						</div>
+						<div className='w-1/2 pane-right-gradient min-h-screen px-12 py-8'>
+							<Header
+								className='w-full mb-10'
+								toggleIdeasModal={toggleIdeasModal}></Header>
+							<div className='ml-5 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
+								<div className='p-6 relative rounded-lg mb-10 bg-gray-300'>
+									<div className='p-6 relative rounded-lg mb-10 bg-yellow-jasmine text-gray-900'>
+										<h6 className='f6 mb-2 text-xl'>
+											Soon to be non nonCustomers
+										</h6>
+										<ul className='normal mb-2'>
+											{!!userNonCustomers.soonNonCustomers?.length &&
+												userNonCustomers.soonNonCustomers.map(
+													(nonCustomers, index) => (
+														<li
+															key={index}
+															className='flex items-center'>
+															{nonCustomers}
+														</li>
+													)
+												)}
+										</ul>
+									</div>
+									<h6 className='f6 mb-2 text-xl'>
+										Refusing nonCustomers
+									</h6>
+									<ul className='normal mb-2'>
+										{!!userNonCustomers.refusingCustomers?.length &&
+											userNonCustomers.refusingCustomers.map(
+												(customer, index) => (
+													<li key={index}>{customer}</li>
+												)
+											)}
+									</ul>
+								</div>
+								<h6 className='f6 mb-2 text-xl'>
+									Unwanted nonCustomers
+								</h6>
+								<ul className='normal mb-2'>
+									{!!userNonCustomers.unwantedCustomers?.length &&
+										userNonCustomers.unwantedCustomers.map(
+											(customer, index) => (
+												<li key={index}>{customer}</li>
+											)
+										)}
+								</ul>
+							</div>
+							<div className='ml-5 py-3'>
+								<ConsultantReview
+									className='mt-10'
+									pageTitle='Non Customers'></ConsultantReview>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default NonCustomers;

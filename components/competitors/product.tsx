@@ -1,212 +1,158 @@
-import {
-   faEyeSlash,
-   faTrash,
-   faCirclePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
-import Spinner from "../common/spinner";
-import { ProductModel } from "../../models/products/product.model";
-import { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
+import Chart from "react-google-charts";
+import { useMemo } from "react";
+import { ICompetitor, IProduct } from "../../models/types";
+import useCompetitorsChart from "../../hooks/use-competitors-chart";
 
-type Props = {
-   product: ProductModel;
-   index: number;
-   onRemove: any;
-   formUtilities: any;
-};
+interface Props {
+  product: IProduct;
+  index: number;
+  formUtilities: any;
+}
 
-const CompetitorsProduct: NextPage<Props> = ({
-   product,
-   index,
-   onRemove,
-   formUtilities,
-}) => {
-   const [chart, setChart] = useState<ReactGoogleChartProps>({
-      chartType: "PieChart",
-      width: "100%",
-      height: "100%",
-      options: [],
-      data: [],
-   });
-   const updateChartProps = () => {
-      const rows = product.competitors?.map((comp) => [
-         comp.name,
-         comp.marketShare,
-      ]);
-      chart.data = [["Competitor", "Market share"], ...rows];
+const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
+  const [chart] = useCompetitorsChart(product);
 
-      chart.options = {
-         title: product.name,
-         titleTextStyle: {
-            // color: <string>,    // any HTML string color ('red', '#cc00cc')
-            // fontName: <string>, // i.e. 'Times New Roman'
-            fontSize: 16, // 12, 18 whatever you want (don't specify px)
-            // {/* bold: <boolean>,    // true or false
-            // italic: <boolean>   // true of false */}
-        },
-         is3D: true,
-         legend: {
-            position: "right",
-            alignment: "start",
-            textStyle: {
-               fontSize: 14,
-            },
-         },
-         tooltip: { trigger: "none" },
-         bubble: {
-            textStyle: {
-               fontSize: 11,
-            },
-         },
-         chartArea: { left: 50, top: 70, width: "100%", height: "100%" },
-      };
-      setChart({ ...chart });
-   };
+  const emptyCompetitor = useMemo(() => {
+    return {
+      uuid: crypto.randomUUID(),
+      name: "",
+      marketShare: 0,
+    } as ICompetitor;
+  }, []);
 
-   useEffect(() => {
-      updateChartProps();
-   }, [product]);
-
-   const emptyCompetitor = useMemo(() => {
-      return {
-         id: "0",
-         name: "",
-         marketShare: 0,
-      };
-   }, []);
-
-   return (
-      <div className='flex justify-between'>
-         <div className='md:w-[66%] pr-12'>
-            <div key={index} className='border shadow p-10'>
-               <div className='flex justify-end mb-10'>
-                  <FontAwesomeIcon
-                     onClick={onRemove}
-                     className='w-9 cursor-pointer text-rose-200 hover:text-rose-500'
-                     icon={faEyeSlash}
-                  />
-               </div>
-               <FieldArray name={`products.${index}.competitors`}>
-                  {({ remove, push }) => (
-                     <>
-                        <ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[315px] overflow-y-auto'>
-                           {!!product.competitors?.length &&
-                              product.competitors.map((comp, compIndex) => (
-                                 <li
-                                    key={compIndex}
-                                    className='flex gap-5 border-b border-gray-400 pb-7 spacedout'>
-                                    {compIndex > 0 && (
-                                       <>
-                                          <div className='w-full md:w-1/2'>
-                                             <label>
-                                                Competitor {compIndex}
-                                             </label>
-                                             <Field
-                                                type='text'
-                                                placeholder='name'
-                                                className='w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                name={`products.${index}.competitors.${compIndex}.name`}
-                                             />
-                                             <ErrorMessage
-                                                name={`products.${index}.competitors.${compIndex}.name`}>
-                                                {(msg) => (
-                                                   <div className='text-lg text-rose-500'>
-                                                      {msg}
-                                                   </div>
-                                                )}
-                                             </ErrorMessage>
-                                          </div>
-                                       </>
-                                    )}
-                                    {compIndex === 0 && (
-                                       <>
-                                          <div className='w-full md:w-1/2'>
-                                             <label>My Product</label>
-                                             <Field
-                                                type='text'
-                                                placeholder='product name'
-                                                className='opacity-60 pointer-events-none w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                                name={`products.${index}.name`}
-                                                readOnly
-                                             />
-                                          </div>
-                                       </>
-                                    )}
-                                    <div className='w-full md:w-1/2'>
-                                       <label>
-                                          {compIndex === 0 ? (
-                                             <span>My</span>
-                                          ) : null}{" "}
-                                          Market share (USD)
-                                       </label>
-                                       <div className='flex flex-wrap'>
-                                          <span className='inline-block p-3 bg-yellow-jasmine rounded-prefix'>
-                                             $
-                                          </span>
-                                          <Field
-                                             type='number'
-                                             placeholder='percentage'
-                                             className='grow comp-share p-3 bg-gray-100 outline-none caret-dark-blue border-none'
-                                             name={`products.${index}.competitors.${compIndex}.marketShare`}
-                                             min='0'
-                                             max='100'
-                                          />
-                                          <ErrorMessage
-                                             name={`products.${index}.competitors.${compIndex}.marketShare`}>
-                                             {(msg) => (
-                                                <div className='w-full text-lg text-rose-500'>
-                                                   {msg}
-                                                </div>
-                                             )}
-                                          </ErrorMessage>
-                                       </div>
-                                    </div>
-                                    {compIndex > 0 && (
-                                       <FontAwesomeIcon
-                                          icon={faTrash}
-                                          onClick={() => {
-                                             remove(compIndex);
-                                          }}
-                                          className='w-5 h-auto cursor-pointer text-rose-200 hover:text-rose-800'
-                                       />
-                                    )}
-                                 </li>
-                              ))}
-                           <div>
-                              {typeof formUtilities.errors?.competitors ===
-                                 "string" && (
-                                 <p className='text-rose-500'>
-                                    {formUtilities.errors.competitors}
-                                 </p>
-                              )}
-                           </div>
-                           <div className='flex justify-center'>
-                              <button
-                                 type='button'
-                                 onClick={() => {
-                                    push(emptyCompetitor);
-                                 }}
-                                 className='inline-flex items-center gap-3 text-lg p-3 mb-7 btn blue-gradient text-black-eerie hover:text-white'>
-                                 <FontAwesomeIcon
-                                    className='w-7 h-auto cursor-pointer text-white'
-                                    icon={faCirclePlus}
-                                 />
-                              </button>
-                           </div>
-                        </ul>
-                     </>
+  return (
+    <div className="flex justify-between text-lg">
+      <div className="md:w-1/2 pr-12">
+        <div key={index} className="">
+          <FieldArray name={`products.${index}.competitors`}>
+            {({ remove, push }) => (
+              <div className="relative">
+                <ul className="flex flex-col gap-3 mb-10 pr-5 border p-5 h-[355px] overflow-y-auto">
+                  {!product?.competitors?.length && (
+                    <div className="text-center bg-rose-50 text-sm text-rose-500 p-5">
+                      Please, add at least one competitor
+                    </div>
                   )}
-               </FieldArray>
-            </div>
-         </div>
-         <div className='flex flex-col justify-between gap-12 md:w-[34%] px-10'>
-            <Chart {...chart} legendToggle />
-         </div>
+                  {!!product?.competitors?.length &&
+                    product?.competitors.map((comp, compIndex) => (
+                      <li
+                        key={compIndex}
+                        className="flex gap-5 items-start relative"
+                      >
+                        {compIndex > 0 && (
+                          <>
+                            <div className="w-full md:w-1/2 flex flex-col gap-2">
+                              <label>
+                                {!comp.isUntapped && (
+                                  <>Competitor {compIndex - 1}</>
+                                )}
+                                {comp.isUntapped && <>Untapped Market</>}
+                              </label>
+                              <Field
+                                type="text"
+                                placeholder="name"
+                                className="w-full text-lg p-3 bg-gray-100 outline-none caret-dark-blue border-none"
+                                name={`products.${index}.competitors.${compIndex}.name`}
+                              />
+                              <ErrorMessage
+                                name={`products.${index}.competitors.${compIndex}.name`}
+                              >
+                                {(msg) => (
+                                  <div className="text-sm text-rose-500">
+                                    {msg}
+                                  </div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          </>
+                        )}
+                        {compIndex === 0 && (
+                          <>
+                            <div className="w-full md:w-1/2 flex flex-col gap-2">
+                              <label>My Product</label>
+                              <Field
+                                type="text"
+                                placeholder="product name"
+                                className="opacity-60 text-lg pointer-events-none w-full comp-name p-3 bg-gray-100 outline-none caret-dark-blue border-none"
+                                name={`products.${index}.name`}
+                                readOnly
+                              />
+                            </div>
+                          </>
+                        )}
+                        <div className="w-full md:w-1/2 flex flex-col gap-2">
+                          <label>Market share (USD)</label>
+                          <div className="flex items-baseline">
+                            <span className="inline-block p-3 bg-yellow-jasmine">
+                              $
+                            </span>
+                            <Field
+                              type="number"
+                              placeholder="percentage"
+                              className="grow comp-share p-3 text-lg bg-gray-100 outline-none caret-dark-blue border-none"
+                              name={`products.${index}.competitors.${compIndex}.marketShare`}
+                              min="0"
+                            />
+                          </div>
+                          <ErrorMessage
+                            name={`products.${index}.competitors.${compIndex}.marketShare`}
+                          >
+                            {(msg) => (
+                              <div className="w-full text-sm text-rose-500">
+                                {msg}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        {compIndex > 1 && (
+                          <FontAwesomeIcon
+                            icon={faTimes}
+                            onClick={() => {
+                              if (compIndex > 0) remove(compIndex);
+                            }}
+                            className="w-4 h-auto absolute top-12 right-4 cursor-pointer text-gray-500 hover:text-rose-800"
+                          />
+                        )}
+                      </li>
+                    ))}
+                  <div>
+                    {!!formUtilities.errors?.competitors &&
+                      formUtilities.errors.competitors.product_uuid ===
+                      product?.uuid && (
+                        <p className="text-rose-500">
+                          {formUtilities.errors.competitors.errorMessage}
+                        </p>
+                      )}
+                  </div>
+                  <div className="flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        push(emptyCompetitor);
+                      }}
+                      className="inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600"
+                    >
+                      <FontAwesomeIcon
+                        className="w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600"
+                        icon={faCirclePlus}
+                      />
+                      Add more competitors
+                    </button>
+                  </div>
+                </ul>
+              </div>
+            )}
+          </FieldArray>
+        </div>
       </div>
-   );
+      <div className="flex flex-col justify-between gap-12 md:w-1/2 h-[355px]  px-10">
+        <Chart {...chart} legendToggle />
+      </div>
+    </div>
+  );
 };
 
 export default CompetitorsProduct;
