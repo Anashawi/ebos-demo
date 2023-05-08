@@ -81,20 +81,20 @@ const RoadMap = () => {
 		<>
 			<div className='min-h-screen flex flex-col'>
 				<div className='pane-upper flex flex-col'>
-					<div className='px-12 py-8 flex flex-col gap-5 mx-auto lg:w-11/12'>
-						<div className='flex gap-5 justify-between items-center pb-5'>
+					<div className='px-12 flex flex-col gap-5 mx-auto lg:w-11/12'>
+						<div className='flex gap-5 justify-between items-center'>
 							<UserInfoHeader className='gap-10'></UserInfoHeader>
-							<Header></Header>
+							<Header className="mt-10"></Header>
 						</div>
-						<h3 className='text-[2.52rem] mb-6 text-yellow-green'>
+						<h3 className='text-[2.52rem] text-yellow-green'>
 							Road Map
 						</h3>
 						<div className='flex flex-col gap-5'>
-							<h4 className='text-[2.1rem] mb-6'>
+							<h4 className='text-[2.1rem]'>
 								Create a timeline for your ideas
 							</h4>
 							<form>
-								<div className='flex gap-5 items-center mb-10'>
+								<div className='flex gap-5 items-center mb-5'>
 									<label className='text-xl'>Start date</label>
 									<div className='grow'>
 										<input
@@ -105,11 +105,11 @@ const RoadMap = () => {
 												setUserIdeas({ ...userIdeas });
 											}}
 											min={minStartDateStr}
-											className='w-full md:w-[250px] grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+											className='w-full md:w-[200px] grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 										/>
 									</div>
 								</div>
-								<ul className='flex flex-col gap-3'>
+								<ul className='flex flex-col'>
 									{!userIdeas.ideas.length && !isLoading && (
 										<div className='w-full flex items-center'>
 											<p className='text-2xl text-center italic'>
@@ -128,8 +128,8 @@ const RoadMap = () => {
 										userIdeas.ideas.map((idea, index) => (
 											<li
 												key={index}
-												className='flex gap-5 items-center'>
-												<div className='w-[250px]'>
+												className='flex gap-5 items-center border-b py-2'>
+												<div className='w-[350px]'>
 													<label className='text-xl'>Idea</label>
 													<input
 														value={idea.name}
@@ -138,10 +138,10 @@ const RoadMap = () => {
 																e.target.value;
 															setUserIdeas({ ...userIdeas });
 														}}
-														className='w-full grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														className='w-full grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 													/>
 												</div>
-												<div className='w-[250px]'>
+												<div className='w-[200px]'>
 													<label className='text-xl'>
 														Start (month)
 													</label>
@@ -157,7 +157,7 @@ const RoadMap = () => {
 															userIdeas.startDate ||
 															minStartDateStr
 														}
-														className='w-full grow p-4 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+														className='w-full grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 													/>
 												</div>
 												<div className='grow'>
@@ -252,7 +252,7 @@ const RoadMap = () => {
 											</li>
 										))}
 								</ul>
-								<div className='flex justify-center my-10'>
+								<div className='flex justify-center my-5'>
 									<button
 										type='button'
 										onClick={() => {
@@ -270,38 +270,7 @@ const RoadMap = () => {
 										Add idea
 									</button>
 								</div>
-								<div className='h-10'>
-									{(isUpdatingIdeas || isCreatingIdeas) && (
-										<Spinner
-											className=''
-											message='Saving Ideas ...'
-										/>
-									)}
-								</div>
-								<div className='flex gap-5 mb-10'>
-									<button
-										type='button'
-										onClick={() => {
-											userIdeas.userId = session?.user?.id;
-											userIdeas.ideas?.map((idea) => {
-												if (!idea.uuid) {
-													idea.uuid = crypto.randomUUID();
-												}
-											});
-											if (userIdeas?.id) {
-												updateUserIdeas({
-													...userIdeas,
-												});
-											} else {
-												createUserIdeas({
-													...userIdeas,
-												});
-											}
-										}}
-										className='btn-rev'>
-										Save
-									</button>
-								</div>
+
 							</form>
 						</div>
 					</div>
@@ -317,9 +286,41 @@ const RoadMap = () => {
 						{!!userIdeas.ideas.length && !isLoading && (
 							<Chart {...chart} legendToggle />
 						)}
-						<ConsultantReview
-							className='mt-10'
-							pageTitle='Road Map'></ConsultantReview>
+						<div className='h-10 '>
+							{(isUpdatingIdeas || isCreatingIdeas) && (
+								<Spinner
+									className=''
+									message='Saving Ideas ...'
+								/>
+							)}
+						</div>
+						<div className="flex gap-3">
+							<button
+								type='button'
+								onClick={() => {
+									userIdeas.userId = session?.user?.id;
+									userIdeas.ideas?.map((idea) => {
+										if (!idea.uuid) {
+											idea.uuid = crypto.randomUUID();
+										}
+									});
+									if (userIdeas?.id) {
+										updateUserIdeas({
+											...userIdeas,
+										});
+									} else {
+										createUserIdeas({
+											...userIdeas,
+										});
+									}
+								}}
+								className='btn-rev'>
+								Save
+							</button>
+							<ConsultantReview
+								pageTitle='Road Map'></ConsultantReview>
+						</div>
+
 					</div>
 				</div>
 			</div>
