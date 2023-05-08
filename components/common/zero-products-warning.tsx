@@ -6,16 +6,15 @@ interface Props {
 const ZeroProductsWarning = ({ className }: Props) => {
 	return (
 		<div
-			className={`flex flex-col gap-10 w-1/2 h-full pr-10 ${
-				className ?? ""
-			}`}>
+			className={`flex flex-col gap-10 w-1/2 h-full pr-10 ${className ?? ""
+				}`}>
 			<p className='text-2xl p-10 text-center bg-yellow-50 text-yellow-900'>
-				You have no products added yet !
+				You still did not define your products!
 			</p>
 			<Link
 				href='./products'
 				className='text-2xl text-center hover:text-black-eerie text-blue-ncs italic'>
-				Go add new products
+				let us start defining them?
 			</Link>
 		</div>
 	);

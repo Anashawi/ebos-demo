@@ -29,7 +29,7 @@ const RoadMap = () => {
 		return {
 			uuid: "",
 			name: "",
-			startMonth: "",
+			startMonth: minStartDateStr,
 			durationInMonths: 6,
 		} as IIdea;
 	}, []);
@@ -257,9 +257,8 @@ const RoadMap = () => {
 										type='button'
 										onClick={() => {
 											const newIdea = { ...emptyIdea };
-											newIdea.name = `example ${
-												userIdeas.ideas.length + 1
-											}`;
+											newIdea.name = `Idea ${userIdeas.ideas.length + 1
+												}`;
 											userIdeas.ideas.push(newIdea);
 											setUserIdeas({ ...userIdeas });
 										}}
