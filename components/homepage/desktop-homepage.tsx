@@ -182,7 +182,7 @@ const DesktopHomepage: NextPage<Props> = ({
 									<>
 										<div className="text-lg font-bold">WELCOME</div>
 										<div className='text-slate-700'>
-											{(session?.user as any).fullName.toUpperCase()}
+											{(session?.user as any)?.fullName?.toUpperCase()}
 										</div>
 										<div
 											onClick={() => {
