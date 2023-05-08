@@ -43,7 +43,7 @@ const useIdeaFactorsChart = (product: IProduct) => {
 				"#046D35",
 				"#E51061",
 				"#0DB1D7",
-				"#E51061",
+				"orange",
 				"#FFAA00",
 				"gray",
 			],
