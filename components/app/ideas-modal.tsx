@@ -82,7 +82,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 				}}>
 				<div className='flex flex-col gap-7'>
 					<h2 className='flex gap-5 items-center text-4xl text-gray-700 mb-5'>
-						ideas{" "}
+						Ideas{" "}
 						{(isCreatingIdea || isDeletingIdea || isUpdatingIdea) && (
 							<Spinner
 								className='text-lg items-center font-normal'
