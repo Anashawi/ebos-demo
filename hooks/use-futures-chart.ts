@@ -24,10 +24,10 @@ const useFuturesChart = (product: IProduct) => {
 					return 1;
 				})
 				.map((n, i) => {
-					return ["", i + 1, +n.level, n.sales];
+					return ["", i + 1, +n.level, product.name, n.sales];
 				}) ?? [];
 
-		chart.data = [["Product", "Year", "Level", "Sales"], ...rows];
+		chart.data = [["Product", "Year", "Level", "Product Name", "Sales"], ...rows];
 		const ticks: any = product.futures?.map((future, i) => {
 			return {
 				v: i + 1,
