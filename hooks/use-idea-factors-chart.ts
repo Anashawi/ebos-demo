@@ -33,7 +33,7 @@ const useIdeaFactorsChart = (product: IProduct) => {
 			...rows,
 		];
 		chart.options = {
-			title: `Red Ocean: ${product.name}`,
+			title: `Blue Ocean: ${product.name}`,
 			titleTextStyle: {
 				fontSize: 12, // 12, 18 whatever you want (don't specify px),
 			},
@@ -68,9 +68,6 @@ const useIdeaFactorsChart = (product: IProduct) => {
 					{ v: "4", f: "Excellent" },
 				] as any,
 				// title: "Competency Level",
-			},
-			hAxis: {
-				title: "Competency IdeaFactors",
 			},
 			chartArea: {
 				left: 100,

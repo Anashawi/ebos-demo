@@ -137,7 +137,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																</ErrorMessage>
 															</div>
 															<div className='grow p-2 flex flex-col'>
-																<label>Sales</label>
+																<label>Sales (USD)</label>
 																<Field
 																	type='number'
 																	name={`products.${index}.futures.${futureIndex}.sales`}

@@ -60,6 +60,14 @@ const useFuturesChart = (products: IProduct[]) => {
 					fontSize: 14,
 				},
 			},
+			colors: [
+				"#046D35",
+				"#E51061",
+				"#0DB1D7",
+				"orange",
+				"#FFAA00",
+				"gray",
+			],
 			tooltip: {
 				trigger: "none",
 			},

@@ -16,11 +16,11 @@ import UserInfoHeader from "../../components/common/user-info-header";
 const RoadMap = () => {
 	const { data: session }: any = useSession();
 
-	const minStartDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
+	const todayDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
 
 	const emptyUserIdeas: IUserIdeas = {
 		id: "",
-		startDate: minStartDateStr,
+		startDate: todayDateStr,
 		userId: session?.user?.id,
 		ideas: [],
 	} as IUserIdeas;
@@ -29,7 +29,7 @@ const RoadMap = () => {
 		return {
 			uuid: "",
 			name: "",
-			startMonth: minStartDateStr,
+			startMonth: todayDateStr,
 			durationInMonths: 6,
 		} as IIdea;
 	}, []);
@@ -77,6 +77,28 @@ const RoadMap = () => {
 		}
 	);
 
+	const calcIdeaStartMonth = (idea: any) => {
+		if (
+			!idea.startMonth ||
+			(idea.startMonth &&
+				new Date(idea.startMonth) < new Date(userIdeas.startDate || ""))
+		) {
+			idea.startMonth = userIdeas.startDate || todayDateStr;
+			setUserIdeas({ ...userIdeas });
+		}
+		return idea.startMonth;
+	};
+
+	const getMinDateStr = (savedStartDateStr: string | undefined) => {
+		if (!savedStartDateStr) {
+			return todayDateStr;
+		}
+		if (new Date(savedStartDateStr) < new Date(todayDateStr)) {
+			return savedStartDateStr;
+		}
+		return todayDateStr;
+	};
+
 	return (
 		<>
 			<div className='min-h-screen flex flex-col'>
@@ -84,11 +106,9 @@ const RoadMap = () => {
 					<div className='px-12 flex flex-col gap-5 mx-auto lg:w-11/12'>
 						<div className='flex gap-5 justify-between items-center'>
 							<UserInfoHeader className='gap-10'></UserInfoHeader>
-							<Header className="mt-10"></Header>
+							<Header className='mt-10'></Header>
 						</div>
-						<h3 className='text-[2.52rem] text-yellow-green'>
-							Road Map
-						</h3>
+						<h3 className='text-[2.52rem] text-yellow-green'>Road Map</h3>
 						<div className='flex flex-col gap-5'>
 							<h4 className='text-[2.1rem]'>
 								Create a timeline for your ideas
@@ -104,7 +124,7 @@ const RoadMap = () => {
 												userIdeas.startDate = e.target.value;
 												setUserIdeas({ ...userIdeas });
 											}}
-											min={minStartDateStr}
+											min={getMinDateStr(userIdeas.startDate)}
 											className='w-full md:w-[200px] grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 										/>
 									</div>
@@ -147,15 +167,14 @@ const RoadMap = () => {
 													</label>
 													<input
 														type='month'
-														value={idea.startMonth}
+														value={calcIdeaStartMonth(idea)}
 														onChange={(e) => {
 															userIdeas.ideas[index].startMonth =
 																e.target.value;
 															setUserIdeas({ ...userIdeas });
 														}}
 														min={
-															userIdeas.startDate ||
-															minStartDateStr
+															userIdeas.startDate || todayDateStr
 														}
 														className='w-full grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 													/>
@@ -257,8 +276,9 @@ const RoadMap = () => {
 										type='button'
 										onClick={() => {
 											const newIdea = { ...emptyIdea };
-											newIdea.name = `Idea ${userIdeas.ideas.length + 1
-												}`;
+											newIdea.name = `Idea ${
+												userIdeas.ideas.length + 1
+											}`;
 											userIdeas.ideas.push(newIdea);
 											setUserIdeas({ ...userIdeas });
 										}}
@@ -270,7 +290,6 @@ const RoadMap = () => {
 										Add idea
 									</button>
 								</div>
-
 							</form>
 						</div>
 					</div>
@@ -288,13 +307,10 @@ const RoadMap = () => {
 						)}
 						<div className='h-10 '>
 							{(isUpdatingIdeas || isCreatingIdeas) && (
-								<Spinner
-									className=''
-									message='Saving Ideas ...'
-								/>
+								<Spinner className='' message='Saving Ideas ...' />
 							)}
 						</div>
-						<div className="flex gap-3">
+						<div className='flex gap-3'>
 							<button
 								type='button'
 								onClick={() => {
@@ -317,10 +333,8 @@ const RoadMap = () => {
 								className='btn-rev'>
 								Save
 							</button>
-							<ConsultantReview
-								pageTitle='Road Map'></ConsultantReview>
+							<ConsultantReview pageTitle='Road Map'></ConsultantReview>
 						</div>
-
 					</div>
 				</div>
 			</div>
