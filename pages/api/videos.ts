@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import * as service from "../../services/videos.service";
-import { getToken } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {

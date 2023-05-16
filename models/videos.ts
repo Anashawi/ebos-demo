@@ -19,6 +19,14 @@ interface VideosAttrs {
   customerJourney: string;
   digitalPlatforms: string;
   buildingCapacity: string;
+  products: string;
+  marketPotential: string;
+  redOcean: string;
+  voiceOfCustomers: string;
+  blueOcean: string;
+  nonCustomers: string;
+  stepUpStepDownModel: string;
+  roadMap: string;
 }
 interface VideosDocument extends mongoose.Document, VideosAttrs { }
 
@@ -101,6 +109,38 @@ const videosSchema = new mongoose.Schema(
       required: true,
     },
     buildingCapacity: {
+      type: String,
+      required: true,
+    },
+    products: {
+      type: String,
+      required: true,
+    },
+    marketPotential: {
+      type: String,
+      required: true,
+    },
+    redOcean: {
+      type: String,
+      required: true,
+    },
+    voiceOfCustomers: {
+      type: String,
+      required: true,
+    },
+    blueOcean: {
+      type: String,
+      required: true,
+    },
+    nonCustomers: {
+      type: String,
+      required: true,
+    },
+    stepUpStepDownModel: {
+      type: String,
+      required: true,
+    },
+    roadMap: {
       type: String,
       required: true,
     },

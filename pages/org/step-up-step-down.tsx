@@ -9,13 +9,20 @@ import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import IdeasModal from "../../components/app/ideas-modal";
-import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCirclePlus,
+	faEdit,
+	faEye,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "../../components/common/spinner";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import Video from "../../components/videos/video";
+import { videoPropNamesEnum } from "../../models/enums";
 
 const Analysis = () => {
-	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-
 	const { data: session }: any = useSession();
 
 	const emptyUserAnalysis = {
@@ -28,6 +35,10 @@ const Analysis = () => {
 
 	const [userAnalysis, setUserAnalysis] =
 		useState<IUserAnalysis>(emptyUserAnalysis);
+
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const queryClient = useQueryClient();
 
@@ -383,14 +394,69 @@ const Analysis = () => {
 										</ul>
 									</div>
 								</div>
-								<ConsultantReview
-									className='ml-5 mt-10'
-									pageTitle='Step-up step-down'></ConsultantReview>
+								<div className='px-5 mt-10 flex flex-wrap justify-start items-center gap-4'>
+									<ConsultantReview
+										pageTitle={
+											"Non Customers Canvas"
+										}></ConsultantReview>
+									{(session?.user as any)?.role === "admin" && (
+										<button
+											type='button'
+											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+											onClick={toggleEditVideoModal}>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									)}
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleVideoModal}>
+										<span>Watch Video</span>
+										<FontAwesomeIcon className='w-7' icon={faEye} />
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.stepUpStepDownModel} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.stepUpStepDownModel}
+					videoLabel='Step Up Step Down Model Video'
+				/>
+			</Modal>
 		</>
 	);
 };

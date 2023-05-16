@@ -5,23 +5,31 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import Product from "../../components/products/product";
 import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
 import { IUserProduct, UserProduct } from "../../models/user-product";
 import { IFuture } from "../../models/types";
 import Spinner from "../../components/common/spinner";
-import { productPagesEnum } from "../../models/enums";
+import { productPagesEnum, videoPropNamesEnum } from "../../models/enums";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import { object, array, string, number } from "yup";
 import useFuturesChart from "../../hooks/use-futures-chart";
 import Chart from "react-google-charts";
 import FormikContextChild from "../../components/products/formik-context-child";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import ConsultantReview from "../../components/common/consultant-review";
+import Video from "../../components/videos/video";
 
 const Products = () => {
 	const { data: session }: any = useSession();
+
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const emptyUserProduct = useMemo(() => {
 		return {
@@ -35,8 +43,6 @@ const Products = () => {
 		useState<IUserProduct>(emptyUserProduct);
 
 	const [chart] = useFuturesChart(userProduct.products);
-
-	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 
 	const queryClient = useQueryClient();
 
@@ -134,9 +140,6 @@ const Products = () => {
 							validationSchema={object({
 								products: array(
 									object({
-										// id: string("must be a string").required(
-										//    "required"
-										// ),
 										name: string().required("required"),
 										futures: array(
 											object({
@@ -234,65 +237,107 @@ const Products = () => {
 																		</div>
 																	)}
 															</div>
-															<div className='md:w-1/2 h-[500px] pl-10'>
-																<Chart
-																	{...chart}
-																	legendToggle
-																/>
-															</div>
-														</div>
-														<div>
-															<div className='h-10'>
-																{(isUpdatingUserProduct ||
-																	isCreatingUserProduct) && (
-																	<Spinner
-																		className='flex items-center text-lg'
-																		message='Saving Products'
+															{!!userProduct.products
+																?.length && (
+																<div className='md:w-1/2 h-[500px] pl-10'>
+																	<Chart
+																		{...chart}
+																		legendToggle
 																	/>
-																)}
-															</div>
-															<div className='w-1/2 flex gap-5 items-center justify-between pr-5'>
-																<div className='flex gap-5'>
-																	<button
-																		type='submit'
-																		className={
-																			isSubmitting ||
-																			!isValid
-																				? "btn-rev btn-disabled"
-																				: "btn-rev"
-																		}
-																		disabled={
-																			isSubmitting ||
-																			!isValid
-																		}>
-																		Save
-																	</button>
-																	<button
-																		type='button'
-																		onClick={() => {
-																			push(emptyProduct);
-																		}}
-																		className='inline-flex items-center gap-3 btn text-black-eerie'>
-																		<FontAwesomeIcon
-																			className='w-5 h-auto cursor-pointer'
-																			icon={faPlus}
+																</div>
+															)}
+														</div>
+
+														<div className='flex gap-5 items-center justify-between'>
+															<div className='w-1/2'>
+																<div className='h-10'>
+																	{(isUpdatingUserProduct ||
+																		isCreatingUserProduct) && (
+																		<Spinner
+																			className='flex items-center text-lg'
+																			message='Saving Products'
 																		/>
-																		<span>
-																			Add New Product
-																		</span>
+																	)}
+																</div>
+																<div className='flex gap-5 items-center justify-between pr-5'>
+																	<div className='flex gap-5'>
+																		<button
+																			type='submit'
+																			className={
+																				isSubmitting ||
+																				!isValid
+																					? "btn-rev btn-disabled"
+																					: "btn-rev"
+																			}
+																			disabled={
+																				isSubmitting ||
+																				!isValid
+																			}>
+																			Save
+																		</button>
+																		<button
+																			type='button'
+																			onClick={() => {
+																				push(emptyProduct);
+																			}}
+																			className='inline-flex items-center gap-3 btn text-black-eerie'>
+																			<FontAwesomeIcon
+																				className='w-5 h-auto cursor-pointer'
+																				icon={faPlus}
+																			/>
+																			<span>
+																				Add New Product
+																			</span>
+																		</button>
+																	</div>
+																	{userProduct?.products
+																		?.length > 0 && (
+																		<Link href={"/"}>
+																			<span className='text-md text-gray-400 italic'>
+																				go to next →{" "}
+																				<span className='text-gray-500'>
+																					market potential
+																				</span>
+																			</span>
+																		</Link>
+																	)}
+																</div>
+															</div>
+															<div className='w-1/2'>
+																<div className='h-10'></div>
+																<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
+																	<ConsultantReview
+																		pageTitle={
+																			"Pioneer, Migrator, Settler"
+																		}></ConsultantReview>
+																	{(session?.user as any)
+																		?.role === "admin" && (
+																		<button
+																			className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+																			onClick={
+																				toggleEditVideoModal
+																			}>
+																			<span>
+																				Edit video Url
+																			</span>
+																			<FontAwesomeIcon
+																				className='w-7'
+																				icon={faEdit}
+																			/>
+																		</button>
+																	)}
+																	<button
+																		className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+																		onClick={
+																			toggleVideoModal
+																		}>
+																		<span>Watch Video</span>
+																		<FontAwesomeIcon
+																			className='w-7'
+																			icon={faEye}
+																		/>
 																	</button>
 																</div>
-																{userProduct?.products?.length >
-																	0 && (
-																	<Link href={"/"}>
-																		<span className='text-md text-gray-400 italic'>
-																			go to next →{" "}
-																			<span className='text-gray-500'>
-																				market potential
-																			</span>
-																		</span>
-																	</Link>
-																)}
 															</div>
 														</div>
 													</div>
@@ -312,6 +357,39 @@ const Products = () => {
 					</div>
 				</div>
 			</div>
+
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.products} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.products}
+					videoLabel='Products Video'
+				/>
+			</Modal>
 		</>
 	);
 };

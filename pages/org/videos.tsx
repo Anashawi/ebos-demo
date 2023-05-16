@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
+import { videoPropNamesEnum } from "../../models/enums";
 
 const Disruption = () => {
 	const { data: session } = useSession();
@@ -44,7 +45,8 @@ const Disruption = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditUrlsModal] = useModalToggler();
-	const [selectedVideoURL, setSelectedVideoURL] = useState<string>("");
+	const [selectedVideoPropName, setSelectedVideoPropName] =
+		useState<videoPropNamesEnum>(videoPropNamesEnum.goalsVideo);
 	const [videos, setVideos] = useState<IVideos>(emptyVideos);
 
 	const { data, isLoading } = useQuery<IVideos>({
@@ -89,8 +91,8 @@ const Disruption = () => {
 												target='_blank'
 												data-video='1'
 												onClick={() => {
-													setSelectedVideoURL(
-														videos.staffOnDemand
+													setSelectedVideoPropName(
+														videoPropNamesEnum.staffOnDemand
 													);
 													toggleVideoModal();
 												}}>
@@ -104,8 +106,8 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(
-														videos.communityAndCrowd
+													setSelectedVideoPropName(
+														videoPropNamesEnum.communityAndCrowd
 													);
 													toggleVideoModal();
 												}}>
@@ -119,7 +121,9 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(videos.algorithms);
+													setSelectedVideoPropName(
+														videoPropNamesEnum.algorithms
+													);
 													toggleVideoModal();
 												}}>
 												Watch video
@@ -132,8 +136,8 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(
-														videos.leveragedAssets
+													setSelectedVideoPropName(
+														videoPropNamesEnum.leveragedAssets
 													);
 													toggleVideoModal();
 												}}>
@@ -147,7 +151,9 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(videos.Engagement);
+													setSelectedVideoPropName(
+														videoPropNamesEnum.Engagement
+													);
 													toggleVideoModal();
 												}}>
 												Watch video
@@ -166,7 +172,9 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(videos.interface);
+													setSelectedVideoPropName(
+														videoPropNamesEnum.interface
+													);
 													toggleVideoModal();
 												}}>
 												Watch video
@@ -179,7 +187,9 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(videos.dashboard);
+													setSelectedVideoPropName(
+														videoPropNamesEnum.dashboard
+													);
 													toggleVideoModal();
 												}}>
 												Watch video
@@ -192,8 +202,8 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(
-														videos.experimentation
+													setSelectedVideoPropName(
+														videoPropNamesEnum.experimentation
 													);
 													toggleVideoModal();
 												}}>
@@ -207,7 +217,9 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(videos.autonomy);
+													setSelectedVideoPropName(
+														videoPropNamesEnum.autonomy
+													);
 													toggleVideoModal();
 												}}>
 												Watch video
@@ -220,8 +232,8 @@ const Disruption = () => {
 												className='ml-5 text-[1.1rem]'
 												target='_blank'
 												onClick={() => {
-													setSelectedVideoURL(
-														videos.socialPlatforms
+													setSelectedVideoPropName(
+														videoPropNamesEnum.socialPlatforms
 													);
 													toggleVideoModal();
 												}}>
@@ -266,7 +278,9 @@ const Disruption = () => {
 										Eco Systems
 										<a
 											onClick={() => {
-												setSelectedVideoURL(videos.ecoSystems);
+												setSelectedVideoPropName(
+													videoPropNamesEnum.ecoSystems
+												);
 												toggleVideoModal();
 											}}
 											className='ml-5 text-[1.1rem]'
@@ -278,7 +292,9 @@ const Disruption = () => {
 										Info is Power
 										<a
 											onClick={() => {
-												setSelectedVideoURL(videos.infoIsPower);
+												setSelectedVideoPropName(
+													videoPropNamesEnum.infoIsPower
+												);
 												toggleVideoModal();
 											}}
 											className='ml-5 text-[1.1rem]'
@@ -290,7 +306,9 @@ const Disruption = () => {
 										OTCR
 										<a
 											onClick={() => {
-												setSelectedVideoURL(videos.OTCR);
+												setSelectedVideoPropName(
+													videoPropNamesEnum.OTCR
+												);
 												toggleVideoModal();
 											}}
 											className='ml-5 text-[1.1rem]'
@@ -302,8 +320,8 @@ const Disruption = () => {
 										Value Destruction
 										<a
 											onClick={() => {
-												setSelectedVideoURL(
-													videos.valueDestruction
+												setSelectedVideoPropName(
+													videoPropNamesEnum.valueDestruction
 												);
 												toggleVideoModal();
 											}}
@@ -316,7 +334,9 @@ const Disruption = () => {
 										Customer Journey
 										<a
 											onClick={() => {
-												setSelectedVideoURL(videos.customerJourney);
+												setSelectedVideoPropName(
+													videoPropNamesEnum.customerJourney
+												);
 												toggleVideoModal();
 											}}
 											className='ml-5 text-[1.1rem]'
@@ -328,8 +348,8 @@ const Disruption = () => {
 										Digital Platforms
 										<a
 											onClick={() => {
-												setSelectedVideoURL(
-													videos.digitalPlatforms
+												setSelectedVideoPropName(
+													videoPropNamesEnum.digitalPlatforms
 												);
 												toggleVideoModal();
 											}}
@@ -342,8 +362,8 @@ const Disruption = () => {
 										Building Capacity
 										<a
 											onClick={() => {
-												setSelectedVideoURL(
-													videos.buildingCapacity
+												setSelectedVideoPropName(
+													videoPropNamesEnum.buildingCapacity
 												);
 												toggleVideoModal();
 											}}
@@ -376,7 +396,7 @@ const Disruption = () => {
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
-				<Video url={selectedVideoURL} />
+				<Video currVideoPropName={selectedVideoPropName} />
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'

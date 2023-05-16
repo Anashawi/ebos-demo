@@ -13,11 +13,19 @@ import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import Video from "../../components/videos/video";
+import { videoPropNamesEnum } from "../../models/enums";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Customers = () => {
-	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-
 	const { data: session }: any = useSession();
+
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const emptyUserCustomers = useMemo(() => {
 		return {
@@ -333,10 +341,31 @@ const Customers = () => {
 												</ul>
 											</div>
 										</div>
-										<div className='py-3'>
-											<ConsultantReview
-												className='mt-7'
-												pageTitle='Voice of customers'></ConsultantReview>
+
+										<div className='flex flex-wrap justify-start items-center gap-4 pt-10 mx-auto'>
+											<ConsultantReview pageTitle='Voice of customers'></ConsultantReview>
+											{(session?.user as any)?.role === "admin" && (
+												<button
+													type='button'
+													className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+													onClick={toggleEditVideoModal}>
+													<span>Edit video Url</span>
+													<FontAwesomeIcon
+														className='w-7'
+														icon={faEdit}
+													/>
+												</button>
+											)}
+											<button
+												type='button'
+												className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+												onClick={toggleVideoModal}>
+												<span>Watch Video</span>
+												<FontAwesomeIcon
+													className='w-7'
+													icon={faEye}
+												/>
+											</button>
 										</div>
 									</>
 								)}
@@ -345,6 +374,39 @@ const Customers = () => {
 					</div>
 				</form>
 			</div>
+
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.voiceOfCustomers} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.voiceOfCustomers}
+					videoLabel='Voice of Customers Video'
+				/>
+			</Modal>
 		</>
 	);
 };

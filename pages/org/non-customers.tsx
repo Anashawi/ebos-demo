@@ -8,10 +8,19 @@ import ConsultantReview from "../../components/common/consultant-review";
 import UserInfoHeader from "../../components/common/user-info-header";
 import Header from "../../components/common/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCirclePlus,
+	faEdit,
+	faEye,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
 import Link from "next/link";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import Video from "../../components/videos/video";
+import { videoPropNamesEnum } from "../../models/enums";
 
 const NonCustomers = () => {
 	const { data: session }: any = useSession();
@@ -29,6 +38,8 @@ const NonCustomers = () => {
 	);
 
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const queryClient = useQueryClient();
 
@@ -445,15 +456,65 @@ const NonCustomers = () => {
 										)}
 								</ul>
 							</div>
-							<div className='ml-5 py-3'>
+							<div className='px-5 mt-10 flex flex-wrap justify-start items-center gap-4'>
 								<ConsultantReview
-									className='mt-10'
-									pageTitle='Non Customers'></ConsultantReview>
+									pageTitle={
+										"Non Customers Canvas"
+									}></ConsultantReview>
+								{(session?.user as any)?.role === "admin" && (
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleEditVideoModal}>
+										<span>Edit video Url</span>
+										<FontAwesomeIcon className='w-7' icon={faEdit} />
+									</button>
+								)}
+								<button
+									type='button'
+									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+									onClick={toggleVideoModal}>
+									<span>Watch Video</span>
+									<FontAwesomeIcon className='w-7' icon={faEye} />
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.nonCustomers} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.nonCustomers}
+					videoLabel='Non Customers Video'
+				/>
+			</Modal>
 		</>
 	);
 };

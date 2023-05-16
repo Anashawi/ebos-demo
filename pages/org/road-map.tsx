@@ -5,13 +5,23 @@ import { IUserIdeas } from "../../models/user-idea";
 import * as clientApi from "../../http-client/ideas.client";
 import { useSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCirclePlus,
+	faEdit,
+	faEye,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import Chart from "react-google-charts";
 import useRoadMapChart from "../../hooks/use-road-map-chart";
 import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
+import useModalToggler from "../../hooks/use-modal-toggler";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import Video from "../../components/videos/video";
+import { videoPropNamesEnum } from "../../models/enums";
 
 const RoadMap = () => {
 	const { data: session }: any = useSession();
@@ -35,6 +45,9 @@ const RoadMap = () => {
 	}, []);
 
 	const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const [chart] = useRoadMapChart(userIdeas);
 
@@ -310,7 +323,7 @@ const RoadMap = () => {
 								<Spinner className='' message='Saving Ideas ...' />
 							)}
 						</div>
-						<div className='flex gap-3'>
+						<div className='flex gap-3 flex-wrap justify-between items-center'>
 							<button
 								type='button'
 								onClick={() => {
@@ -333,11 +346,63 @@ const RoadMap = () => {
 								className='btn-rev'>
 								Save
 							</button>
-							<ConsultantReview pageTitle='Road Map'></ConsultantReview>
+							<div className='flex items-center gap-5'>
+								<ConsultantReview
+									pageTitle={"Roads Map Canvas"}></ConsultantReview>
+								{(session?.user as any)?.role === "admin" && (
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleEditVideoModal}>
+										<span>Edit video Url</span>
+										<FontAwesomeIcon className='w-7' icon={faEdit} />
+									</button>
+								)}
+								<button
+									type='button'
+									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+									onClick={toggleVideoModal}>
+									<span>Watch Video</span>
+									<FontAwesomeIcon className='w-7' icon={faEye} />
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.roadMap} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.roadMap}
+					videoLabel='Road Map Video'
+				/>
+			</Modal>
 		</>
 	);
 };
