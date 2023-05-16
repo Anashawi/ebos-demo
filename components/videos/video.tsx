@@ -4,6 +4,7 @@ import objectPath from "object-path";
 import { useEffect, useState } from "react";
 import { IVideos } from "../../models/videos";
 import * as clientApi from "../../http-client/videos.client";
+import Spinner from "../common/spinner";
 
 interface Props {
 	currVideoPropName: string;
@@ -26,6 +27,14 @@ const Video: NextPage<Props> = ({ currVideoPropName }) => {
 			} as any);
 		}
 	}, [data]);
+
+	if (isLoading) {
+		return (
+			<div className='h-full flex justify-center items-center'>
+				<Spinner className='' message='Loading video' />
+			</div>
+		);
+	}
 
 	if (!videos?.id || !objectPath.get(videos ?? {}, currVideoPropName)) {
 		return (
