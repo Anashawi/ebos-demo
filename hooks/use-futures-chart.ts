@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ReactGoogleChartProps } from "react-google-charts";
 import { IProduct } from "../models/types";
 
-const useFuturesChart = (product: IProduct) => {
+const useFuturesChart = (products: IProduct[]) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "BubbleChart",
 		width: "100%",
@@ -12,28 +12,31 @@ const useFuturesChart = (product: IProduct) => {
 	});
 
 	useEffect(() => {
-		updateChartProps();
-	}, [product]);
+		if (products) {
+			updateChartProps();
+		}
+	}, [products]);
 
 	const updateChartProps = () => {
-		const productFutures = [...(product.futures ?? [])];
 		const rows =
-			productFutures
+			[...products].map(prod => [...prod.futures ?? []]
 				?.sort((a, b) => {
 					if (a.year < b.year) return -1;
 					return 1;
 				})
 				.map((n, i) => {
-					return ["", i + 1, +n.level, n.sales];
-				}) ?? [];
+					return [prod.name, i + 1, +n.level, prod.name, n.sales];
+				}) ?? []
+			).flat(1);
 
-		chart.data = [["Product", "Year", "Level", "Sales"], ...rows];
-		const ticks: any = product.futures?.map((future, i) => {
+		chart.data = [["Product Name", "Year", "Level", "Product Name", "Sales"], ...rows];
+
+		const ticks: any = products.map(prod => prod.futures?.map((future, i) => {
 			return {
 				v: i + 1,
 				f: future.year.toString(),
 			};
-		});
+		}));
 		const vAxisTicks: any = [
 			{
 				v: 1,
@@ -50,13 +53,21 @@ const useFuturesChart = (product: IProduct) => {
 		];
 
 		chart.options = {
-			title: product.name,
+			title: "Products",
 			legend: {
 				position: "right",
 				textStyle: {
 					fontSize: 14,
 				},
 			},
+			colors: [
+				"#046D35",
+				"#E51061",
+				"#0DB1D7",
+				"orange",
+				"#FFAA00",
+				"gray",
+			],
 			tooltip: {
 				trigger: "none",
 			},
@@ -69,7 +80,7 @@ const useFuturesChart = (product: IProduct) => {
 					color: "#eee",
 				},
 				baseline: 0,
-				maxValue: (product.futures?.length ?? 0) + 1,
+				maxValue: Math.max(...products.map((p) => p.futures?.length ?? 0)) + 1,
 				ticks: ticks,
 			},
 			vAxis: {

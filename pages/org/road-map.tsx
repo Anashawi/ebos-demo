@@ -5,22 +5,32 @@ import { IUserIdeas } from "../../models/user-idea";
 import * as clientApi from "../../http-client/ideas.client";
 import { useSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCirclePlus,
+	faEdit,
+	faEye,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import Chart from "react-google-charts";
 import useRoadMapChart from "../../hooks/use-road-map-chart";
 import Spinner from "../../components/common/spinner";
 import ConsultantReview from "../../components/common/consultant-review";
 import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
+import useModalToggler from "../../hooks/use-modal-toggler";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import Video from "../../components/videos/video";
+import { videoPropNamesEnum } from "../../models/enums";
 
 const RoadMap = () => {
 	const { data: session }: any = useSession();
 
-	const minStartDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
+	const todayDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
 
 	const emptyUserIdeas: IUserIdeas = {
 		id: "",
-		startDate: minStartDateStr,
+		startDate: todayDateStr,
 		userId: session?.user?.id,
 		ideas: [],
 	} as IUserIdeas;
@@ -29,12 +39,15 @@ const RoadMap = () => {
 		return {
 			uuid: "",
 			name: "",
-			startMonth: minStartDateStr,
+			startMonth: todayDateStr,
 			durationInMonths: 6,
 		} as IIdea;
 	}, []);
 
 	const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const [chart] = useRoadMapChart(userIdeas);
 
@@ -77,6 +90,28 @@ const RoadMap = () => {
 		}
 	);
 
+	const calcIdeaStartMonth = (idea: any) => {
+		if (
+			!idea.startMonth ||
+			(idea.startMonth &&
+				new Date(idea.startMonth) < new Date(userIdeas.startDate || ""))
+		) {
+			idea.startMonth = userIdeas.startDate || todayDateStr;
+			setUserIdeas({ ...userIdeas });
+		}
+		return idea.startMonth;
+	};
+
+	const getMinDateStr = (savedStartDateStr: string | undefined) => {
+		if (!savedStartDateStr) {
+			return todayDateStr;
+		}
+		if (new Date(savedStartDateStr) < new Date(todayDateStr)) {
+			return savedStartDateStr;
+		}
+		return todayDateStr;
+	};
+
 	return (
 		<>
 			<div className='min-h-screen flex flex-col'>
@@ -84,11 +119,9 @@ const RoadMap = () => {
 					<div className='px-12 flex flex-col gap-5 mx-auto lg:w-11/12'>
 						<div className='flex gap-5 justify-between items-center'>
 							<UserInfoHeader className='gap-10'></UserInfoHeader>
-							<Header className="mt-10"></Header>
+							<Header className='mt-10'></Header>
 						</div>
-						<h3 className='text-[2.52rem] text-yellow-green'>
-							Road Map
-						</h3>
+						<h3 className='text-[2.52rem] text-yellow-green'>Road Map</h3>
 						<div className='flex flex-col gap-5'>
 							<h4 className='text-[2.1rem]'>
 								Create a timeline for your ideas
@@ -104,7 +137,7 @@ const RoadMap = () => {
 												userIdeas.startDate = e.target.value;
 												setUserIdeas({ ...userIdeas });
 											}}
-											min={minStartDateStr}
+											min={getMinDateStr(userIdeas.startDate)}
 											className='w-full md:w-[200px] grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 										/>
 									</div>
@@ -147,15 +180,14 @@ const RoadMap = () => {
 													</label>
 													<input
 														type='month'
-														value={idea.startMonth}
+														value={calcIdeaStartMonth(idea)}
 														onChange={(e) => {
 															userIdeas.ideas[index].startMonth =
 																e.target.value;
 															setUserIdeas({ ...userIdeas });
 														}}
 														min={
-															userIdeas.startDate ||
-															minStartDateStr
+															userIdeas.startDate || todayDateStr
 														}
 														className='w-full grow p-2 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
 													/>
@@ -257,8 +289,9 @@ const RoadMap = () => {
 										type='button'
 										onClick={() => {
 											const newIdea = { ...emptyIdea };
-											newIdea.name = `Idea ${userIdeas.ideas.length + 1
-												}`;
+											newIdea.name = `Idea ${
+												userIdeas.ideas.length + 1
+											}`;
 											userIdeas.ideas.push(newIdea);
 											setUserIdeas({ ...userIdeas });
 										}}
@@ -270,7 +303,6 @@ const RoadMap = () => {
 										Add idea
 									</button>
 								</div>
-
 							</form>
 						</div>
 					</div>
@@ -288,13 +320,10 @@ const RoadMap = () => {
 						)}
 						<div className='h-10 '>
 							{(isUpdatingIdeas || isCreatingIdeas) && (
-								<Spinner
-									className=''
-									message='Saving Ideas ...'
-								/>
+								<Spinner className='' message='Saving Ideas ...' />
 							)}
 						</div>
-						<div className="flex gap-3">
+						<div className='flex gap-3 flex-wrap justify-between items-center'>
 							<button
 								type='button'
 								onClick={() => {
@@ -317,13 +346,63 @@ const RoadMap = () => {
 								className='btn-rev'>
 								Save
 							</button>
-							<ConsultantReview
-								pageTitle='Road Map'></ConsultantReview>
+							<div className='flex items-center gap-5'>
+								<ConsultantReview
+									pageTitle={"Roads Map Canvas"}></ConsultantReview>
+								{(session?.user as any)?.role === "admin" && (
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleEditVideoModal}>
+										<span>Edit video Url</span>
+										<FontAwesomeIcon className='w-7' icon={faEdit} />
+									</button>
+								)}
+								<button
+									type='button'
+									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+									onClick={toggleVideoModal}>
+									<span>Watch Video</span>
+									<FontAwesomeIcon className='w-7' icon={faEye} />
+								</button>
+							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
+
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.roadMap} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.roadMap}
+					videoLabel='Road Map Video'
+				/>
+			</Modal>
 		</>
 	);
 };

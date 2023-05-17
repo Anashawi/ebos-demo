@@ -3,19 +3,26 @@ import { useFormik } from "formik";
 import { object, string } from "yup";
 import { IVideos } from "../../models/videos";
 import * as clientApi from "../../http-client/videos.client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { videoPropNamesEnum } from "../../models/enums";
+import objectPath from "object-path";
+import Spinner from "../common/spinner";
 
 interface Props {
 	toggleEditVideoModal: () => void;
+	videoPropName: videoPropNamesEnum;
+	videoLabel: string;
 }
 
-const GoalsVideoForm = ({ toggleEditVideoModal }: Props) => {
-	const emptyVideo = useMemo(() => {
-		return {
-			id: "",
-			goalsVideo: "",
-		} as IVideos;
-	}, []);
+const SharedVideoForm = ({
+	toggleEditVideoModal,
+	videoPropName: currVideoPropName,
+	videoLabel: currVideoLabel,
+}: Props) => {
+	const emptyVideo: any = {
+		id: "",
+		[currVideoPropName]: "",
+	};
 
 	const [videos, setVideos] = useState<IVideos>(emptyVideo);
 
@@ -29,8 +36,10 @@ const GoalsVideoForm = ({ toggleEditVideoModal }: Props) => {
 
 	useEffect(() => {
 		if (data) {
-			const { id, goalsVideo } = data;
-			setVideos({ id, goalsVideo } as IVideos);
+			setVideos({
+				id: data.id,
+				[currVideoPropName]: objectPath.get(data, currVideoPropName),
+			} as any);
 		}
 	}, [data]);
 
@@ -53,7 +62,7 @@ const GoalsVideoForm = ({ toggleEditVideoModal }: Props) => {
 		initialValues: { ...videos } as IVideos,
 		validationSchema: object({
 			id: string().required("required"),
-			goalsVideo: string().required("required"),
+			[currVideoPropName]: string().required("required"),
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
 			await updateVideoUrl(values);
@@ -64,20 +73,31 @@ const GoalsVideoForm = ({ toggleEditVideoModal }: Props) => {
 
 	return (
 		<>
-			<h1 className='text-4xl text-gray-800 mb-5'>Edit Video Url</h1>
+			<div className='flex gap-5 items-center'>
+				<h1 className='text-4xl text-gray-800 mb-5'>Edit Video Url</h1>
+				{isLoading && (
+					<Spinner message='Loading...' className='items-center' />
+				)}
+			</div>
 			<form className='pt-10 flex gap-5 flex-col'>
-				<div className="flex flex-col">
-					<label>Goals Video</label>
+				<div className='flex flex-col'>
+					<label>{currVideoLabel}</label>
 					<input
 						type='text'
 						className='w-full p-3 bg-gray-100 caret-dark-blue border-none'
-						{...formik.getFieldProps("goalsVideo")}
+						{...formik.getFieldProps(currVideoPropName)}
 					/>
-					{formik.touched.goalsVideo && formik.errors?.goalsVideo ? (
-						<div className='text-rose-400 text-lg'>
-							<>{formik.errors.goalsVideo}</>
-						</div>
-					) : null}
+					{objectPath.get(formik, `touched?.${currVideoPropName}`) &&
+						objectPath.get(formik, `errors?.${currVideoPropName}`) && (
+							<div className='text-rose-400 text-lg'>
+								<>
+									{objectPath.get(
+										formik,
+										`errors.${currVideoPropName}`
+									)}
+								</>
+							</div>
+						)}
 				</div>
 			</form>
 			<div className='flex justify-end gap-3 pt-5'>
@@ -104,4 +124,4 @@ const GoalsVideoForm = ({ toggleEditVideoModal }: Props) => {
 	);
 };
 
-export default GoalsVideoForm;
+export default SharedVideoForm;

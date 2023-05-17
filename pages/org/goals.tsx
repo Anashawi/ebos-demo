@@ -16,8 +16,9 @@ import ConsultantReview from "../../components/common/consultant-review";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../components/common/modal";
-import GoalsVideoForm from "../../components/videos/goals-video-form";
+import SharedVideoForm from "../../components/videos/shared-video-form";
 import Link from "next/link";
+import { videoPropNamesEnum } from "../../models/enums";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
@@ -349,7 +350,7 @@ const Goals = () => {
 				</div>
 			</div>
 
-			{/* video urls form modal */}
+			{/* video url form modal */}
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
@@ -357,7 +358,11 @@ const Goals = () => {
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
-				<GoalsVideoForm toggleEditVideoModal={toggleEditVideoModal} />
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.goalsVideo}
+					videoLabel='Goals Video'
+				/>
 			</Modal>
 		</>
 	);

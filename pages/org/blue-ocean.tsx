@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import IdeaFactorsProduct from "../../components/idea-factors/product";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { productPagesEnum } from "../../models/enums";
+import { productPagesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IIdeaFactor } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
@@ -16,6 +16,11 @@ import Header from "../../components/common/header";
 import Link from "next/link";
 import Spinner from "../../components/common/spinner";
 import ZeroProductsWarning from "../../components/common/zero-products-warning";
+import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/videos/shared-video-form";
+import Video from "../../components/videos/video";
 
 const IdeaFactors = () => {
 	const { data: session }: any = useSession();
@@ -29,6 +34,8 @@ const IdeaFactors = () => {
 	}, []);
 
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	const [userProduct, setUserProduct] =
 		useState<IUserProduct>(emptyUserProduct);
@@ -253,8 +260,45 @@ const IdeaFactors = () => {
 																		)}
 																	</div>
 																</div>
-																<div className='w-1/2 pl-9 py-3'>
-																	<ConsultantReview pageTitle='Blue Ocean Canvas'></ConsultantReview>
+																<div className='w-1/2 pl-10 py-5 mx-auto'>
+																	<div className='h-10'></div>
+																	<div className='flex flex-wrap justify-start items-center gap-4'>
+																		<ConsultantReview
+																			pageTitle={
+																				"Blue Ocean Canvas"
+																			}></ConsultantReview>
+																		{(session?.user as any)
+																			?.role === "admin" && (
+																			<button
+																				type='button'
+																				className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+																				onClick={
+																					toggleEditVideoModal
+																				}>
+																				<span>
+																					Edit video Url
+																				</span>
+																				<FontAwesomeIcon
+																					className='w-7'
+																					icon={faEdit}
+																				/>
+																			</button>
+																		)}
+																		<button
+																			type='button'
+																			className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+																			onClick={
+																				toggleVideoModal
+																			}>
+																			<span>
+																				Watch Video
+																			</span>
+																			<FontAwesomeIcon
+																				className='w-7'
+																				icon={faEye}
+																			/>
+																		</button>
+																	</div>
 																</div>
 															</div>
 														</>
@@ -269,6 +313,38 @@ const IdeaFactors = () => {
 					</div>
 				</div>
 			</div>
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: toggleVideoModal,
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.blueOcean} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={toggleVideoModal}>
+						close
+					</button>
+				</div>
+			</Modal>
+
+			{/* video url form modal */}
+			<Modal
+				config={{
+					isShown: isEditUrlsModalOn,
+					closeCallback: toggleEditVideoModal,
+					className:
+						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+				}}>
+				<SharedVideoForm
+					toggleEditVideoModal={toggleEditVideoModal}
+					videoPropName={videoPropNamesEnum.blueOcean}
+					videoLabel='Blue Ocean Video'
+				/>
+			</Modal>
 		</>
 	);
 };
