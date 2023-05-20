@@ -24,19 +24,24 @@ const useFuturesChart = (products: IProduct[]) => {
 					if (a.year < b.year) return -1;
 					return 1;
 				})
-				.map((n, i) => {
-					return [prod.name, i + 1, +n.level, prod.name, n.sales];
+				.map((future, i) => {
+					return [prod.name, i + 1, +future.level, prod.name, future.sales];
 				}) ?? []
 			).flat(1);
 
 		chart.data = [["Product Name", "Year", "Level", "Product Name", "Sales"], ...rows];
 
 		const ticks: any = products.map(prod => prod.futures?.map((future, i) => {
-			return {
-				v: i + 1,
-				f: future.year.toString(),
-			};
-		}));
+			return { v: i + 2, f: future.year + "" };
+		})).flat();
+		console.log("ticks before", ticks);
+		const minFutureYear = Math.min(...ticks.map((t: any) => +t.f));
+		const maxFutureYear = Math.max(...ticks.map((t: any) => +t.f));
+
+		ticks.unshift({ v: 0, f: minFutureYear - 1 + "" });
+		ticks.push({ v: ticks.length + 1, f: maxFutureYear + 1 + "" });
+		console.log("ticks after", ticks);
+
 		const vAxisTicks: any = [
 			{
 				v: 1,
@@ -80,7 +85,6 @@ const useFuturesChart = (products: IProduct[]) => {
 					color: "#eee",
 				},
 				baseline: 0,
-				maxValue: Math.max(...products.map((p) => p.futures?.length ?? 0)) + 1,
 				ticks: ticks,
 			},
 			vAxis: {
