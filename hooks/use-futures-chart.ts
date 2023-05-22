@@ -18,29 +18,41 @@ const useFuturesChart = (products: IProduct[]) => {
 	}, [products]);
 
 	const updateChartProps = () => {
+
+		let ticks: any = products.map((prod) => prod.futures?.map((future) => {
+			return future.year;
+		})).flat().sort((a, b) => {
+			if (a && b) {
+				return +a - +b;
+			}
+
+			return 0;
+		}); // to get the future years sorted array (all products futures)
+		ticks = [...new Set(ticks)]; // to avoid redundancy
+		ticks = ticks.map((futureYear: string, i: number) => {
+			return { v: i + 1, f: futureYear + "" };
+		}); // to get the tick objects in the proper required shape for chart options
+		const minFutureYear = Math.min(...ticks.map((t: any) => +t.f));
+		const maxFutureYear = Math.max(...ticks.map((t: any) => +t.f));
+
+		ticks.unshift({ v: 0, f: minFutureYear - 1 + "" });
+		ticks.push({ v: ticks.length, f: maxFutureYear + 1 + "" });
+
 		const rows =
-			[...products].map(prod => [...prod.futures ?? []]
+			[...products].map((prod, prodIndex: number) => [...prod.futures ?? []]
 				?.sort((a, b) => {
 					if (a.year < b.year) return -1;
 					return 1;
 				})
-				.map((future, i) => {
-					return [prod.name, i + 1, +future.level, prod.name, future.sales];
+				.map((future) => {
+					const bubbleXPos: number = ticks.findIndex((t: any) => +t.f === future.year);
+					return ["", bubbleXPos, +future.level, prod.name, future.sales];
 				}) ?? []
 			).flat(1);
 
 		chart.data = [["Product Name", "Year", "Level", "Product Name", "Sales"], ...rows];
 
-		const ticks: any = products.map(prod => prod.futures?.map((future, i) => {
-			return { v: i + 2, f: future.year + "" };
-		})).flat();
-		console.log("ticks before", ticks);
-		const minFutureYear = Math.min(...ticks.map((t: any) => +t.f));
-		const maxFutureYear = Math.max(...ticks.map((t: any) => +t.f));
-
-		ticks.unshift({ v: 0, f: minFutureYear - 1 + "" });
-		ticks.push({ v: ticks.length + 1, f: maxFutureYear + 1 + "" });
-		console.log("ticks after", ticks);
+		console.log("chart.data", chart.data);
 
 		const vAxisTicks: any = [
 			{
@@ -66,12 +78,16 @@ const useFuturesChart = (products: IProduct[]) => {
 				},
 			},
 			colors: [
-				"#046D35",
-				"#E51061",
-				"#0DB1D7",
-				"orange",
-				"#FFAA00",
-				"gray",
+				"#ffc000",
+				"#86bf44",
+				"#4472c4",
+				"#ed7d31",
+				"#2Fd645",
+				"#048bfa",
+				"#FFDA57",
+				"#C62EE6",
+				"#E68E39",
+				"#2EBCE6",
 			],
 			tooltip: {
 				trigger: "none",
