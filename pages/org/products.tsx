@@ -271,10 +271,9 @@ const Products = () => {
 																					: "btn-rev"
 																			}
 																			disabled={
-																				isSubmitting
-																				//  ||
-																				// (!isValid &&
-																				// 	!isValidating)
+																				isSubmitting ||
+																				(!isValid &&
+																					!isValidating)
 																			}>
 																			Save
 																		</button>
