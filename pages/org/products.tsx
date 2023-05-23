@@ -185,7 +185,7 @@ const Products = () => {
 							}}
 							enableReinitialize
 							validateOnMount>
-							{({ values, isSubmitting, isValid }) => {
+							{({ values, isSubmitting, isValid, isValidating }) => {
 								return (
 									<Form>
 										<FieldArray name='products'>
@@ -265,13 +265,15 @@ const Products = () => {
 																			type='submit'
 																			className={
 																				isSubmitting ||
-																				!isValid
+																				(!isValid &&
+																					!isValidating)
 																					? "btn-rev btn-disabled"
 																					: "btn-rev"
 																			}
 																			disabled={
 																				isSubmitting ||
-																				!isValid
+																				(!isValid &&
+																					!isValidating)
 																			}>
 																			Save
 																		</button>
