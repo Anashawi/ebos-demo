@@ -157,7 +157,6 @@ const Products = () => {
 											})
 										)
 											.required("Must provide at least one future!")
-											.min(1, "Must provide at least one future!"),
 									})
 								)
 									.required("Start adding your products...")
@@ -264,16 +263,18 @@ const Products = () => {
 																		<button
 																			type='submit'
 																			className={
-																				isSubmitting ||
-																				(!isValid &&
-																					!isValidating)
+																				isSubmitting 
+																				// ||
+																				// (!isValid &&
+																				// 	!isValidating)
 																					? "btn-rev btn-disabled"
 																					: "btn-rev"
 																			}
 																			disabled={
-																				isSubmitting ||
-																				(!isValid &&
-																					!isValidating)
+																				isSubmitting
+																				//  ||
+																				// (!isValid &&
+																				// 	!isValidating)
 																			}>
 																			Save
 																		</button>
