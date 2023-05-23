@@ -267,13 +267,14 @@ const Products = () => {
 																				isSubmitting ||
 																				(!isValid &&
 																					!isValidating)
-																					? "btn-rev btn-disabled"
+																					? "btn-rev cursor-not-allowed"
 																					: "btn-rev"
 																			}
 																			disabled={
-																				isSubmitting ||
-																				(!isValid &&
-																					!isValidating)
+																				isSubmitting
+																				//  ||
+																				// (!isValid &&
+																				// 	!isValidating)
 																			}>
 																			Save
 																		</button>
