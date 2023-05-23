@@ -157,6 +157,7 @@ const Products = () => {
 											})
 										)
 											.required("Must provide at least one future!")
+											.min(1, "Must provide at least one future!"),
 									})
 								)
 									.required("Start adding your products...")
@@ -183,8 +184,9 @@ const Products = () => {
 								actions.setSubmitting(false);
 							}}
 							enableReinitialize
-							validateOnMount>
-							{({ values, isSubmitting, isValid, isValidating }) => {
+							validateOnMount
+							>
+							{({ values, isSubmitting, isValid, is }) => {
 								return (
 									<Form>
 										<FieldArray name='products'>
@@ -263,18 +265,14 @@ const Products = () => {
 																		<button
 																			type='submit'
 																			className={
-																				isSubmitting 
-																				// ||
-																				// (!isValid &&
-																				// 	!isValidating)
+																				isSubmitting ||
+																				!isValid
 																					? "btn-rev btn-disabled"
 																					: "btn-rev"
 																			}
 																			disabled={
-																				isSubmitting
-																				//  ||
-																				// (!isValid &&
-																				// 	!isValidating)
+																				isSubmitting ||
+																				!isValid
 																			}>
 																			Save
 																		</button>
