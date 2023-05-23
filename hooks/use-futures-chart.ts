@@ -18,20 +18,21 @@ const useFuturesChart = (products: IProduct[]) => {
 	}, [products]);
 
 	const updateChartProps = () => {
-
 		let ticks: any = products.map((prod) => prod.futures?.map((future) => {
 			return future.year;
 		})).flat().sort((a, b) => {
 			if (a && b) {
 				return +a - +b;
 			}
-
 			return 0;
 		}); // to get the future years sorted array (all products futures)
+
 		ticks = [...new Set(ticks)]; // to avoid redundancy
+
 		ticks = ticks.map((futureYear: string, i: number) => {
 			return { v: i + 1, f: futureYear + "" };
 		}); // to get the tick objects in the proper required shape for chart options
+		
 		const minFutureYear = Math.min(...ticks.map((t: any) => +t.f));
 		const maxFutureYear = Math.max(...ticks.map((t: any) => +t.f));
 
