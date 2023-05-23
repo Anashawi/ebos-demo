@@ -157,7 +157,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 													</div>
 												);
 											})}
-										{!product.futures?.length &&
+										{/* {!product.futures?.length &&
 											!!objectPath.get(
 												form,
 												`errors.products.${index}.futures`
@@ -170,7 +170,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 														)}
 													</p>
 												</div>
-											)}
+											)} */}
 										<div className='flex justify-between w-full pr-3  gap-5'>
 											<button
 												type='button'
