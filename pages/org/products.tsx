@@ -184,9 +184,8 @@ const Products = () => {
 								actions.setSubmitting(false);
 							}}
 							enableReinitialize
-							validateOnMount
-							>
-							{({ values, isSubmitting, isValid, is }) => {
+							validateOnMount>
+							{({ values, isSubmitting, isValid, isValidating }) => {
 								return (
 									<Form>
 										<FieldArray name='products'>
@@ -266,13 +265,16 @@ const Products = () => {
 																			type='submit'
 																			className={
 																				isSubmitting ||
-																				!isValid
-																					? "btn-rev btn-disabled"
+																				(!isValid &&
+																					!isValidating)
+																					? "btn-rev cursor-not-allowed"
 																					: "btn-rev"
 																			}
 																			disabled={
-																				isSubmitting ||
-																				!isValid
+																				isSubmitting
+																				//  ||
+																				// (!isValid &&
+																				// 	!isValidating)
 																			}>
 																			Save
 																		</button>
