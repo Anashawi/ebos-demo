@@ -9,8 +9,8 @@ import { faEdit, faEye, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
-import { IUserProduct, UserProduct } from "../../models/user-product";
-import { IFuture } from "../../models/types";
+import { IUserProduct } from "../../models/user-product";
+import { IFuture, IProduct } from "../../models/types";
 import Spinner from "../../components/common/spinner";
 import { productPagesEnum, videoPropNamesEnum } from "../../models/enums";
 import UserInfoHeader from "../../components/common/user-info-header";
@@ -23,6 +23,7 @@ import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/videos/shared-video-form";
 import ConsultantReview from "../../components/common/consultant-review";
 import Video from "../../components/videos/video";
+import { cloneDeep } from "lodash";
 
 const Products = () => {
 	const { data: session }: any = useSession();
@@ -31,18 +32,17 @@ const Products = () => {
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
-	const emptyUserProduct = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			products: [],
-		} as IUserProduct;
-	}, []);
+	const emptyUserProduct = {
+		id: "",
+		userId: session?.user?.id,
+		products: [],
+	} as IUserProduct;
 
 	const [userProduct, setUserProduct] =
 		useState<IUserProduct>(emptyUserProduct);
+	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
-	const [chart] = useFuturesChart(userProduct.products);
+	const [chart] = useFuturesChart(chartProducts);
 
 	const queryClient = useQueryClient();
 
@@ -104,19 +104,17 @@ const Products = () => {
 			}
 		);
 
-	const emptyProduct = useMemo(() => {
-		return {
-			uuid: "",
-			name: "",
-			futures: [
-				{
-					year: 2023,
-					level: 1,
-					sales: 50,
-				} as IFuture,
-			],
-		};
-	}, []);
+	const emptyProduct = {
+		uuid: "",
+		name: "",
+		futures: [
+			{
+				year: 2023,
+				level: 1,
+				sales: 50,
+			} as IFuture,
+		],
+	};
 
 	return (
 		<>
@@ -267,7 +265,7 @@ const Products = () => {
 																				isSubmitting ||
 																				(!isValid &&
 																					!isValidating)
-																					? "btn-rev cursor-not-allowed"
+																					? "btn-rev btn-disabled cursor-not-allowed"
 																					: "btn-rev"
 																			}
 																			disabled={
@@ -347,9 +345,10 @@ const Products = () => {
 											}}
 										</FieldArray>
 										<FormikContextChild
-											userProduct={userProduct}
 											dispatch={() => {
-												setUserProduct({ ...userProduct });
+												setChartProducts(
+													cloneDeep(values.products)
+												);
 											}}
 										/>
 									</Form>
