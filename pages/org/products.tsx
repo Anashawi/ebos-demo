@@ -235,8 +235,7 @@ const Products = () => {
 																		</div>
 																	)}
 															</div>
-															{!!userProduct.products
-																?.length && (
+															{!!chartProducts?.length && (
 																<div className='md:w-1/2 h-[500px] pl-10'>
 																	<Chart
 																		{...chart}
