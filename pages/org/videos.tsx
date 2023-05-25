@@ -266,9 +266,12 @@ const Disruption = () => {
 						</div>
 						<div className='md:w-4/12 pane-right-gradient min-h-screen'>
 							<Header
-								className='w-full p-5 mb-10'
+								className='w-full p-5 my-5'
 								toggleIdeasModal={toggleIdeasModal}></Header>
 
+							<div className='px-10 py-3'>
+								<ConsultantReview pageTitle='Disruption'></ConsultantReview>
+							</div>
 							<div className='p-10'>
 								<h4 className='text-[2.1rem] mb-6'>
 									7 Practical &amp; Quick
@@ -373,12 +376,6 @@ const Disruption = () => {
 										</a>
 									</li>
 								</ul>
-
-								<div className='py-3'>
-									<ConsultantReview
-										className='mt-10'
-										pageTitle='Disruption'></ConsultantReview>
-								</div>
 							</div>
 						</div>
 					</div>

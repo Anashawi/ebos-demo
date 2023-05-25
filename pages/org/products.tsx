@@ -9,8 +9,8 @@ import { faEdit, faEye, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
-import { IUserProduct, UserProduct } from "../../models/user-product";
-import { IFuture } from "../../models/types";
+import { IUserProduct } from "../../models/user-product";
+import { IFuture, IProduct } from "../../models/types";
 import Spinner from "../../components/common/spinner";
 import { productPagesEnum, videoPropNamesEnum } from "../../models/enums";
 import UserInfoHeader from "../../components/common/user-info-header";
@@ -23,6 +23,7 @@ import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/videos/shared-video-form";
 import ConsultantReview from "../../components/common/consultant-review";
 import Video from "../../components/videos/video";
+import { cloneDeep } from "lodash";
 
 const Products = () => {
 	const { data: session }: any = useSession();
@@ -31,18 +32,17 @@ const Products = () => {
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
-	const emptyUserProduct = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			products: [],
-		} as IUserProduct;
-	}, []);
+	const emptyUserProduct = {
+		id: "",
+		userId: session?.user?.id,
+		products: [],
+	} as IUserProduct;
 
 	const [userProduct, setUserProduct] =
 		useState<IUserProduct>(emptyUserProduct);
+	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
-	const [chart] = useFuturesChart(userProduct.products);
+	const [chart] = useFuturesChart(chartProducts);
 
 	const queryClient = useQueryClient();
 
@@ -104,19 +104,17 @@ const Products = () => {
 			}
 		);
 
-	const emptyProduct = useMemo(() => {
-		return {
-			uuid: "",
-			name: "",
-			futures: [
-				{
-					year: 2023,
-					level: 1,
-					sales: 50,
-				} as IFuture,
-			],
-		};
-	}, []);
+	const emptyProduct = {
+		uuid: "",
+		name: "",
+		futures: [
+			{
+				year: 2023,
+				level: 1,
+				sales: 50,
+			} as IFuture,
+		],
+	};
 
 	return (
 		<>
@@ -124,15 +122,42 @@ const Products = () => {
 			<div className='min-h-screen products-gradient bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='p-12 relative mx-auto max-w-[1920px]'>
-						<div className='flex justify-between items-center gap-5 pb-5'>
+						<div className='flex justify-between items-center gap-10 pb-5'>
 							<UserInfoHeader className='w-1/2'></UserInfoHeader>
 							<Header
 								className='w-1/2'
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
-						<h3 className='text-[2.8rem] mb-10 text-yellow-green'>
-							Pioneer, Migrator, Settler
-						</h3>
+						<div className='flex mt-5 mb-10'>
+							<h3 className='w-1/2 text-[2.8rem] mb-10 text-yellow-green'>
+								Pioneer, Migrator, Settler
+							</h3>
+							<div className='w-1/2'>
+								<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
+									<ConsultantReview
+										pageTitle={
+											"Pioneer, Migrator, Settler"
+										}></ConsultantReview>
+									{(session?.user as any)?.role === "admin" && (
+										<button
+											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+											onClick={toggleEditVideoModal}>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									)}
+									<button
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleVideoModal}>
+										<span>Watch Video</span>
+										<FontAwesomeIcon className='w-7' icon={faEye} />
+									</button>
+								</div>
+							</div>
+						</div>
 						<Formik
 							initialValues={{
 								products: userProduct?.products,
@@ -237,8 +262,7 @@ const Products = () => {
 																		</div>
 																	)}
 															</div>
-															{!!userProduct.products
-																?.length && (
+															{!!chartProducts?.length && (
 																<div className='md:w-1/2 h-[500px] pl-10'>
 																	<Chart
 																		{...chart}
@@ -247,99 +271,60 @@ const Products = () => {
 																</div>
 															)}
 														</div>
-
-														<div className='flex gap-5 items-center justify-between'>
-															<div className='w-1/2'>
-																<div className='h-10'>
-																	{(isUpdatingUserProduct ||
-																		isCreatingUserProduct) && (
-																		<Spinner
-																			className='flex items-center text-lg'
-																			message='Saving Products'
-																		/>
-																	)}
-																</div>
-																<div className='flex gap-5 items-center justify-between pr-5'>
-																	<div className='flex gap-5'>
-																		<button
-																			type='submit'
-																			className={
-																				isSubmitting ||
-																				(!isValid &&
-																					!isValidating)
-																					? "btn-rev cursor-not-allowed"
-																					: "btn-rev"
-																			}
-																			disabled={
-																				isSubmitting ||
-																				(!isValid &&
-																					!isValidating)
-																			}>
-																			Save
-																		</button>
-																		<button
-																			type='button'
-																			onClick={() => {
-																				push(emptyProduct);
-																			}}
-																			className='inline-flex items-center gap-3 btn text-black-eerie'>
-																			<FontAwesomeIcon
-																				className='w-5 h-auto cursor-pointer'
-																				icon={faPlus}
-																			/>
-																			<span>
-																				Add New Product
-																			</span>
-																		</button>
-																	</div>
-																	{userProduct?.products
-																		?.length > 0 && (
-																		<Link href={"/"}>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					market potential
-																				</span>
-																			</span>
-																		</Link>
-																	)}
-																</div>
+														<div className='w-1/2'>
+															<div className='h-10'>
+																{(isUpdatingUserProduct ||
+																	isCreatingUserProduct) && (
+																	<Spinner
+																		className='flex items-center text-lg'
+																		message='Saving Products'
+																	/>
+																)}
 															</div>
-															<div className='w-1/2'>
-																<div className='h-10'></div>
-																<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
-																	<ConsultantReview
-																		pageTitle={
-																			"Pioneer, Migrator, Settler"
-																		}></ConsultantReview>
-																	{(session?.user as any)
-																		?.role === "admin" && (
-																		<button
-																			className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-																			onClick={
-																				toggleEditVideoModal
-																			}>
-																			<span>
-																				Edit video Url
-																			</span>
-																			<FontAwesomeIcon
-																				className='w-7'
-																				icon={faEdit}
-																			/>
-																		</button>
-																	)}
+															<div className='flex gap-5 items-center justify-between pr-12'>
+																<div className='flex gap-5'>
 																	<button
-																		className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-																		onClick={
-																			toggleVideoModal
+																		type='submit'
+																		className={
+																			isSubmitting ||
+																			(!isValid &&
+																				!isValidating)
+																				? "btn-rev btn-disabled cursor-not-allowed"
+																				: "btn-rev"
+																		}
+																		disabled={
+																			isSubmitting ||
+																			(!isValid &&
+																				!isValidating)
 																		}>
-																		<span>Watch Video</span>
+																		Save
+																	</button>
+																	<button
+																		type='button'
+																		onClick={() => {
+																			push(emptyProduct);
+																		}}
+																		className='inline-flex items-center gap-3 btn text-black-eerie'>
 																		<FontAwesomeIcon
-																			className='w-7'
-																			icon={faEye}
+																			className='w-5 h-auto cursor-pointer'
+																			icon={faPlus}
 																		/>
+																		<span>
+																			Add New Product
+																		</span>
 																	</button>
 																</div>
+																{userProduct?.products?.length >
+																	0 && (
+																	<Link href={"/"}>
+																		<span className='text-md text-gray-400 italic'>
+																			go to next →{" "}
+																			<span className='text-gray-500'>
+																				market potential
+																			</span>
+																		</span>
+																	</Link>
+																)}
 															</div>
 														</div>
 													</div>
@@ -347,9 +332,10 @@ const Products = () => {
 											}}
 										</FieldArray>
 										<FormikContextChild
-											userProduct={userProduct}
 											dispatch={() => {
-												setUserProduct({ ...userProduct });
+												setChartProducts(
+													cloneDeep(values.products)
+												);
 											}}
 										/>
 									</Form>

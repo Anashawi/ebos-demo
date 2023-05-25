@@ -117,11 +117,35 @@ const RoadMap = () => {
 			<div className='min-h-screen flex flex-col'>
 				<div className='pane-upper flex flex-col'>
 					<div className='px-12 flex flex-col gap-5 mx-auto lg:w-11/12'>
-						<div className='flex gap-5 justify-between items-center'>
+						<div className='flex gap-5 justify-between items-center mt-9'>
 							<UserInfoHeader className='gap-10'></UserInfoHeader>
-							<Header className='mt-10'></Header>
+							<Header></Header>
 						</div>
-						<h3 className='text-[2.52rem] text-yellow-green'>Road Map</h3>
+						<div className='flex gap-5 mt-7'>
+							<h3 className='w-1/2 text-[2.52rem] text-yellow-green'>
+								Road Map
+							</h3>
+							<div className='w-1/2 flex items-center gap-5 justify-end'>
+								<ConsultantReview
+									pageTitle={"Roads Map Canvas"}></ConsultantReview>
+								{(session?.user as any)?.role === "admin" && (
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleEditVideoModal}>
+										<span>Edit video Url</span>
+										<FontAwesomeIcon className='w-7' icon={faEdit} />
+									</button>
+								)}
+								<button
+									type='button'
+									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+									onClick={toggleVideoModal}>
+									<span>Watch Video</span>
+									<FontAwesomeIcon className='w-7' icon={faEye} />
+								</button>
+							</div>
+						</div>
 						<div className='flex flex-col gap-5'>
 							<h4 className='text-[2.1rem]'>
 								Create a timeline for your ideas
@@ -323,50 +347,28 @@ const RoadMap = () => {
 								<Spinner className='' message='Saving Ideas ...' />
 							)}
 						</div>
-						<div className='flex gap-3 flex-wrap justify-between items-center'>
-							<button
-								type='button'
-								onClick={() => {
-									userIdeas.userId = session?.user?.id;
-									userIdeas.ideas?.map((idea) => {
-										if (!idea.uuid) {
-											idea.uuid = crypto.randomUUID();
-										}
-									});
-									if (userIdeas?.id) {
-										updateUserIdeas({
-											...userIdeas,
-										});
-									} else {
-										createUserIdeas({
-											...userIdeas,
-										});
+						<button
+							type='button'
+							onClick={() => {
+								userIdeas.userId = session?.user?.id;
+								userIdeas.ideas?.map((idea) => {
+									if (!idea.uuid) {
+										idea.uuid = crypto.randomUUID();
 									}
-								}}
-								className='btn-rev'>
-								Save
-							</button>
-							<div className='flex items-center gap-5'>
-								<ConsultantReview
-									pageTitle={"Roads Map Canvas"}></ConsultantReview>
-								{(session?.user as any)?.role === "admin" && (
-									<button
-										type='button'
-										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleEditVideoModal}>
-										<span>Edit video Url</span>
-										<FontAwesomeIcon className='w-7' icon={faEdit} />
-									</button>
-								)}
-								<button
-									type='button'
-									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-									onClick={toggleVideoModal}>
-									<span>Watch Video</span>
-									<FontAwesomeIcon className='w-7' icon={faEye} />
-								</button>
-							</div>
-						</div>
+								});
+								if (userIdeas?.id) {
+									updateUserIdeas({
+										...userIdeas,
+									});
+								} else {
+									createUserIdeas({
+										...userIdeas,
+									});
+								}
+							}}
+							className='btn-rev'>
+							Save
+						</button>
 					</div>
 				</div>
 			</div>

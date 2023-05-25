@@ -32,7 +32,7 @@ const useFuturesChart = (products: IProduct[]) => {
 		ticks = ticks.map((futureYear: string, i: number) => {
 			return { v: i + 1, f: futureYear + "" };
 		}); // to get the tick objects in the proper required shape for chart options
-		
+
 		const minFutureYear = Math.min(...ticks.map((t: any) => +t.f));
 		const maxFutureYear = Math.max(...ticks.map((t: any) => +t.f));
 

@@ -119,8 +119,8 @@ const Goals = () => {
 								toggleIdeasModal={toggleIdeasModal}></Header>
 						</div>
 						<div className='flex flex-wrap'>
-							<div className='md:w-1/2 bg-white relative px-12 flex flex-col gap-5 mt-5'>
-								<h3 className='mb-10 text-[2.8rem] text-yellow-green'>
+							<div className='md:w-1/2 bg-white relative px-12 flex flex-col gap-5 mt-10'>
+								<h3 className='mb-9 text-[2.8rem] text-yellow-green'>
 									Goals
 								</h3>
 								<Formik
@@ -322,12 +322,8 @@ const Goals = () => {
 								</Formik>
 								{/* <script src="/modules/goals.js"></script> */}
 							</div>
-							<div className='md:w-1/2 pane-right-gradient min-h-screen px-12 flex flex-col gap-5 mt-14'>
-								<iframe
-									width='100%'
-									height='400'
-									src={goalsVideo}></iframe>
-								<div className='flex justify-start items-center w-full gap-4 py-10 mx-auto'>
+							<div className='md:w-1/2 min-h-screen px-12 flex flex-col gap-5 mt-12'>
+								<div className='flex justify-start items-center w-full gap-4 pb-10 mx-auto'>
 									<ConsultantReview
 										pageTitle={
 											"Visualize Success"
@@ -344,6 +340,10 @@ const Goals = () => {
 										</button>
 									)}
 								</div>
+								<iframe
+									width='100%'
+									height='400'
+									src={goalsVideo}></iframe>
 							</div>
 						</div>
 					</div>

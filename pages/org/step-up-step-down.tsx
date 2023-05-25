@@ -125,7 +125,7 @@ const Analysis = () => {
 							)}
 							{!isLoading && (
 								<form className='flex flex-col'>
-									<div className='flex flex-col gap-5'>
+									<div className='mt-5 flex flex-col gap-5'>
 										<h6 className='f6 mb-2 text-xl'>10% above</h6>
 										<ul className='flex flex-col gap-5'>
 											{!!userAnalysis.above?.length &&
@@ -355,6 +355,34 @@ const Analysis = () => {
 							<Header
 								className='w-full mb-10'
 								toggleIdeasModal={toggleIdeasModal}></Header>
+
+							<div className='my-12'>
+								<div className='px-5 mt-10 flex flex-wrap justify-start items-center gap-4'>
+									<ConsultantReview
+										pageTitle={
+											"Non Customers Canvas"
+										}></ConsultantReview>
+									{(session?.user as any)?.role === "admin" && (
+										<button
+											type='button'
+											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+											onClick={toggleEditVideoModal}>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									)}
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleVideoModal}>
+										<span>Watch Video</span>
+										<FontAwesomeIcon className='w-7' icon={faEye} />
+									</button>
+								</div>
+							</div>
 							<div className='py-3'>
 								<div className='ml-5 p-5 relative rounded-lg bg-gray-100 text-gray-800 mb-2'>
 									<div className='p-6 relative rounded-lg mb-2'>
@@ -393,31 +421,6 @@ const Analysis = () => {
 											))}
 										</ul>
 									</div>
-								</div>
-								<div className='px-5 mt-10 flex flex-wrap justify-start items-center gap-4'>
-									<ConsultantReview
-										pageTitle={
-											"Non Customers Canvas"
-										}></ConsultantReview>
-									{(session?.user as any)?.role === "admin" && (
-										<button
-											type='button'
-											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={toggleEditVideoModal}>
-											<span>Edit video Url</span>
-											<FontAwesomeIcon
-												className='w-7'
-												icon={faEdit}
-											/>
-										</button>
-									)}
-									<button
-										type='button'
-										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleVideoModal}>
-										<span>Watch Video</span>
-										<FontAwesomeIcon className='w-7' icon={faEye} />
-									</button>
 								</div>
 							</div>
 						</div>

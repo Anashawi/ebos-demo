@@ -1,20 +1,14 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { IUserProduct } from "../../models/user-product";
+import { useEffect } from "react";
 import { useFormikContext } from "formik";
-import { IProduct } from "../../models/types";
 
 interface Props {
-	userProduct: IUserProduct;
 	dispatch: () => void;
 }
 
-const FormikContextChild = ({ userProduct, dispatch }: Props) => {
+const FormikContextChild = ({ dispatch }: Props) => {
 	const { values }: any = useFormikContext();
 	useEffect(() => {
-		if (values.products) {
-			userProduct.products = [...values.products];
-			dispatch();
-		}
+		dispatch();
 	}, [values.products]);
 	return <></>;
 };
