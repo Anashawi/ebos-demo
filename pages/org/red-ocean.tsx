@@ -108,17 +108,45 @@ const Factors = () => {
 				<div className='min-h-screen px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='flex flex-col gap-7 w-full p-12 relative'>
-							<div className='flex gap-5 items-center'>
+							<div className='flex gap-10 items-center'>
 								<UserInfoHeader className='w-1/2'></UserInfoHeader>
 								<Header
 									className='w-1/2'
 									toggleIdeasModal={toggleIdeasModal}></Header>
 							</div>
 							<div className='flex'>
-								<div className='md:w-1/2 flex gap-12 justify-between pr-12'>
-									<h3 className='mb-10 text-[2.8rem] text-yellow-green'>
+								<div className='w-full mb-5 flex gap-12 items-center justify-between pr-12'>
+									<h3 className='w-1/2 text-[2.8rem] text-yellow-green'>
 										Red Ocean Canvas
 									</h3>
+									<div className='w-1/2 pl-10 py-5 mx-auto'>
+										<div className='flex flex-wrap justify-start items-center gap-4'>
+											<ConsultantReview
+												pageTitle={
+													"Red Ocean Canvas"
+												}></ConsultantReview>
+											{(session?.user as any)?.role === "admin" && (
+												<button
+													className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+													onClick={toggleEditVideoModal}>
+													<span>Edit video Url</span>
+													<FontAwesomeIcon
+														className='w-7'
+														icon={faEdit}
+													/>
+												</button>
+											)}
+											<button
+												className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+												onClick={toggleVideoModal}>
+												<span>Watch Video</span>
+												<FontAwesomeIcon
+													className='w-7'
+													icon={faEye}
+												/>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
 							<Formik
@@ -205,84 +233,44 @@ const Factors = () => {
 																		)
 																	)}
 															</div>
-															<div className='flex gap-3 items-center mt-10'>
-																<div className='w-1/2 pr-12'>
-																	<div className='h-10'>
-																		{isUpdatingUserProduct && (
-																			<Spinner
-																				className='flex items-center text-xl'
-																				message='Saving Red Ocean'
-																			/>
-																		)}
-																	</div>
-																	<div className='flex gap-5 flex-wrap justify-between items-center'>
-																		{!!userProduct.products
-																			?.length && (
-																			<button
-																				type='submit'
-																				className={
-																					isSubmitting ||
-																					!isValid
-																						? "btn-rev btn-disabled"
-																						: "btn-rev"
-																				}
-																				disabled={
-																					isSubmitting ||
-																					!isValid
-																				}>
-																				Save
-																			</button>
-																		)}
-																		{userProduct?.products
-																			?.length > 0 && (
-																			<Link href={"/"}>
-																				<span className='text-md text-gray-400 italic'>
-																					go to next →{" "}
-																					<span className='text-gray-500'>
-																						Disruption
-																					</span>
-																				</span>
-																			</Link>
-																		)}
-																	</div>
+															<div className='w-1/2 pr-12 mt-10'>
+																<div className='h-10'>
+																	{isUpdatingUserProduct && (
+																		<Spinner
+																			className='flex items-center text-xl'
+																			message='Saving Red Ocean'
+																		/>
+																	)}
 																</div>
-																<div className='w-1/2 pl-10 py-5 mx-auto'>
-																	<div className='h-10'></div>
-																	<div className='flex flex-wrap justify-start items-center gap-4'>
-																		<ConsultantReview
-																			pageTitle={
-																				"Red Ocean Canvas"
-																			}></ConsultantReview>
-																		{(session?.user as any)
-																			?.role === "admin" && (
-																			<button
-																				className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-																				onClick={
-																					toggleEditVideoModal
-																				}>
-																				<span>
-																					Edit video Url
-																				</span>
-																				<FontAwesomeIcon
-																					className='w-7'
-																					icon={faEdit}
-																				/>
-																			</button>
-																		)}
+																<div className='flex gap-5 flex-wrap justify-between items-center'>
+																	{!!userProduct.products
+																		?.length && (
 																		<button
-																			className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-																			onClick={
-																				toggleVideoModal
+																			type='submit'
+																			className={
+																				isSubmitting ||
+																				!isValid
+																					? "btn-rev btn-disabled"
+																					: "btn-rev"
+																			}
+																			disabled={
+																				isSubmitting ||
+																				!isValid
 																			}>
-																			<span>
-																				Watch Video
-																			</span>
-																			<FontAwesomeIcon
-																				className='w-7'
-																				icon={faEye}
-																			/>
+																			Save
 																		</button>
-																	</div>
+																	)}
+																	{userProduct?.products
+																		?.length > 0 && (
+																		<Link href={"/"}>
+																			<span className='text-md text-gray-400 italic'>
+																				go to next →{" "}
+																				<span className='text-gray-500'>
+																					Disruption
+																				</span>
+																			</span>
+																		</Link>
+																	)}
 																</div>
 															</div>
 														</>

@@ -411,8 +411,36 @@ const NonCustomers = () => {
 						</div>
 						<div className='w-1/2 pane-right-gradient min-h-screen px-12 py-8'>
 							<Header
-								className='w-full mb-10'
+								className='w-full mb-12'
 								toggleIdeasModal={toggleIdeasModal}></Header>
+
+							<div className="mb-[3.75rem]">
+								<div className='px-5 flex flex-wrap justify-start items-center gap-4'>
+									<ConsultantReview
+										pageTitle={
+											"Non Customers Canvas"
+										}></ConsultantReview>
+									{(session?.user as any)?.role === "admin" && (
+										<button
+											type='button'
+											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+											onClick={toggleEditVideoModal}>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									)}
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleVideoModal}>
+										<span>Watch Video</span>
+										<FontAwesomeIcon className='w-7' icon={faEye} />
+									</button>
+								</div>
+							</div>
 							<div className='ml-5 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
 								<div className='p-6 relative rounded-lg mb-10 bg-gray-300'>
 									<div className='p-6 relative rounded-lg mb-10 bg-yellow-jasmine text-gray-900'>
@@ -455,28 +483,6 @@ const NonCustomers = () => {
 											)
 										)}
 								</ul>
-							</div>
-							<div className='px-5 mt-10 flex flex-wrap justify-start items-center gap-4'>
-								<ConsultantReview
-									pageTitle={
-										"Non Customers Canvas"
-									}></ConsultantReview>
-								{(session?.user as any)?.role === "admin" && (
-									<button
-										type='button'
-										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleEditVideoModal}>
-										<span>Edit video Url</span>
-										<FontAwesomeIcon className='w-7' icon={faEdit} />
-									</button>
-								)}
-								<button
-									type='button'
-									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-									onClick={toggleVideoModal}>
-									<span>Watch Video</span>
-									<FontAwesomeIcon className='w-7' icon={faEye} />
-								</button>
 							</div>
 						</div>
 					</div>

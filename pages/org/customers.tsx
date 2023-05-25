@@ -126,10 +126,10 @@ const Customers = () => {
 				<form>
 					<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 						<div className='flex flex-wrap'>
-							<div className='grow md:w-4/12 bg-white p-12 relative'>
+							<div className='grow md:w-4/12 bg-white px-10 py-12 relative'>
 								<UserInfoHeader></UserInfoHeader>
 
-								<h3 className='my-10 text-[2.8rem] text-yellow-green'>
+								<h3 className='my-10 text-[2.8rem] text-yellow-green mr-7'>
 									Voice of customers
 								</h3>
 								{isLoading && (
@@ -140,10 +140,10 @@ const Customers = () => {
 								)}
 								{!isLoading && (
 									<>
-										<h4 className='text-3xl font-normal mb-6'>
+										<h4 className='text-3xl font-normal mb-6 mr-7'>
 											Top customer categories
 										</h4>
-										<ul className='flex flex-col gap-5 mb-5'>
+										<ul className='flex flex-col gap-5 mb-5 mr-7'>
 											<li>
 												<input
 													type='text'
@@ -190,7 +190,7 @@ const Customers = () => {
 												/>
 											</li>
 										</ul>
-										<div className='h-10'>
+										<div className='h-10 mr-7'>
 											{(isUpdatingUserCustomers ||
 												isCreatingUserCustomers) && (
 												<Spinner
@@ -199,7 +199,7 @@ const Customers = () => {
 												/>
 											)}
 										</div>
-										<div className='flex gap-5 justify-between items-center'>
+										<div className='flex gap-5 justify-between items-center mr-7'>
 											<button
 												type='button'
 												onClick={() => {
@@ -229,13 +229,36 @@ const Customers = () => {
 									</>
 								)}
 							</div>
-							<div className='grow md:w-8/12 pane-right-gradient min-h-screen px-12 py-8'>
+							<div className='grow md:w-8/12 pane-right-gradient min-h-screen px-10 py-8'>
 								<Header
 									className='w-full mb-10'
 									toggleIdeasModal={toggleIdeasModal}></Header>
+
+								<div className='flex flex-wrap justify-start items-center gap-4 pt-4 pl-5 mx-auto'>
+									<ConsultantReview pageTitle='Voice of customers'></ConsultantReview>
+									{(session?.user as any)?.role === "admin" && (
+										<button
+											type='button'
+											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+											onClick={toggleEditVideoModal}>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									)}
+									<button
+										type='button'
+										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
+										onClick={toggleVideoModal}>
+										<span>Watch Video</span>
+										<FontAwesomeIcon className='w-7' icon={faEye} />
+									</button>
+								</div>
 								{!isLoading && (
 									<>
-										<div className='flex flex-wrap gap-5 mt-[8.9rem]'>
+										<div className='flex flex-wrap gap-5 mt-[5.5rem] pl-5'>
 											<div className='col-1/2 grow'>
 												<h4 className='text-3xl font-normal mb-6'>
 													What do they want
@@ -340,32 +363,6 @@ const Customers = () => {
 													</li>
 												</ul>
 											</div>
-										</div>
-
-										<div className='flex flex-wrap justify-start items-center gap-4 pt-10 mx-auto'>
-											<ConsultantReview pageTitle='Voice of customers'></ConsultantReview>
-											{(session?.user as any)?.role === "admin" && (
-												<button
-													type='button'
-													className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-													onClick={toggleEditVideoModal}>
-													<span>Edit video Url</span>
-													<FontAwesomeIcon
-														className='w-7'
-														icon={faEdit}
-													/>
-												</button>
-											)}
-											<button
-												type='button'
-												className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-												onClick={toggleVideoModal}>
-												<span>Watch Video</span>
-												<FontAwesomeIcon
-													className='w-7'
-													icon={faEye}
-												/>
-											</button>
 										</div>
 									</>
 								)}
