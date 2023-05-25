@@ -50,7 +50,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 		<>
 			<div key={index} className='flex text-lg'>
 				<div className='grow pr-10'>
-					<div className='bg-white flex flex-col gap-5 h-[480px]'>
+					<div className='bg-white flex flex-col gap-5'>
 						<div className='flex flex-col gap-3 border-b border-gray-300 pb-5'>
 							<div className='flex items-center gap-5'>
 								<div className='grow flex flex-col gap-3 relative'>
@@ -82,7 +82,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 						<FieldArray name={`products.${index}.futures`}>
 							{({ remove, push, form }) => {
 								return (
-									<div className='overflow-y-auto'>
+									<div>
 										{!!product.futures?.length &&
 											product.futures?.map((future, futureIndex) => {
 												return (

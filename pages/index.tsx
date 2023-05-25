@@ -70,6 +70,11 @@ export default function Home() {
 				setIsScreenSmall(false);
 			}
 		});
+
+		// Cleanup function
+		return () => {
+			window.removeEventListener("resize", () => {});
+		};
 	});
 
 	const [isSignupOn, toggleSignupModal] = useModalToggler();

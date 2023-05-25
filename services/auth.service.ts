@@ -35,6 +35,7 @@ export async function createUser(user: IUser) {
 
 export async function login(credentials: { email: string, password: string }) {
   try {
+    await dbConnect();
     const result = await User.findOne({ email: credentials.email });
 
     if (!result) {

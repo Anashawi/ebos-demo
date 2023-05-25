@@ -218,7 +218,7 @@ const Products = () => {
 												return (
 													<div className='flex flex-col gap-5'>
 														<div className='flex'>
-															<div className='w-1/2 py-5 flex flex-col gap-20'>
+															<div className='w-1/2 py-5 flex flex-col gap-10'>
 																{!!isLoading && (
 																	<Spinner
 																		className='flex items-center text-2xl'
