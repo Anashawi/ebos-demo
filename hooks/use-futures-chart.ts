@@ -73,7 +73,7 @@ const useFuturesChart = (products: IProduct[]) => {
 		chart.options = {
 			title: "Products",
 			legend: {
-				position: "right",
+				position: "top",
 				textStyle: {
 					fontSize: 14,
 				},
