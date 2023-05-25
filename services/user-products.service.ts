@@ -1,8 +1,10 @@
 import { IUserProduct, UserProduct } from "../models/user-product";
 import { productPagesEnum } from "../models/enums";
+import { dbConnect } from "./db.service";
 
 export async function getAll(currentUserId: string) {
    try {
+      await dbConnect();
       const result = await UserProduct.findOne({ userId: currentUserId });
       return result?.toJSON();
    } catch (error) {
@@ -12,6 +14,7 @@ export async function getAll(currentUserId: string) {
 
 export async function getOne(id: string) {
    try {
+      await dbConnect();
       const result = await UserProduct.findById(id);
       return result?.toJSON();
    } catch (error) {
@@ -21,6 +24,8 @@ export async function getOne(id: string) {
 
 // export async function updateOne(frontEndUserProduct: IUserProduct, path: productPagesEnum) {
 //    try {
+// await dbConnect();
+// await dbConnect();
 //       const backEndUserProduct = await UserProduct.findById(
 //          { _id: frontEndUserProduct.id }
 //       );
@@ -69,6 +74,7 @@ export async function getOne(id: string) {
 
 export async function updateOne(newUserProduct: IUserProduct, path: productPagesEnum) {
    try {
+      await dbConnect();
       await UserProduct.updateOne(
          { _id: newUserProduct.id },
          {
@@ -84,6 +90,7 @@ export async function updateOne(newUserProduct: IUserProduct, path: productPages
 
 export async function insertOne(userProduct: IUserProduct) {
    try {
+      await dbConnect();
       const frontEndUserProduct = new UserProduct(userProduct)
       await frontEndUserProduct.save();
       return frontEndUserProduct?.toJSON();
@@ -94,6 +101,7 @@ export async function insertOne(userProduct: IUserProduct) {
 
 export async function deleteOne(id: string) {
    try {
+      await dbConnect();
       const result = await UserProduct.findByIdAndDelete(id);
       return result?.toJSON();
    } catch (error) {

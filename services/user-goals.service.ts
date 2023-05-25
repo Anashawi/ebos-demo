@@ -1,7 +1,9 @@
 import { IUserGoals, UserGoals as UserGoals } from "../models/user-goal";
+import { dbConnect } from "./db.service";
 
 export async function getOne(currentUserId: string, ISODateString: string) {
    try {
+      await dbConnect();
       const result = await UserGoals.findOne({ userId: currentUserId });
 
       return result?.toJSON();
@@ -12,6 +14,7 @@ export async function getOne(currentUserId: string, ISODateString: string) {
 
 export async function updateOne(frontEndUserGoals: IUserGoals) {
    try {
+      await dbConnect();
       const updateResult = await UserGoals.updateOne(
          { _id: frontEndUserGoals.id },
          {
@@ -28,6 +31,7 @@ export async function updateOne(frontEndUserGoals: IUserGoals) {
 
 export async function insertOne(userGoals: IUserGoals) {
    try {
+      await dbConnect();
       console.log(userGoals);
       const frontEndUserGoals = new UserGoals(userGoals)
       await frontEndUserGoals.save();

@@ -1,9 +1,11 @@
 import { IUserIdeas, UserIdeas } from '../models/user-idea';
 import { IIdea } from "../models/types";
 import { ObjectId } from 'mongodb';
+import { dbConnect } from './db.service';
 
 export async function getOne(currentUserId: string) {
    try {
+      await dbConnect();
       const result = await UserIdeas.findOne({ userId: currentUserId });
       return result?.toJSON();
    } catch (error) {
@@ -13,6 +15,7 @@ export async function getOne(currentUserId: string) {
 
 export async function getOneLookup(currentUserId: string) {
    try {
+      await dbConnect();
       let result = await UserIdeas.findOne({ userId: currentUserId });
       if (result) {
          result.ideas = result.ideas.map((idea: IIdea) => {
@@ -30,7 +33,7 @@ export async function getOneLookup(currentUserId: string) {
 
 export async function insertOne(userIdeas: IUserIdeas) {
    try {
-
+      await dbConnect();
       const frontEndUserIdeas = new UserIdeas(userIdeas)
       await frontEndUserIdeas.save();
       return frontEndUserIdeas?.toJSON() ?? "faild to create userIdeas collection";
@@ -41,6 +44,7 @@ export async function insertOne(userIdeas: IUserIdeas) {
 
 export async function updateOne(frontEndUserIdeas: IUserIdeas) {
    try {
+      await dbConnect();
       const updateResult = await UserIdeas.updateOne(
          { _id: frontEndUserIdeas.id },
          {
@@ -57,6 +61,7 @@ export async function updateOne(frontEndUserIdeas: IUserIdeas) {
 
 export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
    try {
+      await dbConnect();
 
       if (!sessionUser?.id) throw new Error("You are not logged in !");
 
@@ -95,6 +100,7 @@ export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
 
 export async function deleteOne(uuid: string, sessionUser: any) {
    try {
+      await dbConnect();
       if (!sessionUser?.id) throw new Error("You are not logged in !");
 
       const result = await UserIdeas.findOne({ userId: sessionUser.id });

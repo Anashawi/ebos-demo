@@ -1,7 +1,9 @@
 import { Videos, IVideos } from './../models/videos';
+import { dbConnect } from './db.service';
 
 export async function getOne() {
    try {
+      await dbConnect();
       const result = await Videos.find();
 
       return result[0];
@@ -12,6 +14,7 @@ export async function getOne() {
 
 export async function updateOne(videos: IVideos) {
    try {
+      await dbConnect();
       console.log("videos", videos);
       const getByIdResult = await Videos.findById(videos.id);
       videos = { ...getByIdResult?.toJSON(), ...videos };
@@ -35,6 +38,7 @@ export async function updateOne(videos: IVideos) {
 
 export async function insertOne(videos: IVideos) {
    try {
+      await dbConnect();
       const newVideos = new Videos(videos)
       await newVideos.save();
       return newVideos?.toJSON();
