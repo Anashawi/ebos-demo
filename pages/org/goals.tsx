@@ -1,329 +1,42 @@
-import { Field, FieldArray, Form, Formik, ErrorMessage } from "formik";
-import { useEffect, useMemo, useState } from "react";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { array, date, object, string } from "yup";
-import Spinner from "../../components/common/spinner";
-import * as clientApi from "../../http-client/goals.client";
-import * as videosClientApi from "../../http-client/videos.client";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { IUserGoals } from "../../models/user-goal";
 import IdeasModal from "../../components/app/ideas-modal";
-import { useSession } from "next-auth/react";
-import { IVideos } from "../../models/videos";
-import Header from "../../components/common/header";
-import UserInfoHeader from "../../components/common/user-info-header";
-import ConsultantReview from "../../components/common/consultant-review";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/videos/shared-video-form";
-import Link from "next/link";
-import { videoPropNamesEnum } from "../../models/enums";
+import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import Navbar from "../../components/common/navbar";
+import VerticalNavbar from "../../components/common/vertical-navbar";
+import Video from "../../components/videos/video";
+import GoalsContent from "../../components/goals/goals-content";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
-
-	const { data: session }: any = useSession();
-
-	const emptyUserGoal = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			targetDate: "",
-			goals: ["", "", ""],
-		} as IUserGoals;
-	}, []);
-
-	const [userGoals, setUserGoal] = useState<IUserGoals>(emptyUserGoal);
-
-	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserGoals>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getAll,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		if (data) {
-			setUserGoal(data);
-		}
-	}, [data]);
-
-	const [goalsVideo, setGoalsVideo] = useState<string>("");
-
-	const { data: videos, isLoading: isVideosLoading } = useQuery<IVideos>({
-		queryKey: [videosClientApi.Keys.all],
-		queryFn: videosClientApi.getOne,
-		refetchOnWindowFocus: false,
-	});
-
-	useEffect(() => {
-		if (videos) {
-			setGoalsVideo(videos.goalsVideo);
-		}
-	}, [videos]);
-
-	const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } =
-		useMutation(
-			(userGoals: IUserGoals) => {
-				return clientApi.updateOne(userGoals);
-			},
-			{
-				onMutate: (updated) => {
-					queryClient.setQueryData(
-						[clientApi.Keys.UserGoals, userGoals.id],
-						updated
-					);
-				},
-				onSuccess: (updated) => {
-					queryClient.invalidateQueries([
-						clientApi.Keys.UserGoals,
-						userGoals.id,
-					]);
-					queryClient.invalidateQueries([clientApi.Keys.All]);
-				},
-			}
-		);
-
-	const { mutate: createUserGoal, isLoading: isCreatingUserGoal } =
-		useMutation((userGoals: IUserGoals) => clientApi.insertOne(userGoals), {
-			onMutate: (updated) => {
-				queryClient.setQueryData(
-					[clientApi.Keys.UserGoals, userGoals.id],
-					updated
-				);
-			},
-			onSuccess: (updated) => {
-				queryClient.invalidateQueries([
-					clientApi.Keys.UserGoals,
-					userGoals.id,
-				]);
-				queryClient.invalidateQueries([clientApi.Keys.All]);
-			},
-		});
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler(false);
 
 	return (
 		<>
-			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal(false)}
+			/>
 
-			<div className='homepage-bg-gradient bg-white'>
-				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
-					<div className='flex flex-col py-12'>
-						<div className='flex justify-between items-center gap-12 px-12'>
-							<UserInfoHeader className='w-1/2'></UserInfoHeader>
-							<Header
+			<div className='bg-gray-100 pt-9'>
+				<div className='flex gap-[4.4rem] px-16 m-auto'>
+					<div className='py-12'>
+						<VerticalNavbar />
+					</div>
+					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
+						{/* <UserInfoHeader className='w-1/2'></UserInfoHeader> */}
+						{/* <Header
 								className='w-1/2'
-								toggleIdeasModal={toggleIdeasModal}></Header>
-						</div>
-						<div className='flex flex-wrap'>
-							<div className='md:w-1/2 bg-white relative px-12 flex flex-col gap-5 mt-10'>
-								<h3 className='mb-9 text-[2.8rem] text-yellow-green'>
-									Goals
-								</h3>
-								<Formik
-									initialValues={{
-										...userGoals,
-									}}
-									validationSchema={object({
-										goals: array(string())
-											.required(
-												"Start defining your goals toward success, click Add New Goal!"
-											)
-											.min(
-												0,
-												"Start defining your goals toward success, click Add New Goal!"
-											),
-										targetDate: date().required(
-											"Must add a target date"
-										),
-									})}
-									onSubmit={async (values, actions) => {
-										userGoals.userId = session?.user?.id;
-										if (userGoals?.id) {
-											await updateUserGoal({
-												...userGoals,
-												...values,
-											});
-										} else {
-											const { userId, ...newValues } = values;
-											await createUserGoal({
-												...userGoals,
-												...newValues,
-											});
-										}
-										actions.setSubmitting(false);
-									}}
-									enableReinitialize
-									validateOnMount>
-									{({ values, isSubmitting, isValid, errors }) => (
-										<>
-											<h3 className='flex gap-5 flex-wrap items-center text-2xl mb-6 font-normal'>
-												<p className='font-semibold'>
-													Choose a target date
-												</p>
-												<div className='grow flex flex-col'>
-													<Field
-														type='date'
-														className='p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
-														min={new Date()
-															.toISOString()
-															.slice(0, 10)} // 10 chars for dd/mm/yyyy
-														name='targetDate'
-														placeholder='Goal name'
-													/>
-													<ErrorMessage name={`targetDate`}>
-														{(msg) => (
-															<div className='text-lg text-rose-500'>
-																{msg}
-															</div>
-														)}
-													</ErrorMessage>
-												</div>
-											</h3>
-											<h3 className='text-2xl mb-6 font-normal'>
-												Visualize success on this date, What does it
-												look like
-											</h3>
-											<h2 className='text-4xl mb-6 text-yellow-green'>
-												Celebrating Unequivocal Success!
-											</h2>
-											<p className='mb-5'>
-												Things you want to be celebrating:
-											</p>
-
-											<Form>
-												<FieldArray name='goals'>
-													{({ remove, push, form }) => (
-														<>
-															<ul className='flex flex-col gap-3 mb-10 text-gray-gunmetal'>
-																{isLoading && (
-																	<Spinner
-																		className=''
-																		message='Loading Goals'
-																	/>
-																)}
-																{!values.goals?.length &&
-																	!isLoading && (
-																		<div className='w-full flex items-center'>
-																			<p className='text-2xl text-center italic'>
-																				Start adding your
-																				goals...
-																			</p>
-																		</div>
-																	)}
-																{!!values.goals?.length &&
-																	!isLoading &&
-																	values.goals.map(
-																		(
-																			goal: string,
-																			index: number
-																		) => (
-																			<div key={index}>
-																				<li className='relative'>
-																					<Field
-																						type='text'
-																						className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl goals'
-																						name={`goals.${index}`}
-																						placeholder='Goal name'
-																					/>
-																					<FontAwesomeIcon
-																						icon={faTimes}
-																						className='w-4 cursor-pointer absolute right-4 top-3 hover:text-rose-800'
-																						onClick={() => {
-																							remove(
-																								index
-																							);
-																						}}
-																					/>
-																				</li>
-																				<ErrorMessage
-																					name={`goals.${index}`}>
-																					{(msg) => (
-																						<div className='text-lg text-rose-500'>
-																							{msg}
-																						</div>
-																					)}
-																				</ErrorMessage>
-																			</div>
-																		)
-																	)}
-																{!values.goals?.length &&
-																	form.errors?.goals &&
-																	!isLoading && (
-																		<p className='p-3 text-center bg-rose-50 text-lg text-rose-500'>
-																			<>
-																				{form.errors.goals}
-																			</>
-																		</p>
-																	)}
-															</ul>
-															<div className='h-12'>
-																{isSubmitting ||
-																	isCreatingUserGoal ||
-																	(isUpdatingUserGoal && (
-																		<Spinner
-																			className='text-lg py-3'
-																			message='Saving Goals'
-																		/>
-																	))}
-															</div>
-															<div className='flex justify-between gap-5 items-center'>
-																<div className='flex gap-3'>
-																	<button
-																		type='submit'
-																		className={
-																			isSubmitting ||
-																			!isValid
-																				? "btn-rev btn-disabled"
-																				: "btn-rev"
-																		}
-																		disabled={
-																			isSubmitting ||
-																			!isValid
-																		}>
-																		Save
-																	</button>
-																	<button
-																		type='button'
-																		onClick={() => {
-																			push("");
-																		}}
-																		className='inline-flex items-center gap-2 btn text-black-eerie text-lg'>
-																		<FontAwesomeIcon
-																			className='w-[1rem] h-auto cursor-pointer'
-																			icon={faPlus}
-																		/>
-																		<span>Add New Goal</span>
-																	</button>
-																</div>
-																{userGoals?.goals.filter(
-																	(str) => str?.length > 0
-																)?.length > 0 && (
-																	<Link href={"/"}>
-																		<span className='text-md text-gray-400 italic'>
-																			go to next →{" "}
-																			<span className='text-gray-500'>
-																				pioneer, migrator,
-																				settler
-																			</span>
-																		</span>
-																	</Link>
-																)}
-															</div>
-														</>
-													)}
-												</FieldArray>
-											</Form>
-										</>
-									)}
-								</Formik>
-								{/* <script src="/modules/goals.js"></script> */}
+								toggleIdeasModal={toggleIdeasModal}></Header> */}
+						<Navbar selectedNode={navbarNodesEnum.visualizeSuccess} />
+						<div className='content-container'>
+							<div className='left-content'>
+								<GoalsContent />
 							</div>
-							<div className='md:w-1/2 min-h-screen px-12 flex flex-col gap-5 mt-12'>
-								<div className='flex justify-start items-center w-full gap-4 pb-10 mx-auto'>
+							<div className='right-content'>
+								{/* <div className='flex justify-start items-center w-full gap-4 pb-10 mx-auto'>
 									<ConsultantReview
 										pageTitle={
 											"Visualize Success"
@@ -331,7 +44,7 @@ const Goals = () => {
 									{(session?.user as any)?.role === "admin" && (
 										<button
 											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={toggleEditVideoModal}>
+											onClick={() => toggleEditVideoModal(true)}>
 											<span>Edit video Url</span>
 											<FontAwesomeIcon
 												className='w-7'
@@ -339,11 +52,27 @@ const Goals = () => {
 											/>
 										</button>
 									)}
+								</div> */}
+								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
+									<button
+										type='button'
+										onClick={() => {
+											toggleIdeasModal(true);
+										}}
+										className='w-full btn-primary-light rounded-xl'>
+										My Ideas
+									</button>
 								</div>
-								<iframe
-									width='100%'
-									height='400'
-									src={goalsVideo}></iframe>
+								<div className='flex flex-col gap-1 p-1 bg-white rounded-xl'>
+									<button
+										type='button'
+										onClick={() => {
+											toggleVideoModal(true);
+										}}
+										className='w-full btn-primary-light rounded-xl'>
+										Resource Videos
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -354,15 +83,32 @@ const Goals = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditVideoModal,
+					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<SharedVideoForm
-					toggleEditVideoModal={toggleEditVideoModal}
+					toggleEditVideoModal={() => toggleEditVideoModal(false)}
 					videoPropName={videoPropNamesEnum.goalsVideo}
 					videoLabel='Goals Video'
 				/>
+			</Modal>
+			{/* video modal */}
+			<Modal
+				config={{
+					isShown: isVideoModalOn,
+					closeCallback: () => toggleVideoModal(false),
+					className:
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+				}}>
+				<Video currVideoPropName={videoPropNamesEnum.goalsVideo} />
+				<div className='flex justify-center p-5 bg-black'>
+					<button
+						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						onClick={() => toggleVideoModal(false)}>
+						close
+					</button>
+				</div>
 			</Modal>
 		</>
 	);

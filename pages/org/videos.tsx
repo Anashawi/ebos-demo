@@ -69,7 +69,7 @@ const Disruption = () => {
 						<div className='flex flex-col md:w-8/12 bg-white p-12 relative'>
 							<UserInfoHeader className='mb-10'></UserInfoHeader>
 
-							<h3 className='text-[2.8rem] mb-6 text-yellow-green'>
+							<h3 className='text-[2.8rem] mb-6 text-secondary-300'>
 								Videos
 							</h3>
 
@@ -383,13 +383,16 @@ const Disruption = () => {
 			</div>
 
 			{/* ideas modal */}
-			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal()}
+			/>
 
 			{/* video modal */}
 			<Modal
 				config={{
 					isShown: isVideoModalOn,
-					closeCallback: toggleVideoModal,
+					closeCallback: () => toggleVideoModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
@@ -397,7 +400,7 @@ const Disruption = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={toggleVideoModal}>
+						onClick={() => toggleVideoModal(true)}>
 						close
 					</button>
 				</div>

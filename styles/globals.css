@@ -72,8 +72,8 @@ li {
   background: linear-gradient(
     90deg,
     #fff 0%,
-    #fff 50%,
-    #86bf44 50%,
+    #fff 60%,
+    #86bf44 40%,
     #1caa55 100%
   );
 }
@@ -146,7 +146,7 @@ li {
   stroke-dasharray: 5, 2;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus:not("no-border") {
   outline: none;
   border-bottom-color: #263238;
   box-shadow: 0 1px 0px 0px #263238;
@@ -169,7 +169,23 @@ input[type="text"]:focus {
   }
 
   .btn-rev {
-    @apply text-black-eerie bg-mustard hover:text-gray-600 hover:shadow-lg hover:bg-yellow-400;
+    @apply text-white bg-secondary-300 hover:shadow-lg px-11 py-5 rounded-full transition duration-200;
+  }
+
+  .btn-gray {
+    @apply text-white bg-[#c7c6c6] hover:shadow-lg px-7 py-4 rounded-full transition duration-200;
+  }
+
+  .btn-primary {
+    @apply inline-flex justify-center items-center gap-6 bg-primary text-white px-5 py-4 text-xl rounded-full transition duration-200;
+  }
+
+  .btn-primary-light {
+    @apply inline-flex justify-center items-center gap-6 bg-primary-300 text-white px-5 py-4 hover:bg-primary text-xl rounded-full transition duration-200;
+  }
+
+  .btn-danger {
+    @apply inline-flex justify-center items-center gap-6 bg-[#e67778] text-white px-5 py-4 hover:bg-[#e55658] text-xl rounded-full transition duration-200;
   }
 
   .btn {
@@ -178,6 +194,30 @@ input[type="text"]:focus {
 
   .modal-content {
     @apply relative flex flex-col w-full pointer-events-auto bg-transparent shadow-none outline-none text-white max-h-[calc(100vh_-_1.5rem_*_2)] bg-clip-padding;
+  }
+  
+  .light-input {
+    @apply px-7 py-4 bg-[#f4f8fd] rounded-full border border-[#dce4f1] outline-none caret-dark-blue text-xl text-[#97acc8];
+  }
+
+  .dark-input {
+    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-[#dce4f1] outline-none caret-dark-blue text-xl text-gray-500;
+  }
+ 
+  .content-container {
+    @apply grid xl:grid-cols-12 gap-4;
+  }
+
+  .title-header {
+    @apply mb-3 text-[2.8rem] text-[#93a7c4] font-normal;
+  }
+
+  .left-content {
+    @apply w-full xl:col-span-7 px-12 pt-7 pb-10 flex flex-col gap-3 bg-white relative rounded-3xl;
+  }
+
+  .right-content {
+    @apply w-full xl:col-span-5 min-h-screen px-6 py-5 flex flex-col gap-4 bg-ivory;
   }
 }
 
@@ -222,6 +262,12 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+label {
+  color: #4a74b0;
+  font-weight: 600;
+  font-size: 1.4rem;
 }
 
 .text-stroke {

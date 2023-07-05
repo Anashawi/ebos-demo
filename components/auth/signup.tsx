@@ -207,7 +207,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 						<div>
 							<button
 								type='submit'
-								className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x rounded-md bg-gradient-to-br from-yellow-green to-[#A5C036] '>
+								className='w-full p-2 text-gray-900 bg-secondary-300 bg-repeat-x rounded-md bg-gradient-to-br from-secondary-300 to-[#A5C036] '>
 								Register
 							</button>
 						</div>

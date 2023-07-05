@@ -122,7 +122,7 @@ const RoadMap = () => {
 							<Header></Header>
 						</div>
 						<div className='flex gap-5 mt-7'>
-							<h3 className='w-1/2 text-[2.52rem] text-yellow-green'>
+							<h3 className='w-1/2 text-[2.52rem] text-secondary-300'>
 								Road Map
 							</h3>
 							<div className='w-1/2 flex items-center gap-5 justify-end'>
@@ -132,7 +132,7 @@ const RoadMap = () => {
 									<button
 										type='button'
 										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleEditVideoModal}>
+										onClick={() => toggleEditVideoModal(true)}>
 										<span>Edit video Url</span>
 										<FontAwesomeIcon className='w-7' icon={faEdit} />
 									</button>
@@ -140,7 +140,7 @@ const RoadMap = () => {
 								<button
 									type='button'
 									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-									onClick={toggleVideoModal}>
+									onClick={() => toggleVideoModal(true)}>
 									<span>Watch Video</span>
 									<FontAwesomeIcon className='w-7' icon={faEye} />
 								</button>
@@ -377,7 +377,7 @@ const RoadMap = () => {
 			<Modal
 				config={{
 					isShown: isVideoModalOn,
-					closeCallback: toggleVideoModal,
+					closeCallback: () => toggleVideoModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
@@ -385,7 +385,7 @@ const RoadMap = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={toggleVideoModal}>
+						onClick={() => toggleVideoModal(true)}>
 						close
 					</button>
 				</div>
@@ -395,12 +395,12 @@ const RoadMap = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditVideoModal,
+					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<SharedVideoForm
-					toggleEditVideoModal={toggleEditVideoModal}
+					toggleEditVideoModal={() => toggleEditVideoModal(false)}
 					videoPropName={videoPropNamesEnum.roadMap}
 					videoLabel='Road Map Video'
 				/>

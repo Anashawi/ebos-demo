@@ -1,10 +1,21 @@
-export interface ConfirmDialog {
-   isShown: boolean;
+export interface NavbarNode {
    title: string;
-   confirmMessage: string;
-   okBtnText: string;
-   cancelBtnText: string;
-   okCallback: () => void;
+   step: string;
+   url: string;
+   icon: any;
+}
+
+export type ConfirmDialog = {
+   isShown: boolean,
+   title: string,
+   message: string,
+   actionBtnText: string,
+   cancelBtnText: string,
+   actionCallback: () => void,
+   cancelCallback: () => void,
+   isDangerAction: boolean,
+   loadingMessage: string,
+   isLoading: boolean,
 }
 
 export interface IModal {

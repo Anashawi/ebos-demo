@@ -2,17 +2,11 @@ import objectPath from "object-path";
 import { NextPage } from "next";
 import { ErrorMessage, Field, FieldArray } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Chart from "react-google-charts";
-import {
-	faCirclePlus,
-	faMinusCircle,
-	faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { useMemo } from "react";
+import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useMemo, useState } from "react";
 import useConfirmDialog from "../../hooks/use-confirm-dialog";
 import ConfirmModal from "../common/confirm-dialog";
 import { ConfirmDialog, IFuture, IProduct } from "../../models/types";
-import useFuturesChart from "../../hooks/use-futures-chart";
 
 interface Props {
 	product: IProduct;
@@ -21,18 +15,24 @@ interface Props {
 }
 
 const Product: NextPage<Props> = ({ product, index, onRemove }) => {
-	const deleteConfig: ConfirmDialog = useMemo(() => {
-		return {
+	const [confirmDialogConfig, setConfirmDialogConfig] =
+		useState<ConfirmDialog>({
 			isShown: false,
 			title: "Delete Product",
-			confirmMessage: "Are you sure to delete this product ?",
-			okBtnText: "Delete",
+			message: "Are you sure to delete this product ?",
+			actionBtnText: "Delete",
 			cancelBtnText: "Cancel",
-			okCallback: () => {},
-		};
-	}, []);
-	const [deleteDialogConfig, toggleDeleteDialog] =
-		useConfirmDialog(deleteConfig);
+			actionCallback: () => {},
+			cancelCallback: () => {
+				setConfirmDialogConfig((latestConfig) => {
+					latestConfig.isShown = false;
+					return { ...latestConfig };
+				});
+			},
+			isDangerAction: true,
+			isLoading: false,
+			loadingMessage: "Deleting Product...",
+		});
 
 	const emptyFuture = useMemo(() => {
 		return {
@@ -48,16 +48,16 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 
 	return (
 		<>
-			<div key={index} className='flex text-lg'>
-				<div className='grow pr-10'>
-					<div className='bg-white flex flex-col gap-5'>
-						<div className='flex flex-col gap-3 border-b border-gray-300 pb-5'>
+			<div key={index} className='flex p-5 rounded-2xl bg-[#f8f9f9] text-lg'>
+				<div className='grow'>
+					<div className='flex flex-col'>
+						<div className='flex flex-col gap-3 pb-5'>
 							<div className='flex items-center gap-5'>
-								<div className='grow flex flex-col gap-3 relative'>
+								<div className='grow flex flex-col gap-3 px-2'>
 									<label>Product name</label>
 									<Field
 										type='text'
-										className='w-full p-2 px-4 text-lg bg-gray-100 focus:outline-none caret-dark-blue border-none'
+										className='light-input'
 										placeholder='Name'
 										name={`products.${index}.name`}
 									/>
@@ -66,157 +66,189 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 											<div className='text-rose-500'>{msg}</div>
 										)}
 									</ErrorMessage>
-									<FontAwesomeIcon
-										onClick={() => {
-											deleteDialogConfig.okCallback = () => {
-												onRemove();
-											};
-											toggleDeleteDialog(deleteDialogConfig);
-										}}
-										className='w-5 absolute top-0 right-3 cursor-pointer text-rose-200 hover:text-rose-500'
-										icon={faTrash}
-									/>
 								</div>
 							</div>
 						</div>
 						<FieldArray name={`products.${index}.futures`}>
 							{({ remove, push, form }) => {
 								return (
-									<div>
-										{!!product.futures?.length &&
-											product.futures?.map((future, futureIndex) => {
-												return (
-													<div
-														key={futureIndex}
-														className='flex flex-col border-b border-gray-300 pb-3'>
-														<div className='flex'>
-															<div className='grow p-2 flex flex-col'>
-																<label>
-																	{futureIndex === 0
-																		? `Present`
-																		: `Future ${futureIndex}`}{" "}
-																</label>
-																<Field
-																	type='number'
-																	className='w-full text-lg p-2 bg-gray-100 outline-none caret-dark-blue border-none'
-																	placeholder='year'
-																	name={`products.${index}.futures.${futureIndex}.year`}
-																/>
-																<ErrorMessage
-																	name={`products.${index}.futures.${futureIndex}.year`}>
-																	{(msg) => (
-																		<div className='text-rose-500'>
-																			{msg}
-																		</div>
-																	)}
-																</ErrorMessage>
+									<div className='flex flex-col gap-5'>
+										<div>
+											{!!product.futures?.length &&
+												product.futures?.map(
+													(future, futureIndex) => {
+														return (
+															<div
+																key={futureIndex}
+																className='flex flex-col'>
+																<div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
+																	<div className='p-2 flex flex-col gap-3'>
+																		<label>
+																			{futureIndex === 0
+																				? `Present`
+																				: `Future ${futureIndex}`}{" "}
+																		</label>
+																		<Field
+																			type='number'
+																			className='light-input'
+																			placeholder='year'
+																			name={`products.${index}.futures.${futureIndex}.year`}
+																		/>
+																		<ErrorMessage
+																			name={`products.${index}.futures.${futureIndex}.year`}>
+																			{(msg) => (
+																				<div className='text-rose-500'>
+																					{msg}
+																				</div>
+																			)}
+																		</ErrorMessage>
+																	</div>
+																	<div className='p-2 flex flex-col gap-3'>
+																		<label>Level</label>
+																		<Field
+																			as='select'
+																			name={`products.${index}.futures.${futureIndex}.level`}
+																			className='accent-blue-true light-input'>
+																			<option value='1'>
+																				Settler
+																			</option>
+																			<option value='2'>
+																				Migrator
+																			</option>
+																			<option value='3'>
+																				Pioneer
+																			</option>
+																		</Field>
+																		<ErrorMessage
+																			name={`products.${index}.futures.${futureIndex}.level`}>
+																			{(msg) => (
+																				<div className='text-rose-500'>
+																					{msg}
+																				</div>
+																			)}
+																		</ErrorMessage>
+																	</div>
+																	<div className='p-2 flex flex-col gap-3'>
+																		<label>Sales (USD)</label>
+																		<Field
+																			type='number'
+																			name={`products.${index}.futures.${futureIndex}.sales`}
+																			min='0'
+																			className='accent-blue-true light-input'
+																		/>
+																		<ErrorMessage
+																			name={`products.${index}.futures.${futureIndex}.sales`}>
+																			{(msg) => (
+																				<div className='text-rose-500'>
+																					{msg}
+																				</div>
+																			)}
+																		</ErrorMessage>
+																	</div>
+																</div>
 															</div>
-															<div className='grow p-2 flex flex-col'>
-																<label>Level</label>
-																<Field
-																	as='select'
-																	name={`products.${index}.futures.${futureIndex}.level`}
-																	className='accent-blue-true text-lg w-full p-2 bg-gray-100 outline-none caret-dark-blue border-none'>
-																	<option value='1'>
-																		Settler
-																	</option>
-																	<option value='2'>
-																		Migrator
-																	</option>
-																	<option value='3'>
-																		Pioneer
-																	</option>
-																</Field>
-																<ErrorMessage
-																	name={`products.${index}.futures.${futureIndex}.level`}>
-																	{(msg) => (
-																		<div className='text-rose-500'>
-																			{msg}
-																		</div>
-																	)}
-																</ErrorMessage>
-															</div>
-															<div className='grow p-2 flex flex-col'>
-																<label>Sales (USD)</label>
-																<Field
-																	type='number'
-																	name={`products.${index}.futures.${futureIndex}.sales`}
-																	min='0'
-																	className='accent-blue-true w-full p-2 text-lg bg-gray-100 outline-none caret-dark-blue border-none'
-																/>
-																<ErrorMessage
-																	name={`products.${index}.futures.${futureIndex}.sales`}>
-																	{(msg) => (
-																		<div className='text-rose-500'>
-																			{msg}
-																		</div>
-																	)}
-																</ErrorMessage>
-															</div>
-														</div>
-													</div>
-												);
-											})}
-										{!product.futures?.length &&
-											!!objectPath.get(
-												form,
-												`errors.products.${index}.futures`
-											) && (
-												<div className='w-full flex items-center'>
-													<p className='grow text-lg p-3 text-center bg-rose-50 text-rose-500'>
-														{objectPath.get(
-															form,
-															`errors.products.${index}.futures`
-														)}
-													</p>
-												</div>
-											)}
-										<div className='flex justify-between w-full pr-3  gap-5'>
-											<button
-												type='button'
-												onClick={() => {
-													const newFuture = { ...emptyFuture };
-													if (product.futures?.length) {
-														newFuture.year =
-															product.futures.reduce(
-																(max, future) =>
-																	future.year <= 2099 &&
-																	max.year > future.year
-																		? max
-																		: future
-															).year + 1; // to get the greatest year + 1
-														if (newFuture.year > 2099) {
-															newFuture.year = 2099;
-														}
+														);
 													}
-													push(newFuture);
-												}}
-												className='inline-flex items-center gap-3 text-lg p-5 text-black-eerie'>
-												<FontAwesomeIcon
-													className='w-5 h-auto cursor-pointer text-gray-700'
-													icon={faCirclePlus}
-												/>
-												<span>add new future</span>
-											</button>
+												)}
+											{!product.futures?.length &&
+												!!objectPath.get(
+													form,
+													`errors.products.${index}.futures`
+												) && (
+													<div className='w-full flex items-center'>
+														<p className='grow text-lg p-3 text-center bg-rose-50 text-rose-500'>
+															{objectPath.get(
+																form,
+																`errors.products.${index}.futures`
+															)}
+														</p>
+													</div>
+												)}
+										</div>
+										<div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
+											<div className='p-2'>
+												<button
+													type='button'
+													onClick={() => {
+														const newFuture = { ...emptyFuture };
+														if (product.futures?.length) {
+															newFuture.year =
+																product.futures.reduce(
+																	(max, future) =>
+																		future.year <= 2099 &&
+																		max.year > future.year
+																			? max
+																			: future
+																).year + 1; // to get the greatest year + 1
+															if (newFuture.year > 2099) {
+																newFuture.year = 2099;
+															}
+														}
+														push(newFuture);
+													}}
+													className='w-full btn-primary-light'>
+													<FontAwesomeIcon
+														className='w-[0.8rem] h-auto cursor-pointer'
+														icon={faPlus}
+													/>
+													<span>Add New Future</span>
+												</button>
+											</div>
+
 											{!!product.futures?.length &&
 												product.futures?.length > 0 && (
-													<button
-														type='button'
-														onClick={() => {
-															if (product.futures) {
-																remove(
-																	product.futures.length - 1
-																);
-															}
-														}}
-														className='inline-flex items-center gap-3 text-lg px-3 text-rose-400 hover:text-rose-500'>
-														<FontAwesomeIcon
-															className='w-5 h-auto cursor-pointer hover:text-rose-500'
-															icon={faMinusCircle}
-														/>
-														<span>remove last future</span>
-													</button>
+													<div className='p-2'>
+														<button
+															type='button'
+															onClick={() => {
+																if (product.futures) {
+																	remove(
+																		product.futures.length - 1
+																	);
+																}
+															}}
+															className='w-full btn-primary-light'>
+															<FontAwesomeIcon
+																className='w-2 h-auto cursor-pointer hover:text-rose-500'
+																icon={faMinus}
+															/>
+															<span>Remove Last Future</span>
+														</button>
+													</div>
 												)}
+
+											<div className='p-2'>
+												<button
+													type='button'
+													onClick={() => {
+														setConfirmDialogConfig(
+															(latestConfig) => {
+																latestConfig.isShown = true;
+																latestConfig.actionCallback =
+																	() => {
+																		onRemove();
+																		setConfirmDialogConfig(
+																			(latestConfig) => {
+																				latestConfig.isShown =
+																					false;
+																				return {
+																					...latestConfig,
+																				};
+																			}
+																		);
+																	};
+																return { ...latestConfig };
+															}
+														);
+													}}
+													className='w-full btn-danger'>
+													<FontAwesomeIcon
+														className='w-4 cursor-pointer text-rose-50'
+														icon={faTrash}
+													/>
+													<span>Delete Product</span>
+												</button>
+											</div>
 										</div>
 									</div>
 								);
@@ -226,11 +258,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 				</div>
 			</div>
 
-			<ConfirmModal
-				config={deleteDialogConfig}
-				toggle={() => {
-					toggleDeleteDialog();
-				}}></ConfirmModal>
+			<ConfirmModal config={confirmDialogConfig}></ConfirmModal>
 		</>
 	);
 };

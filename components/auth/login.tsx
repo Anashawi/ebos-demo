@@ -119,7 +119,7 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 					<div>
 						<button
 							type='submit'
-							className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x bg-gradient-to-br from-yellow-green to-[#A5C036] rounded-md'>
+							className='w-full p-2 text-gray-900 bg-secondary-300 bg-repeat-x bg-gradient-to-br from-secondary-300 to-[#A5C036] rounded-md'>
 							Login
 						</button>
 					</div>

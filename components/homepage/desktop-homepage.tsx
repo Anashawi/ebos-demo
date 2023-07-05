@@ -214,13 +214,13 @@ const DesktopHomepage: NextPage<Props> = ({
 								}}>
 								{session && <Link
 									href={node.url}
-									className='text-center text-yellow-green hover:text-yellow-green'>
+									className='text-center text-secondary-300 hover:text-secondary-300'>
 									{node.text}
 								</Link>}
 								{
 									!session && <span
 
-										className='text-center  text-yellow-green hover:text-yellow-green'>
+										className='text-center  text-secondary-300 hover:text-secondary-300'>
 										{node.text}
 									</span>
 								}

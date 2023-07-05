@@ -107,14 +107,17 @@ const Analysis = () => {
 
 	return (
 		<>
-			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal()}
+			/>
 
 			<div className='homepage-bg-gradient bg-white'>
 				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
 					<div className='flex flex-wrap'>
 						<div className='w-1/2 bg-white p-12 relative'>
 							<UserInfoHeader></UserInfoHeader>
-							<h3 className='text-[2.8rem] my-10 text-yellow-green'>
+							<h3 className='text-[2.8rem] my-10 text-secondary-300'>
 								Step-up step-down
 							</h3>
 							{isLoading && (
@@ -366,7 +369,7 @@ const Analysis = () => {
 										<button
 											type='button'
 											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={toggleEditVideoModal}>
+											onClick={() => toggleEditVideoModal(true)}>
 											<span>Edit video Url</span>
 											<FontAwesomeIcon
 												className='w-7'
@@ -377,7 +380,7 @@ const Analysis = () => {
 									<button
 										type='button'
 										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleVideoModal}>
+										onClick={() => toggleVideoModal(true)}>
 										<span>Watch Video</span>
 										<FontAwesomeIcon className='w-7' icon={faEye} />
 									</button>
@@ -432,7 +435,7 @@ const Analysis = () => {
 			<Modal
 				config={{
 					isShown: isVideoModalOn,
-					closeCallback: toggleVideoModal,
+					closeCallback: () => toggleVideoModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
@@ -440,7 +443,7 @@ const Analysis = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={toggleVideoModal}>
+						onClick={() => toggleVideoModal(true)}>
 						close
 					</button>
 				</div>
@@ -450,12 +453,12 @@ const Analysis = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditVideoModal,
+					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<SharedVideoForm
-					toggleEditVideoModal={toggleEditVideoModal}
+					toggleEditVideoModal={() => toggleEditVideoModal(false)}
 					videoPropName={videoPropNamesEnum.stepUpStepDownModel}
 					videoLabel='Step Up Step Down Model Video'
 				/>

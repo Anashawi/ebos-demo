@@ -1,10 +1,12 @@
-import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCirclePlus,
+	faPlus,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import Chart from "react-google-charts";
 import { useMemo } from "react";
 import { ICompetitor, IProduct } from "../../models/types";
-import useCompetitorsChart from "../../hooks/use-competitors-chart";
 
 interface Props {
 	product: IProduct;
@@ -13,8 +15,6 @@ interface Props {
 }
 
 const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
-	const [chart] = useCompetitorsChart(product);
-
 	const emptyCompetitor = useMemo(() => {
 		return {
 			uuid: crypto.randomUUID(),
@@ -24,13 +24,13 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 	}, []);
 
 	return (
-		<div className='flex justify-between text-lg'>
-			<div className='md:w-1/2 pr-12'>
+		<div className='flex justify-between text-lg bg-[#f8f9f9] rounded-2xl'>
+			<div className='w-full'>
 				<div key={index} className=''>
 					<FieldArray name={`products.${index}.competitors`}>
 						{({ remove, push }) => (
 							<div className='relative'>
-								<ul className='flex flex-col gap-3 mb-10 pr-5 border p-5 h-[355px] overflow-y-auto'>
+								<ul className='flex flex-col gap-5 mb-10 p-5'>
 									{!product?.competitors?.length && (
 										<div className='text-center bg-rose-50 text-sm text-rose-500 p-5'>
 											Please, add at least one competitor
@@ -57,7 +57,7 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 															<Field
 																type='text'
 																placeholder='name'
-																className='w-full text-lg p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																className='w-full light-input'
 																name={`products.${index}.competitors.${compIndex}.name`}
 															/>
 															<ErrorMessage
@@ -78,26 +78,21 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 															<Field
 																type='text'
 																placeholder='product name'
-																className='text-lg w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+																className='light-input'
 																name={`products.${index}.name`}
 															/>
 														</div>
 													</>
 												)}
-												<div className='w-full md:w-1/2 flex flex-col gap-2'>
+												<div className='relative w-full md:w-1/2 flex flex-col gap-2'>
 													<label>Market share (USD)</label>
-													<div className='flex items-baseline'>
-														<span className='inline-block p-3 bg-yellow-jasmine'>
-															$
-														</span>
-														<Field
-															type='number'
-															placeholder='percentage'
-															className='grow comp-share p-3 text-lg bg-gray-100 outline-none caret-dark-blue border-none'
-															name={`products.${index}.competitors.${compIndex}.marketShare`}
-															min='0'
-														/>
-													</div>
+													<Field
+														type='number'
+														placeholder='percentage'
+														className='light-input'
+														name={`products.${index}.competitors.${compIndex}.marketShare`}
+														min='0'
+													/>
 													<ErrorMessage
 														name={`products.${index}.competitors.${compIndex}.marketShare`}>
 														{(msg) => (
@@ -106,17 +101,17 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 															</div>
 														)}
 													</ErrorMessage>
+													{compIndex > 1 && (
+														<FontAwesomeIcon
+															icon={faTimes}
+															onClick={() => {
+																if (compIndex > 0)
+																	remove(compIndex);
+															}}
+															className='w-4 h-auto absolute top-[55%] right-5 cursor-pointer text-gray-500 hover:text-rose-800'
+														/>
+													)}
 												</div>
-												{compIndex > 1 && (
-													<FontAwesomeIcon
-														icon={faTimes}
-														onClick={() => {
-															if (compIndex > 0)
-																remove(compIndex);
-														}}
-														className='w-4 h-auto absolute top-12 right-4 cursor-pointer text-gray-500 hover:text-rose-800'
-													/>
-												)}
 											</li>
 										))}
 									<div>
@@ -131,18 +126,18 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 												</p>
 											)}
 									</div>
-									<div className='flex justify-center'>
+									<div className='flex'>
 										<button
 											type='button'
 											onClick={() => {
 												push(emptyCompetitor);
 											}}
-											className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+											className='btn-primary-light px-10'>
 											<FontAwesomeIcon
-												className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
-												icon={faCirclePlus}
+												className='w-3 h-auto cursor-pointer hover:text-gray-600'
+												icon={faPlus}
 											/>
-											Add more competitors
+											Add New competitors
 										</button>
 									</div>
 								</ul>
@@ -150,9 +145,6 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 						)}
 					</FieldArray>
 				</div>
-			</div>
-			<div className='flex flex-col justify-between gap-12 md:w-1/2 h-[355px]  px-10'>
-				<Chart {...chart} legendToggle />
 			</div>
 		</div>
 	);

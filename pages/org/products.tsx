@@ -1,137 +1,73 @@
-import { FieldArray, Form, Formik } from "formik";
-import Link from "next/link";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import Product from "../../components/products/product";
-import { useEffect, useMemo, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEye, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import * as clientApi from "../../http-client/products.client";
-import { useSession } from "next-auth/react";
-import { IUserProduct } from "../../models/user-product";
-import { IFuture, IProduct } from "../../models/types";
-import Spinner from "../../components/common/spinner";
-import { productPagesEnum, videoPropNamesEnum } from "../../models/enums";
-import UserInfoHeader from "../../components/common/user-info-header";
-import Header from "../../components/common/header";
-import { object, array, string, number } from "yup";
-import useFuturesChart from "../../hooks/use-futures-chart";
-import Chart from "react-google-charts";
-import FormikContextChild from "../../components/products/formik-context-child";
+import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/videos/shared-video-form";
-import ConsultantReview from "../../components/common/consultant-review";
 import Video from "../../components/videos/video";
-import { cloneDeep } from "lodash";
+import Navbar from "../../components/common/navbar";
+import VerticalNavbar from "../../components/common/vertical-navbar";
+import ProductsContent from "../../components/products/products-content";
+import { useState } from "react";
+import { IProduct } from "../../models/types";
+import useFuturesChart from "../../hooks/use-futures-chart";
+import Chart from "react-google-charts";
 
 const Products = () => {
-	const { data: session }: any = useSession();
-
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
-	const emptyUserProduct = {
-		id: "",
-		userId: session?.user?.id,
-		products: [],
-	} as IUserProduct;
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
 	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
 	const [chart] = useFuturesChart(chartProducts);
 
-	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserProduct>({
-		queryKey: [clientApi.Keys.UserProduct, userProduct.id],
-		queryFn: clientApi.getAll,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		if (data) {
-			setUserProduct(data);
-		}
-	}, [data]);
-
-	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
-		useMutation(
-			(userProduct: IUserProduct) => {
-				return clientApi.updateOne(userProduct, productPagesEnum.futures);
-			},
-			{
-				onMutate: (updated) => {
-					queryClient.setQueryData(
-						[clientApi.Keys.UserProduct, userProduct.id],
-						updated
-					);
-				},
-				onSuccess: (updated) => {
-					queryClient.invalidateQueries([
-						clientApi.Keys.UserProduct,
-						userProduct.id,
-					]);
-					queryClient.invalidateQueries([clientApi.Keys.All]);
-				},
-			}
-		);
-
-	const { mutate: createUserProduct, isLoading: isCreatingUserProduct } =
-		useMutation(
-			(userProduct: IUserProduct) => clientApi.insertOne(userProduct),
-			{
-				onMutate: (updated) => {
-					queryClient.setQueryData(
-						[clientApi.Keys.UserProduct, userProduct.id],
-						updated
-					);
-				},
-				onSuccess: (updated) => {
-					queryClient.invalidateQueries([
-						clientApi.Keys.UserProduct,
-						userProduct.id,
-					]);
-					queryClient.invalidateQueries([
-						clientApi.Keys.UserProduct,
-						userProduct.id,
-					]);
-				},
-			}
-		);
-
-	const emptyProduct = {
-		uuid: "",
-		name: "",
-		futures: [
-			{
-				year: 2023,
-				level: 1,
-				sales: 50,
-			} as IFuture,
-		],
-	};
-
 	return (
 		<>
-			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
-			<div className='min-h-screen products-gradient bg-white'>
-				<div className='px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
-					<div className='p-12 relative mx-auto max-w-[1920px]'>
-						<div className='flex justify-between items-center gap-10 pb-5'>
-							<UserInfoHeader className='w-1/2'></UserInfoHeader>
-							<Header
-								className='w-1/2'
-								toggleIdeasModal={toggleIdeasModal}></Header>
+			<div className='bg-gray-100 pt-9'>
+				<div className='flex gap-[4.4rem] px-16 m-auto'>
+					<div className='py-12'>
+						<VerticalNavbar />
+					</div>
+					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
+						<Navbar
+							selectedNode={navbarNodesEnum.pioneerMigratorSettler}
+						/>
+						<div className='content-container'>
+							<div className='left-content'>
+								<ProductsContent
+									dispatchChartProducts={setChartProducts}
+								/>
+							</div>
+							<div className='right-content'>
+								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
+									<button
+										type='button'
+										onClick={() => {
+											toggleIdeasModal(true);
+										}}
+										className='w-full btn-primary-light rounded-xl'>
+										My Ideas
+									</button>
+								</div>
+								<div className='flex flex-col gap-1 p-1 bg-white rounded-xl'>
+									<button
+										type='button'
+										onClick={() => {
+											toggleVideoModal(true);
+										}}
+										className='w-full btn-primary-light rounded-xl'>
+										Resource Videos
+									</button>
+								</div>
+								{!!chartProducts?.length && (
+									<div className='h-[500px]'>
+										<Chart {...chart} legendToggle />
+									</div>
+								)}
+							</div>
 						</div>
-						<div className='flex mt-5 mb-10'>
-							<h3 className='w-1/2 text-[2.8rem] mb-10 text-yellow-green'>
-								Pioneer, Migrator, Settler
-							</h3>
+
+						{/* <div className='flex mt-5 mb-10'>
 							<div className='w-1/2'>
 								<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
 									<ConsultantReview
@@ -141,7 +77,7 @@ const Products = () => {
 									{(session?.user as any)?.role === "admin" && (
 										<button
 											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={toggleEditVideoModal}>
+											onClick={() => toggleEditVideoModal(true)}>
 											<span>Edit video Url</span>
 											<FontAwesomeIcon
 												className='w-7'
@@ -151,206 +87,28 @@ const Products = () => {
 									)}
 									<button
 										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleVideoModal}>
+										onClick={() => toggleVideoModal(true)}>
 										<span>Watch Video</span>
 										<FontAwesomeIcon className='w-7' icon={faEye} />
 									</button>
 								</div>
 							</div>
-						</div>
-						<Formik
-							initialValues={{
-								products: userProduct?.products,
-							}}
-							validationSchema={object({
-								products: array(
-									object({
-										name: string().required("required"),
-										futures: array(
-											object({
-												year: number()
-													.typeError("specify a year")
-													.min(
-														new Date().getFullYear(),
-														`min year is ${new Date().getFullYear()}`
-													)
-													.required("required"),
-												level: number().required("required"),
-												sales: number()
-													.min(0, "must be greater than 0")
-													.required("required"),
-											})
-										)
-											.required("Must provide at least one future!")
-											.min(1, "Must provide at least one future!"),
-									})
-								)
-									.required("Start adding your products...")
-									.min(1, "Start adding your products..."),
-							})}
-							onSubmit={async (values, actions) => {
-								values.products?.map((product) => {
-									if (!product.uuid) {
-										product.uuid = crypto.randomUUID();
-									}
-								});
-								userProduct.userId = session?.user?.id;
-								if (userProduct?.id) {
-									await updateUserProduct({
-										...userProduct,
-										...values,
-									});
-								} else {
-									await createUserProduct({
-										...userProduct,
-										...values,
-									});
-								}
-								actions.setSubmitting(false);
-							}}
-							enableReinitialize
-							validateOnMount>
-							{({ values, isSubmitting, isValid, isValidating }) => {
-								return (
-									<Form>
-										<FieldArray name='products'>
-											{({ push, remove, form }) => {
-												return (
-													<div className='flex flex-col gap-5'>
-														<div className='flex'>
-															<div className='w-1/2 py-5 flex flex-col gap-10'>
-																{!!isLoading && (
-																	<Spinner
-																		className='flex items-center text-2xl'
-																		message='Loading Products...'
-																	/>
-																)}
-																{!!values.products?.length &&
-																	values.products?.map(
-																		(
-																			product,
-																			productIndex
-																		) => (
-																			<div
-																				key={productIndex}>
-																				<Product
-																					product={product}
-																					index={
-																						productIndex
-																					}
-																					onRemove={() => {
-																						remove(
-																							productIndex
-																						);
-																					}}
-																				/>
-																			</div>
-																		)
-																	)}
-																{!values.products?.length &&
-																	!isLoading &&
-																	form.errors?.products && (
-																		<div className='w-full flex justify-start items-center'>
-																			<p className='text-2xl text-center italic'>
-																				<>
-																					{
-																						form.errors
-																							.products
-																					}
-																				</>
-																			</p>
-																		</div>
-																	)}
-															</div>
-															{!!chartProducts?.length && (
-																<div className='md:w-1/2 h-[500px] pl-10'>
-																	<Chart
-																		{...chart}
-																		legendToggle
-																	/>
-																</div>
-															)}
-														</div>
-														<div className='w-1/2'>
-															<div className='h-10'>
-																{(isUpdatingUserProduct ||
-																	isCreatingUserProduct) && (
-																	<Spinner
-																		className='flex items-center text-lg'
-																		message='Saving Products'
-																	/>
-																)}
-															</div>
-															<div className='flex gap-5 items-center justify-between pr-12'>
-																<div className='flex gap-5'>
-																	<button
-																		type='submit'
-																		className={
-																			isSubmitting ||
-																			(!isValid &&
-																				!isValidating)
-																				? "btn-rev btn-disabled cursor-not-allowed"
-																				: "btn-rev"
-																		}
-																		disabled={
-																			isSubmitting ||
-																			(!isValid &&
-																				!isValidating)
-																		}>
-																		Save
-																	</button>
-																	<button
-																		type='button'
-																		onClick={() => {
-																			push(emptyProduct);
-																		}}
-																		className='inline-flex items-center gap-3 btn text-black-eerie'>
-																		<FontAwesomeIcon
-																			className='w-5 h-auto cursor-pointer'
-																			icon={faPlus}
-																		/>
-																		<span>
-																			Add New Product
-																		</span>
-																	</button>
-																</div>
-																{userProduct?.products?.length >
-																	0 && (
-																	<Link href={"/"}>
-																		<span className='text-md text-gray-400 italic'>
-																			go to next →{" "}
-																			<span className='text-gray-500'>
-																				market potential
-																			</span>
-																		</span>
-																	</Link>
-																)}
-															</div>
-														</div>
-													</div>
-												);
-											}}
-										</FieldArray>
-										<FormikContextChild
-											dispatch={() => {
-												setChartProducts(
-													cloneDeep(values.products)
-												);
-											}}
-										/>
-									</Form>
-								);
-							}}
-						</Formik>
+						</div> */}
 					</div>
 				</div>
 			</div>
+
+			{/* ideas modal */}
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal()}
+			/>
 
 			{/* video modal */}
 			<Modal
 				config={{
 					isShown: isVideoModalOn,
-					closeCallback: toggleVideoModal,
+					closeCallback: () => toggleVideoModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
@@ -358,7 +116,7 @@ const Products = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={toggleVideoModal}>
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>
@@ -368,12 +126,12 @@ const Products = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditVideoModal,
+					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<SharedVideoForm
-					toggleEditVideoModal={toggleEditVideoModal}
+					toggleEditVideoModal={() => toggleEditVideoModal(false)}
 					videoPropName={videoPropNamesEnum.products}
 					videoLabel='Products Video'
 				/>

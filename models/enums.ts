@@ -42,3 +42,16 @@ export enum videoPropNamesEnum {
   stepUpStepDownModel = "stepUpStepDownModel",
   roadMap = "roadMap",
 }
+
+export enum navbarNodesEnum {
+  visualizeSuccess = "Visualize Success",
+  pioneerMigratorSettler = "Pioneer Migrator Settler",
+  marketPotential = "Market Potential",
+  redOceanCanvas = "Red Ocean Canvas",
+  disruption = "Disruption",
+  voiceOfCustomers = "Voice of Customers",
+  blueOcean = "Blue ocean",
+  nonCustomers = "Non customers",
+  stepUpStepDownModel = "Non customers",
+  roadMap = "Road map",
+}

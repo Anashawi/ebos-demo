@@ -102,7 +102,10 @@ const Factors = () => {
 
 	return (
 		<>
-			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal()}
+			/>
 
 			<div className='factors-gradient bg-white'>
 				<div className='min-h-screen px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
@@ -116,7 +119,7 @@ const Factors = () => {
 							</div>
 							<div className='flex'>
 								<div className='w-full mb-5 flex gap-12 items-center justify-between pr-12'>
-									<h3 className='w-1/2 text-[2.8rem] text-yellow-green'>
+									<h3 className='w-1/2 text-[2.8rem] text-secondary-300'>
 										Red Ocean Canvas
 									</h3>
 									<div className='w-1/2 pl-10 py-5 mx-auto'>
@@ -128,7 +131,7 @@ const Factors = () => {
 											{(session?.user as any)?.role === "admin" && (
 												<button
 													className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-													onClick={toggleEditVideoModal}>
+													onClick={() => toggleEditVideoModal(true)}>
 													<span>Edit video Url</span>
 													<FontAwesomeIcon
 														className='w-7'
@@ -138,7 +141,7 @@ const Factors = () => {
 											)}
 											<button
 												className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-												onClick={toggleVideoModal}>
+												onClick={() => toggleVideoModal(true)}>
 												<span>Watch Video</span>
 												<FontAwesomeIcon
 													className='w-7'
@@ -289,7 +292,7 @@ const Factors = () => {
 			<Modal
 				config={{
 					isShown: isVideoModalOn,
-					closeCallback: toggleVideoModal,
+					closeCallback: () => toggleVideoModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
@@ -297,7 +300,7 @@ const Factors = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={toggleVideoModal}>
+						onClick={() => toggleVideoModal(true)}>
 						close
 					</button>
 				</div>
@@ -307,12 +310,12 @@ const Factors = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditVideoModal,
+					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<SharedVideoForm
-					toggleEditVideoModal={toggleEditVideoModal}
+					toggleEditVideoModal={() => toggleEditVideoModal(false)}
 					videoPropName={videoPropNamesEnum.redOcean}
 					videoLabel='Red Ocean Video'
 				/>
