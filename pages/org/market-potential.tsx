@@ -42,7 +42,7 @@ const Competitors = () => {
 							<div className='left-content'>
 								<MarketPotentialContent
 									userProduct={userProduct}
-									distpatchUserProduct={(userProduct) => {
+									dispatchUserProduct={(userProduct) => {
 										setUserProduct(userProduct ?? emptyUserProduct);
 									}}
 								/>

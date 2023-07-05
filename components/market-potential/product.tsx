@@ -1,5 +1,4 @@
 import {
-	faCirclePlus,
 	faPlus,
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";

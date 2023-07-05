@@ -1,11 +1,6 @@
-import {
-	faEyeSlash,
-	faTrash,
-	faCirclePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import Chart from "react-google-charts";
 import { NextPage } from "next";
 import { useMemo } from "react";
 import {
@@ -22,8 +17,6 @@ interface Props {
 }
 
 const FactorsProduct: NextPage<Props> = ({ product, index }) => {
-	const [chart] = useFactorsChart(product);
-
 	const emptyFactor = useMemo(() => {
 		return {
 			name: "",
@@ -37,8 +30,8 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 	}, []);
 
 	return (
-		<div className='flex justify-between text-lg'>
-			<div className='md:w-1/2 pr-12'>
+		<>
+			<div>
 				<div key={index} className='border p-5'>
 					<div className='flex justify-between mb-10'>
 						<h2 className='text-xl font-normal'>{product.name}</h2>
@@ -70,54 +63,56 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 													</ErrorMessage>
 												</div>
 												<div className='flex-1 flex gap-5'>
-													{product.competitors?.filter(comp => !comp.isUntapped).map(
-														(
-															comp: ICompetitor,
-															compIndex: number
-														) => (
-															<div
-																key={compIndex}
-																className='flex-1 flex flex-col min-w-[140px]'>
-																<label className='block max-w-[90%] text-ellipsis overflow-hidden break-keep'>
-																	<span>{comp.name}</span>
-																</label>
-																<Field
-																	as='select'
-																	placeholder={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
-																	className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
-																	name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
-																	<option
-																		className='text-lg'
-																		value={1}>
-																		Poor
-																	</option>
-																	<option
-																		className='text-lg'
-																		value={2}>
-																		Moderate
-																	</option>
-																	<option
-																		className='text-lg'
-																		value={3}>
-																		Good
-																	</option>
-																	<option
-																		className='text-lg'
-																		value={4}>
-																		Excellent
-																	</option>
-																</Field>
-																<ErrorMessage
-																	name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}>
-																	{(msg) => (
-																		<div className='w-full text-lg text-rose-500'>
-																			{msg}
-																		</div>
-																	)}
-																</ErrorMessage>
-															</div>
-														)
-													)}
+													{product.competitors
+														?.filter((comp) => !comp.isUntapped)
+														.map(
+															(
+																comp: ICompetitor,
+																compIndex: number
+															) => (
+																<div
+																	key={compIndex}
+																	className='flex-1 flex flex-col min-w-[140px]'>
+																	<label className='block max-w-[90%] text-ellipsis overflow-hidden break-keep'>
+																		<span>{comp.name}</span>
+																	</label>
+																	<Field
+																		as='select'
+																		placeholder={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
+																		className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
+																		name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
+																		<option
+																			className='text-lg'
+																			value={1}>
+																			Poor
+																		</option>
+																		<option
+																			className='text-lg'
+																			value={2}>
+																			Moderate
+																		</option>
+																		<option
+																			className='text-lg'
+																			value={3}>
+																			Good
+																		</option>
+																		<option
+																			className='text-lg'
+																			value={4}>
+																			Excellent
+																		</option>
+																	</Field>
+																	<ErrorMessage
+																		name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}>
+																		{(msg) => (
+																			<div className='w-full text-lg text-rose-500'>
+																				{msg}
+																			</div>
+																		)}
+																	</ErrorMessage>
+																</div>
+															)
+														)}
 												</div>
 												<FontAwesomeIcon
 													icon={faTrash}
@@ -148,7 +143,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 					</FieldArray>
 				</div>
 			</div>
-			<div className='flex flex-col justify-between gap-12 md:w-1/2 px-10'>
+			<div className='flex flex-col justify-between gap-12 px-10'>
 				{!product.competitors?.length && (
 					<div className='flex flex-col gap-10 w-full h-full items-center'>
 						<p className='text-xl p-10 text-center bg-rose-50 text-rose-500'>
@@ -161,9 +156,8 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 						</a>
 					</div>
 				)}
-				{!!product.competitors?.length && <Chart {...chart} legendToggle />}
 			</div>
-		</div>
+		</>
 	);
 };
 
