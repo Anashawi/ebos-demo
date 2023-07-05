@@ -1,5 +1,5 @@
 import { FieldArray, Form, Formik } from "formik";
-import Product from "../../components/products/product";
+import Product from "./product";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -8,10 +8,10 @@ import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
 import { IUserProduct } from "../../models/user-product";
 import { IFuture, IProduct } from "../../models/types";
-import Spinner from "../../components/common/spinner";
+import Spinner from "../common/spinner";
 import { productPagesEnum } from "../../models/enums";
 import { object, array, string, number } from "yup";
-import FormikContextChild from "../../components/products/formik-context-child";
+import FormikContextChild from "./formik-context-child";
 import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
 

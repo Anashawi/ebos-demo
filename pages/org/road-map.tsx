@@ -19,8 +19,8 @@ import Header from "../../components/common/header";
 import UserInfoHeader from "../../components/common/user-info-header";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/videos/shared-video-form";
-import Video from "../../components/videos/video";
+import SharedVideoForm from "../../components/disruption/shared-video-form";
+import Video from "../../components/disruption/video";
 import { videoPropNamesEnum } from "../../models/enums";
 
 const RoadMap = () => {

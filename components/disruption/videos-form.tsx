@@ -78,12 +78,14 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 			<h1 className='text-3xl text-gray-800 mb-5'>Edit Video Urls</h1>
 			<form className='grow overflow-auto pt-10 flex gap-5 flex-wrap'>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-2xl text-gray-600'>Scale</h2>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<h2 className='mb-2 text-3xl text-dark-400 font-semibold'>
+						Scale
+					</h2>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Staff on Demand</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("staffOnDemand")}
 						/>
@@ -94,11 +96,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Community and Crowd
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("communityAndCrowd")}
 						/>
@@ -109,11 +111,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Algorithms</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("algorithms")}
 						/>
@@ -123,11 +125,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Leveraged Assets</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("leveragedAssets")}
 						/>
@@ -138,11 +140,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Engagement</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("Engagement")}
 						/>
@@ -154,12 +156,14 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 					</li>
 				</ul>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-2xl text-gray-600'>Ideas</h2>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<h2 className='mb-2 text-3xl text-dark-400 font-semibold'>
+						Ideas
+					</h2>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Interface</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("interface")}
 						/>
@@ -169,11 +173,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Dashboard</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("dashboard")}
 						/>
@@ -183,11 +187,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Experimentation</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("experimentation")}
 						/>
@@ -198,11 +202,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Autonomy</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("autonomy")}
 						/>
@@ -212,11 +216,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						<label>Social Platforms</label>
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("socialPlatforms")}
 						/>
@@ -229,14 +233,14 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 					</li>
 				</ul>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-2xl text-gray-600'>
+					<h2 className='mb-2 text-3xl text-dark-400 font-semibold'>
 						7 Practical & Quick
 					</h2>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Eco Systems
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("ecoSystems")}
 						/>
@@ -246,11 +250,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Info is Power
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("infoIsPower")}
 						/>
@@ -260,11 +264,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						OTCR
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("OTCR")}
 						/>
@@ -274,11 +278,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Value Destruction
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("valueDestruction")}
 						/>
@@ -289,11 +293,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Customer Journey
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("customerJourney")}
 						/>
@@ -304,11 +308,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Digital Platforms
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("digitalPlatforms")}
 						/>
@@ -319,11 +323,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 							</div>
 						) : null}
 					</li>
-					<li className='flex gap-2 flex-col p-3 relative bg-gray-100 text-gray-800 text-lg'>
+					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
 						Building Capacity
 						<input
 							type='text'
-							className='w-full comp-name p-3 outline-none caret-dark-blue border-none text-lg'
+							className='light-input'
 							required
 							{...formik.getFieldProps("buildingCapacity")}
 						/>

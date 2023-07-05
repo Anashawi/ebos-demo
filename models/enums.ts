@@ -55,3 +55,7 @@ export enum navbarNodesEnum {
   stepUpStepDownModel = "Non customers",
   roadMap = "Road map",
 }
+
+export enum takeawayTypeEnums {
+  disruption = 1,
+}

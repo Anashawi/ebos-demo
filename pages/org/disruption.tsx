@@ -1,22 +1,45 @@
 import IdeasModal from "../../components/app/ideas-modal";
-import useModalToggler from "../../hooks/use-modal-toggler";
-import { useState } from "react";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/disruption/shared-video-form";
+import useModalToggler from "../../hooks/use-modal-toggler";
+import { useMemo, useState } from "react";
+import VideosForm from "../../components/disruption/videos-form";
 import Video from "../../components/disruption/video";
+import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import VerticalNavbar from "../../components/common/vertical-navbar";
 import Navbar from "../../components/common/navbar";
-import RedOceanContent from "../../components/red-ocean/content";
-import RedOceanProductChart from "../../components/red-ocean/product-chart";
-import { IProduct } from "../../models/types";
+import DisruptionContent from "../../components/disruption/content";
+import { IVideos } from "../../models/videos";
 
-const RedOcean = () => {
+const Disruption = () => {
+	const emptyVideos: IVideos = useMemo(() => {
+		return {
+			id: "",
+			staffOnDemand: "",
+			communityAndCrowd: "",
+			algorithms: "",
+			leveragedAssets: "",
+			Engagement: "",
+			interface: "",
+			dashboard: "",
+			experimentation: "",
+			socialPlatforms: "",
+			ecoSystems: "",
+			autonomy: "",
+			infoIsPower: "",
+			OTCR: "",
+			valueDestruction: "",
+			customerJourney: "",
+			digitalPlatforms: "",
+			buildingCapacity: "",
+		} as IVideos;
+	}, []);
+
+	const [selectedVideoPropName, setSelectedVideoPropName] =
+		useState<videoPropNamesEnum>(videoPropNamesEnum.goalsVideo);
+	const [videos, setVideos] = useState<IVideos>(emptyVideos);
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
-
-	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+	const [isEditUrlsModalOn, toggleEditUrlsModal] = useModalToggler();
 
 	return (
 		<>
@@ -26,13 +49,15 @@ const RedOcean = () => {
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.redOceanCanvas} />
+						<Navbar selectedNode={navbarNodesEnum.disruption} />
 						<div className='content-container'>
 							<div className='left-content'>
-								<RedOceanContent
-									dispatchProducts={(products) => {
-										setChartProducts(products);
-									}}
+								<DisruptionContent
+									videos={videos}
+									dispatchVideos={setVideos}
+									setSelectedVideoPropName={setSelectedVideoPropName}
+									toggleEditUrlsModal={toggleEditUrlsModal}
+									toggleVideoModal={toggleVideoModal}
 								/>
 							</div>
 							<div className='right-content'>
@@ -56,12 +81,6 @@ const RedOcean = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!chartProducts?.length &&
-									chartProducts.map((product, index) => (
-										<div key={index} className='h-[300px]'>
-											<RedOceanProductChart product={product} />
-										</div>
-									))}
 							</div>
 						</div>
 					</div>
@@ -82,32 +101,31 @@ const RedOcean = () => {
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
-				<Video currVideoPropName={videoPropNamesEnum.redOcean} />
+				<Video currVideoPropName={selectedVideoPropName} />
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={() => toggleVideoModal(true)}>
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>
 			</Modal>
 
-			{/* video url form modal */}
+			{/* video urls form modal */}
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: () => toggleEditVideoModal(false),
+					closeCallback: () => toggleEditUrlsModal(false),
 					className:
-						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
+						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[750px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
-				<SharedVideoForm
-					toggleEditVideoModal={() => toggleEditVideoModal(false)}
-					videoPropName={videoPropNamesEnum.redOcean}
-					videoLabel='Red Ocean Video'
+				<VideosForm
+					videos={videos}
+					toggleEditUrlsModal={() => toggleEditUrlsModal(false)}
 				/>
 			</Modal>
 		</>
 	);
 };
 
-export default RedOcean;
+export default Disruption;

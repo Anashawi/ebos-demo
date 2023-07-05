@@ -18,8 +18,8 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
 import Link from "next/link";
 import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/videos/shared-video-form";
-import Video from "../../components/videos/video";
+import SharedVideoForm from "../../components/disruption/shared-video-form";
+import Video from "../../components/disruption/video";
 import { videoPropNamesEnum } from "../../models/enums";
 
 const NonCustomers = () => {

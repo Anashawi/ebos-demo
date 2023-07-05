@@ -196,6 +196,10 @@ input[type="text"]:focus:not("no-border") {
     @apply relative flex flex-col w-full pointer-events-auto bg-transparent shadow-none outline-none text-white max-h-[calc(100vh_-_1.5rem_*_2)] bg-clip-padding;
   }
   
+  .pill-primary-300 {
+    @apply flex gap-5 justify-between items-center p-5 relative bg-primary-300 text-white text-lg rounded-full;
+  }
+
   .light-input {
     @apply px-7 py-4 bg-primary-100 rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-[#97acc8];
   }

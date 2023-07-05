@@ -1,11 +1,11 @@
 import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
 import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/videos/shared-video-form";
+import SharedVideoForm from "../../components/disruption/shared-video-form";
 import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
-import Video from "../../components/videos/video";
+import Video from "../../components/disruption/video";
 import GoalsContent from "../../components/goals/goals-content";
 
 const Goals = () => {
@@ -15,44 +15,18 @@ const Goals = () => {
 
 	return (
 		<>
-			<IdeasModal
-				isOpen={isIdeasModalOpen}
-				toggle={() => toggleIdeasModal(false)}
-			/>
-
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						{/* <UserInfoHeader className='w-1/2'></UserInfoHeader> */}
-						{/* <Header
-								className='w-1/2'
-								toggleIdeasModal={toggleIdeasModal}></Header> */}
 						<Navbar selectedNode={navbarNodesEnum.visualizeSuccess} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<GoalsContent />
 							</div>
 							<div className='right-content'>
-								{/* <div className='flex justify-start items-center w-full gap-4 pb-10 mx-auto'>
-									<ConsultantReview
-										pageTitle={
-											"Visualize Success"
-										}></ConsultantReview>
-									{(session?.user as any)?.role === "admin" && (
-										<button
-											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={() => toggleEditVideoModal(true)}>
-											<span>Edit video Url</span>
-											<FontAwesomeIcon
-												className='w-7'
-												icon={faEdit}
-											/>
-										</button>
-									)}
-								</div> */}
 								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
 									<button
 										type='button'
@@ -79,6 +53,12 @@ const Goals = () => {
 				</div>
 			</div>
 
+			{/* ideas modal */}
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal(false)}
+			/>
+
 			{/* video url form modal */}
 			<Modal
 				config={{
@@ -93,6 +73,7 @@ const Goals = () => {
 					videoLabel='Goals Video'
 				/>
 			</Modal>
+
 			{/* video modal */}
 			<Modal
 				config={{

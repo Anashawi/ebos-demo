@@ -18,8 +18,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "../../components/common/spinner";
 import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/videos/shared-video-form";
-import Video from "../../components/videos/video";
+import SharedVideoForm from "../../components/disruption/shared-video-form";
+import Video from "../../components/disruption/video";
 import { videoPropNamesEnum } from "../../models/enums";
 
 const Analysis = () => {
