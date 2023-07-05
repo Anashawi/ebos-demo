@@ -1,4 +1,4 @@
-import { faTrash, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import { NextPage } from "next";
@@ -9,14 +9,13 @@ import {
 	IFactor,
 	IProduct,
 } from "../../models/types";
-import useFactorsChart from "../../hooks/use-factors-chart";
 
 interface Props {
 	product: IProduct;
 	index: number;
 }
 
-const FactorsProduct: NextPage<Props> = ({ product, index }) => {
+const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 	const emptyFactor = useMemo(() => {
 		return {
 			name: "",
@@ -32,14 +31,14 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 	return (
 		<>
 			<div>
-				<div key={index} className='border p-5'>
+				<div key={index} className='p-5 bg-dark-50 rounded-2xl'>
 					<div className='flex justify-between mb-10'>
-						<h2 className='text-xl font-normal'>{product.name}</h2>
+						<h2 className='text-2xl text-dark-400'>{product.name}</h2>
 					</div>
 					<FieldArray name={`products.${index}.factors`}>
 						{({ remove, push }) => (
 							<>
-								<ul className='flex flex-col gap-5 mb-10 pr-5 bg-white h-[350px] overflow-y-auto'>
+								<ul className='flex flex-col gap-5 mb-10 pr-5 pb-5 max-w-full overflow-auto'>
 									{!!product.factors?.length &&
 										product.factors.map((factor, factorIndex) => (
 											<li
@@ -50,7 +49,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 													<Field
 														type='text'
 														placeholder='name'
-														className='w-[140px] text-lg p-3 bg-gray-100 outline-none caret-dark-blue border-none'
+														className='light-input w-[140px]'
 														name={`products.${index}.factors.${factorIndex}.name`}
 													/>
 													<ErrorMessage
@@ -79,7 +78,7 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 																	<Field
 																		as='select'
 																		placeholder={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
-																		className='grow p-3 bg-gray-100 outline-none caret-dark-blue border-none text-lg'
+																		className='light-input'
 																		name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
 																		<option
 																			className='text-lg'
@@ -119,22 +118,22 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 													onClick={() => {
 														remove(factorIndex);
 													}}
-													className='self-center w-[1.2rem] h-auto cursor-pointer text-gray-200 hover:text-rose-500'
+													className='self-center w-[1.2rem] h-auto cursor-pointer text-gray-200 hover:text-rose-500 transition duration-200'
 												/>
 											</li>
 										))}
-									<div className='flex justify-center'>
+									<div className='flex mt-5'>
 										<button
 											type='button'
 											onClick={() => {
 												push(emptyFactor);
 											}}
-											className='inline-flex items-center gap-2 text-lg p-3 mb-7 text-black-eerie hover:text-gray-600'>
+											className='btn-primary-light px-10'>
 											<FontAwesomeIcon
-												className='w-5 h-auto cursor-pointer text-black-eerie hover:text-gray-600'
-												icon={faCirclePlus}
+												className='w-3 h-auto cursor-pointer hover:text-gray-600'
+												icon={faPlus}
 											/>
-											Add more factors
+											Add More Factors
 										</button>
 									</div>
 								</ul>
@@ -161,4 +160,4 @@ const FactorsProduct: NextPage<Props> = ({ product, index }) => {
 	);
 };
 
-export default FactorsProduct;
+export default RedOceanProduct;

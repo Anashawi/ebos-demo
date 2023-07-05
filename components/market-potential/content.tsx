@@ -1,5 +1,5 @@
 import { FieldArray, Form, Formik } from "formik";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import CompetitorsProduct from "./product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
@@ -7,7 +7,7 @@ import { IUserProduct } from "../../models/user-product";
 import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
 import Spinner from "../common/spinner";
-import { ICompetitor } from "../../models/types";
+import { ICompetitor, IProduct } from "../../models/types";
 import { object, array, string, number } from "yup";
 import { cloneDeep } from "lodash";
 import ZeroProductsWarning from "../common/zero-products-warning";
@@ -15,19 +15,22 @@ import FormikContextChild from "../products/formik-context-child";
 import { useRouter } from "next/router";
 
 interface Props {
-	userProduct: IUserProduct;
-	dispatchUserProduct: (userProduct?: IUserProduct) => void;
+	dispatchProducts: (products: IProduct[]) => void;
 }
 
-const MarketPotentialContent = ({
-	userProduct,
-	dispatchUserProduct,
-}: Props) => {
+const MarketPotentialContent = ({ dispatchProducts }: Props) => {
+	const { data: session }: any = useSession();
+
 	const router = useRouter();
 
-	let dbProduct: IUserProduct | undefined;
+	const emptyUserProduct = {
+		id: "",
+		userId: session?.user?.id,
+		products: [],
+	} as IUserProduct;
 
-	const { data: session }: any = useSession();
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
 
 	const queryClient = useQueryClient();
 
@@ -51,11 +54,10 @@ const MarketPotentialContent = ({
 				];
 			}
 		});
-		dispatchUserProduct(data);
-	}, [data]);
-
-	dbProduct = useMemo(() => {
-		return cloneDeep(data);
+		if (data) {
+			setUserProduct(data);
+		}
+		dispatchProducts(data?.products || []);
 	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
@@ -220,10 +222,8 @@ const MarketPotentialContent = ({
 							</FieldArray>
 
 							<FormikContextChild
-								dispatch={() => {
-									dispatchUserProduct(
-										cloneDeep({ ...userProduct, ...values })
-									);
+								dispatch={(values) => {
+									dispatchProducts(cloneDeep(values.products));
 								}}
 							/>
 						</Form>

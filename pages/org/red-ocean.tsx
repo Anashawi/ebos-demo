@@ -1,9 +1,7 @@
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
-import { IUserProduct } from "../../models/user-product";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/videos/shared-video-form";
 import Video from "../../components/videos/video";
@@ -11,24 +9,14 @@ import VerticalNavbar from "../../components/common/vertical-navbar";
 import Navbar from "../../components/common/navbar";
 import RedOceanContent from "../../components/red-ocean/content";
 import RedOceanProductChart from "../../components/red-ocean/product-chart";
+import { IProduct } from "../../models/types";
 
-const Factors = () => {
-	const { data: session }: any = useSession();
-
-	const emptyUserProduct = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			products: [],
-		} as IUserProduct;
-	}, []);
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
-
+const RedOcean = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+
+	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
 	return (
 		<>
@@ -38,13 +26,12 @@ const Factors = () => {
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.visualizeSuccess} />
+						<Navbar selectedNode={navbarNodesEnum.redOceanCanvas} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<RedOceanContent
-									userProduct={userProduct}
-									dispatchUserProduct={(userProduct) => {
-										setUserProduct(userProduct ?? emptyUserProduct);
+									dispatchProducts={(products) => {
+										setChartProducts(products);
 									}}
 								/>
 							</div>
@@ -69,13 +56,11 @@ const Factors = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!userProduct.products?.length &&
-									userProduct.products.map((product) => (
-										<>
-											<div className='h-[300px]'>
-												<RedOceanProductChart product={product} />
-											</div>
-										</>
+								{!!chartProducts?.length &&
+									chartProducts.map((product, index) => (
+										<div key={index} className='h-[300px]'>
+											<RedOceanProductChart product={product} />
+										</div>
 									))}
 							</div>
 						</div>
@@ -125,4 +110,4 @@ const Factors = () => {
 	);
 };
 
-export default Factors;
+export default RedOcean;

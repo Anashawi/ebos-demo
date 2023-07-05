@@ -38,7 +38,7 @@ const useFactorsChart = (product: IProduct) => {
 				fontSize: 12, // 12, 18 whatever you want (don't specify px),
 			},
 			is3D: false,
-			backgroundColor: "#eee",
+			backgroundColor: "#f0f0f0",
 			colors: [
 				"#046D35",
 				"#E51061",

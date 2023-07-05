@@ -197,11 +197,11 @@ input[type="text"]:focus:not("no-border") {
   }
   
   .light-input {
-    @apply px-7 py-4 bg-[#f4f8fd] rounded-full border border-[#dce4f1] outline-none caret-dark-blue text-xl text-[#97acc8];
+    @apply px-7 py-4 bg-primary-100 rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-[#97acc8];
   }
 
   .dark-input {
-    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-[#dce4f1] outline-none caret-dark-blue text-xl text-gray-500;
+    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-gray-500;
   }
  
   .content-container {

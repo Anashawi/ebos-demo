@@ -37,10 +37,11 @@ const RedOceanProductChart = ({ product }: Props) => {
 		chart.options = {
 			title: `Red Ocean: ${product.name}`,
 			titleTextStyle: {
-				fontSize: 12, // 12, 18 whatever you want (don't specify px),
+				fontSize: 12, // 12, 18 whatever you want (don't specify px)
+				bold: true,
 			},
 			is3D: false,
-			backgroundColor: "#eee",
+			backgroundColor: "#f0f0f0",
 			colors: ["#046D35", "#E51061", "#0DB1D7", "orange", "#FFAA00", "gray"],
 			legend: {
 				position: "right",
@@ -63,6 +64,9 @@ const RedOceanProductChart = ({ product }: Props) => {
 					{ v: "4", f: "Excellent" },
 				] as any,
 				title: "Competency Level",
+				textStyle: {
+					fontSize: 12,
+				},
 			},
 			hAxis: {
 				title: "Competency Factors",

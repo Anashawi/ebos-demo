@@ -1,5 +1,4 @@
 import { FieldArray, Form, Formik } from "formik";
-import Link from "next/link";
 import Product from "../../components/products/product";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -246,7 +245,9 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 														<div
 															className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
 															onClick={() => {
-																router.push("../org/market-potential");
+																router.push(
+																	"../org/market-potential"
+																);
 															}}>
 															<span className='text-md text-white italic'>
 																go to next →{" "}
@@ -262,7 +263,7 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 							</FieldArray>
 
 							<FormikContextChild
-								dispatch={() => {
+								dispatch={(values) => {
 									dispatchChartProducts(cloneDeep(values.products));
 								}}
 							/>

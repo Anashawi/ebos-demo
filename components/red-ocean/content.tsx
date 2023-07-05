@@ -1,26 +1,38 @@
 import { FieldArray, Form, Formik } from "formik";
-import Link from "next/link";
-import { useEffect, useMemo } from "react";
-import FactorsProduct from "../../components/red-ocean/product";
+import { useEffect, useMemo, useState } from "react";
+import RedOceanProduct from "../../components/red-ocean/product";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
-import { IFactor } from "../../models/types";
+import { IFactor, IProduct } from "../../models/types";
 import { string, object, array } from "yup";
 import Spinner from "../../components/common/spinner";
 import ZeroProductsWarning from "../../components/common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
 import { cloneDeep } from "lodash";
+import { useRouter } from "next/router";
 
 interface Props {
-	userProduct: IUserProduct;
-	dispatchUserProduct: (userProduct?: IUserProduct) => void;
+	dispatchProducts: (products: IProduct[]) => void;
 }
 
-const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
+const RedOceanContent = ({ dispatchProducts }: Props) => {
 	const { data: session }: any = useSession();
+
+	const router = useRouter();
+
+	const emptyUserProduct = useMemo(() => {
+		return {
+			id: "",
+			userId: session?.user?.id,
+			products: [],
+		} as IUserProduct;
+	}, []);
+
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
 
 	const queryClient = useQueryClient();
 
@@ -49,7 +61,8 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 			}
 		});
 		if (data) {
-			dispatchUserProduct(data);
+			setUserProduct(data);
+			dispatchProducts(data.products);
 		}
 	}, [data]);
 
@@ -85,9 +98,8 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 	return (
 		<>
 			<div className='flex'>
-				<div className='w-full mb-5 flex gap-12 items-center justify-between pr-12'>
+				<div className='mb-5'>
 					<h3 className='title-header'>Red Ocean Canvas</h3>
-					<div className='w-1/2 pl-10 py-5 mx-auto'></div>
 				</div>
 			</div>
 			<Formik
@@ -150,7 +162,7 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 													values.products.map(
 														(product, productIndex) => (
 															<div key={productIndex}>
-																<FactorsProduct
+																<RedOceanProduct
 																	product={product}
 																	index={productIndex}
 																/>
@@ -158,7 +170,7 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 														)
 													)}
 											</div>
-											<div className='w-1/2 pr-12 mt-10'>
+											<div className='mt-10'>
 												<div className='h-10'>
 													{isUpdatingUserProduct && (
 														<Spinner
@@ -167,7 +179,7 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 														/>
 													)}
 												</div>
-												<div className='flex gap-5 flex-wrap justify-between items-center'>
+												<div className='flex gap-5 justify-between items-center'>
 													{!!userProduct.products?.length && (
 														<button
 															type='submit'
@@ -183,14 +195,18 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 														</button>
 													)}
 													{userProduct?.products?.length > 0 && (
-														<Link href={"/"}>
-															<span className='text-md text-gray-400 italic'>
+														<div
+															className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+															onClick={() => {
+																router.push("../org/videos");
+															}}>
+															<span className='text-md text-white italic'>
 																go to next →{" "}
-																<span className='text-gray-500'>
+																<span className='text-white'>
 																	Disruption
 																</span>
 															</span>
-														</Link>
+														</div>
 													)}
 												</div>
 											</div>
@@ -200,10 +216,8 @@ const RedOceanContent = ({ userProduct, dispatchUserProduct }: Props) => {
 							</FieldArray>
 
 							<FormikContextChild
-								dispatch={() => {
-									dispatchUserProduct(
-										cloneDeep({ ...userProduct, ...values })
-									);
+								dispatch={(values) => {
+									dispatchProducts(cloneDeep(values.products));
 								}}
 							/>
 						</Form>

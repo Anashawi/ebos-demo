@@ -1,7 +1,4 @@
-import {
-	faPlus,
-	faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import { useMemo } from "react";
@@ -23,7 +20,7 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 	}, []);
 
 	return (
-		<div className='flex justify-between text-lg bg-[#f8f9f9] rounded-2xl'>
+		<div className='flex justify-between text-lg bg-dark-50 rounded-2xl'>
 			<div className='w-full'>
 				<div key={index} className=''>
 					<FieldArray name={`products.${index}.competitors`}>

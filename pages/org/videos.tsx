@@ -247,7 +247,7 @@ const Disruption = () => {
 								{(session?.user as any)?.role === "admin" && (
 									<button
 										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={toggleEditUrlsModal}>
+										onClick={() => toggleEditUrlsModal(true)}>
 										<span>Edit video Urls</span>
 										<FontAwesomeIcon className='w-7' icon={faEdit} />
 									</button>
@@ -400,7 +400,7 @@ const Disruption = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={() => toggleVideoModal(true)}>
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>
@@ -410,13 +410,13 @@ const Disruption = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditUrlsModal,
+					closeCallback: () => toggleEditUrlsModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[750px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<VideosForm
 					videos={videos}
-					toggleEditUrlsModal={toggleEditUrlsModal}
+					toggleEditUrlsModal={() => toggleEditUrlsModal(false)}
 				/>
 			</Modal>
 		</>

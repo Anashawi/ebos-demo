@@ -26,7 +26,7 @@ const MarketPotentialProductChart = ({ product }: Props) => {
 				fontSize: 16, // 12, 18 whatever you want (don't specify px)
 			},
 			is3D: false,
-			backgroundColor: "#eee",
+			backgroundColor: "#f0f0f0",
 			colors: ["#25AC54", "#3F6BAA", "#FACC15", "orange", "gray"],
 			pieHole: 0.4,
 			legend: {

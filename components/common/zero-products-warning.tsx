@@ -6,7 +6,7 @@ interface Props {
 const ZeroProductsWarning = ({ className }: Props) => {
 	return (
 		<div
-			className={`flex flex-col gap-10 w-1/2 h-full pr-10 ${className ?? ""
+			className={`flex flex-col gap-10 h-full pr-10 ${className ?? ""
 				}`}>
 			<p className='text-2xl p-6 text-center bg-gray-50 rounded-md text-gray-500 shadow'>
 				<strong> Oops!</strong>	You still did not define your products yet...

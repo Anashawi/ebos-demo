@@ -12,22 +12,14 @@ import { useState } from "react";
 import { IUserProduct } from "../../models/user-product";
 import { useSession } from "next-auth/react";
 import MarketPotentialProductChart from "../../components/market-potential/product-chart";
+import { IProduct } from "../../models/types";
 
 const Competitors = () => {
-	const { data: session }: any = useSession();
-
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
-	const emptyUserProduct = {
-		id: "",
-		userId: session?.user?.id,
-		products: [],
-	} as IUserProduct;
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
+	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
 	return (
 		<>
@@ -41,9 +33,8 @@ const Competitors = () => {
 						<div className='content-container'>
 							<div className='left-content'>
 								<MarketPotentialContent
-									userProduct={userProduct}
-									dispatchUserProduct={(userProduct) => {
-										setUserProduct(userProduct ?? emptyUserProduct);
+									dispatchProducts={(products) => {
+										setChartProducts(products);
 									}}
 								/>
 							</div>
@@ -68,8 +59,8 @@ const Competitors = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!userProduct.products?.length &&
-									userProduct.products.map((product) => (
+								{!!chartProducts?.length &&
+									chartProducts.map((product) => (
 										<>
 											<div className='h-[300px]'>
 												<MarketPotentialProductChart
