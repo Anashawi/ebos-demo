@@ -26,11 +26,11 @@ export default function Home() {
 		},
 		{
 			text: "Disruption",
-			url: "org/videos",
+			url: "org/disruption",
 		},
 		{
 			text: "Voice of customers",
-			url: "org/customers",
+			url: "org/voice-of-customers",
 		},
 		{
 			text: "Blue ocean",

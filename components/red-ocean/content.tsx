@@ -198,7 +198,7 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 														<div
 															className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
 															onClick={() => {
-																router.push("../org/videos");
+																router.push("../org/disruption");
 															}}>
 															<span className='text-md text-white italic'>
 																go to next →{" "}

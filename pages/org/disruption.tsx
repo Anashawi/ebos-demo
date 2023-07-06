@@ -9,6 +9,8 @@ import VerticalNavbar from "../../components/common/vertical-navbar";
 import Navbar from "../../components/common/navbar";
 import DisruptionContent from "../../components/disruption/content";
 import { IVideos } from "../../models/videos";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 
 const Disruption = () => {
 	const emptyVideos: IVideos = useMemo(() => {
@@ -71,15 +73,124 @@ const Disruption = () => {
 										My Ideas
 									</button>
 								</div>
-								<div className='flex flex-col gap-1 p-1 bg-white rounded-xl'>
-									<button
-										type='button'
-										onClick={() => {
-											toggleVideoModal(true);
-										}}
-										className='w-full btn-primary-light rounded-xl'>
-										Resource Videos
-									</button>
+								<div className='p-10'>
+									<h4 className='text-3xl mb-6 text-dark-400 font-semibold'>
+										7 Practical &amp; Quick
+									</h4>
+									<ul className='flex flex-col gap-3 mb-5'>
+										<li className='pill-primary-300 text-xl'>
+											Eco Systems
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.ecoSystems
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+										<li className='pill-primary-300 text-xl'>
+											Info is Power
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.infoIsPower
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+										<li className='pill-primary-300 text-xl'>
+											OTCR
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.OTCR
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+										<li className='pill-primary-300 text-xl'>
+											Value Destruction
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.valueDestruction
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+										<li className='pill-primary-300 text-xl'>
+											Customer Journey
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.customerJourney
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+										<li className='pill-primary-300 text-xl'>
+											Digital Platforms
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.digitalPlatforms
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+										<li className='pill-primary-300 text-xl'>
+											Building Capacity
+											<div
+												className='cursor-pointer hover:scale-[115%] transition duration-100'
+												onClick={() => {
+													setSelectedVideoPropName(
+														videoPropNamesEnum.buildingCapacity
+													);
+													toggleVideoModal();
+												}}>
+												<FontAwesomeIcon
+													className='w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]'
+													icon={faCirclePlay}
+												/>
+											</div>
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>

@@ -35,13 +35,13 @@ const Navbar = ({ selectedNode }: Props) => {
 		{
 			title: navbarNodesEnum.disruption,
 			step: "Step Five",
-			url: "org/videos",
+			url: "org/disruption",
 			icon: "",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.voiceOfCustomers,
 			step: "Step Six",
-			url: "org/customers",
+			url: "org/voice-of-customers",
 			icon: "",
 		} as NavbarNode,
 		{

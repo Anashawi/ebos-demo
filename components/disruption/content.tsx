@@ -248,7 +248,7 @@ const DisruptionContent = ({
 					<div
 						className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
 						onClick={() => {
-							router.push("../org/customers");
+							router.push("../org/voice-of-customers");
 						}}>
 						<span className='text-md text-white italic'>
 							go to next →{" "}
