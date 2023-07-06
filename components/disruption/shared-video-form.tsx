@@ -103,7 +103,7 @@ const SharedVideoForm = ({
 			<div className='flex justify-end gap-3 pt-5'>
 				<button
 					className='btn-diff bg-gray-100 hover:bg-gray-300'
-					onClick={() => toggleEditVideoModal(true)}>
+					onClick={() => toggleEditVideoModal()}>
 					close
 				</button>
 				<button

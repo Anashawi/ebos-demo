@@ -4,7 +4,6 @@ import { ErrorMessage, Field, FieldArray } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useMemo, useState } from "react";
-import useConfirmDialog from "../../hooks/use-confirm-dialog";
 import ConfirmModal from "../common/confirm-dialog";
 import { ConfirmDialog, IFuture, IProduct } from "../../models/types";
 
