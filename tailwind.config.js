@@ -13,6 +13,15 @@ module.exports = {
       xl: "1200px",
     },
     extend: {
+      animation: {
+        'fade-in': 'fade-in 0.2s ease-in-out',
+      },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
       colors: {
         'primary-100': '#f0f5fb',
         'primary-200': '#ced9ea',
@@ -28,6 +37,7 @@ module.exports = {
         'dark-300': '#a4a4a4',
         'dark-400': '#565757',
         'dark': '#414141',
+        'navbar-icon': '#c0cce1',
         'aquamarine': '#1CE6A1',
         'gray-battleship': '#9999',
         'gray-gunmetal': '#263238',
@@ -40,6 +50,8 @@ module.exports = {
         'blue-ruddy': '#74a6ec',
         'blue-ncs': '#048bca',
         'ivory': '#f0f6e8',
+        'navbar-primary-title': '#557db4',
+        'navbar-gray': '#adbbd1',
       },
       opacity: {
         '15': '0.15',

@@ -10,20 +10,18 @@ import { useMemo, useState, useEffect } from "react";
 import { IUserCustomers } from "../../models/user-customers";
 import * as clientApi from "../../http-client/customers.client";
 import Spinner from "../../components/common/spinner";
-import ConsultantReview from "../../components/common/consultant-review";
-import UserInfoHeader from "../../components/common/user-info-header";
-import Header from "../../components/common/header";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
 import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
+import { useRouter } from "next/router";
 
 const VoiceOfCustomers = () => {
 	const { data: session }: any = useSession();
+
+	const router = useRouter();
 
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
@@ -138,7 +136,7 @@ const VoiceOfCustomers = () => {
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.disruption} />
+						<Navbar selectedNode={navbarNodesEnum.voiceOfCustomers} />
 						<div className='content-container'>
 							<div className='left-content'>
 								{/* <VoiceOfCustomersContent
@@ -330,14 +328,18 @@ const VoiceOfCustomers = () => {
 												Submit
 											</button>
 											{!!userCustomers.id && (
-												<Link href={"/"}>
-													<span className='text-md text-gray-400 italic'>
+												<div
+													className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+													onClick={() => {
+														router.push("../org/blue-ocean");
+													}}>
+													<span className='text-md text-white italic'>
 														go to next →{" "}
-														<span className='text-gray-500'>
-															Blue Ocean
+														<span className='text-white'>
+															Blue Ocean Canvas
 														</span>
 													</span>
-												</Link>
+												</div>
 											)}
 										</div>
 									</div>

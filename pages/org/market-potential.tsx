@@ -9,8 +9,6 @@ import Navbar from "../../components/common/navbar";
 import MarketPotentialContent from "../../components/market-potential/content";
 import * as _ from "lodash";
 import { useState } from "react";
-import { IUserProduct } from "../../models/user-product";
-import { useSession } from "next-auth/react";
 import MarketPotentialProductChart from "../../components/market-potential/product-chart";
 import { IProduct } from "../../models/types";
 
@@ -25,7 +23,7 @@ const Competitors = () => {
 		<>
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
-					<div className='py-10'>
+					<div className='py-12'>
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>

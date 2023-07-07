@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const VerticalNavbar = () => {
 	return (
-		<nav className='h-[85%] flex flex-col gap-10 justify-between items-center p-5 py-12 bg-white rounded-full'>
+		<nav className='h-[85%] w-[100px] flex flex-col gap-10 justify-between items-center p-5 py-12 bg-white rounded-full'>
 			<ul className='flex flex-col gap-10 items-center'>
 				<li>
 					<Link href='/'>

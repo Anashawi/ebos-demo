@@ -2,7 +2,8 @@ export interface NavbarNode {
    title: string;
    step: string;
    url: string;
-   icon: any;
+   iconPath: string;
+   selectedIconPath: string;
 }
 
 export type ConfirmDialog = {

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { navbarNodesEnum } from "../../models/enums";
 import { NavbarNode } from "../../models/types";
+import Image from "next/image";
 
 interface Props {
 	selectedNode: navbarNodesEnum;
@@ -12,109 +13,146 @@ const Navbar = ({ selectedNode }: Props) => {
 			title: navbarNodesEnum.visualizeSuccess,
 			step: "Step One",
 			url: "org/goals",
-			icon: "",
+			iconPath: "/1.svg",
+			selectedIconPath: "/selected-1.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.pioneerMigratorSettler,
 			step: "Step Two",
 			url: "org/products",
-			icon: "",
+			iconPath: "/2.svg",
+			selectedIconPath: "/selected-2.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.marketPotential,
 			step: "Step Three",
 			url: "org/market-potential",
-			icon: "",
+			iconPath: "/3.svg",
+			selectedIconPath: "/selected-3.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.redOceanCanvas,
 			step: "Step Four",
 			url: "org/red-ocean",
-			icon: "",
+			iconPath: "/4.svg",
+			selectedIconPath: "/selected-4.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.disruption,
 			step: "Step Five",
 			url: "org/disruption",
-			icon: "",
+			iconPath: "/5.svg",
+			selectedIconPath: "/selected-5.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.voiceOfCustomers,
 			step: "Step Six",
 			url: "org/voice-of-customers",
-			icon: "",
+			iconPath: "/6.svg",
+			selectedIconPath: "/selected-6.svg",
 		} as NavbarNode,
 		{
-			title: navbarNodesEnum.blueOcean,
+			title: navbarNodesEnum.blueOceanCanvas,
 			step: "Step Seven",
 			url: "org/blue-ocean",
-			icon: "",
+			iconPath: "/7.svg",
+			selectedIconPath: "/selected-7.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.nonCustomers,
 			step: "Step Eight",
 			url: "org/non-customers",
-			icon: "",
+			iconPath: "/8.svg",
+			selectedIconPath: "/selected-8.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.stepUpStepDownModel,
 			step: "Step Nine",
 			url: "org/step-up-step-down",
-			icon: "",
+			iconPath: "/9.svg",
+			selectedIconPath: "/selected-9.svg",
 		} as NavbarNode,
 		{
 			title: navbarNodesEnum.roadMap,
 			step: "Step Ten",
 			url: "org/road-map",
-			icon: "",
+			iconPath: "/10.svg",
+			selectedIconPath: "/selected-10.svg",
 		} as NavbarNode,
 	];
 
 	const router = useRouter();
 
+	const renderSelectedIcon = (node: NavbarNode) => {
+		return (
+			<li className='flex gap-5 animate-fade-in'>
+				<div className='flex gap-2 items-center'>
+					<div
+						className='cursor-pointer'
+						onClick={() => {
+							router.push("../" + node.url);
+						}}>
+						<Image
+							src={node.selectedIconPath}
+							alt='icon'
+							width={80}
+							height={80}
+						/>
+					</div>
+					<div>
+						<p className='leading-[1.57rem] text-[1.3rem] text-navbar-gray font-semibold'>
+							{node.step}
+						</p>
+						<p className='leading-[1.57rem] text-[1.3rem] font-semibold text-navbar-primary-title'>
+							{node.title}
+						</p>
+					</div>
+				</div>
+				<div className='max-w-[135px] self-center flex justify-center overflow-hidden'>
+					<div className='flex gap-2'>
+						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((dash, dashIndex) => (
+							<div
+								key={dashIndex}
+								className='w-[0.75rem] h-[1px] border border-primary-300'></div>
+						))}
+					</div>
+				</div>
+			</li>
+		);
+	};
+
+	const renderUnselectedIcon = (node: NavbarNode) => {
+		return (
+			<li
+				className='cursor-pointer'
+				onClick={() => {
+					router.push("../" + node.url);
+				}}>
+				<Image
+					src={node.iconPath}
+					alt='icon'
+					width={80}
+					height={80}
+				/>
+			</li>
+		);
+	};
+
 	return (
-		<nav className='flex-wrap w-full flex gap-5 mb-5'>
+		<nav className='w-full flex gap-1 mb-5'>
 			{nodes.map((node, index) => (
-				<div key={index}>
+				<>
 					{node.title === selectedNode && (
-						<li className='grow max-w-[450px] flex gap-5'>
-							<div className='flex gap-5 min-w-[200px]'>
-								<div
-									className='cursor-pointer'
-									onClick={() => {
-										router.push("../" + node.url);
-									}}>
-									{node.icon} icon
-								</div>
-								<div>
-									<p className='text-[1.2rem]'>{node.step}</p>
-									<p className='text-[1.2rem]'>{node.title}</p>
-								</div>
-							</div>
-							{/* <div className='w-[60%] h-[2px] self-center border-dashed border border-black'></div> */}
-							<div className='grow self-center flex gap-3 overflow-hidden'>
-								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
-									(dash, dashIndex) => (
-										<div
-											key={dashIndex}
-											className='w-[1rem] h-[1px] border border-gray-400 text-4xl'></div>
-									)
-								)}
-							</div>
-						</li>
+						<div className='grow flex items-center'>
+							{renderSelectedIcon(node)}
+						</div>
 					)}
 					{node.title !== selectedNode && (
-						<li className='min-w-[120px]'>
-							<div
-								className='cursor-pointer'
-								onClick={() => {
-									router.push("../" + node.url);
-								}}>
-								{node.icon} icon
-							</div>
-						</li>
+						<div className='grow flex items-center'>
+							{renderUnselectedIcon(node)}
+						</div>
 					)}
-				</div>
+				</>
 			))}
 		</nav>
 	);

@@ -50,7 +50,7 @@ export enum navbarNodesEnum {
   redOceanCanvas = "Red Ocean Canvas",
   disruption = "Disruption",
   voiceOfCustomers = "Voice of Customers",
-  blueOcean = "Blue ocean",
+  blueOceanCanvas = "Blue ocean",
   nonCustomers = "Non customers",
   stepUpStepDownModel = "Non customers",
   roadMap = "Road map",

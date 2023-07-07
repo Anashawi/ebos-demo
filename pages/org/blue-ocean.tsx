@@ -27,7 +27,7 @@ const BlueOcean = () => {
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.redOceanCanvas} />
+						<Navbar selectedNode={navbarNodesEnum.blueOceanCanvas} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<BlueOceanContent
