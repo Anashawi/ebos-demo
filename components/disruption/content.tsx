@@ -44,9 +44,9 @@ const DisruptionContent = ({
 		<>
 			<h3 className='title-header'>Disruption</h3>
 
-			<div className='flex gap-5 p-5 bg-[#fefdf1] rounded-full lg:w-[90%] mb-5'>
+			<div className='pill-yellow-50 p-5 mb-5'>
 				<span>icon</span>
-				<h3 className='text-2xl text-gray-400 font-normal'>
+				<h3 className='text-xl text-gray-400 font-normal'>
 					Watch help videos then update your ideas accordingly. Submit for
 					feedback.
 				</h3>

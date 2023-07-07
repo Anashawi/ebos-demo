@@ -165,9 +165,9 @@ const GoalsContent = () => {
 							Things you want to be celebrating:
 						</p>
 						<div className='flex flex-col gap-3'>
-							<div className='flex gap-5 p-5 bg-[#fefdf1] rounded-full lg:w-[90%]'>
+							<div className='pill-yellow-50 p-5'>
 								<span>icon</span>
-								<h3 className='text-2xl text-gray-400 font-normal'>
+								<h3 className='text-xl text-gray-400 font-normal'>
 									Visualize success on this date, What does it look
 									like...?
 								</h3>

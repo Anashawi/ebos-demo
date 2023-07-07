@@ -39,6 +39,7 @@ module.exports = {
         'dark': '#414141',
         'navbar-icon': '#c0cce1',
         'aquamarine': '#1CE6A1',
+        'light-input-text': '#97acc8',
         'gray-battleship': '#9999',
         'gray-gunmetal': '#263238',
         'black-eerie': '#202020',
