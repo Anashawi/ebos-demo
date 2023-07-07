@@ -83,7 +83,7 @@ const Navbar = ({ selectedNode }: Props) => {
 
 	const router = useRouter();
 
-	const renderSelectedIcon = (node: NavbarNode) => {
+	const renderSelectedIcon = (node: NavbarNode, isLastIcon: boolean) => {
 		return (
 			<li className='flex gap-5 animate-fade-in'>
 				<div className='flex gap-2 items-center'>
@@ -95,8 +95,8 @@ const Navbar = ({ selectedNode }: Props) => {
 						<Image
 							src={node.selectedIconPath}
 							alt='icon'
-							width={80}
-							height={80}
+							width={85}
+							height={85}
 						/>
 					</div>
 					<div>
@@ -113,7 +113,11 @@ const Navbar = ({ selectedNode }: Props) => {
 						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((dash, dashIndex) => (
 							<div
 								key={dashIndex}
-								className='w-[0.75rem] h-[1px] border border-primary-300'></div>
+								className={
+									isLastIcon
+										? "w-[0.75rem] h-[1px] border border-primary-300"
+										: "w-[0.75rem] h-0"
+								}></div>
 						))}
 					</div>
 				</div>
@@ -128,23 +132,18 @@ const Navbar = ({ selectedNode }: Props) => {
 				onClick={() => {
 					router.push("../" + node.url);
 				}}>
-				<Image
-					src={node.iconPath}
-					alt='icon'
-					width={80}
-					height={80}
-				/>
+				<Image src={node.iconPath} alt='icon' width={85} height={85} />
 			</li>
 		);
 	};
 
 	return (
-		<nav className='w-full flex gap-1 mb-5'>
+		<nav className='w-full flex gap-1 justify-between mb-5'>
 			{nodes.map((node, index) => (
 				<>
 					{node.title === selectedNode && (
 						<div className='grow flex items-center'>
-							{renderSelectedIcon(node)}
+							{renderSelectedIcon(node, index === nodes.length - 1)}
 						</div>
 					)}
 					{node.title !== selectedNode && (

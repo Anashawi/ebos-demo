@@ -52,7 +52,7 @@ export enum navbarNodesEnum {
   voiceOfCustomers = "Voice of Customers",
   blueOceanCanvas = "Blue ocean",
   nonCustomers = "Non customers",
-  stepUpStepDownModel = "Non customers",
+  stepUpStepDownModel = "Step Up Step Down Model",
   roadMap = "Road map",
 }
 

@@ -100,9 +100,7 @@ const GoalsContent = () => {
 
 	return (
 		<>
-			<h3 className='title-header'>
-				Goals
-			</h3>
+			<h3 className='title-header'>Goals</h3>
 			<Formik
 				initialValues={{
 					...userGoals,
@@ -192,21 +190,17 @@ const GoalsContent = () => {
 													</div>
 												)}
 												<div className='w-full flex gap-5 items-center'>
-													<div className='w-[69%]'>
-														<Field
-															type='text'
-															className='w-full light-input'
-															placeholder='Enter your goal here'
-															value={goalToBeAdded}
-															onChange={(
-																e: ChangeEvent<HTMLInputElement>
-															) => {
-																setGoalToBeAdded(
-																	e.target.value
-																);
-															}}
-														/>
-													</div>
+													<Field
+														type='text'
+														className='w-[69%] light-input'
+														placeholder='Enter your goal here'
+														value={goalToBeAdded}
+														onChange={(
+															e: ChangeEvent<HTMLInputElement>
+														) => {
+															setGoalToBeAdded(e.target.value);
+														}}
+													/>
 													<button
 														type='button'
 														onClick={() => {
@@ -216,14 +210,16 @@ const GoalsContent = () => {
 														disabled={!goalToBeAdded}
 														className={
 															!!goalToBeAdded
-																? "grow inline-flex justify-center items-center gap-3 bg-[#4e79b2] text-white px-10 py-4 hover:bg-[#4e79b2] text-xl rounded-full"
-																: "grow inline-flex justify-center items-center gap-3 bg-[#8cafdc] text-white px-10 py-4 hover:bg-[#8cafdc] text-xl rounded-full"
+																? "btn-primary"
+																: "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
 														}>
 														<FontAwesomeIcon
 															className='w-[0.8rem] h-auto cursor-pointer'
 															icon={faPlus}
 														/>
-														<span className='text-lg'>Add New Goal</span>
+														<span className='text-lg'>
+															Add New Goal
+														</span>
 													</button>
 												</div>
 												{!!values.goals?.length &&
