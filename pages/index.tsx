@@ -46,7 +46,7 @@ export default function Home() {
 		},
 		{
 			text: "Road map",
-			url: "org/road-map",
+			url: "org/roadmap",
 		},
 	];
 

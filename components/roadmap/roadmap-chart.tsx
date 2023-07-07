@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
-import { ReactGoogleChartProps } from "react-google-charts";
-import { IUserIdeas } from "../models/user-idea";
+import Chart, { ReactGoogleChartProps } from "react-google-charts";
+import { useState, useEffect } from "react";
+import { IUserIdeas } from "../../models/user-idea";
 
-const useRoadMapChart = (userIdeas: IUserIdeas) => {
+interface Props {
+	userIdeas: IUserIdeas;
+}
+
+const RoadmapChart = ({ userIdeas }: Props) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "Timeline",
 		width: "100%",
@@ -14,18 +18,13 @@ const useRoadMapChart = (userIdeas: IUserIdeas) => {
 		const rows =
 			userIdeas.ideas?.map((idea) => {
 				const startMonthDate = new Date(idea.startMonth);
-				const endMonthDate = new Date(idea.startMonth).setMonth(startMonthDate.getMonth() + +idea.durationInMonths)
-				return [
-					idea.name,
-					startMonthDate,
-					endMonthDate,
-				];
+				const endMonthDate = new Date(idea.startMonth).setMonth(
+					startMonthDate.getMonth() + +idea.durationInMonths
+				);
+				return [idea.name, startMonthDate, endMonthDate];
 			}) ?? [];
-		chart.data = [
-			["Idea", "Start Month", "End Month"],
-			...rows,
-		];
-		const dynamicHeight = ((userIdeas.ideas?.length + 1 ?? 0) * 44) + 3;
+		chart.data = [["Idea", "Start Month", "End Month"], ...rows];
+		const dynamicHeight = (userIdeas.ideas?.length + 1 ?? 0) * 44 + 3;
 		chart.options = {
 			title: "Ideas Timeline",
 			height: dynamicHeight,
@@ -54,7 +53,11 @@ const useRoadMapChart = (userIdeas: IUserIdeas) => {
 		}
 	}, [userIdeas]);
 
-	return [chart];
+	return (
+		<>
+			<Chart {...chart} legendToggle />
+		</>
+	);
 };
 
-export default useRoadMapChart;
+export default RoadmapChart;

@@ -75,7 +75,7 @@ const Navbar = ({ selectedNode }: Props) => {
 		{
 			title: navbarNodesEnum.roadMap,
 			step: "Step Ten",
-			url: "org/road-map",
+			url: "org/roadmap",
 			iconPath: "/10.svg",
 			selectedIconPath: "/selected-10.svg",
 		} as NavbarNode,
