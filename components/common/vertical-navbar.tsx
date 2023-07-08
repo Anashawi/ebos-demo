@@ -32,8 +32,8 @@ const VerticalNavbar = () => {
 						<Image
 							width='100'
 							height='100'
-							src='/dashboard.svg'
-							alt='Dashboard'
+							src='/settings.svg'
+							alt='Settings'
 							className='w-full h-auto'
 						/>
 					</Link>
@@ -43,8 +43,8 @@ const VerticalNavbar = () => {
 						<Image
 							width='100'
 							height='100'
-							src='/dashboard.svg'
-							alt='Dashboard'
+							src='/consultations.svg'
+							alt='Consultations'
 							className='w-full h-auto'
 						/>
 					</Link>
