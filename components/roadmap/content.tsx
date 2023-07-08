@@ -1,18 +1,9 @@
 import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Chart from "react-google-charts";
-import useModalToggler from "../../hooks/use-modal-toggler";
-import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/disruption/shared-video-form";
-import Video from "../../components/disruption/video";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useSession } from "next-auth/react";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/ideas.client";
-import Navbar from "../../components/common/navbar";
-import VerticalNavbar from "../../components/common/vertical-navbar";
-import RoadmapChart from "../../components/roadmap/roadmap-chart";
 import { IIdea } from "../../models/types";
 import { IUserIdeas } from "../../models/user-idea";
 import Spinner from "../common/spinner";
@@ -20,15 +11,15 @@ import Spinner from "../common/spinner";
 interface Props {
 	userIdeas: IUserIdeas;
 	dispatchUserIdeas: (userIdeas: IUserIdeas) => void;
-	dispatchIsLoading: (isLoading: boolean) => void;
 	todayDateStr: string;
+	isLoading: boolean;
 }
 
 const RoadMapContent = ({
 	userIdeas,
 	dispatchUserIdeas,
-	dispatchIsLoading,
 	todayDateStr,
+	isLoading,
 }: Props) => {
 	const { data: session }: any = useSession();
 
@@ -40,25 +31,6 @@ const RoadMapContent = ({
 			durationInMonths: 6,
 		} as IIdea;
 	}, []);
-
-	const { data, isLoading } = useQuery<IUserIdeas>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getOne,
-		refetchOnWindowFocus: false,
-	});
-
-	useEffect(() => {
-		dispatchIsLoading(isLoading);
-	}, [isLoading]);
-
-	useEffect(() => {
-		if (data) {
-			data.ideas.forEach((idea) => {
-				!idea.durationInMonths ? (idea.durationInMonths = 6) : null;
-			});
-			dispatchUserIdeas(data);
-		}
-	}, [data]);
 
 	const queryClient = useQueryClient();
 

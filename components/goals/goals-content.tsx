@@ -11,6 +11,7 @@ import { IVideos } from "../../models/videos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const GoalsContent = () => {
 	const [goalToBeAdded, setGoalToBeAdded] = useState("");
@@ -162,15 +163,22 @@ const GoalsContent = () => {
 						<p className='font-semibold text-[#4e79b2]'>
 							Things you want to be celebrating:
 						</p>
-						<div className='flex flex-col gap-3'>
-							<div className='pill-yellow-50 p-5'>
-								<span>icon</span>
+						<div className='flex flex-col gap-5'>
+							<div className='pill-yellow-50 p-3'>
+								<div className='w-[2.5rem] h-[2.5rem]'>
+									<Image
+										src='/bulb.svg'
+										alt='Bulb Icon'
+										width={0}
+										height={0}
+										className='w-full h-auto'
+									/>
+								</div>
 								<h3 className='text-xl text-gray-400 font-normal'>
 									Visualize success on this date, What does it look
 									like...?
 								</h3>
 							</div>
-
 							<Form>
 								<FieldArray name='goals'>
 									{({ remove, push, form }) => (

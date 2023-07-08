@@ -7,6 +7,7 @@ import { IUserCustomers } from "../../models/user-customers";
 import * as clientApi from "../../http-client/customers.client";
 import Spinner from "../../components/common/spinner";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const VoiceOfCustomersContent = () => {
 	const { data: session }: any = useSession();
@@ -114,8 +115,16 @@ const VoiceOfCustomersContent = () => {
 			)}
 			{!isLoading && (
 				<>
-					<div className='pill-yellow-50 p-5 lg:w-full mb-5'>
-						<span>icon</span>
+					<div className='pill-yellow-50 p-3 lg:w-full mb-5'>
+						<div className='w-[3rem] h-[3rem]'>
+									<Image
+										src='/bulb.svg'
+										alt='Bulb Icon'
+										width={0}
+										height={0}
+										className='w-full h-auto'
+									/>
+								</div>
 						<h3 className='text-xl text-gray-400 font-normal'>
 							what do your top customer categories want and how can you
 							fulfill their needs?

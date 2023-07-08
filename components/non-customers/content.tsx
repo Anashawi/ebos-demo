@@ -7,6 +7,7 @@ import Spinner from "../../components/common/spinner";
 import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const NonCustomersContent = () => {
 	const { data: session }: any = useSession();
@@ -116,8 +117,16 @@ const NonCustomersContent = () => {
 						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
 							Soon to be non-customers
 						</h6>
-						<div className='pill-yellow-50 p-5'>
-							<span>icon</span>
+						<div className='pill-yellow-50 p-3'>
+							<div className='w-[3rem] h-[3rem]'>
+									<Image
+										src='/bulb.svg'
+										alt='Bulb Icon'
+										width={0}
+										height={0}
+										className='w-full h-auto'
+									/>
+								</div>
 							<h3 className='text-xl text-gray-400 font-normal'>
 								Who are the customers most likely to be left out in this
 								transformation ?
@@ -204,8 +213,16 @@ const NonCustomersContent = () => {
 						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
 							Refusing customers
 						</h6>
-						<div className='pill-yellow-50 p-5'>
-							<span>icon</span>
+						<div className='pill-yellow-50 p-3'>
+							<div className='w-[3rem] h-[3rem]'>
+									<Image
+										src='/bulb.svg'
+										alt='Bulb Icon'
+										width={0}
+										height={0}
+										className='w-full h-auto'
+									/>
+								</div>
 							<h3 className='text-xl text-gray-400 font-normal'>
 								Who are the customers most likely to be refusing of this
 								transformation ?
@@ -292,8 +309,16 @@ const NonCustomersContent = () => {
 						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
 							Unwanted customers
 						</h6>
-						<div className='pill-yellow-50 p-5'>
-							<span>icon</span>
+						<div className='pill-yellow-50 p-3'>
+							<div className='w-[3rem] h-[3rem]'>
+									<Image
+										src='/bulb.svg'
+										alt='Bulb Icon'
+										width={0}
+										height={0}
+										className='w-full h-auto'
+									/>
+								</div>
 							<h3 className='text-xl text-gray-400 font-normal'>
 								Who are the customers you don&apos;t want in this
 								transformation ?

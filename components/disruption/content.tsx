@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { takeawayTypeEnums, videoPropNamesEnum } from "../../models/enums";
 import { useRouter } from "next/router";
 import Takeaways from "../common/takeaways";
+import Image from "next/image";
 
 interface Props {
 	videos: IVideos;
@@ -44,8 +45,16 @@ const DisruptionContent = ({
 		<>
 			<h3 className='title-header'>Disruption</h3>
 
-			<div className='pill-yellow-50 p-5 mb-5'>
-				<span>icon</span>
+			<div className='pill-yellow-50 p-3 mb-5'>
+				<div className='w-[3rem] h-[3rem]'>
+									<Image
+										src='/bulb.svg'
+										alt='Bulb Icon'
+										width={0}
+										height={0}
+										className='w-full h-auto'
+									/>
+								</div>
 				<h3 className='text-xl text-gray-400 font-normal'>
 					Watch help videos then update your ideas accordingly. Submit for
 					feedback.

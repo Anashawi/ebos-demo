@@ -5,13 +5,15 @@ import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
 import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import RoadMapContent from "../../components/roadmap/content";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IUserIdeas } from "../../models/user-idea";
 import { useSession } from "next-auth/react";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
 import RoadmapChart from "../../components/roadmap/roadmap-chart";
 import IdeasModal from "../../components/app/ideas-modal";
+import { useQuery } from "@tanstack/react-query";
+import * as clientApi from "../../http-client/ideas.client";
 
 const RoadMap = () => {
 	const { data: session }: any = useSession();
@@ -19,7 +21,6 @@ const RoadMap = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
-	const [isLoading, setIsLoading] = useState<boolean>();
 
 	const todayDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
 
@@ -30,6 +31,21 @@ const RoadMap = () => {
 		ideas: [],
 	} as IUserIdeas;
 	const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
+
+	const { data, isLoading } = useQuery<IUserIdeas>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getOne,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (data) {
+			data.ideas.forEach((idea) => {
+				!idea.durationInMonths ? (idea.durationInMonths = 6) : null;
+			});
+			setUserIdeas(data);
+		}
+	}, [data]);
 
 	return (
 		<>
@@ -45,8 +61,8 @@ const RoadMap = () => {
 								<RoadMapContent
 									userIdeas={userIdeas}
 									dispatchUserIdeas={setUserIdeas}
-									dispatchIsLoading={setIsLoading}
 									todayDateStr={todayDateStr}
+									isLoading={isLoading}
 								/>
 							</div>
 							<div className='right-content'>
