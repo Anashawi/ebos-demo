@@ -1,4 +1,3 @@
-import Chart from "react-google-charts";
 import Spinner from "../../components/common/spinner";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import Modal from "../../components/common/modal";
@@ -6,15 +5,13 @@ import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
 import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import RoadMapContent from "../../components/roadmap/content";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { IUserIdeas } from "../../models/user-idea";
-import { IIdea } from "../../models/types";
 import { useSession } from "next-auth/react";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import * as clientApi from "../../http-client/ideas.client";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
 import RoadmapChart from "../../components/roadmap/roadmap-chart";
+import IdeasModal from "../../components/app/ideas-modal";
 
 const RoadMap = () => {
 	const { data: session }: any = useSession();
@@ -22,6 +19,7 @@ const RoadMap = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+	const [isLoading, setIsLoading] = useState<boolean>();
 
 	const todayDateStr = new Date().toISOString().substring(0, 7); // to get the "yyyy-mm" format
 
@@ -31,56 +29,7 @@ const RoadMap = () => {
 		userId: session?.user?.id,
 		ideas: [],
 	} as IUserIdeas;
-
-	const emptyIdea: IIdea = useMemo(() => {
-		return {
-			uuid: "",
-			name: "",
-			startMonth: todayDateStr,
-			durationInMonths: 6,
-		} as IIdea;
-	}, []);
-
 	const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
-
-	const { data, isLoading } = useQuery<IUserIdeas>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getOne,
-		refetchOnWindowFocus: false,
-	});
-
-	useEffect(() => {
-		if (data) {
-			data.ideas.forEach((idea) => {
-				!idea.durationInMonths ? (idea.durationInMonths = 6) : null;
-			});
-			setUserIdeas(data);
-		}
-	}, [data]);
-
-	const queryClient = useQueryClient();
-
-	const { mutate: createUserIdeas, isLoading: isCreatingIdeas } = useMutation(
-		(userIdeas: IUserIdeas) => {
-			return clientApi.insertOne(userIdeas);
-		},
-		{
-			onSuccess: (updated) => {
-				queryClient.invalidateQueries([clientApi.Keys.All]);
-			},
-		}
-	);
-
-	const { mutate: updateUserIdeas, isLoading: isUpdatingIdeas } = useMutation(
-		(userIdeas: IUserIdeas) => {
-			return clientApi.updateOne(userIdeas);
-		},
-		{
-			onSuccess: (updated) => {
-				queryClient.invalidateQueries([clientApi.Keys.All]);
-			},
-		}
-	);
 
 	return (
 		<>
@@ -90,15 +39,14 @@ const RoadMap = () => {
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto gap-5'>
-						<Navbar selectedNode={navbarNodesEnum.visualizeSuccess} />
+						<Navbar selectedNode={navbarNodesEnum.roadMap} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<RoadMapContent
-									emptyIdea={emptyIdea}
 									userIdeas={userIdeas}
 									dispatchUserIdeas={setUserIdeas}
+									dispatchIsLoading={setIsLoading}
 									todayDateStr={todayDateStr}
-									isLoading={isLoading}
 								/>
 							</div>
 							<div className='right-content'>
@@ -135,41 +83,17 @@ const RoadMap = () => {
 								{!!userIdeas.ideas.length && !isLoading && (
 									<RoadmapChart userIdeas={userIdeas} />
 								)}
-								<div className='h-10 '>
-									{(isUpdatingIdeas || isCreatingIdeas) && (
-										<Spinner
-											className=''
-											message='Saving Ideas ...'
-										/>
-									)}
-								</div>
-								<button
-									type='button'
-									onClick={() => {
-										userIdeas.userId = session?.user?.id;
-										userIdeas.ideas?.map((idea) => {
-											if (!idea.uuid) {
-												idea.uuid = crypto.randomUUID();
-											}
-										});
-										if (userIdeas?.id) {
-											updateUserIdeas({
-												...userIdeas,
-											});
-										} else {
-											createUserIdeas({
-												...userIdeas,
-											});
-										}
-									}}
-									className='btn-rev'>
-									Save
-								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* ideas modal */}
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal()}
+			/>
 
 			{/* video modal */}
 			<Modal

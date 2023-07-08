@@ -1,28 +1,89 @@
-import { IUserIdeas } from "../../models/user-idea";
-import Spinner from "../../components/common/spinner";
-import {
-	faTimes,
-	faCirclePlus,
-	faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Chart from "react-google-charts";
+import useModalToggler from "../../hooks/use-modal-toggler";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/disruption/shared-video-form";
+import Video from "../../components/disruption/video";
+import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import * as clientApi from "../../http-client/ideas.client";
+import Navbar from "../../components/common/navbar";
+import VerticalNavbar from "../../components/common/vertical-navbar";
+import RoadmapChart from "../../components/roadmap/roadmap-chart";
 import { IIdea } from "../../models/types";
+import { IUserIdeas } from "../../models/user-idea";
+import Spinner from "../common/spinner";
 
 interface Props {
-	emptyIdea: IIdea;
-	dispatchUserIdeas: (userIdeas: IUserIdeas) => void;
 	userIdeas: IUserIdeas;
+	dispatchUserIdeas: (userIdeas: IUserIdeas) => void;
+	dispatchIsLoading: (isLoading: boolean) => void;
 	todayDateStr: string;
-	isLoading: boolean;
 }
 
 const RoadMapContent = ({
-	emptyIdea,
 	userIdeas,
 	dispatchUserIdeas,
+	dispatchIsLoading,
 	todayDateStr,
-	isLoading,
 }: Props) => {
+	const { data: session }: any = useSession();
+
+	const emptyIdea: IIdea = useMemo(() => {
+		return {
+			uuid: "",
+			name: "",
+			startMonth: todayDateStr,
+			durationInMonths: 6,
+		} as IIdea;
+	}, []);
+
+	const { data, isLoading } = useQuery<IUserIdeas>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getOne,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		dispatchIsLoading(isLoading);
+	}, [isLoading]);
+
+	useEffect(() => {
+		if (data) {
+			data.ideas.forEach((idea) => {
+				!idea.durationInMonths ? (idea.durationInMonths = 6) : null;
+			});
+			dispatchUserIdeas(data);
+		}
+	}, [data]);
+
+	const queryClient = useQueryClient();
+
+	const { mutate: createUserIdeas, isLoading: isCreatingIdeas } = useMutation(
+		(userIdeas: IUserIdeas) => {
+			return clientApi.insertOne(userIdeas);
+		},
+		{
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([clientApi.Keys.All]);
+			},
+		}
+	);
+
+	const { mutate: updateUserIdeas, isLoading: isUpdatingIdeas } = useMutation(
+		(userIdeas: IUserIdeas) => {
+			return clientApi.updateOne(userIdeas);
+		},
+		{
+			onSuccess: (updated) => {
+				queryClient.invalidateQueries([clientApi.Keys.All]);
+			},
+		}
+	);
+
 	const calcIdeaStartMonth = (idea: any) => {
 		if (
 			!idea.startMonth ||
@@ -153,6 +214,11 @@ const RoadMapContent = ({
 									</li>
 								))}
 						</ul>
+						<div className='h-10 '>
+							{(isUpdatingIdeas || isCreatingIdeas) && (
+								<Spinner className='' message='Saving Ideas ...' />
+							)}
+						</div>
 						<div className='flex justify-between gap-5 my-5'>
 							<button
 								type='button'
@@ -168,6 +234,28 @@ const RoadMapContent = ({
 									icon={faPlus}
 								/>
 								<span className='text-xl'>Add New Idea</span>
+							</button>
+							<button
+								type='button'
+								onClick={() => {
+									userIdeas.userId = session?.user?.id;
+									userIdeas.ideas?.map((idea) => {
+										if (!idea.uuid) {
+											idea.uuid = crypto.randomUUID();
+										}
+									});
+									if (userIdeas?.id) {
+										updateUserIdeas({
+											...userIdeas,
+										});
+									} else {
+										createUserIdeas({
+											...userIdeas,
+										});
+									}
+								}}
+								className='btn-rev'>
+								Save
 							</button>
 						</div>
 					</form>

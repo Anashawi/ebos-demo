@@ -114,7 +114,7 @@ const Navbar = ({ selectedNode }: Props) => {
 							<div
 								key={dashIndex}
 								className={
-									isLastIcon
+									!isLastIcon
 										? "w-[0.75rem] h-[1px] border border-primary-300"
 										: "w-[0.75rem] h-0"
 								}></div>
