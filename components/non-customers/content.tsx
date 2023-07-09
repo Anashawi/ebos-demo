@@ -1,6 +1,6 @@
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import * as clientApi from "../../http-client/non-customers.client";
 import { IUserNonCustomers } from "../../models/user-non-customers";
 import Spinner from "../../components/common/spinner";
@@ -9,7 +9,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-const NonCustomersContent = () => {
+interface Props {
+	userNonCustomers: IUserNonCustomers;
+	dispatchUserNonCustomers: (userNonCustomers: any) => void;
+	isLoading: boolean;
+}
+
+const NonCustomersContent = ({
+	userNonCustomers,
+	dispatchUserNonCustomers,
+	isLoading,
+}: Props) => {
 	const { data: session }: any = useSession();
 
 	const router = useRouter();
@@ -20,40 +30,7 @@ const NonCustomersContent = () => {
 	const [unwantedCustomerToBeAdded, setUnwantedCustomerToBeAdded] =
 		useState<string>("");
 
-	const emptyUserNonCustomers = {
-		id: "",
-		userId: session?.user?.id,
-		soonNonCustomers: [],
-		refusingCustomers: [],
-		unwantedCustomers: [],
-	} as IUserNonCustomers;
-
-	const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(
-		emptyUserNonCustomers
-	);
-
 	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserNonCustomers>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getOne,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		if (!data) {
-			setUserNonCustomers((prevValue) => {
-				prevValue.soonNonCustomers = ["", "", ""];
-				prevValue.refusingCustomers = ["", "", ""];
-				prevValue.unwantedCustomers = ["", "", ""];
-				return prevValue;
-			});
-		}
-		if (data) {
-			setUserNonCustomers(data);
-		}
-	}, [data]);
 
 	const {
 		mutate: updateUserNonCustomers,
@@ -157,9 +134,9 @@ const NonCustomersContent = () => {
 										userNonCustomers.soonNonCustomers.push(
 											nonCustomerToBeAdded
 										);
-										setUserNonCustomers({
+										dispatchUserNonCustomers({
 											...userNonCustomers,
-										});
+										} as IUserNonCustomers);
 										setNonCustomerToBeAdded("");
 									}}
 									disabled={!nonCustomerToBeAdded}
@@ -194,7 +171,7 @@ const NonCustomersContent = () => {
 														userNonCustomers.soonNonCustomers.filter(
 															(nonC, i) => i !== index
 														);
-													setUserNonCustomers({
+													dispatchUserNonCustomers({
 														...userNonCustomers,
 													});
 												}}
@@ -253,9 +230,9 @@ const NonCustomersContent = () => {
 										userNonCustomers.refusingCustomers.push(
 											refusingCustomerToBeAdded
 										);
-										setUserNonCustomers({
+										dispatchUserNonCustomers({
 											...userNonCustomers,
-										});
+										} as IUserNonCustomers);
 										setRefusingCustomerToBeAdded("");
 									}}
 									disabled={!refusingCustomerToBeAdded}
@@ -290,7 +267,7 @@ const NonCustomersContent = () => {
 														userNonCustomers.refusingCustomers.filter(
 															(nonC, i) => i !== index
 														);
-													setUserNonCustomers({
+													dispatchUserNonCustomers({
 														...userNonCustomers,
 													});
 												}}
@@ -350,9 +327,9 @@ const NonCustomersContent = () => {
 										userNonCustomers.unwantedCustomers.push(
 											unwantedCustomerToBeAdded
 										);
-										setUserNonCustomers({
+										dispatchUserNonCustomers({
 											...userNonCustomers,
-										});
+										} as IUserNonCustomers);
 										setUnwantedCustomerToBeAdded("");
 									}}
 									disabled={!unwantedCustomerToBeAdded}
@@ -387,7 +364,7 @@ const NonCustomersContent = () => {
 														userNonCustomers.unwantedCustomers.filter(
 															(nonC, i) => i !== index
 														);
-													setUserNonCustomers({
+													dispatchUserNonCustomers({
 														...userNonCustomers,
 													});
 												}}
@@ -430,12 +407,12 @@ const NonCustomersContent = () => {
 						</button>
 						{!!userNonCustomers.id && (
 							<div
-								className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+								className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 								onClick={() => {
 									router.push("../org/step-up-step-down");
 								}}>
-								<span className='text-md text-white italic'>
-									go to next →{" "}
+								<span className='text-xl text-md text-white'>
+									Go to next -{" "}
 									<span className='text-white'>
 										Step-up step-down model
 									</span>

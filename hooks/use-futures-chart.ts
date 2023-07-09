@@ -6,7 +6,7 @@ const useFuturesChart = (products: IProduct[]) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "BubbleChart",
 		width: "100%",
-		height: "100%",
+		height: "90%",
 		options: [],
 		data: [],
 	});

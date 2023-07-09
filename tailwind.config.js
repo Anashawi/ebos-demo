@@ -55,6 +55,7 @@ module.exports = {
         'ivory': '#f0f6e8',
         'navbar-primary-title': '#557db4',
         'navbar-gray': '#adbbd1',
+        'input-placeholder': '#a3b1d3',
       },
       opacity: {
         '15': '0.15',

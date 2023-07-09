@@ -33,7 +33,7 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 			<div>
 				<div key={index} className='p-5 bg-dark-50 rounded-2xl'>
 					<div className='flex justify-between mb-10'>
-						<h2 className='text-2xl text-dark-400'>{product.name}</h2>
+						<h2 className='text-2xl text-dark-400 font-hero-bold'>{product.name}</h2>
 					</div>
 					<FieldArray name={`products.${index}.factors`}>
 						{({ remove, push }) => (
@@ -128,7 +128,7 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 											onClick={() => {
 												push(emptyFactor);
 											}}
-											className='btn-primary-light px-10'>
+											className='btn-primary-light pl-9 pr-[4.5rem]'>
 											<FontAwesomeIcon
 												className='w-3 h-auto cursor-pointer hover:text-gray-600'
 												icon={faPlus}

@@ -36,7 +36,7 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 										product?.competitors.map((comp, compIndex) => (
 											<li
 												key={compIndex}
-												className='flex gap-5 items-start relative'>
+												className='flex gap-[3.5rem] items-start relative'>
 												{compIndex > 0 && (
 													<>
 														<div className='w-full md:w-1/2 flex flex-col gap-2'>

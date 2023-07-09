@@ -117,22 +117,22 @@ const VoiceOfCustomersContent = () => {
 				<>
 					<div className='pill-yellow-50 p-3 lg:w-full mb-5'>
 						<div className='w-[3rem] h-[3rem]'>
-									<Image
-										src='/bulb.svg'
-										alt='Bulb Icon'
-										width={0}
-										height={0}
-										className='w-full h-auto'
-									/>
-								</div>
+							<Image
+								src='/bulb.svg'
+								alt='Bulb Icon'
+								width={0}
+								height={0}
+								className='w-full h-auto'
+							/>
+						</div>
 						<h3 className='text-xl text-gray-400 font-normal'>
 							what do your top customer categories want and how can you
 							fulfill their needs?
 						</h3>
 					</div>
 					<div className='flex gap-5 flex-wrap xl:flex-nowrap p-5 bg-dark-50 rounded-2xl'>
-						<div className='grow flex flex-col gap-5'>
-							<h4 className='text-2xl font-bold text-dark-400'>
+						<div className='grow flex flex-col gap-3'>
+							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
 								customer categories
 							</h4>
 							<ul className='flex flex-col gap-5'>
@@ -178,8 +178,8 @@ const VoiceOfCustomersContent = () => {
 								</li>
 							</ul>
 						</div>
-						<div className='grow flex flex-col gap-5'>
-							<h4 className='text-2xl font-bold text-dark-400'>
+						<div className='grow flex flex-col gap-3'>
+							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
 								What they want
 							</h4>
 							<ul className='flex flex-col gap-5'>
@@ -225,8 +225,8 @@ const VoiceOfCustomersContent = () => {
 								</li>
 							</ul>
 						</div>
-						<div className='grow flex flex-col gap-5'>
-							<h4 className='text-2xl font-bold text-dark-400'>
+						<div className='grow flex flex-col gap-3'>
+							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
 								How to fulfill it
 							</h4>
 							<ul className='flex flex-col gap-5'>
@@ -298,12 +298,12 @@ const VoiceOfCustomersContent = () => {
 							</button>
 							{!!userCustomers.id && (
 								<div
-									className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+									className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 									onClick={() => {
 										router.push("../org/blue-ocean");
 									}}>
-									<span className='text-md text-white italic'>
-										go to next →{" "}
+									<span className='text-xl text-md text-white'>
+										Go to next -{" "}
 										<span className='text-white'>
 											Blue Ocean Canvas
 										</span>

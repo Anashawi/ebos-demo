@@ -143,16 +143,19 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 									return (
 										<>
 											<div className='flex flex-col gap-20'>
-												{!userProduct.products?.length &&
-													!isLoading && <ZeroProductsWarning />}
-												{!values.products?.length &&
-													!!userProduct.products?.length &&
-													!isLoading && (
-														<p className='text-rose-300'>
+												{!isLoading &&
+													!userProduct.products?.length && (
+														<ZeroProductsWarning />
+													)}
+
+												{!isLoading &&
+													!values.products?.length &&
+													!!userProduct.products?.length && (
+														<p className='text-rose-400'>
 															make a selection to view products !
 														</p>
 													)}
-												{!!isLoading && (
+												{isLoading && (
 													<Spinner
 														className='flex items-center text-2xl'
 														message='Loading Red Ocean...'
@@ -196,12 +199,14 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 													)}
 													{userProduct?.products?.length > 0 && (
 														<div
-															className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+															className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 															onClick={() => {
-																router.push("../org/disruption");
+																router.push(
+																	"../org/disruption"
+																);
 															}}>
-															<span className='text-md text-white italic'>
-																go to next →{" "}
+															<span className='text-xl text-md text-white'>
+																Go to next -{" "}
 																<span className='text-white'>
 																	Disruption
 																</span>

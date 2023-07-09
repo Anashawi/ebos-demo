@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: Roboto-medium;
-  src: url("../public/fonts/Roboto/Roboto-medium.ttf");
+  src: url("../public/fonts/Roboto/Roboto-Medium.ttf");
 }
 
 @font-face {
@@ -28,6 +28,8 @@ html {
 
 html, body {
   font-family: Roboto-light;
+  min-width: 320px;
+  overflow: auto;
 }
 
 body,
@@ -184,7 +186,7 @@ input[type="text"]:focus:not("no-border") {
   }
 
   .btn-primary {
-    @apply inline-flex justify-center items-center gap-6 bg-primary text-white px-5 py-4 text-xl rounded-full transition duration-200;
+    @apply inline-flex justify-center items-center gap-6 bg-primary text-white px-5 py-4 text-xl rounded-full hover:shadow-lg transition duration-200;
   }
 
   .btn-primary-light {
@@ -212,27 +214,27 @@ input[type="text"]:focus:not("no-border") {
   }
 
   .light-input {
-    @apply px-7 py-4 bg-primary-100 rounded-full border border-gray-300 outline-none caret-dark-blue text-xl text-light-input-text font-semibold;
+    @apply px-7 py-4 bg-primary-100 rounded-full border border-gray-300 outline-none caret-dark-blue text-xl text-light-input-text placeholder-light-input-text font-hero-semibold;
   }
 
   .dark-input {
-    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-gray-500;
+    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-dark-300 font-hero-semibold;
   }
  
-  .content-container {
-    @apply grid xl:grid-cols-12 gap-4;
+  .title-header {
+    @apply mb-2 text-[2.8rem] text-[#93a7c4] font-normal;
   }
 
-  .title-header {
-    @apply mb-3 text-[2.8rem] text-[#93a7c4] font-normal;
+  .content-container {
+    @apply flex flex-wrap xl:gap-[1%];
   }
 
   .left-content {
-    @apply w-full xl:col-span-7 px-12 pt-7 pb-10 flex flex-col gap-3 bg-white relative rounded-3xl;
+    @apply w-full xl:w-[63%] px-12 pt-7 pb-10 flex flex-col gap-3 bg-white relative rounded-3xl;
   }
 
   .right-content {
-    @apply w-full xl:col-span-5 min-h-screen px-6 py-5 flex flex-col gap-4 bg-ivory;
+    @apply w-full xl:w-[36%] min-h-screen px-6 py-5 flex flex-col gap-4 bg-ivory;
   }
 }
 
@@ -281,8 +283,8 @@ input[type="number"] {
 
 label {
   color: #4a74b0;
-  font-weight: 600;
-  font-size: 1.4rem;
+  font-family: Roboto-bold;
+  font-size: 1.365rem;
 }
 
 .text-stroke {

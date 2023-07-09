@@ -63,7 +63,7 @@ const DisruptionContent = ({
 
 			<div className='flex flex-wrap gap-5 p-5 bg-dark-50'>
 				<div className='col-1/2 grow'>
-					<h4 className='mb-6 text-[2.1rem] text-dark-400 font-semibold'>
+					<h4 className='mb-3 text-[1.75rem] text-dark-400 font-hero-bold'>
 						Scale
 					</h4>
 					<ul className='flex flex-col gap-3 mb-5'>
@@ -150,7 +150,7 @@ const DisruptionContent = ({
 					</ul>
 				</div>
 				<div className='col-1/2 grow'>
-					<h4 className='mb-6 text-[2.1rem] text-dark-400 font-semibold'>
+					<h4 className='mb-3 text-[1.75rem] text-dark-400 font-hero-bold'>
 						Ideas
 					</h4>
 
@@ -255,12 +255,12 @@ const DisruptionContent = ({
 				)}
 				{!!videos.id && (
 					<div
-						className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+						className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 						onClick={() => {
 							router.push("../org/voice-of-customers");
 						}}>
-						<span className='text-md text-white italic'>
-							go to next →{" "}
+						<span className='text-xl text-md text-white'>
+							Go to next -{" "}
 							<span className='text-white'>Voice of Customers</span>
 						</span>
 					</div>

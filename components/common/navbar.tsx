@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { navbarNodesEnum } from "../../models/enums";
 import { NavbarNode } from "../../models/types";
 import Image from "next/image";
+import React from "react";
 
 interface Props {
 	selectedNode: navbarNodesEnum;
@@ -140,7 +141,9 @@ const Navbar = ({ selectedNode }: Props) => {
 	return (
 		<nav className='w-full flex gap-1 justify-between mb-5'>
 			{nodes.map((node, index) => (
-				<>
+				<React.Fragment key={index}>
+					{" "}
+					{/* Add key prop to the fragment */}
 					{node.title === selectedNode && (
 						<div className='grow flex items-center'>
 							{renderSelectedIcon(node, index === nodes.length - 1)}
@@ -151,7 +154,7 @@ const Navbar = ({ selectedNode }: Props) => {
 							{renderUnselectedIcon(node)}
 						</div>
 					)}
-				</>
+				</React.Fragment>
 			))}
 		</nav>
 	);

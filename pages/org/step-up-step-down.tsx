@@ -1,14 +1,10 @@
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import { IUserAnalysis } from "../../models/user-analysis";
 import * as clientApi from "../../http-client/analysis.client";
 import IdeasModal from "../../components/app/ideas-modal";
-import { faCirclePlus, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Spinner from "../../components/common/spinner";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";

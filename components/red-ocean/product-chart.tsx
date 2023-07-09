@@ -37,7 +37,7 @@ const RedOceanProductChart = ({ product }: Props) => {
 		chart.options = {
 			title: `Red Ocean: ${product.name}`,
 			titleTextStyle: {
-				fontSize: 12, // 12, 18 whatever you want (don't specify px)
+				fontSize: 11, // Don't specify px
 				bold: true,
 			},
 			is3D: false,
@@ -47,7 +47,7 @@ const RedOceanProductChart = ({ product }: Props) => {
 				position: "right",
 				alignment: "start",
 				textStyle: {
-					fontSize: 10,
+					fontSize: 11,
 				},
 			},
 			tooltip: { trigger: "none" },
@@ -65,7 +65,7 @@ const RedOceanProductChart = ({ product }: Props) => {
 				] as any,
 				title: "Competency Level",
 				textStyle: {
-					fontSize: 12,
+					fontSize: 11,
 				},
 			},
 			hAxis: {
@@ -90,9 +90,9 @@ const RedOceanProductChart = ({ product }: Props) => {
 	}, [product]);
 
 	return (
-		<>
+		<div className='shadow h-full'>
 			<Chart {...chart} legendToggle />
-		</>
+		</div>
 	);
 };
 

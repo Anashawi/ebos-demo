@@ -58,14 +58,14 @@ const Competitors = () => {
 									</button>
 								</div>
 								{!!chartProducts?.length &&
-									chartProducts.map((product) => (
-										<>
-											<div className='h-[300px]'>
-												<MarketPotentialProductChart
-													product={product}
-												/>
-											</div>
-										</>
+									chartProducts.map((product, index) => (
+										<div
+											key={index}
+											className='h-[300px]'>
+											<MarketPotentialProductChart
+												product={product}
+											/>
+										</div>
 									))}
 							</div>
 						</div>

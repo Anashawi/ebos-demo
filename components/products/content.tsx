@@ -171,7 +171,7 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 													Pioneer, Migrator, Settler
 												</h3>
 												<div className='w-full flex flex-col gap-10'>
-													{!!isLoading && (
+													{isLoading && (
 														<Spinner
 															className='flex items-center text-2xl'
 															message='Loading Products...'
@@ -213,45 +213,49 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 													)}
 												</div>
 												<div className='flex gap-5 items-center justify-between px-7'>
-													<div className='flex gap-5'>
-														<button
-															type='button'
-															onClick={() => {
-																push(emptyProduct);
-															}}
-															className='btn-primary px-8'>
-															<FontAwesomeIcon
-																className='w-4 h-auto cursor-pointer'
-																icon={faPlus}
-															/>
-															<span>Add New Product</span>
-														</button>
-														<button
-															type='submit'
-															className={
-																isSubmitting ||
-																(!isValid && !isValidating)
-																	? "btn-rev btn-disabled cursor-not-allowed"
-																	: "btn-rev"
-															}
-															disabled={
-																isSubmitting ||
-																(!isValid && !isValidating)
-															}>
-															Save
-														</button>
-													</div>
+													{!isLoading && (
+														<div className='flex gap-5'>
+															{!isSubmitting && (
+																<button
+																	type='button'
+																	onClick={() => {
+																		push(emptyProduct);
+																	}}
+																	className='btn-primary px-8'>
+																	<FontAwesomeIcon
+																		className='w-4 h-auto cursor-pointer'
+																		icon={faPlus}
+																	/>
+																	<span>Add New Product</span>
+																</button>
+															)}
+															<button
+																type='submit'
+																className={
+																	isSubmitting ||
+																	(!isValid && !isValidating)
+																		? "btn-rev btn-disabled cursor-not-allowed"
+																		: "btn-rev"
+																}
+																disabled={
+																	isSubmitting ||
+																	(!isValid && !isValidating)
+																}>
+																Save
+															</button>
+														</div>
+													)}
 													{userProduct?.products?.length > 0 && (
 														<div
-															className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+															className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 															onClick={() => {
 																router.push(
 																	"../org/market-potential"
 																);
 															}}>
-															<span className='text-md text-white italic'>
-																go to next →{" "}
-																<span>market potential</span>
+															<span className='text-xl text-md text-white'>
+																Go to next -{" "}
+																<span>Market Potential</span>
 															</span>
 														</div>
 													)}

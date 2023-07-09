@@ -1,4 +1,3 @@
-import UserInfoHeader from "../../components/common/user-info-header";
 import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
 import Modal from "../../components/common/modal";
@@ -8,11 +7,52 @@ import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import NonCustomersContent from "../../components/non-customers/content";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
+import NonCustomersReview from "../../components/non-customers/review";
+import { useEffect, useState } from "react";
+import { IUserNonCustomers } from "../../models/user-non-customers";
+import { useSession } from "next-auth/react";
+import * as clientApi from "../../http-client/non-customers.client";
+import { useQuery } from "@tanstack/react-query";
 
 const NonCustomers = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+
+	const emptyUserNonCustomers = {
+		id: "",
+		userId: session?.user?.id,
+		soonNonCustomers: [],
+		refusingCustomers: [],
+		unwantedCustomers: [],
+	} as IUserNonCustomers;
+
+	const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(
+		emptyUserNonCustomers
+	);
+
+	const { data, isLoading } = useQuery<IUserNonCustomers>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getOne,
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		if (!data) {
+			setUserNonCustomers((prevValue: IUserNonCustomers) => {
+				prevValue.soonNonCustomers = ["", "", ""];
+				prevValue.refusingCustomers = ["", "", ""];
+				prevValue.unwantedCustomers = ["", "", ""];
+				return prevValue;
+			});
+		}
+		if (data) {
+			setUserNonCustomers(data);
+		}
+	}, [data]);
 
 	return (
 		<>
@@ -25,7 +65,11 @@ const NonCustomers = () => {
 						<Navbar selectedNode={navbarNodesEnum.nonCustomers} />
 						<div className='content-container'>
 							<div className='left-content'>
-								<NonCustomersContent />
+								<NonCustomersContent
+									userNonCustomers={userNonCustomers}
+									dispatchUserNonCustomers={setUserNonCustomers}
+									isLoading={isLoading}
+								/>
 							</div>
 							<div className='right-content'>
 								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
@@ -48,6 +92,10 @@ const NonCustomers = () => {
 										Resource Videos
 									</button>
 								</div>
+								<NonCustomersReview
+									userNonCustomers={userNonCustomers}
+									isLoading={isLoading}
+								/>
 							</div>
 						</div>
 					</div>

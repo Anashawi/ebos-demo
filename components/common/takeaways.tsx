@@ -9,8 +9,8 @@ const Takeaways = ({ type, className }: Props) => {
 	return (
 		<>
 			<div className={`${className ?? ""} `}>
-				<div className='grow flex flex-col gap-5'>
-					<label className='text-dark-400 text-3xl'>
+				<div className='grow flex flex-col gap-3'>
+					<label className='text-dark-400 text-[1.75rem]'>
 						Takeaways on Scale
 					</label>
 					<input
@@ -19,8 +19,8 @@ const Takeaways = ({ type, className }: Props) => {
 						className='light-input'
 					/>
 				</div>
-				<div className='grow flex flex-col gap-5'>
-					<label className='text-dark-400 text-3xl'>
+				<div className='grow flex flex-col gap-3'>
+					<label className='text-dark-400 text-[1.75rem]'>
 						Takeaways on Ideas
 					</label>
 					<input

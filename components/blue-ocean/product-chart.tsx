@@ -83,9 +83,9 @@ const BlueOceanProductChart = ({ product }: Props) => {
 	}, [product]);
 
 	return (
-		<>
+		<div className='shadow h-full'>
 			<Chart {...chart} legendToggle />
-		</>
+		</div>
 	);
 };
 

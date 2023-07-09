@@ -160,9 +160,9 @@ const GoalsContent = () => {
 								</div>
 							</div>
 						</h3>
-						<p className='font-semibold text-[#4e79b2]'>
+						<label className='block font-hero-bold text-[#4e79b2]'>
 							Things you want to be celebrating:
-						</p>
+						</label>
 						<div className='flex flex-col gap-5'>
 							<div className='pill-yellow-50 p-3'>
 								<div className='w-[2.5rem] h-[2.5rem]'>
@@ -218,14 +218,14 @@ const GoalsContent = () => {
 														disabled={!goalToBeAdded}
 														className={
 															!!goalToBeAdded
-																? "btn-primary"
-																: "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
+																? "btn-primary pl-9 pr-8"
+																: "btn-primary-light pl-9 pr-8 hover:bg-primary-300 cursor-not-allowed"
 														}>
 														<FontAwesomeIcon
 															className='w-[0.8rem] h-auto cursor-pointer'
 															icon={faPlus}
 														/>
-														<span className='text-lg'>
+														<span className='text-xl'>
 															Add New Goal
 														</span>
 													</button>
@@ -245,7 +245,7 @@ const GoalsContent = () => {
 																	/>
 																	<FontAwesomeIcon
 																		icon={faTimes}
-																		className='w-4 cursor-pointer absolute right-4 top-4 text-gray-500 hover:text-rose-800'
+																		className='w-4 cursor-pointer absolute right-6 top-5 text-dark-300 hover:text-dark-400'
 																		onClick={() => {
 																			remove(index);
 																		}}
@@ -297,12 +297,12 @@ const GoalsContent = () => {
 													(str) => str?.length > 0
 												)?.length > 0 && (
 													<div
-														className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+														className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 														onClick={() => {
 															router.push("../org/products");
 														}}>
-														<span className='text-md text-white italic'>
-															go to next →{" "}
+														<span className='text-xl text-md text-white'>
+															Go to next -{" "}
 															<span className='text-white'>
 																pioneer, migrator, settler
 															</span>

@@ -73,8 +73,8 @@ const Disruption = () => {
 										My Ideas
 									</button>
 								</div>
-								<div className='p-10'>
-									<h4 className='text-3xl mb-6 text-dark-400 font-semibold'>
+								<div className='px-10 py-5'>
+									<h4 className='mb-3 text-[1.75rem] text-dark-400 font-hero-bold'>
 										7 Practical &amp; Quick
 									</h4>
 									<ul className='flex flex-col gap-3 mb-5'>

@@ -233,7 +233,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 					</li>
 				</ul>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-3xl text-dark-400 font-semibold'>
+					<h2 className='mb-2 text-[1.75rem] text-dark-400 font-hero-bold'>
 						7 Practical & Quick
 					</h2>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>

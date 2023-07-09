@@ -331,12 +331,12 @@ const StepUpStepDownContent = ({
 						</button>
 						{!!userAnalysis.id && (
 							<div
-								className='cursor-pointer bg-dark-200 px-7 py-3 rounded-full'
+								className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
 								onClick={() => {
 									router.push("../org/roadmap");
 								}}>
-								<span className='text-md text-white italic'>
-									go to next →{" "}
+								<span className='text-xl text-md text-white'>
+									Go to next -{" "}
 									<span className='text-white'>Road Map </span>
 								</span>
 							</div>

@@ -23,7 +23,7 @@ const MarketPotentialProductChart = ({ product }: Props) => {
 		chart.options = {
 			title: product.name,
 			titleTextStyle: {
-				fontSize: 16, // 12, 18 whatever you want (don't specify px)
+				fontSize: 11, // Don't specify px
 			},
 			is3D: false,
 			backgroundColor: "#f0f0f0",
@@ -33,7 +33,7 @@ const MarketPotentialProductChart = ({ product }: Props) => {
 				position: "right",
 				alignment: "start",
 				textStyle: {
-					fontSize: 14,
+					fontSize: 11,
 				},
 			},
 			tooltip: { trigger: "none" },
@@ -58,9 +58,9 @@ const MarketPotentialProductChart = ({ product }: Props) => {
 	}, [product]);
 
 	return (
-		<>
+		<div className='shadow h-full'>
 			<Chart {...chart} legendToggle />
-		</>
+		</div>
 	);
 };
 

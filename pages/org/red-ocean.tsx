@@ -11,7 +11,7 @@ import RedOceanContent from "../../components/red-ocean/content";
 import RedOceanProductChart from "../../components/red-ocean/product-chart";
 import { IProduct } from "../../models/types";
 
-const RedOcean = () => {
+const RedOceanCanvas = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
@@ -110,4 +110,4 @@ const RedOcean = () => {
 	);
 };
 
-export default RedOcean;
+export default RedOceanCanvas;

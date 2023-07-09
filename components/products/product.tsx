@@ -52,7 +52,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 					<div className='flex flex-col'>
 						<div className='flex flex-col gap-3 pb-5'>
 							<div className='flex items-center gap-5'>
-								<div className='grow flex flex-col gap-3 px-2'>
+								<div className='grow flex flex-col gap-2 px-2'>
 									<label>Product name</label>
 									<Field
 										type='text'
@@ -80,8 +80,8 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 															<div
 																key={futureIndex}
 																className='flex flex-col'>
-																<div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
-																	<div className='p-2 flex flex-col gap-3'>
+																<div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'>
+																	<div className='p-2 flex flex-col gap-2'>
 																		<label>
 																			{futureIndex === 0
 																				? `Present`
@@ -102,7 +102,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 																			)}
 																		</ErrorMessage>
 																	</div>
-																	<div className='p-2 flex flex-col gap-3'>
+																	<div className='p-2 flex flex-col gap-2'>
 																		<label>Level</label>
 																		<Field
 																			as='select'
