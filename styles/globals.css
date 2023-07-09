@@ -8,6 +8,11 @@
 }
 
 @font-face {
+  font-family: Roboto-medium;
+  src: url("../public/fonts/Roboto/Roboto-medium.ttf");
+}
+
+@font-face {
   font-family: Roboto-light;
   src: url("../public/fonts/Roboto/Roboto-Light.ttf");
 }
@@ -22,7 +27,7 @@ html {
 }
 
 html, body {
-  font-family: Roboto-light !important;
+  font-family: Roboto-light;
 }
 
 body,

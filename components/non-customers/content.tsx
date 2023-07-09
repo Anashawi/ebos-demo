@@ -119,14 +119,14 @@ const NonCustomersContent = () => {
 						</h6>
 						<div className='pill-yellow-50 p-3'>
 							<div className='w-[3rem] h-[3rem]'>
-									<Image
-										src='/bulb.svg'
-										alt='Bulb Icon'
-										width={0}
-										height={0}
-										className='w-full h-auto'
-									/>
-								</div>
+								<Image
+									src='/bulb.svg'
+									alt='Bulb Icon'
+									width={0}
+									height={0}
+									className='w-full h-auto'
+								/>
+							</div>
 							<h3 className='text-xl text-gray-400 font-normal'>
 								Who are the customers most likely to be left out in this
 								transformation ?
@@ -211,18 +211,18 @@ const NonCustomersContent = () => {
 					</div>
 					<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
 						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
-							Refusing customers
+							Refusing non-customers
 						</h6>
 						<div className='pill-yellow-50 p-3'>
 							<div className='w-[3rem] h-[3rem]'>
-									<Image
-										src='/bulb.svg'
-										alt='Bulb Icon'
-										width={0}
-										height={0}
-										className='w-full h-auto'
-									/>
-								</div>
+								<Image
+									src='/bulb.svg'
+									alt='Bulb Icon'
+									width={0}
+									height={0}
+									className='w-full h-auto'
+								/>
+							</div>
 							<h3 className='text-xl text-gray-400 font-normal'>
 								Who are the customers most likely to be refusing of this
 								transformation ?
@@ -233,7 +233,7 @@ const NonCustomersContent = () => {
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
 										<p className='py-5 text-lg text-center italic'>
-											Start adding refusing customers...
+											Start adding refusing non-customers...
 										</p>
 									</div>
 								)}
@@ -307,18 +307,18 @@ const NonCustomersContent = () => {
 					</div>
 					<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
 						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
-							Unwanted customers
+							Unwanted non-customers
 						</h6>
 						<div className='pill-yellow-50 p-3'>
 							<div className='w-[3rem] h-[3rem]'>
-									<Image
-										src='/bulb.svg'
-										alt='Bulb Icon'
-										width={0}
-										height={0}
-										className='w-full h-auto'
-									/>
-								</div>
+								<Image
+									src='/bulb.svg'
+									alt='Bulb Icon'
+									width={0}
+									height={0}
+									className='w-full h-auto'
+								/>
+							</div>
 							<h3 className='text-xl text-gray-400 font-normal'>
 								Who are the customers you don&apos;t want in this
 								transformation ?
@@ -330,7 +330,7 @@ const NonCustomersContent = () => {
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
 										<p className='py-5 text-lg text-center italic'>
-											Start adding unwanted customers...
+											Start adding unwanted non-customers...
 										</p>
 									</div>
 								)}

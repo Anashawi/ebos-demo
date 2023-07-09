@@ -26,6 +26,7 @@ module.exports = {
         'primary-100': '#f0f5fb',
         'primary-200': '#ced9ea',
         'primary-300': '#8bafdc',
+        'primary-400': '#138bc4',
         'primary': '#3e6daa',
         'secondary-100': '#86be44',
         'secondary-200': '#d7e6be',
@@ -43,6 +44,7 @@ module.exports = {
         'gray-battleship': '#9999',
         'gray-gunmetal': '#263238',
         'black-eerie': '#202020',
+        'onyx': '#404040',
         'dark-blue': '#0c00b4',
         'mustard': '#FFDA57',
         'yellow-mikado': '#FDC10E',
@@ -62,6 +64,7 @@ module.exports = {
       },
       fontFamily: {
         'hero-bold': ['Roboto-bold'],
+        'hero-semibold': ['Roboto-medium'],
         'hero-light': ['Roboto-light'],
         'hero-thin': ['Roboto-thin'],
         sans: ['Arial'],

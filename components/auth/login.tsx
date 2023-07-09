@@ -5,7 +5,11 @@ import { useState } from "react";
 import { object, string } from "yup";
 import Spinner from "../common/spinner";
 
-const Login = ({ closeCallback }: { closeCallback: () => void }) => {
+interface Props {
+	closeCallback: () => void;
+}
+
+const Login = ({ closeCallback }: Props) => {
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -24,8 +28,6 @@ const Login = ({ closeCallback }: { closeCallback: () => void }) => {
 			await login();
 		},
 	});
-
-	const router = useRouter();
 
 	async function login() {
 		if (!formik.values.email || !formik.values.password) {

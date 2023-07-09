@@ -8,7 +8,11 @@ import Spinner from "../common/spinner";
 import { useFormik } from "formik";
 import { object, string } from "yup";
 
-const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
+interface Props {
+	closeCallback: () => void;
+}
+
+const Signup = ({ closeCallback }: Props) => {
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -47,13 +51,11 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 		},
 	});
 
-	const {
-		mutate,
-		isLoading: signUpLoading,
-		isError,
-		error,
-		isSuccess,
-	} = useMutation<{ id: string }, Error, IUser>(api.singUp, {
+	const { mutate, isLoading: signUpLoading } = useMutation<
+		{ id: string },
+		Error,
+		IUser
+	>(api.singUp, {
 		onSuccess: async (res) => {
 			if (res.id) {
 				await trySignIn(
@@ -67,10 +69,10 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 			if (error) {
 				setAuthState({
 					isLoading: false,
-					error: error.message
-				})
+					error: error.message,
+				});
 			}
-		}
+		},
 	});
 
 	async function trySignIn(email: string, password: string) {
@@ -91,8 +93,6 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 			}));
 		}
 	}
-
-
 
 	return (
 		<>
