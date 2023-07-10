@@ -1,13 +1,11 @@
 import { FieldArray, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
 import CompetitorsProduct from "./product";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { IUserProduct } from "../../models/user-product";
-import { useSession } from "next-auth/react";
 import { productPagesEnum } from "../../models/enums";
 import Spinner from "../common/spinner";
-import { ICompetitor, IProduct } from "../../models/types";
+import { IProduct } from "../../models/types";
 import { object, array, string, number } from "yup";
 import { cloneDeep } from "lodash";
 import ZeroProductsWarning from "../common/zero-products-warning";
@@ -15,50 +13,19 @@ import FormikContextChild from "../products/formik-context-child";
 import { useRouter } from "next/router";
 
 interface Props {
-	dispatchProducts: (products: IProduct[]) => void;
+	userProduct: IUserProduct;
+	dispatchChartProducts: (products: IProduct[]) => void;
+	isLoading: boolean;
 }
 
-const MarketPotentialContent = ({ dispatchProducts }: Props) => {
-	const { data: session }: any = useSession();
-
+const MarketPotentialContent = ({
+	userProduct,
+	dispatchChartProducts,
+	isLoading,
+}: Props) => {
 	const router = useRouter();
 
-	const emptyUserProduct = {
-		id: "",
-		userId: session?.user?.id,
-		products: [],
-	} as IUserProduct;
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
-
 	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserProduct>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getAll,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		data?.products?.forEach((prod) => {
-			if (
-				!prod.competitors ||
-				(prod.competitors && prod.competitors.length === 0)
-			) {
-				prod.competitors = [
-					{ ...emptyCompetitor(), name: "Me" },
-					{ ...emptyCompetitor(), name: "", isUntapped: true },
-					{ ...emptyCompetitor(), name: "" },
-				];
-			}
-		});
-		if (data) {
-			setUserProduct(data);
-		}
-		dispatchProducts(data?.products || []);
-	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
@@ -85,14 +52,6 @@ const MarketPotentialContent = ({ dispatchProducts }: Props) => {
 			}
 		);
 
-	const emptyCompetitor = () => {
-		const uuid = crypto.randomUUID();
-		return {
-			uuid: uuid,
-			name: "",
-			marketShare: 0,
-		} as ICompetitor;
-	};
 	return (
 		<>
 			<h3 className='title-header'>Market potential</h3>
@@ -223,7 +182,7 @@ const MarketPotentialContent = ({ dispatchProducts }: Props) => {
 
 							<FormikContextChild
 								dispatch={(values) => {
-									dispatchProducts(cloneDeep(values.products));
+									dispatchChartProducts(cloneDeep(values.products));
 								}}
 							/>
 						</Form>

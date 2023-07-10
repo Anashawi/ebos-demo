@@ -104,7 +104,7 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
 																if (compIndex > 0)
 																	remove(compIndex);
 															}}
-															className='w-4 h-auto absolute top-[55%] right-5 cursor-pointer text-gray-500 hover:text-dark-400'
+															className='w-4 h-auto absolute top-[55%] right-5 cursor-pointer text-dark-300 hover:text-dark-400'
 														/>
 													)}
 												</div>

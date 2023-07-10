@@ -8,16 +8,67 @@ import VerticalNavbar from "../../components/common/vertical-navbar";
 import Navbar from "../../components/common/navbar";
 import MarketPotentialContent from "../../components/market-potential/content";
 import * as _ from "lodash";
-import { useState } from "react";
 import MarketPotentialProductChart from "../../components/market-potential/product-chart";
-import { IProduct } from "../../models/types";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import * as clientApi from "../../http-client/products.client";
+import { IUserProduct } from "../../models/user-product";
+import { useSession } from "next-auth/react";
+import Spinner from "../../components/common/spinner";
+import { ICompetitor, IProduct } from "../../models/types";
 
 const Competitors = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
+	const emptyCompetitor = () => {
+		const uuid = crypto.randomUUID();
+		return {
+			uuid: uuid,
+			name: "",
+			marketShare: 0,
+		} as ICompetitor;
+	};
+
+	const emptyUserProduct = {
+		id: "",
+		userId: session?.user?.id,
+		products: [],
+	} as IUserProduct;
+
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
+
 	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+
+	const { data, isLoading } = useQuery<IUserProduct>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getAll,
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		data?.products?.forEach((prod) => {
+			if (
+				!prod.competitors ||
+				(prod.competitors && prod.competitors.length === 0)
+			) {
+				prod.competitors = [
+					{ ...emptyCompetitor(), name: "Me" },
+					{ ...emptyCompetitor(), name: "", isUntapped: true },
+					{ ...emptyCompetitor(), name: "" },
+				];
+			}
+		});
+		if (data) {
+			setUserProduct(data);
+		}
+		setChartProducts(data?.products || []);
+	}, [data]);
 
 	return (
 		<>
@@ -31,9 +82,9 @@ const Competitors = () => {
 						<div className='content-container'>
 							<div className='left-content'>
 								<MarketPotentialContent
-									dispatchProducts={(products) => {
-										setChartProducts(products);
-									}}
+									userProduct={userProduct}
+									dispatchChartProducts={setChartProducts}
+									isLoading={isLoading}
 								/>
 							</div>
 							<div className='right-content'>
@@ -57,11 +108,16 @@ const Competitors = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!chartProducts?.length &&
+								{isLoading && (
+									<Spinner
+										message='Loading product competitors charts...'
+										className='p-5 items-center text-xl'
+									/>
+								)}
+								{!isLoading &&
+									!!chartProducts?.length &&
 									chartProducts.map((product, index) => (
-										<div
-											key={index}
-											className='h-[300px]'>
+										<div key={index} className='h-[300px]'>
 											<MarketPotentialProductChart
 												product={product}
 											/>

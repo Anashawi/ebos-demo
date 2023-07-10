@@ -133,7 +133,7 @@ const VoiceOfCustomersContent = () => {
 					<div className='flex gap-5 flex-wrap xl:flex-nowrap p-5 bg-dark-50 rounded-2xl'>
 						<div className='grow flex flex-col gap-3'>
 							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
-								customer categories
+								Customer categories
 							</h4>
 							<ul className='flex flex-col gap-5'>
 								<li>

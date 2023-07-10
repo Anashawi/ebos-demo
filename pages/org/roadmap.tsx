@@ -90,10 +90,17 @@ const RoadMap = () => {
 						</div>
 						<div className='grow p-5 rounded-2xl bg-white'>
 							<div className='grow px-12 py-8 mx-auto'>
+								{!isLoading && !userIdeas.ideas.length && (
+									<div className='w-full flex items-center'>
+										<p className='text-2xl text-center italic'>
+											Start adding your ideas to see roadmap ideas chart...
+										</p>
+									</div>
+								)}
 								{isLoading && (
 									<Spinner
 										className='flex items-center px-1 text-2xl'
-										message='Loading ideas chart...'
+										message='Loading roadmap ideas chart...'
 									/>
 								)}
 								{!!userIdeas.ideas.length && !isLoading && (

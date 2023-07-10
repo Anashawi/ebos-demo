@@ -1,9 +1,8 @@
 import { FieldArray, Form, Formik } from "formik";
 import Product from "./product";
-import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/products.client";
 import { useSession } from "next-auth/react";
 import { IUserProduct } from "../../models/user-product";
@@ -16,37 +15,21 @@ import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
 
 interface Props {
+	userProduct: IUserProduct;
 	dispatchChartProducts: (products: IProduct[]) => void;
+	isLoading: boolean;
 }
 
-const ProductsContent = ({ dispatchChartProducts }: Props) => {
+const ProductsContent = ({
+	userProduct,
+	dispatchChartProducts,
+	isLoading,
+}: Props) => {
 	const { data: session }: any = useSession();
 
 	const router = useRouter();
 
-	const emptyUserProduct = {
-		id: "",
-		userId: session?.user?.id,
-		products: [],
-	} as IUserProduct;
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
-
 	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserProduct>({
-		queryKey: [clientApi.Keys.UserProduct, userProduct.id],
-		queryFn: clientApi.getAll,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		if (data) {
-			setUserProduct(data);
-		}
-	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
@@ -174,7 +157,7 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 													{isLoading && (
 														<Spinner
 															className='flex items-center text-2xl'
-															message='Loading Products...'
+															message='Loading products...'
 														/>
 													)}
 													{!!values.products?.length &&

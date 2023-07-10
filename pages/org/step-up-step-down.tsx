@@ -86,8 +86,8 @@ const Analysis = () => {
 								</div>
 								{isLoading && (
 									<Spinner
-										className='flex items-center px-1 text-2xl'
 										message='Loading customers...'
+										className='p-5 items-center text-xl'
 									/>
 								)}
 								{!isLoading && (

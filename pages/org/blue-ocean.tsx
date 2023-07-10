@@ -1,9 +1,7 @@
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { useState } from "react";
 import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IProduct } from "../../models/types";
-
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
@@ -11,13 +9,73 @@ import BlueOceanContent from "../../components/blue-ocean/content";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
 import BlueOceanProductChart from "../../components/blue-ocean/product-chart";
+import Spinner from "../../components/common/spinner";
+import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { IUserProduct } from "../../models/user-product";
+import * as clientApi from "../../http-client/products.client";
+import { IIdeaFactor } from "../../models/types";
 
-const BlueOcean = () => {
+const BlueOceanCanvas = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
+	const { data: session }: any = useSession();
+
+	const emptyFactor = useMemo(() => {
+		return {
+			name: "",
+			competitors: [],
+		} as IIdeaFactor;
+	}, []);
+
+	const emptyUserProduct = useMemo(() => {
+		return {
+			id: "",
+			userId: session?.user?.id,
+			products: [],
+		} as IUserProduct;
+	}, []);
+
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
+
 	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+
+	const { data, isLoading } = useQuery<IUserProduct>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getAll,
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		data?.products?.forEach((prod) => {
+			emptyFactor.competitors =
+				prod.competitors?.map((comp) => {
+					return {
+						uuid: comp.uuid,
+						value: "1",
+					};
+				}) ?? [];
+			if (
+				!prod.ideaFactors ||
+				(prod.ideaFactors && prod.ideaFactors.length === 0)
+			) {
+				prod.ideaFactors = [
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
+				];
+			}
+		});
+		if (data) {
+			setUserProduct(data);
+		}
+		setUserProduct(data ?? emptyUserProduct);
+	}, [data]);
 
 	return (
 		<>
@@ -31,9 +89,11 @@ const BlueOcean = () => {
 						<div className='content-container'>
 							<div className='left-content'>
 								<BlueOceanContent
+									userProduct={userProduct}
 									dispatchProducts={(products) => {
 										setChartProducts(products);
 									}}
+									isLoading={isLoading}
 								/>
 							</div>
 							<div className='right-content'>
@@ -57,7 +117,14 @@ const BlueOcean = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!chartProducts?.length &&
+								{isLoading && (
+									<Spinner
+										message='Loading blue ocean charts...'
+										className='p-5 items-center text-xl'
+									/>
+								)}
+								{!isLoading &&
+									!!chartProducts?.length &&
 									chartProducts.map((product, index) => (
 										<div key={index} className='h-[300px]'>
 											<BlueOceanProductChart product={product} />
@@ -111,4 +178,4 @@ const BlueOcean = () => {
 	);
 };
 
-export default BlueOcean;
+export default BlueOceanCanvas;

@@ -7,12 +7,15 @@ import { useState } from "react";
 import Spinner from "../common/spinner";
 import { useFormik } from "formik";
 import { object, string } from "yup";
+import { useRouter } from "next/router";
 
 interface Props {
 	closeCallback: () => void;
 }
 
 const Signup = ({ closeCallback }: Props) => {
+	const router = useRouter();
+
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -85,6 +88,7 @@ const Signup = ({ closeCallback }: Props) => {
 		if (!result?.error) {
 			//handle successful login.. close sign up modal, and stay in place.
 			closeCallback();
+			router.push("org/goals");
 		} else {
 			setAuthState((old) => ({
 				...old,

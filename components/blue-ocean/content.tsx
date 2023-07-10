@@ -1,75 +1,32 @@
 import { FieldArray, Form, Formik } from "formik";
-import { useEffect, useMemo, useState } from "react";
 import BlueOceanProduct from "../../components/blue-ocean/product";
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { productPagesEnum } from "../../models/enums";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
-import { IIdeaFactor, IProduct } from "../../models/types";
+import { IProduct } from "../../models/types";
 import { string, object, array } from "yup";
 import Spinner from "../../components/common/spinner";
 import ZeroProductsWarning from "../../components/common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
 import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import ZeroProductCompetitorsWarning from "../common/zero-product-competitors-warning";
 
 interface Props {
+	userProduct: IUserProduct;
 	dispatchProducts: (products: IProduct[]) => void;
+	isLoading: boolean;
 }
 
-const BlueOceanContent = ({ dispatchProducts }: Props) => {
-	const { data: session }: any = useSession();
-
+const BlueOceanContent = ({
+	userProduct,
+	dispatchProducts,
+	isLoading,
+}: Props) => {
 	const router = useRouter();
 
-	const emptyUserProduct = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			products: [],
-		} as IUserProduct;
-	}, []);
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
-
 	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserProduct>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getAll,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		data?.products?.forEach((prod) => {
-			emptyFactor.competitors =
-				prod.competitors?.map((comp) => {
-					return {
-						uuid: comp.uuid,
-						value: "1",
-					};
-				}) ?? [];
-			if (
-				!prod.ideaFactors ||
-				(prod.ideaFactors && prod.ideaFactors.length === 0)
-			) {
-				prod.ideaFactors = [
-					{ ...emptyFactor, name: "" },
-					{ ...emptyFactor, name: "" },
-					{ ...emptyFactor, name: "" },
-				];
-			}
-		});
-		if (data) {
-			setUserProduct(data);
-		}
-		setUserProduct(data ?? emptyUserProduct);
-	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
@@ -92,13 +49,6 @@ const BlueOceanContent = ({ dispatchProducts }: Props) => {
 				},
 			}
 		);
-
-	const emptyFactor = useMemo(() => {
-		return {
-			name: "",
-			competitors: [],
-		} as IIdeaFactor;
-	}, []);
 
 	return (
 		<>

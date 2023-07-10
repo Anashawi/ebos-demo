@@ -1,4 +1,4 @@
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Login from "../components/auth/login";
 import Signup from "../components/auth/signup";
 import Modal from "../components/common/modal";
@@ -6,22 +6,15 @@ import useModalToggler from "../hooks/use-modal-toggler";
 import { faCirclePlay, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function Home() {
 	const { data: session }: any = useSession();
 
-	const [isSignupOn, toggleSignupModal] = useModalToggler();
-	const [isLoginOn, toggleLoginModal] = useModalToggler();
-
 	const router = useRouter();
 
-	useEffect(() => {
-		if (session?.user?.id) {
-			router.push("/org/goals");
-		}
-	}, [session]);
+	const [isSignupOn, toggleSignupModal] = useModalToggler();
+	const [isLoginOn, toggleLoginModal] = useModalToggler();
 
 	return (
 		<>
@@ -62,30 +55,49 @@ export default function Home() {
 										/>
 									</div>
 								</div>
-								<div className='w-[90%] gap-7 flex justify-between'>
-									<div
-										onClick={() => toggleSignupModal()}
-										className='w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400 cursor-pointer hover:shadow-lg transition duration-200'>
-										<p className='grow text-white'>Register</p>
-										<div className='p-2 bg-primary-400 rounded-full border border-gray-200'>
-											<FontAwesomeIcon
-												className='w-[1rem] h-[1rem] text-gray-200 rounded-full'
-												icon={faAngleRight}
-											/>
+								{!!session?.user?.id && (
+									<div className='w-[90%] gap-7 flex justify-end'>
+										<div
+											onClick={() => {
+												router.push("org/goals");
+											}}
+											className='w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400  cursor-pointer hover:shadow-lg transition duration-200'>
+											<p className='grow text-white'>Start</p>
+											<div className='p-2 bg-primary-400 rounded-full border border-gray-200'>
+												<FontAwesomeIcon
+													className='w-[1rem] h-[1rem] text-gray-200 rounded-full'
+													icon={faAngleRight}
+												/>
+											</div>
 										</div>
 									</div>
-									<div
-										onClick={() => toggleLoginModal()}
-										className='w-[45%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-dark-200 cursor-pointer hover:shadow-lg transition duration-200'>
-										<p className='grow text-white'>Log In</p>
-										<div className='p-2 bg-dark-200 rounded-full border border-gray-200'>
-											<FontAwesomeIcon
-												className='w-[1rem] h-[1rem] text-gray-200 rounded-full'
-												icon={faAngleRight}
-											/>
+								)}
+								{!session?.user?.id && (
+									<div className='w-[90%] gap-7 flex justify-between'>
+										<div
+											onClick={() => toggleSignupModal()}
+											className='w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400 cursor-pointer hover:shadow-lg transition duration-200'>
+											<p className='grow text-white'>Register</p>
+											<div className='p-2 bg-primary-400 rounded-full border border-gray-200'>
+												<FontAwesomeIcon
+													className='w-[1rem] h-[1rem] text-gray-200 rounded-full'
+													icon={faAngleRight}
+												/>
+											</div>
+										</div>
+										<div
+											onClick={() => toggleLoginModal()}
+											className='w-[45%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-dark-200 cursor-pointer hover:shadow-lg transition duration-200'>
+											<p className='grow text-white'>Log In</p>
+											<div className='p-2 bg-dark-200 rounded-full border border-gray-200'>
+												<FontAwesomeIcon
+													className='w-[1rem] h-[1rem] text-gray-200 rounded-full'
+													icon={faAngleRight}
+												/>
+											</div>
 										</div>
 									</div>
-								</div>
+								)}
 							</div>
 						</div>
 					</div>

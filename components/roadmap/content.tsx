@@ -103,7 +103,7 @@ const RoadMapContent = ({
 							</div>
 						</div>
 						<ul className='flex flex-col overflow-auto pb-5'>
-							{!userIdeas.ideas.length && !isLoading && (
+							{!isLoading && !userIdeas.ideas.length && (
 								<div className='w-full flex items-center'>
 									<p className='text-xl text-center italic'>
 										Start adding your ideas...
@@ -176,7 +176,7 @@ const RoadMapContent = ({
 													);
 													dispatchUserIdeas({ ...userIdeas });
 												}}
-												className='w-[3.75rem] h-[3.75rem] inline-flex justify-center items-center rounded-full bg-gray-200 cursor-pointer text-gray-500 hover:text-dark-400'>
+												className='w-[3.75rem] h-[3.75rem] inline-flex justify-center items-center rounded-full bg-gray-200 cursor-pointer text-dark-300 hover:text-dark-400'>
 												<FontAwesomeIcon
 													icon={faTimes}
 													className='w-4'

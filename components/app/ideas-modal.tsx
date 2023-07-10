@@ -119,7 +119,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 											className='flex items-center gap-3 text-lg p-3'
 											type='button'>
 											<FontAwesomeIcon
-												className='w-4 h-auto cursor-pointer hover:text-dark-400'
+												className='w-4 h-auto cursor-pointer text-dark-300 hover:text-dark-400'
 												icon={faTimes}
 											/>
 										</button>

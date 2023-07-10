@@ -7,15 +7,44 @@ import Video from "../../components/disruption/video";
 import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
 import ProductsContent from "../../components/products/content";
-import { useState } from "react";
-import { IProduct } from "../../models/types";
 import useFuturesChart from "../../hooks/use-futures-chart";
 import Chart from "react-google-charts";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import * as clientApi from "../../http-client/products.client";
+import { IUserProduct } from "../../models/user-product";
+import { IProduct } from "../../models/types";
+import { useSession } from "next-auth/react";
+import Spinner from "../../components/common/spinner";
 
 const Products = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+
+	const emptyUserProduct = {
+		id: "",
+		userId: session?.user?.id,
+		products: [],
+	} as IUserProduct;
+
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
+
+	const { data, isLoading } = useQuery<IUserProduct>({
+		queryKey: [clientApi.Keys.UserProduct, userProduct.id],
+		queryFn: clientApi.getAll,
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		if (data) {
+			setUserProduct(data);
+		}
+	}, [data]);
 
 	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
@@ -35,7 +64,9 @@ const Products = () => {
 						<div className='content-container'>
 							<div className='left-content'>
 								<ProductsContent
+									userProduct={userProduct}
 									dispatchChartProducts={setChartProducts}
+									isLoading={isLoading}
 								/>
 							</div>
 							<div className='right-content'>
@@ -59,7 +90,13 @@ const Products = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!chartProducts?.length && (
+								{isLoading && (
+									<Spinner
+										message='Loading products chart...'
+										className='p-5 items-center text-xl'
+									/>
+								)}
+								{!isLoading && !!chartProducts?.length && (
 									<div className='h-[500px]'>
 										<Chart {...chart} legendToggle />
 									</div>

@@ -1,72 +1,32 @@
 import { FieldArray, Form, Formik } from "formik";
-import { useEffect, useMemo, useState } from "react";
 import RedOceanProduct from "../../components/red-ocean/product";
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { productPagesEnum } from "../../models/enums";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
-import { IFactor, IProduct } from "../../models/types";
+import { IProduct } from "../../models/types";
 import { string, object, array } from "yup";
 import Spinner from "../../components/common/spinner";
 import ZeroProductsWarning from "../../components/common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
 import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import ZeroProductCompetitorsWarning from "../common/zero-product-competitors-warning";
 
 interface Props {
-	dispatchProducts: (products: IProduct[]) => void;
+	userProduct: IUserProduct;
+	dispatchChartProducts: (products: IProduct[]) => void;
+	isLoading: boolean;
 }
 
-const RedOceanContent = ({ dispatchProducts }: Props) => {
-	const { data: session }: any = useSession();
-
+const RedOceanContent = ({
+	userProduct,
+	dispatchChartProducts,
+	isLoading,
+}: Props) => {
 	const router = useRouter();
 
-	const emptyUserProduct = useMemo(() => {
-		return {
-			id: "",
-			userId: session?.user?.id,
-			products: [],
-		} as IUserProduct;
-	}, []);
-
-	const [userProduct, setUserProduct] =
-		useState<IUserProduct>(emptyUserProduct);
-
 	const queryClient = useQueryClient();
-
-	const { data, isLoading } = useQuery<IUserProduct>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getAll,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
-
-	useEffect(() => {
-		data?.products?.forEach((prod) => {
-			emptyFactor.competitors =
-				prod.competitors?.map((comp) => {
-					return {
-						uuid: comp.uuid,
-						value: "1",
-					};
-				}) ?? [];
-			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
-				prod.factors = [
-					{ ...emptyFactor, name: "" },
-					{ ...emptyFactor, name: "" },
-					{ ...emptyFactor, name: "" },
-				];
-			}
-		});
-		if (data) {
-			setUserProduct(data);
-			dispatchProducts(data.products);
-		}
-	}, [data]);
 
 	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
 		useMutation(
@@ -89,13 +49,6 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 				},
 			}
 		);
-
-	const emptyFactor = useMemo(() => {
-		return {
-			name: "",
-			competitors: [],
-		} as IFactor;
-	}, []);
 
 	return (
 		<>
@@ -232,7 +185,7 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 
 							<FormikContextChild
 								dispatch={(values) => {
-									dispatchProducts(cloneDeep(values.products));
+									dispatchChartProducts(cloneDeep(values.products));
 								}}
 							/>
 						</Form>

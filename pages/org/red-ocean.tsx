@@ -9,14 +9,70 @@ import VerticalNavbar from "../../components/common/vertical-navbar";
 import Navbar from "../../components/common/navbar";
 import RedOceanContent from "../../components/red-ocean/content";
 import RedOceanProductChart from "../../components/red-ocean/product-chart";
-import { IProduct } from "../../models/types";
+import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { IUserProduct } from "../../models/user-product";
+import * as clientApi from "../../http-client/products.client";
+import { IFactor, IProduct } from "../../models/types";
+import Spinner from "../../components/common/spinner";
 
 const RedOceanCanvas = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
+	const emptyFactor = useMemo(() => {
+		return {
+			name: "",
+			competitors: [],
+		} as IFactor;
+	}, []);
+
+	const emptyUserProduct = useMemo(() => {
+		return {
+			id: "",
+			userId: session?.user?.id,
+			products: [],
+		} as IUserProduct;
+	}, []);
+
+	const [userProduct, setUserProduct] =
+		useState<IUserProduct>(emptyUserProduct);
+
 	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+
+	const { data, isLoading } = useQuery<IUserProduct>({
+		queryKey: [clientApi.Keys.All],
+		queryFn: clientApi.getAll,
+		refetchOnWindowFocus: false,
+		enabled: !!session?.user?.id,
+	});
+
+	useEffect(() => {
+		data?.products?.forEach((prod) => {
+			emptyFactor.competitors =
+				prod.competitors?.map((comp) => {
+					return {
+						uuid: comp.uuid,
+						value: "1",
+					};
+				}) ?? [];
+			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
+				prod.factors = [
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
+					{ ...emptyFactor, name: "" },
+				];
+			}
+		});
+		if (data) {
+			setUserProduct(data);
+			setChartProducts(data.products);
+		}
+	}, [data]);
 
 	return (
 		<>
@@ -30,9 +86,11 @@ const RedOceanCanvas = () => {
 						<div className='content-container'>
 							<div className='left-content'>
 								<RedOceanContent
-									dispatchProducts={(products) => {
+									userProduct={userProduct}
+									dispatchChartProducts={(products) => {
 										setChartProducts(products);
 									}}
+									isLoading={isLoading}
 								/>
 							</div>
 							<div className='right-content'>
@@ -56,7 +114,14 @@ const RedOceanCanvas = () => {
 										Resource Videos
 									</button>
 								</div>
-								{!!chartProducts?.length &&
+								{isLoading && (
+									<Spinner
+										message='Loading red ocean charts...'
+										className='p-5 items-center text-xl'
+									/>
+								)}
+								{!isLoading &&
+									!!chartProducts?.length &&
 									chartProducts.map((product, index) => (
 										<div key={index} className='h-[300px]'>
 											<RedOceanProductChart product={product} />

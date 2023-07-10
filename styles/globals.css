@@ -218,7 +218,7 @@ input[type="text"]:focus:not("no-border") {
   }
 
   .dark-input {
-    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-dark-300 font-hero-semibold;
+    @apply w-full px-7 py-4 bg-[#ebeced] rounded-full border border-dark-100 outline-none caret-dark-blue text-xl text-dark-300 font-hero-semibold cursor-default;
   }
  
   .title-header {

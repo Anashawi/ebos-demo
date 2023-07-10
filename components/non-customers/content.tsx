@@ -114,7 +114,7 @@ const NonCustomersContent = ({
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
 										<p className='p-5 text-dark-400 text-xl text-center italic'>
-											Start adding soon non customers...
+											Start adding soon to be non customers...
 										</p>
 									</div>
 								)}
@@ -178,7 +178,7 @@ const NonCustomersContent = ({
 												className='btn-delete'>
 												<FontAwesomeIcon
 													icon={faTimes}
-													className='w-4 hover:text-dark-400'
+													className='w-4 text-dark-300 hover:text-dark-400'
 												/>
 											</button>
 										</li>
@@ -274,7 +274,7 @@ const NonCustomersContent = ({
 												className='btn-delete'>
 												<FontAwesomeIcon
 													icon={faTimes}
-													className='w-4 hover:text-dark-400'
+													className='w-4 text-dark-300 hover:text-dark-400'
 												/>
 											</button>
 										</li>
@@ -371,7 +371,7 @@ const NonCustomersContent = ({
 												className='btn-delete'>
 												<FontAwesomeIcon
 													icon={faTimes}
-													className='w-4 hover:text-dark-400'
+													className='w-4 text-dark-300 hover:text-dark-400'
 												/>
 											</button>
 										</li>

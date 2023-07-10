@@ -10,6 +10,8 @@ interface Props {
 }
 
 const Login = ({ closeCallback }: Props) => {
+	const router = useRouter();
+
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -52,6 +54,7 @@ const Login = ({ closeCallback }: Props) => {
 		if (!result?.error) {
 			//login is successful.. close login model
 			closeCallback();
+			router.push("org/goals");
 		} else {
 			setAuthState((old) => ({
 				...old,

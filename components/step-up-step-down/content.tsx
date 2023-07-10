@@ -173,7 +173,7 @@ const StepUpStepDownContent = ({
 											className='btn-delete'>
 											<FontAwesomeIcon
 												icon={faTimes}
-												className='w-4 hover:text-dark-400'
+												className='w-4 text-dark-300 hover:text-dark-400'
 											/>
 										</button>
 									</li>
@@ -269,7 +269,7 @@ const StepUpStepDownContent = ({
 											className='btn-delete'>
 											<FontAwesomeIcon
 												icon={faTimes}
-												className='w-4 hover:text-dark-400'
+												className='w-4 text-dark-300 hover:text-dark-400'
 											/>
 										</button>
 									</li>
@@ -363,7 +363,7 @@ const StepUpStepDownContent = ({
 											className='btn-delete'>
 											<FontAwesomeIcon
 												icon={faTimes}
-												className='w-4 hover:text-dark-400'
+												className='w-4 text-dark-300 hover:text-dark-400'
 											/>
 										</button>
 									</li>

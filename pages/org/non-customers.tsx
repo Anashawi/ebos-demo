@@ -13,6 +13,7 @@ import { IUserNonCustomers } from "../../models/user-non-customers";
 import { useSession } from "next-auth/react";
 import * as clientApi from "../../http-client/non-customers.client";
 import { useQuery } from "@tanstack/react-query";
+import Spinner from "../../components/common/spinner";
 
 const NonCustomers = () => {
 	const { data: session }: any = useSession();
@@ -84,10 +85,17 @@ const NonCustomers = () => {
 										Resource Videos
 									</button>
 								</div>
-								<NonCustomersReview
-									userNonCustomers={userNonCustomers}
-									isLoading={isLoading}
-								/>
+								{isLoading && (
+									<Spinner
+										message='Loading non-customers...'
+										className='p-5 items-center text-xl'
+									/>
+								)}
+								{!isLoading && (
+									<NonCustomersReview
+										userNonCustomers={userNonCustomers}
+									/>
+								)}
 							</div>
 						</div>
 					</div>

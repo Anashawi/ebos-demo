@@ -1,12 +1,10 @@
-import router from "next/router";
 import { IUserNonCustomers } from "../../models/user-non-customers";
 
 interface Props {
 	userNonCustomers: IUserNonCustomers;
-	isLoading: boolean;
 }
 
-const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
+const NonCustomersReview = ({ userNonCustomers }: Props) => {
 	return (
 		<>
 			<div className='flex flex-col'>
@@ -15,10 +13,10 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 						Soon to be non-customers
 					</h6>
 					<ul className='flex flex-col gap-5'>
-						{!userNonCustomers.soonNonCustomers?.length && !isLoading && (
+						{!userNonCustomers.soonNonCustomers?.length && (
 							<div className='w-full flex justify-start items-center'>
 								<p className='px-5 text-lg text-center italic'>
-									Start adding soon non customers...
+									Start adding soon to be non customers...
 								</p>
 							</div>
 						)}
@@ -44,14 +42,13 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 						Refusing non-customers
 					</h6>
 					<ul className='flex flex-col gap-5'>
-						{!userNonCustomers.refusingNonCustomers?.length &&
-							!isLoading && (
-								<div className='w-full flex justify-start items-center'>
-									<p className='px-5 text-lg text-center italic'>
-										Start adding refusing non-customers...
-									</p>
-								</div>
-							)}
+						{!userNonCustomers.refusingNonCustomers?.length && (
+							<div className='w-full flex justify-start items-center'>
+								<p className='px-5 text-lg text-center italic'>
+									Start adding refusing non-customers...
+								</p>
+							</div>
+						)}
 						{!!userNonCustomers.refusingNonCustomers?.length &&
 							userNonCustomers.refusingNonCustomers.map(
 								(refusingCustomer, index) => (
@@ -75,14 +72,13 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 					</h6>
 
 					<ul className='flex flex-col gap-5'>
-						{!userNonCustomers.unwantedNonCustomers?.length &&
-							!isLoading && (
-								<div className='w-full flex justify-start items-center'>
-									<p className='px-5 text-lg text-center italic'>
-										Start adding unwanted non-customers...
-									</p>
-								</div>
-							)}
+						{!userNonCustomers.unwantedNonCustomers?.length && (
+							<div className='w-full flex justify-start items-center'>
+								<p className='px-5 text-lg text-center italic'>
+									Start adding unwanted non-customers...
+								</p>
+							</div>
+						)}
 						{!!userNonCustomers.unwantedNonCustomers?.length &&
 							userNonCustomers.unwantedNonCustomers.map(
 								(unwantedCustomer, index) => (

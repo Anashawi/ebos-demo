@@ -1,8 +1,10 @@
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const VerticalNavbar = () => {
+	const { data: session }: any = useSession();
+	console.log("session", session);
 	return (
 		<nav className='h-[85%] w-[100px] flex flex-col gap-10 justify-between items-center p-5 py-12 bg-white rounded-full'>
 			<ul className='flex flex-col gap-5 items-center'>
@@ -57,7 +59,14 @@ const VerticalNavbar = () => {
 					});
 				}}
 				className='rounded-full bg-slate-400 w-[5rem] h-[5rem]'>
-				{/* <Image src='' alt='Profile Pic' /> */}
+				{session?.user?.profilePic && (
+					<Image
+						src={session.user.profilePic}
+						alt='Profile Pic'
+						width={55}
+						height={55}
+					/>
+				)}
 			</li>
 		</nav>
 	);
