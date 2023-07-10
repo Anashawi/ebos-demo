@@ -206,7 +206,7 @@ input[type="text"]:focus:not("no-border") {
   }
   
   .pill-primary-300 {
-    @apply flex gap-5 justify-between items-center p-5 relative bg-primary-300 text-white text-lg rounded-full;
+    @apply flex gap-5 justify-between items-center pl-6 pr-4 py-3 relative bg-primary-300 text-white text-lg rounded-full;
   }
   
   .pill-yellow-50 {

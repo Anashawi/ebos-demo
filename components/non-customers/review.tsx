@@ -10,14 +10,14 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 	return (
 		<>
 			<div className='flex flex-col'>
-				<div className='flex flex-col gap-5 my-5 p-5 bg-dark-50 rounded-2xl'>
-					<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
+				<div className='min-h-[15rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
+					<h6 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 						Soon to be non-customers
 					</h6>
 					<ul className='flex flex-col gap-5'>
 						{!userNonCustomers.soonNonCustomers?.length && !isLoading && (
 							<div className='w-full flex justify-start items-center'>
-								<p className='py-5 text-lg text-center italic'>
+								<p className='px-5 text-lg text-center italic'>
 									Start adding soon non customers...
 								</p>
 							</div>
@@ -39,21 +39,21 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 							)}
 					</ul>
 				</div>
-				<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-					<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
+				<div className='min-h-[15rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
+					<h6 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 						Refusing non-customers
 					</h6>
 					<ul className='flex flex-col gap-5'>
-						{!userNonCustomers.refusingCustomers?.length &&
+						{!userNonCustomers.refusingNonCustomers?.length &&
 							!isLoading && (
 								<div className='w-full flex justify-start items-center'>
-									<p className='py-5 text-lg text-center italic'>
+									<p className='px-5 text-lg text-center italic'>
 										Start adding refusing non-customers...
 									</p>
 								</div>
 							)}
-						{!!userNonCustomers.refusingCustomers?.length &&
-							userNonCustomers.refusingCustomers.map(
+						{!!userNonCustomers.refusingNonCustomers?.length &&
+							userNonCustomers.refusingNonCustomers.map(
 								(refusingCustomer, index) => (
 									<li
 										key={index}
@@ -69,22 +69,22 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 							)}
 					</ul>
 				</div>
-				<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-					<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
+				<div className='min-h-[15rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
+					<h6 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 						Unwanted non-customers
 					</h6>
 
 					<ul className='flex flex-col gap-5'>
-						{!userNonCustomers.unwantedCustomers?.length &&
+						{!userNonCustomers.unwantedNonCustomers?.length &&
 							!isLoading && (
 								<div className='w-full flex justify-start items-center'>
-									<p className='py-5 text-lg text-center italic'>
+									<p className='px-5 text-lg text-center italic'>
 										Start adding unwanted non-customers...
 									</p>
 								</div>
 							)}
-						{!!userNonCustomers.unwantedCustomers?.length &&
-							userNonCustomers.unwantedCustomers.map(
+						{!!userNonCustomers.unwantedNonCustomers?.length &&
+							userNonCustomers.unwantedNonCustomers.map(
 								(unwantedCustomer, index) => (
 									<li
 										key={index}
@@ -100,18 +100,6 @@ const NonCustomersReview = ({ userNonCustomers, isLoading }: Props) => {
 							)}
 					</ul>
 				</div>
-				{!!userNonCustomers.id && (
-					<div
-						className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
-						onClick={() => {
-							router.push("../org/step-up-step-down");
-						}}>
-						<span className='text-xl text-md text-white'>
-							Go to next -{" "}
-							<span className='text-white'>Step-up step-down model</span>
-						</span>
-					</div>
-				)}
 			</div>
 		</>
 	);

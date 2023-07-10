@@ -174,7 +174,7 @@ const GoalsContent = () => {
 										className='w-full h-auto'
 									/>
 								</div>
-								<h3 className='text-xl text-gray-400 font-normal'>
+								<h3 className='text-xl text-dark-300 font-normal'>
 									Visualize success on this date, What does it look
 									like...?
 								</h3>
@@ -192,7 +192,7 @@ const GoalsContent = () => {
 												)}
 												{!values.goals?.length && !isLoading && (
 													<div className='w-full flex items-center'>
-														<p className='text-2xl text-center text-gray-400 italic'>
+														<p className='pb-2 text-xl text-center italic'>
 															Start adding your goals...
 														</p>
 													</div>

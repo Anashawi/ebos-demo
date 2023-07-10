@@ -110,7 +110,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 								{ideaFactors.map((idea: IIdea, index: number) => (
 									<li
 										key={index}
-										className='flex gap-5 justify-between items-center text-gray-800 border-t'>
+										className='flex gap-5 justify-between items-center text-dark-200 border-t'>
 										<span className='text-xl'> {idea.name} </span>
 										<button
 											onClick={() => {
@@ -119,7 +119,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 											className='flex items-center gap-3 text-lg p-3'
 											type='button'>
 											<FontAwesomeIcon
-												className='w-4 h-auto cursor-pointer hover:text-rose-800'
+												className='w-4 h-auto cursor-pointer hover:text-dark-400'
 												icon={faTimes}
 											/>
 										</button>

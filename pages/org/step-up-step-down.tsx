@@ -13,6 +13,7 @@ import Navbar from "../../components/common/navbar";
 import VerticalNavbar from "../../components/common/vertical-navbar";
 import StepUpStepDownContent from "../../components/step-up-step-down/content";
 import StepUpStepDownCustomersReview from "../../components/step-up-step-down/customers-review";
+import Spinner from "../../components/common/spinner";
 
 const Analysis = () => {
 	const { data: session }: any = useSession();
@@ -40,14 +41,6 @@ const Analysis = () => {
 	});
 
 	useEffect(() => {
-		if (!data) {
-			setUserAnalysis((prevValue) => {
-				prevValue.above = ["", "", ""];
-				prevValue.customers = ["", "", ""];
-				prevValue.below = ["", "", ""];
-				return prevValue;
-			});
-		}
 		if (data) {
 			setUserAnalysis(data);
 		}
@@ -61,7 +54,7 @@ const Analysis = () => {
 						<VerticalNavbar />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.nonCustomers} />
+						<Navbar selectedNode={navbarNodesEnum.stepUpStepDownModel} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<StepUpStepDownContent
@@ -91,10 +84,18 @@ const Analysis = () => {
 										Resource Videos
 									</button>
 								</div>
-								<StepUpStepDownCustomersReview
-									userAnalysis={userAnalysis}
-									isLoading={isLoading}
-								/>
+								{isLoading && (
+									<Spinner
+										className='flex items-center px-1 text-2xl'
+										message='Loading customers...'
+									/>
+								)}
+								{!isLoading && (
+									<StepUpStepDownCustomersReview
+										userAnalysis={userAnalysis}
+										isLoading={isLoading}
+									/>
+								)}
 							</div>
 						</div>
 					</div>

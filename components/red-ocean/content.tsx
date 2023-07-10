@@ -13,6 +13,8 @@ import ZeroProductsWarning from "../../components/common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
 import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import ZeroProductCompetitorsWarning from "../common/zero-product-competitors-warning";
 
 interface Props {
 	dispatchProducts: (products: IProduct[]) => void;
@@ -97,11 +99,7 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 
 	return (
 		<>
-			<div className='flex'>
-				<div className='mb-5'>
-					<h3 className='title-header'>Red Ocean Canvas</h3>
-				</div>
-			</div>
+			<h3 className='title-header'>Red Ocean Canvas</h3>
 			<Formik
 				initialValues={{
 					products: userProduct.products,
@@ -165,10 +163,22 @@ const RedOceanContent = ({ dispatchProducts }: Props) => {
 													values.products.map(
 														(product, productIndex) => (
 															<div key={productIndex}>
-																<RedOceanProduct
-																	product={product}
-																	index={productIndex}
-																/>
+																{!!product.competitors
+																	?.length && (
+																	<RedOceanProduct
+																		product={product}
+																		index={productIndex}
+																	/>
+																)}
+																{!product.competitors
+																	?.length && (
+																	<>
+																		<h3 className='text-[1.75rem] font-hero-semibold'>
+																			{product.name}
+																		</h3>
+																		<ZeroProductCompetitorsWarning />
+																	</>
+																)}
 															</div>
 														)
 													)}

@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -5,44 +6,43 @@ const VerticalNavbar = () => {
 	return (
 		<nav className='h-[85%] w-[100px] flex flex-col gap-10 justify-between items-center p-5 py-12 bg-white rounded-full'>
 			<ul className='flex flex-col gap-5 items-center'>
-				<li className='w-full'>
+				<li className='w-full flex justify-center'>
 					<Link href='/'>
 						<Image
-							width='100'
-							height='100'
-							src='/ilogo.webp'
+							width='55'
+							height='55'
+							src='/cp.svg'
 							alt='CaseInPoint'
-							className='w-full h-auto'
 						/>
 					</Link>
 				</li>
-				<li className='w-full'>
+				<li className='w-full flex justify-center'>
 					<Link href='/'>
 						<Image
-							width='100'
-							height='100'
+							width='55'
+							height='55'
 							src='/dashboard.svg'
 							alt='Dashboard'
 							className='w-full h-auto'
 						/>
 					</Link>
 				</li>
-				<li className='w-full'>
+				<li className='w-full flex justify-center'>
 					<Link href='/'>
 						<Image
-							width='100'
-							height='100'
+							width='55'
+							height='55'
 							src='/settings.svg'
 							alt='Settings'
 							className='w-full h-auto'
 						/>
 					</Link>
 				</li>
-				<li className='w-full'>
+				<li className='w-full flex justify-center'>
 					<Link href='/'>
 						<Image
-							width='100'
-							height='100'
+							width='55'
+							height='55'
 							src='/consultations.svg'
 							alt='Consultations'
 							className='w-full h-auto'
@@ -50,7 +50,13 @@ const VerticalNavbar = () => {
 					</Link>
 				</li>
 			</ul>
-			<li className='rounded-full bg-slate-400 w-[5rem] h-[5rem]'>
+			<li
+				onClick={() => {
+					signOut({
+						callbackUrl: "/",
+					});
+				}}
+				className='rounded-full bg-slate-400 w-[5rem] h-[5rem]'>
 				{/* <Image src='' alt='Profile Pic' /> */}
 			</li>
 		</nav>

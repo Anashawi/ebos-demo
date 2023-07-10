@@ -47,15 +47,15 @@ const DisruptionContent = ({
 
 			<div className='pill-yellow-50 p-3 mb-5'>
 				<div className='w-[3rem] h-[3rem]'>
-									<Image
-										src='/bulb.svg'
-										alt='Bulb Icon'
-										width={0}
-										height={0}
-										className='w-full h-auto'
-									/>
-								</div>
-				<h3 className='text-xl text-gray-400 font-normal'>
+					<Image
+						src='/bulb.svg'
+						alt='Bulb Icon'
+						width={0}
+						height={0}
+						className='w-full h-auto'
+					/>
+				</div>
+				<h3 className='text-xl text-dark-300 font-normal'>
 					Watch help videos then update your ideas accordingly. Submit for
 					feedback.
 				</h3>
@@ -244,28 +244,44 @@ const DisruptionContent = ({
 				type={takeawayTypeEnums.disruption}
 			/>
 
-			<div className='mt-20 flex gap-5 justify-between'>
-				{(session?.user as any)?.role === "admin" && (
+			{(session?.user as any)?.role !== "admin" && (
+				<div className='mt-20 flex gap-5 justify-end'>
+					{!!videos.id && (
+						<div
+							className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+							onClick={() => {
+								router.push("../org/voice-of-customers");
+							}}>
+							<span className='text-xl text-md text-white'>
+								Go to next -{" "}
+								<span className='text-white'>Voice of Customers</span>
+							</span>
+						</div>
+					)}
+				</div>
+			)}
+			{(session?.user as any)?.role === "admin" && (
+				<div className='mt-20 flex gap-5 justify-between'>
 					<button
 						className='btn-primary-light'
 						onClick={() => toggleEditUrlsModal(true)}>
 						<span>Edit video Urls</span>
 						<FontAwesomeIcon className='w-7' icon={faEdit} />
 					</button>
-				)}
-				{!!videos.id && (
-					<div
-						className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
-						onClick={() => {
-							router.push("../org/voice-of-customers");
-						}}>
-						<span className='text-xl text-md text-white'>
-							Go to next -{" "}
-							<span className='text-white'>Voice of Customers</span>
-						</span>
-					</div>
-				)}
-			</div>
+					{!!videos.id && (
+						<div
+							className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+							onClick={() => {
+								router.push("../org/voice-of-customers");
+							}}>
+							<span className='text-xl text-md text-white'>
+								Go to next -{" "}
+								<span className='text-white'>Voice of Customers</span>
+							</span>
+						</div>
+					)}
+				</div>
+			)}
 		</>
 	);
 };

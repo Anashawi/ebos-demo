@@ -33,7 +33,9 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 			<div>
 				<div key={index} className='p-5 bg-dark-50 rounded-2xl'>
 					<div className='flex justify-between mb-10'>
-						<h2 className='text-2xl text-dark-400 font-hero-bold'>{product.name}</h2>
+						<h2 className='text-[1.75rem] text-dark-400 font-hero-bold'>
+							{product.name}
+						</h2>
 					</div>
 					<FieldArray name={`products.${index}.factors`}>
 						{({ remove, push }) => (
@@ -141,20 +143,6 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 						)}
 					</FieldArray>
 				</div>
-			</div>
-			<div className='flex flex-col justify-between gap-12 px-10'>
-				{!product.competitors?.length && (
-					<div className='flex flex-col gap-10 w-full h-full items-center'>
-						<p className='text-xl p-10 text-center bg-rose-50 text-rose-500'>
-							This product has no competitors yet !
-						</p>
-						<a
-							href='./competitors'
-							className='text-xl text-white hover:text-white hover:no-underline underline'>
-							Go Add Competitors
-						</a>
-					</div>
-				)}
 			</div>
 		</>
 	);

@@ -25,9 +25,9 @@ const NonCustomersContent = ({
 	const router = useRouter();
 
 	const [nonCustomerToBeAdded, setNonCustomerToBeAdded] = useState<string>("");
-	const [refusingCustomerToBeAdded, setRefusingCustomerToBeAdded] =
+	const [refusingNonCustomerToBeAdded, setRefusingNonCustomerToBeAdded] =
 		useState<string>("");
-	const [unwantedCustomerToBeAdded, setUnwantedCustomerToBeAdded] =
+	const [unwantedNonCustomerToBeAdded, setUnwantedNonCustomerToBeAdded] =
 		useState<string>("");
 
 	const queryClient = useQueryClient();
@@ -91,7 +91,7 @@ const NonCustomersContent = ({
 			{!isLoading && (
 				<form className='flex flex-col'>
 					<div className='flex flex-col gap-5 my-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
+						<h6 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
 							Soon to be non-customers
 						</h6>
 						<div className='pill-yellow-50 p-3'>
@@ -104,7 +104,7 @@ const NonCustomersContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-gray-400 font-normal'>
+							<h3 className='text-xl text-dark-300 font-normal'>
 								Who are the customers most likely to be left out in this
 								transformation ?
 							</h3>
@@ -113,7 +113,7 @@ const NonCustomersContent = ({
 							{!userNonCustomers.soonNonCustomers?.length &&
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
-										<p className='py-5 text-lg text-center italic'>
+										<p className='p-5 text-dark-400 text-xl text-center italic'>
 											Start adding soon non customers...
 										</p>
 									</div>
@@ -178,7 +178,7 @@ const NonCustomersContent = ({
 												className='btn-delete'>
 												<FontAwesomeIcon
 													icon={faTimes}
-													className='w-4 hover:text-rose-800'
+													className='w-4 hover:text-dark-400'
 												/>
 											</button>
 										</li>
@@ -187,7 +187,7 @@ const NonCustomersContent = ({
 						</ul>
 					</div>
 					<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
+						<h6 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
 							Refusing non-customers
 						</h6>
 						<div className='pill-yellow-50 p-3'>
@@ -200,16 +200,16 @@ const NonCustomersContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-gray-400 font-normal'>
+							<h3 className='text-xl text-dark-300 font-normal'>
 								Who are the customers most likely to be refusing of this
 								transformation ?
 							</h3>
 						</div>
 						<ul className='flex flex-col gap-5'>
-							{!userNonCustomers.refusingCustomers?.length &&
+							{!userNonCustomers.refusingNonCustomers?.length &&
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
-										<p className='py-5 text-lg text-center italic'>
+										<p className='p-5 text-dark-400 text-xl text-center italic'>
 											Start adding refusing non-customers...
 										</p>
 									</div>
@@ -219,25 +219,25 @@ const NonCustomersContent = ({
 									type='text'
 									className='w-[69%] light-input'
 									placeholder='Enter refusing Non-Customer here'
-									value={refusingCustomerToBeAdded}
+									value={refusingNonCustomerToBeAdded}
 									onChange={(e) => {
-										setRefusingCustomerToBeAdded(e.target.value);
+										setRefusingNonCustomerToBeAdded(e.target.value);
 									}}
 								/>
 								<button
 									type='button'
 									onClick={() => {
-										userNonCustomers.refusingCustomers.push(
-											refusingCustomerToBeAdded
+										userNonCustomers.refusingNonCustomers.push(
+											refusingNonCustomerToBeAdded
 										);
 										dispatchUserNonCustomers({
 											...userNonCustomers,
 										} as IUserNonCustomers);
-										setRefusingCustomerToBeAdded("");
+										setRefusingNonCustomerToBeAdded("");
 									}}
-									disabled={!refusingCustomerToBeAdded}
+									disabled={!refusingNonCustomerToBeAdded}
 									className={
-										!!refusingCustomerToBeAdded
+										!!refusingNonCustomerToBeAdded
 											? "btn-primary"
 											: "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
 									}>
@@ -248,8 +248,8 @@ const NonCustomersContent = ({
 									Add more
 								</button>
 							</div>
-							{!!userNonCustomers.refusingCustomers?.length &&
-								userNonCustomers.refusingCustomers.map(
+							{!!userNonCustomers.refusingNonCustomers?.length &&
+								userNonCustomers.refusingNonCustomers.map(
 									(refusingCustomer, index) => (
 										<li
 											key={index}
@@ -263,8 +263,8 @@ const NonCustomersContent = ({
 											<button
 												type='button'
 												onClick={() => {
-													userNonCustomers.refusingCustomers =
-														userNonCustomers.refusingCustomers.filter(
+													userNonCustomers.refusingNonCustomers =
+														userNonCustomers.refusingNonCustomers.filter(
 															(nonC, i) => i !== index
 														);
 													dispatchUserNonCustomers({
@@ -274,7 +274,7 @@ const NonCustomersContent = ({
 												className='btn-delete'>
 												<FontAwesomeIcon
 													icon={faTimes}
-													className='w-4 hover:text-rose-800'
+													className='w-4 hover:text-dark-400'
 												/>
 											</button>
 										</li>
@@ -283,7 +283,7 @@ const NonCustomersContent = ({
 						</ul>
 					</div>
 					<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='f6 mb-2 text-3xl text-dark-400 font-semibold'>
+						<h6 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
 							Unwanted non-customers
 						</h6>
 						<div className='pill-yellow-50 p-3'>
@@ -296,17 +296,17 @@ const NonCustomersContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-gray-400 font-normal'>
+							<h3 className='text-xl text-dark-300 font-normal'>
 								Who are the customers you don&apos;t want in this
 								transformation ?
 							</h3>
 						</div>
 
 						<ul className='flex flex-col gap-5'>
-							{!userNonCustomers.unwantedCustomers?.length &&
+							{!userNonCustomers.unwantedNonCustomers?.length &&
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
-										<p className='py-5 text-lg text-center italic'>
+										<p className='p-5 text-dark-400 text-xl text-center italic'>
 											Start adding unwanted non-customers...
 										</p>
 									</div>
@@ -315,26 +315,26 @@ const NonCustomersContent = ({
 								<input
 									type='text'
 									className='w-[69%] light-input'
-									placeholder='Enter refusing Non-Customer here'
-									value={unwantedCustomerToBeAdded}
+									placeholder='Enter unwanted Non-Customer here'
+									value={unwantedNonCustomerToBeAdded}
 									onChange={(e) => {
-										setUnwantedCustomerToBeAdded(e.target.value);
+										setUnwantedNonCustomerToBeAdded(e.target.value);
 									}}
 								/>
 								<button
 									type='button'
 									onClick={() => {
-										userNonCustomers.unwantedCustomers.push(
-											unwantedCustomerToBeAdded
+										userNonCustomers.unwantedNonCustomers.push(
+											unwantedNonCustomerToBeAdded
 										);
 										dispatchUserNonCustomers({
 											...userNonCustomers,
 										} as IUserNonCustomers);
-										setUnwantedCustomerToBeAdded("");
+										setUnwantedNonCustomerToBeAdded("");
 									}}
-									disabled={!unwantedCustomerToBeAdded}
+									disabled={!unwantedNonCustomerToBeAdded}
 									className={
-										!!unwantedCustomerToBeAdded
+										!!unwantedNonCustomerToBeAdded
 											? "btn-primary"
 											: "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
 									}>
@@ -345,8 +345,8 @@ const NonCustomersContent = ({
 									Add more
 								</button>
 							</div>
-							{!!userNonCustomers.unwantedCustomers?.length &&
-								userNonCustomers.unwantedCustomers.map(
+							{!!userNonCustomers.unwantedNonCustomers?.length &&
+								userNonCustomers.unwantedNonCustomers.map(
 									(unwantedCustomer, index) => (
 										<li
 											key={index}
@@ -360,8 +360,8 @@ const NonCustomersContent = ({
 											<button
 												type='button'
 												onClick={() => {
-													userNonCustomers.unwantedCustomers =
-														userNonCustomers.unwantedCustomers.filter(
+													userNonCustomers.unwantedNonCustomers =
+														userNonCustomers.unwantedNonCustomers.filter(
 															(nonC, i) => i !== index
 														);
 													dispatchUserNonCustomers({
@@ -371,7 +371,7 @@ const NonCustomersContent = ({
 												className='btn-delete'>
 												<FontAwesomeIcon
 													icon={faTimes}
-													className='w-4 hover:text-rose-800'
+													className='w-4 hover:text-dark-400'
 												/>
 											</button>
 										</li>

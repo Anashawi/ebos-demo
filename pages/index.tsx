@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Login from "../components/auth/login";
 import Signup from "../components/auth/signup";
 import Modal from "../components/common/modal";
@@ -89,7 +89,7 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-					<div className='hidden xl:block w-[50%] bg-[url("/Home_CIP.svg")] bg-no-repeat bg-[length:100%_100%]'></div>
+					<div className='hidden xl:block w-[50%] bg-[url("/Bars.svg")] bg-no-repeat bg-cover'></div>
 				</div>
 			</div>
 

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "../../components/common/spinner";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 interface Props {
 	userAnalysis: IUserAnalysis;
@@ -86,15 +87,36 @@ const StepUpStepDownContent = ({
 			{!isLoading && (
 				<form className='flex flex-col gap-10'>
 					<div className='flex flex-col gap-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='text-dark-400 text-2xl font-semibold'>
+						<h6 className='text-dark-400 text-[1.75rem] font-hero-semibold'>
 							10% above
 						</h6>
+						<div className='pill-yellow-50 p-3'>
+							<div className='w-[3rem] h-[3rem]'>
+								<Image
+									src='/bulb.svg'
+									alt='Bulb Icon'
+									width={0}
+									height={0}
+									className='w-full h-auto'
+								/>
+							</div>
+							<h3 className='text-xl text-dark-300 font-normal'>
+								Who are your customers if you step up 10% above?
+							</h3>
+						</div>
 						<ul className='flex flex-col gap-5'>
+							{!userAnalysis.above?.length && !isLoading && (
+								<div className='w-full flex justify-start items-center'>
+									<p className='p-5 text-dark-400 text-xl text-center italic'>
+										Start adding step up customers...
+									</p>
+								</div>
+							)}
 							<div className='w-full flex gap-5 items-center'>
 								<input
 									type='text'
 									className='w-[69%] light-input'
-									placeholder='Enter refusing Non-Customer here'
+									placeholder='Enter step up customer'
 									value={aboveCustomerToBeAdded}
 									onChange={(e) => {
 										setAboveCustomerToBeAdded(e.target.value);
@@ -151,7 +173,7 @@ const StepUpStepDownContent = ({
 											className='btn-delete'>
 											<FontAwesomeIcon
 												icon={faTimes}
-												className='w-4 hover:text-rose-800'
+												className='w-4 hover:text-dark-400'
 											/>
 										</button>
 									</li>
@@ -159,14 +181,35 @@ const StepUpStepDownContent = ({
 						</ul>
 					</div>
 					<div className='flex flex-col gap-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='text-dark-400 text-2xl font-semibold'>
+						<h6 className='text-dark-400 text-[1.75rem] font-hero-semibold'>
 							Your Customers
 						</h6>
+						<div className='pill-yellow-50 p-3'>
+							<div className='w-[3rem] h-[3rem]'>
+								<Image
+									src='/bulb.svg'
+									alt='Bulb Icon'
+									width={0}
+									height={0}
+									className='w-full h-auto'
+								/>
+							</div>
+							<h3 className='text-xl text-dark-300 font-normal'>
+								Who are your current customers?
+							</h3>
+						</div>
+						{!userAnalysis.customers?.length && !isLoading && (
+							<div className='w-full flex justify-start items-center'>
+								<p className='p-5 text-dark-400 text-xl text-center italic'>
+									Start adding current customers...
+								</p>
+							</div>
+						)}
 						<div className='w-full flex gap-5 items-center'>
 							<input
 								type='text'
 								className='w-[69%] light-input'
-								placeholder='Enter refusing Non-Customer here'
+								placeholder='Enter current customer'
 								value={currentCustomerToBeAdded}
 								onChange={(e) => {
 									setCurrentCustomerToBeAdded(e.target.value);
@@ -226,7 +269,7 @@ const StepUpStepDownContent = ({
 											className='btn-delete'>
 											<FontAwesomeIcon
 												icon={faTimes}
-												className='w-4 hover:text-rose-800'
+												className='w-4 hover:text-dark-400'
 											/>
 										</button>
 									</li>
@@ -234,14 +277,35 @@ const StepUpStepDownContent = ({
 						</ul>
 					</div>
 					<div className='flex flex-col gap-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='text-dark-400 text-2xl font-semibold'>
+						<h6 className='text-dark-400 text-[1.75rem] font-hero-semibold'>
 							10% below
 						</h6>
+						<div className='pill-yellow-50 p-3'>
+							<div className='w-[3rem] h-[3rem]'>
+								<Image
+									src='/bulb.svg'
+									alt='Bulb Icon'
+									width={0}
+									height={0}
+									className='w-full h-auto'
+								/>
+							</div>
+							<h3 className='text-xl text-dark-300 font-normal'>
+								Who are your customers if you step down 10% below?
+							</h3>
+						</div>
+						{!userAnalysis.below?.length && !isLoading && (
+							<div className='w-full flex justify-start items-center'>
+								<p className='p-5 text-dark-400 text-xl text-center italic'>
+									Start adding step down customers...
+								</p>
+							</div>
+						)}
 						<div className='w-full flex gap-5 items-center'>
 							<input
 								type='text'
 								className='w-[69%] light-input'
-								placeholder='Enter refusing Non-Customer here'
+								placeholder='Enter step down customer'
 								value={belowCustomerToBeAdded}
 								onChange={(e) => {
 									setBelowCustomerToBeAdded(e.target.value);
@@ -299,7 +363,7 @@ const StepUpStepDownContent = ({
 											className='btn-delete'>
 											<FontAwesomeIcon
 												icon={faTimes}
-												className='w-4 hover:text-rose-800'
+												className='w-4 hover:text-dark-400'
 											/>
 										</button>
 									</li>

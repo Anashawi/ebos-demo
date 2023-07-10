@@ -125,7 +125,7 @@ const VoiceOfCustomersContent = () => {
 								className='w-full h-auto'
 							/>
 						</div>
-						<h3 className='text-xl text-gray-400 font-normal'>
+						<h3 className='text-xl text-dark-300 font-normal'>
 							what do your top customer categories want and how can you
 							fulfill their needs?
 						</h3>
@@ -294,7 +294,7 @@ const VoiceOfCustomersContent = () => {
 										: "btn-rev"
 								}
 								disabled={formik.isSubmitting || !formik.isValid}>
-								Submit
+								Save
 							</button>
 							{!!userCustomers.id && (
 								<div

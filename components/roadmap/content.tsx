@@ -83,7 +83,7 @@ const RoadMapContent = ({
 			<div className='flex flex-col gap-5'>
 				<h3 className='title-header'>Roadmap</h3>
 				<div className='flex flex-col gap-5 p-5 bg-dark-50 rounded-2xl'>
-					<h4 className='text-dark-400 text-3xl font-semibold'>
+					<h4 className='text-dark-400 text-[1.75rem] font-hero-semibold'>
 						Create a timeline for your ideas
 					</h4>
 					<form>
@@ -105,7 +105,7 @@ const RoadMapContent = ({
 						<ul className='flex flex-col overflow-auto pb-5'>
 							{!userIdeas.ideas.length && !isLoading && (
 								<div className='w-full flex items-center'>
-									<p className='text-2xl text-center italic'>
+									<p className='text-xl text-center italic'>
 										Start adding your ideas...
 									</p>
 								</div>
@@ -176,7 +176,7 @@ const RoadMapContent = ({
 													);
 													dispatchUserIdeas({ ...userIdeas });
 												}}
-												className='w-[3.75rem] h-[3.75rem] inline-flex justify-center items-center rounded-full bg-gray-200 cursor-pointer text-gray-500 hover:text-rose-800'>
+												className='w-[3.75rem] h-[3.75rem] inline-flex justify-center items-center rounded-full bg-gray-200 cursor-pointer text-gray-500 hover:text-dark-400'>
 												<FontAwesomeIcon
 													icon={faTimes}
 													className='w-4'

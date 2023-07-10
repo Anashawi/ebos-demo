@@ -25,8 +25,8 @@ const NonCustomers = () => {
 		id: "",
 		userId: session?.user?.id,
 		soonNonCustomers: [],
-		refusingCustomers: [],
-		unwantedCustomers: [],
+		refusingNonCustomers: [],
+		unwantedNonCustomers: [],
 	} as IUserNonCustomers;
 
 	const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(
@@ -41,14 +41,6 @@ const NonCustomers = () => {
 	});
 
 	useEffect(() => {
-		if (!data) {
-			setUserNonCustomers((prevValue: IUserNonCustomers) => {
-				prevValue.soonNonCustomers = ["", "", ""];
-				prevValue.refusingCustomers = ["", "", ""];
-				prevValue.unwantedCustomers = ["", "", ""];
-				return prevValue;
-			});
-		}
 		if (data) {
 			setUserNonCustomers(data);
 		}

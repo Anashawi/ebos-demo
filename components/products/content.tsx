@@ -195,7 +195,7 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 														!isLoading &&
 														form.errors?.products && (
 															<div className='w-full flex justify-start items-center'>
-																<p className='text-2xl text-center italic'>
+																<p className='px-7 text-xl text-center italic'>
 																	<>{form.errors.products}</>
 																</p>
 															</div>
@@ -203,15 +203,17 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 												</div>
 											</div>
 											<div>
-												<div className='h-10'>
-													{(isUpdatingUserProduct ||
-														isCreatingUserProduct) && (
-														<Spinner
-															className='flex items-center text-lg'
-															message='Saving Products'
-														/>
-													)}
-												</div>
+												{!!values.products.length && (
+													<div className='h-10'>
+														{(isUpdatingUserProduct ||
+															isCreatingUserProduct) && (
+															<Spinner
+																className='flex items-center text-lg'
+																message='Saving Products'
+															/>
+														)}
+													</div>
+												)}
 												<div className='flex gap-5 items-center justify-between px-7'>
 													{!isLoading && (
 														<div className='flex gap-5'>
@@ -229,20 +231,24 @@ const ProductsContent = ({ dispatchChartProducts }: Props) => {
 																	<span>Add New Product</span>
 																</button>
 															)}
-															<button
-																type='submit'
-																className={
-																	isSubmitting ||
-																	(!isValid && !isValidating)
-																		? "btn-rev btn-disabled cursor-not-allowed"
-																		: "btn-rev"
-																}
-																disabled={
-																	isSubmitting ||
-																	(!isValid && !isValidating)
-																}>
-																Save
-															</button>
+															{!!values.products.length && (
+																<button
+																	type='submit'
+																	className={
+																		isSubmitting ||
+																		(!isValid &&
+																			!isValidating)
+																			? "btn-rev btn-disabled cursor-not-allowed"
+																			: "btn-rev"
+																	}
+																	disabled={
+																		isSubmitting ||
+																		(!isValid &&
+																			!isValidating)
+																	}>
+																	Save
+																</button>
+															)}
 														</div>
 													)}
 													{userProduct?.products?.length > 0 && (
