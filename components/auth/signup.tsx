@@ -100,13 +100,15 @@ const Signup = ({ closeCallback }: Props) => {
 
 	return (
 		<>
-			<div className='flex flex-col gap-3 p-3'>
+			<div className='flex flex-col p-3 p-5'>
 				<div className='flex items-center justify-between min-h-[58px] p-3'>
-					<div className='flex flex-col gap-3'>
-						<h2 className='text-gray-gunmetal text-5xl'>Register now</h2>
-						<h3 className='text-2xl text-gray-gunmetal'>
+					<div className='flex flex-col gap-5'>
+						<p className='text-gray-gunmetal text-4xl font-hero-semibold'>
+							Register now
+						</p>
+						<p className='text-2xl text-gray-gunmetal'>
 							to start your free sessions
-						</h3>
+						</p>
 					</div>
 				</div>
 
@@ -137,17 +139,17 @@ const Signup = ({ closeCallback }: Props) => {
 					{/* submit form then redirect to app/goals */}
 					<form
 						onSubmit={formik.handleSubmit}
-						className='flex flex-col gap-10'>
+						className='flex flex-col gap-5'>
 						<div>
 							<input
 								id='fullName'
 								type='text'
 								placeholder='Full Name'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("fullName")}
 							/>
 							{formik.errors?.fullName && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.fullName}
 								</div>
 							)}
@@ -157,11 +159,11 @@ const Signup = ({ closeCallback }: Props) => {
 								id='email'
 								type='email'
 								placeholder='Email'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("email")}
 							/>
 							{formik.errors.email && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.email}
 								</div>
 							)}
@@ -171,11 +173,11 @@ const Signup = ({ closeCallback }: Props) => {
 								id='phoneNumber'
 								type='text'
 								placeholder='Phone Number'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("phoneNumber")}
 							/>
 							{formik.errors?.phoneNumber && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.phoneNumber}
 								</div>
 							)}
@@ -185,11 +187,11 @@ const Signup = ({ closeCallback }: Props) => {
 								id='password'
 								type='password'
 								placeholder='Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("password")}
 							/>
 							{formik.errors?.password && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.password}
 								</div>
 							)}
@@ -199,19 +201,17 @@ const Signup = ({ closeCallback }: Props) => {
 								id='confirmPassword'
 								type='password'
 								placeholder='Confirm Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("confirmPassword")}
 							/>
 							{formik.errors?.confirmPassword && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.confirmPassword}
 								</div>
 							)}
 						</div>
-						<div>
-							<button
-								type='submit'
-								className='w-full p-2 text-gray-900 bg-secondary-300 bg-repeat-x rounded-md bg-gradient-to-br from-secondary-300 to-[#A5C036] '>
+						<div className='flex justify-end'>
+							<button type='submit' className='btn-rev'>
 								Register
 							</button>
 						</div>

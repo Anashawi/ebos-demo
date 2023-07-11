@@ -65,13 +65,13 @@ const Login = ({ closeCallback }: Props) => {
 	}
 
 	return (
-		<>
-			<div className='flex items-center justify-between min-h-[58px] p-3'>
+		<div className='flex flex-col gap-7 p-5'>
+			<div className='flex items-center justify-between min-h-[58px]'>
 				<div className='flex flex-col gap-3'>
-					<h2 className='text-5xl'>Login</h2>
-					<h3 className='text-2xl text-gray-gunmetal'>
+					<p className='text-4xl font-hero-semibold'>Login</p>
+					<p className='text-2xl text-gray-gunmetal'>
 						login to your existing account
-					</h3>
+					</p>
 				</div>
 			</div>
 
@@ -89,20 +89,20 @@ const Login = ({ closeCallback }: Props) => {
 				</div>
 			)}
 
-			<div className='relative flex-auto p-3 overflow-auto'>
+			<div className='relative flex-auto overflow-auto'>
 				<form
 					onSubmit={formik.handleSubmit}
-					className='flex flex-col gap-10 text-gray-700'>
+					className='flex flex-col gap-5 text-gray-700'>
 					<div>
 						<input
 							id='email'
 							type='email'
 							placeholder='Email'
-							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+							className='light-input w-full text-[1rem]'
 							{...formik.getFieldProps("email")}
 						/>
 						{formik.errors.email && (
-							<div className='text-rose-400 text-sm'>
+							<div className='pl-4 text-rose-400 text-[1rem]'>
 								{formik.errors.email}
 							</div>
 						)}
@@ -112,25 +112,23 @@ const Login = ({ closeCallback }: Props) => {
 							id='password'
 							type='password'
 							placeholder='Password'
-							className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue rounded-md'
+							className='light-input w-full text-[1rem]'
 							{...formik.getFieldProps("password")}
 						/>
 						{formik.errors?.password && (
-							<div className='text-rose-400 text-sm'>
+							<div className='pl-4 text-rose-400 text-[1rem]'>
 								{formik.errors.password}
 							</div>
 						)}
 					</div>
-					<div>
-						<button
-							type='submit'
-							className='w-full p-2 text-gray-900 bg-secondary-300 bg-repeat-x bg-gradient-to-br from-secondary-300 to-[#A5C036] rounded-md'>
+					<div className='flex justify-end'>
+						<button type='submit' className='btn-rev'>
 							Login
 						</button>
 					</div>
 				</form>
 			</div>
-		</>
+		</div>
 	);
 };
 

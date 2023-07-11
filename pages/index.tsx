@@ -110,7 +110,7 @@ export default function Home() {
 				config={{
 					isShown: isLoginOn,
 					closeCallback: () => toggleLoginModal(false),
-					className: "w-full min-w-[320px] max-w-[700px] p-5",
+					className: "w-full min-w-[320px] max-w-[500px] p-5",
 				}}>
 				<Login
 					closeCallback={() => {
