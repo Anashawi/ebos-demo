@@ -9,10 +9,10 @@ const NonCustomersReview = ({ userNonCustomers }: Props) => {
 		<>
 			<div className='flex flex-col'>
 				<div className='min-h-[15rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-					<h6 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
+					<p className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 						Soon to be non-customers
-					</h6>
-					<ul className='flex flex-col gap-5'>
+					</p>
+					<ul className='flex flex-col gap-3'>
 						{!userNonCustomers.soonNonCustomers?.length && (
 							<div className='w-full flex justify-start items-center'>
 								<p className='px-5 text-lg text-center italic'>
@@ -38,10 +38,10 @@ const NonCustomersReview = ({ userNonCustomers }: Props) => {
 					</ul>
 				</div>
 				<div className='min-h-[15rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-					<h6 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
+					<p className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 						Refusing non-customers
-					</h6>
-					<ul className='flex flex-col gap-5'>
+					</p>
+					<ul className='flex flex-col gap-3'>
 						{!userNonCustomers.refusingNonCustomers?.length && (
 							<div className='w-full flex justify-start items-center'>
 								<p className='px-5 text-lg text-center italic'>
@@ -67,11 +67,11 @@ const NonCustomersReview = ({ userNonCustomers }: Props) => {
 					</ul>
 				</div>
 				<div className='min-h-[15rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-					<h6 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
+					<p className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 						Unwanted non-customers
-					</h6>
+					</p>
 
-					<ul className='flex flex-col gap-5'>
+					<ul className='flex flex-col gap-3'>
 						{!userNonCustomers.unwantedNonCustomers?.length && (
 							<div className='w-full flex justify-start items-center'>
 								<p className='px-5 text-lg text-center italic'>

@@ -11,7 +11,7 @@ const ConfirmModal = ({ config }: Props) => {
 		<Modal
 			config={{
 				isShown: config.isShown,
-				className: "flex flex-col gap-5 justify-between p-3",
+				className: "flex flex-col justify-between p-3",
 				closeCallback: () => config.cancelCallback(),
 			}}>
 			<>
@@ -31,7 +31,7 @@ const ConfirmModal = ({ config }: Props) => {
 					<div className='flex justify-end gap-3 px-5 pb-5'>
 						<button
 							type='button'
-							className='btn text-gray-900 hover:shadow-none px-7 font-semibold text-xl'
+							className='btn text-gray-900 hover:shadow-none px-7 text-xl'
 							onClick={() => config.cancelCallback()}>
 							{config.cancelBtnText}
 						</button>
@@ -39,8 +39,8 @@ const ConfirmModal = ({ config }: Props) => {
 							type='button'
 							className={
 								config.isDangerAction
-									? "btn-danger px-7 py-2 font-semibold text-xl"
-									: "btn-primary px-7 py-2 font-semibold text-xl"
+									? "btn-danger px-7 py-2 text-xl"
+									: "btn-primary px-7 py-2 text-xl"
 							}
 							onClick={() => {
 								config.actionCallback();

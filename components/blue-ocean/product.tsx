@@ -26,7 +26,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
 	return (
 		<div key={index} className='p-5 bg-dark-50 rounded-2xl'>
 			<div className='flex justify-between mb-10'>
-				<h2 className='text-[1.75rem] text-dark-400 font-hero-bold'>
+				<h2 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 					{product.name}
 				</h2>
 			</div>

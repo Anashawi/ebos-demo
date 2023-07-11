@@ -86,7 +86,7 @@ const Navbar = ({ selectedNode }: Props) => {
 
 	const renderSelectedIcon = (node: NavbarNode, isLastIcon: boolean) => {
 		return (
-			<li className='flex gap-5 hover:animate-shake'>
+			<li className='flex gap-5 hover:animate-vertical-shake'>
 				<div className='flex gap-2 items-center'>
 					<div
 						className='cursor-pointer'
@@ -101,10 +101,10 @@ const Navbar = ({ selectedNode }: Props) => {
 						/>
 					</div>
 					<div>
-						<p className='leading-[1.57rem] text-[1.3rem] text-navbar-gray font-semibold'>
+						<p className='leading-[1.57rem] text-[1.3rem] text-navbar-gray font-hero-semibold'>
 							{node.step}
 						</p>
-						<p className='leading-[1.57rem] text-[1.3rem] font-semibold text-navbar-primary-title'>
+						<p className='leading-[1.57rem] text-[1.3rem] font-hero-semibold text-navbar-primary-title'>
 							{node.title}
 						</p>
 					</div>
@@ -129,7 +129,7 @@ const Navbar = ({ selectedNode }: Props) => {
 	const renderUnselectedIcon = (node: NavbarNode) => {
 		return (
 			<li
-				className='cursor-pointer hover:animate-shake'
+				className='cursor-pointer hover:animate-vertical-shake'
 				onClick={() => {
 					router.push("../" + node.url);
 				}}>

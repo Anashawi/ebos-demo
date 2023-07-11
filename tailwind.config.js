@@ -15,12 +15,18 @@ module.exports = {
     extend: {
       animation: {
         shake: 'shake 0.5s',
+        'vertical-shake': 'vertical-shake 0.5s',
       },
       keyframes: {
         shake: {
           '0%, 100%': { transform: 'translateX(0)' },
           '25%, 75%': { transform: 'translateX(-3px)' },
           '50%, 100%': { transform: 'translateX(3px)' },
+        },
+        'vertical-shake': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '25%, 75%': { transform: 'translateY(-3px)' },
+          '50%, 100%': { transform: 'translateY(3px)' },
         },
       },
       colors: {

@@ -75,10 +75,12 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 	});
 	return (
 		<>
-			<h1 className='text-3xl text-gray-800 mb-5'>Edit Video Urls</h1>
+			<h1 className='text-3xl text-gray-800 mb-5 font-hero-semibold'>
+				Edit Video Urls
+			</h1>
 			<form className='grow overflow-auto pt-10 flex gap-5 flex-wrap'>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-3xl text-dark-400 font-semibold'>
+					<h2 className='mb-2 text-3xl text-dark-400 font-hero-semibold'>
 						Scale
 					</h2>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
@@ -97,7 +99,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Community and Crowd
+						<label>Community and Crowd</label>
 						<input
 							type='text'
 							className='light-input'
@@ -156,7 +158,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 					</li>
 				</ul>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-3xl text-dark-400 font-semibold'>
+					<h2 className='mb-2 text-3xl text-dark-400 font-hero-semibold'>
 						Ideas
 					</h2>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
@@ -233,11 +235,11 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 					</li>
 				</ul>
 				<ul className='grow flex flex-col gap-3 mb-5'>
-					<h2 className='mb-2 text-[1.75rem] text-dark-400 font-hero-bold'>
+					<h2 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
 						7 Practical & Quick
 					</h2>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Eco Systems
+						<label>Eco Systems</label>
 						<input
 							type='text'
 							className='light-input'
@@ -251,7 +253,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Info is Power
+						<label>Info is Power</label>
 						<input
 							type='text'
 							className='light-input'
@@ -265,7 +267,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						OTCR
+						<label>OTCR</label>
 						<input
 							type='text'
 							className='light-input'
@@ -279,7 +281,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Value Destruction
+						<label>Value Destruction</label>
 						<input
 							type='text'
 							className='light-input'
@@ -294,7 +296,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Customer Journey
+						<label>Customer Journey</label>
 						<input
 							type='text'
 							className='light-input'
@@ -309,7 +311,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Digital Platforms
+						<label>Digital Platforms</label>
 						<input
 							type='text'
 							className='light-input'
@@ -324,7 +326,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 						) : null}
 					</li>
 					<li className='flex gap-2 flex-col p-3 relative text-gray-800 text-lg'>
-						Building Capacity
+						<label>Building Capacity</label>
 						<input
 							type='text'
 							className='light-input'

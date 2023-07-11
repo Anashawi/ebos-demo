@@ -132,7 +132,7 @@ const VoiceOfCustomersContent = () => {
 					</div>
 					<div className='flex gap-5 flex-wrap xl:flex-nowrap p-5 bg-dark-50 rounded-2xl'>
 						<div className='grow flex flex-col gap-3'>
-							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
+							<h4 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 								Customer categories
 							</h4>
 							<ul className='flex flex-col gap-5'>
@@ -179,7 +179,7 @@ const VoiceOfCustomersContent = () => {
 							</ul>
 						</div>
 						<div className='grow flex flex-col gap-3'>
-							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
+							<h4 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 								What they want
 							</h4>
 							<ul className='flex flex-col gap-5'>
@@ -226,7 +226,7 @@ const VoiceOfCustomersContent = () => {
 							</ul>
 						</div>
 						<div className='grow flex flex-col gap-3'>
-							<h4 className='text-[1.75rem] text-dark-400 font-hero-bold'>
+							<h4 className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 								How to fulfill it
 							</h4>
 							<ul className='flex flex-col gap-5'>

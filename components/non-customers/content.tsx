@@ -91,9 +91,9 @@ const NonCustomersContent = ({
 			{!isLoading && (
 				<form className='flex flex-col'>
 					<div className='flex flex-col gap-5 my-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
+						<p className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 							Soon to be non-customers
-						</h6>
+						</p>
 						<div className='pill-yellow-50 p-3'>
 							<div className='w-[3rem] h-[3rem]'>
 								<Image
@@ -109,7 +109,7 @@ const NonCustomersContent = ({
 								transformation ?
 							</h3>
 						</div>
-						<ul className='flex flex-col gap-5'>
+						<ul className='flex flex-col gap-3'>
 							{!userNonCustomers.soonNonCustomers?.length &&
 								!isLoading && (
 									<div className='w-full flex justify-start items-center'>
@@ -187,9 +187,9 @@ const NonCustomersContent = ({
 						</ul>
 					</div>
 					<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
+						<p className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 							Refusing non-customers
-						</h6>
+						</p>
 						<div className='pill-yellow-50 p-3'>
 							<div className='w-[3rem] h-[3rem]'>
 								<Image
@@ -283,9 +283,9 @@ const NonCustomersContent = ({
 						</ul>
 					</div>
 					<div className='min-h-[28rem] flex flex-col gap-3 my-5 p-5 bg-dark-50 rounded-2xl'>
-						<h6 className='mb-2 text-[1.75rem] text-dark-400 font-hero-semibold'>
+						<p className='text-[1.75rem] text-dark-400 font-hero-semibold'>
 							Unwanted non-customers
-						</h6>
+						</p>
 						<div className='pill-yellow-50 p-3'>
 							<div className='w-[3rem] h-[3rem]'>
 								<Image
