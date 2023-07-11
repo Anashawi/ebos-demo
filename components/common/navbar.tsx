@@ -86,7 +86,7 @@ const Navbar = ({ selectedNode }: Props) => {
 
 	const renderSelectedIcon = (node: NavbarNode, isLastIcon: boolean) => {
 		return (
-			<li className='flex gap-5 animate-fade-in hover:animate-shake'>
+			<li className='flex gap-5 hover:animate-shake'>
 				<div className='flex gap-2 items-center'>
 					<div
 						className='cursor-pointer'
