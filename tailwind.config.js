@@ -15,11 +15,17 @@ module.exports = {
     extend: {
       animation: {
         'fade-in': 'fade-in 0.2s ease-in-out',
+        shake: 'shake 0.5s',
       },
       keyframes: {
         'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%, 75%': { transform: 'translateX(-3px)' },
+          '50%, 100%': { transform: 'translateX(3px)' },
         },
       },
       colors: {

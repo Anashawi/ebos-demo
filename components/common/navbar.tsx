@@ -86,7 +86,7 @@ const Navbar = ({ selectedNode }: Props) => {
 
 	const renderSelectedIcon = (node: NavbarNode, isLastIcon: boolean) => {
 		return (
-			<li className='flex gap-5 animate-fade-in'>
+			<li className='flex gap-5 animate-fade-in hover:animate-shake'>
 				<div className='flex gap-2 items-center'>
 					<div
 						className='cursor-pointer'
@@ -129,7 +129,7 @@ const Navbar = ({ selectedNode }: Props) => {
 	const renderUnselectedIcon = (node: NavbarNode) => {
 		return (
 			<li
-				className='cursor-pointer'
+				className='cursor-pointer hover:animate-shake'
 				onClick={() => {
 					router.push("../" + node.url);
 				}}>
@@ -139,7 +139,7 @@ const Navbar = ({ selectedNode }: Props) => {
 	};
 
 	return (
-		<nav className='w-full flex gap-1 justify-between mb-5'>
+		<nav className='w-full max-w-[1320px] flex gap-1 justify-between mb-5'>
 			{nodes.map((node, index) => (
 				<React.Fragment key={index}>
 					{" "}

@@ -6,9 +6,9 @@ const VerticalNavbar = () => {
 	const { data: session }: any = useSession();
 	console.log("session", session);
 	return (
-		<nav className='h-[85%] w-[100px] flex flex-col gap-10 justify-between items-center p-5 py-12 bg-white rounded-full'>
-			<ul className='flex flex-col gap-5 items-center'>
-				<li className='w-full flex justify-center'>
+		<nav className='h-[85%] w-[102px] flex flex-col gap-10 justify-between items-center px-5 py-10 bg-white rounded-full'>
+			<ul className='flex flex-col gap-10'>
+				<li className='flex justify-center hover:animate-shake'>
 					<Link href='/'>
 						<Image
 							width='55'
@@ -18,36 +18,33 @@ const VerticalNavbar = () => {
 						/>
 					</Link>
 				</li>
-				<li className='w-full flex justify-center'>
+				<li className='flex justify-center hover:animate-shake'>
 					<Link href='/'>
 						<Image
-							width='55'
-							height='55'
+							width='42'
+							height='42'
 							src='/dashboard.svg'
 							alt='Dashboard'
-							className='w-full h-auto'
 						/>
 					</Link>
 				</li>
-				<li className='w-full flex justify-center'>
+				<li className='flex justify-center hover:animate-shake'>
 					<Link href='/'>
 						<Image
-							width='55'
-							height='55'
+							width='42'
+							height='42'
 							src='/settings.svg'
 							alt='Settings'
-							className='w-full h-auto'
 						/>
 					</Link>
 				</li>
-				<li className='w-full flex justify-center'>
+				<li className='flex justify-center hover:animate-shake'>
 					<Link href='/'>
 						<Image
-							width='55'
-							height='55'
+							width='45'
+							height='45'
 							src='/consultations.svg'
 							alt='Consultations'
-							className='w-full h-auto'
 						/>
 					</Link>
 				</li>
@@ -63,8 +60,8 @@ const VerticalNavbar = () => {
 					<Image
 						src={session.user.profilePic}
 						alt='Profile Pic'
-						width={55}
-						height={55}
+						width={42}
+						height={42}
 					/>
 				)}
 			</li>
