@@ -149,10 +149,10 @@ const Products = () => {
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
-				<Video currVideoPropName={videoPropNamesEnum.products} />
+				<Video videoPropName={videoPropNamesEnum.products} />
 				<div className='flex justify-center p-5 bg-black'>
 					<button
-						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
 						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>

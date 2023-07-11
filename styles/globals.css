@@ -170,7 +170,7 @@ input[type="text"]:focus:not("no-border") {
   .btn-rev,
   .btn-fake,
   .btn-diff {
-    @apply inline-block leading-none normal-case cursor-pointer px-[1.6rem] py-[1rem] transition-colors rounded text-[90%] border-none appearance-none;
+    @apply inline-block leading-none normal-case cursor-pointer px-[1.6rem] py-[1rem] transition-colors rounded-full text-[90%] border-none appearance-none;
   }
 
   .btn-delete {

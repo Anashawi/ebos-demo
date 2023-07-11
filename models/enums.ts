@@ -15,6 +15,7 @@ export enum productPagesEnum {
 }
 
 export enum videoPropNamesEnum {
+  introductoryVideo = "introductoryVideo",
   goalsVideo = "goalsVideo",
   staffOnDemand = "staffOnDemand",
   communityAndCrowd = "communityAndCrowd",

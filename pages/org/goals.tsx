@@ -10,7 +10,7 @@ import GoalsContent from "../../components/goals/goals-content";
 
 const Goals = () => {
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isEditUrlModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler(false);
 
 	return (
@@ -62,7 +62,7 @@ const Goals = () => {
 			{/* video url form modal */}
 			<Modal
 				config={{
-					isShown: isEditUrlsModalOn,
+					isShown: isEditUrlModalOn,
 					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
@@ -82,10 +82,10 @@ const Goals = () => {
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
-				<Video currVideoPropName={videoPropNamesEnum.goalsVideo} />
+				<Video videoPropName={videoPropNamesEnum.goalsVideo} />
 				<div className='flex justify-center p-5 bg-black'>
 					<button
-						className='btn-diff bg-gray-100 hover:bg-gray-300'
+						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
 						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>

@@ -16,17 +16,15 @@ interface Props {
 
 const SharedVideoForm = ({
 	toggleEditVideoModal,
-	videoPropName: currVideoPropName,
-	videoLabel: currVideoLabel,
+	videoPropName,
+	videoLabel,
 }: Props) => {
 	const emptyVideo: any = {
 		id: "",
-		[currVideoPropName]: "",
+		[videoPropName]: "",
 	};
 
 	const [videos, setVideos] = useState<IVideos>(emptyVideo);
-
-	const queryClient = useQueryClient();
 
 	const { data, isLoading } = useQuery<IVideos>({
 		queryKey: [clientApi.Keys.all],
@@ -38,12 +36,14 @@ const SharedVideoForm = ({
 		if (data) {
 			setVideos({
 				id: data.id,
-				[currVideoPropName]: objectPath.get(data, currVideoPropName),
+				[videoPropName]: objectPath.get(data, videoPropName) ?? "",
 			} as any);
 		}
 	}, [data]);
 
-	const { mutate: updateVideoUrl, isLoading: isUpdatingVideos } = useMutation(
+	const queryClient = useQueryClient();
+
+	const { mutate: updateVideoUrl } = useMutation(
 		(videos: IVideos) => {
 			return clientApi.updateOne(videos);
 		},
@@ -62,7 +62,7 @@ const SharedVideoForm = ({
 		initialValues: { ...videos } as IVideos,
 		validationSchema: object({
 			id: string().required("required"),
-			[currVideoPropName]: string().required("required"),
+			[videoPropName]: string().required("required"),
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
 			await updateVideoUrl(values);
@@ -72,37 +72,32 @@ const SharedVideoForm = ({
 	});
 
 	return (
-		<>
-			<div className='flex gap-5 items-center'>
-				<h1 className='text-4xl text-gray-800 mb-5'>Edit Video Url</h1>
-				{isLoading && (
-					<Spinner message='Loading...' className='items-center' />
-				)}
-			</div>
-			<form className='pt-10 flex gap-5 flex-col'>
+		<div className='flex flex-col gap-10 p-5'>
+			<p className='text-4xl text-gray-800 font-hero-semibold'>
+				{!!videos[videoPropName] ? "Edit Video Url" : "Add Video Url"}
+			</p>
+			{isLoading && (
+				<Spinner message='Loading...' className='items-center' />
+			)}
+			<form className='flex gap-5 flex-col'>
 				<div className='flex flex-col'>
-					<label>{currVideoLabel}</label>
+					<label>{videoLabel}</label>
 					<input
 						type='text'
-						className='w-full p-3 bg-gray-100 caret-dark-blue border-none'
-						{...formik.getFieldProps(currVideoPropName)}
+						className='light-input'
+						{...formik.getFieldProps(videoPropName)}
 					/>
-					{objectPath.get(formik, `touched?.${currVideoPropName}`) &&
-						objectPath.get(formik, `errors?.${currVideoPropName}`) && (
+					{objectPath.get(formik, `touched?.${videoPropName}`) &&
+						objectPath.get(formik, `errors?.${videoPropName}`) && (
 							<div className='text-rose-400 text-lg'>
-								<>
-									{objectPath.get(
-										formik,
-										`errors.${currVideoPropName}`
-									)}
-								</>
+								<>{objectPath.get(formik, `errors.${videoPropName}`)}</>
 							</div>
 						)}
 				</div>
 			</form>
 			<div className='flex justify-end gap-3 pt-5'>
 				<button
-					className='btn-diff bg-gray-100 hover:bg-gray-300'
+					className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
 					onClick={() => toggleEditVideoModal()}>
 					close
 				</button>
@@ -120,7 +115,7 @@ const SharedVideoForm = ({
 					Save
 				</button>
 			</div>
-		</>
+		</div>
 	);
 };
 

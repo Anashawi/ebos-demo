@@ -7,10 +7,10 @@ import * as clientApi from "../../http-client/videos.client";
 import Spinner from "../common/spinner";
 
 interface Props {
-	currVideoPropName: string;
+	videoPropName: string;
 }
 
-const Video: NextPage<Props> = ({ currVideoPropName }) => {
+const Video: NextPage<Props> = ({ videoPropName }) => {
 	const [videos, setVideos] = useState<IVideos>();
 
 	const { data, isLoading } = useQuery<IVideos>({
@@ -23,7 +23,7 @@ const Video: NextPage<Props> = ({ currVideoPropName }) => {
 		if (data) {
 			setVideos({
 				id: data.id,
-				[currVideoPropName]: objectPath.get(data, currVideoPropName),
+				[videoPropName]: objectPath.get(data, videoPropName),
 			} as any);
 		}
 	}, [data]);
@@ -36,7 +36,7 @@ const Video: NextPage<Props> = ({ currVideoPropName }) => {
 		);
 	}
 
-	if (!videos?.id || !objectPath.get(videos ?? {}, currVideoPropName)) {
+	if (!videos?.id || !objectPath.get(videos ?? {}, videoPropName)) {
 		return (
 			<div className='h-full flex justify-center items-center'>
 				<p className='italic text-3xl'>Add a video link !</p>
@@ -48,7 +48,7 @@ const Video: NextPage<Props> = ({ currVideoPropName }) => {
 		<>
 			<iframe
 				className='w-full grow'
-				src={objectPath.get(videos ?? {}, currVideoPropName) ?? ""}
+				src={objectPath.get(videos ?? {}, videoPropName) ?? ""}
 				title='YouTube video player'
 				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
 				allowFullScreen></iframe>

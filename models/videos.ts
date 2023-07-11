@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 interface VideosAttrs {
+  introductoryVideo: string;
   goalsVideo: string;
   staffOnDemand: string;
   communityAndCrowd: string;
@@ -40,6 +41,10 @@ export interface IVideos extends VideosAttrs {
 
 const videosSchema = new mongoose.Schema(
   {
+    introductoryVideo: {
+      type: String,
+      required: true,
+    },
     goalsVideo: {
       type: String,
       required: true,

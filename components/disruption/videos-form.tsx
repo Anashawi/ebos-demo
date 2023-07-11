@@ -342,7 +342,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
 			</form>
 			<div className='flex justify-end gap-3 pt-5'>
 				<button
-					className='btn-diff bg-gray-100 hover:bg-gray-300'
+					className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
 					onClick={toggleEditUrlsModal}>
 					close
 				</button>
