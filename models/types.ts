@@ -1,3 +1,5 @@
+import { takeawayTypeEnums } from "./enums";
+
 export interface NavbarNode {
    title: string;
    step: string;
@@ -67,4 +69,9 @@ export interface IFactor {
 export interface IIdeaFactor {
    name: string;
    competitors: IFactorCompetitor[];
+}
+
+export interface ITakeaway {
+   type: takeawayTypeEnums,
+   notes: string[];
 }

@@ -58,5 +58,6 @@ export enum navbarNodesEnum {
 }
 
 export enum takeawayTypeEnums {
-  disruption = 1,
+  scale = "on-scale",
+  ideas = "on-ideas",
 }

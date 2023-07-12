@@ -1,14 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { faCirclePlay, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/videos.client";
+import * as takeawaysApi from "../../http-client/takeaways.client";
+
 import { IVideos } from "../../models/videos";
 import { useSession } from "next-auth/react";
 import { takeawayTypeEnums, videoPropNamesEnum } from "../../models/enums";
 import { useRouter } from "next/router";
-import Takeaways from "../common/takeaways";
+import DisruptionTakeaways from "./takeaways";
 import Image from "next/image";
+import Spinner from "../common/spinner";
+import { IUserTakeaways } from "../../models/user-takeaways";
 
 interface Props {
 	videos: IVideos;
@@ -25,7 +29,7 @@ const DisruptionContent = ({
 	toggleVideoModal,
 	toggleEditUrlsModal,
 }: Props) => {
-	const { data: session } = useSession();
+	const { data: session }: any = useSession();
 
 	const router = useRouter();
 
@@ -40,6 +44,86 @@ const DisruptionContent = ({
 			dispatchVideos(data);
 		}
 	}, [data]);
+
+	const emptyScaleTakeaways = {
+		type: takeawayTypeEnums.scale,
+		notes: [],
+	};
+
+	const emptyIdeasTakeaways = {
+		type: takeawayTypeEnums.ideas,
+		notes: [],
+	};
+
+	const emptyUserTakeaways: IUserTakeaways = {
+		id: "",
+		userId: session?.user?.id,
+		takeaways: [emptyScaleTakeaways, emptyIdeasTakeaways],
+	};
+
+	const [userTakeaways, setUserTakeaways] =
+		useState<IUserTakeaways>(emptyUserTakeaways);
+	console.log("userTakeaways", userTakeaways);
+
+	const { data: userTakeawaysRes, isLoading: isLoadingTakeaways } =
+		useQuery<IUserTakeaways>(
+			[takeawaysApi.Keys.all, userTakeaways.id],
+			takeawaysApi.getOne,
+			{
+				enabled: !!session?.user?.id,
+				refetchOnWindowFocus: false,
+			}
+		);
+
+	useEffect(() => {
+		if (!!userTakeawaysRes) {
+			setUserTakeaways(userTakeawaysRes);
+		}
+	}, [userTakeawaysRes]);
+
+	const queryClient = useQueryClient();
+
+	const { mutate: updateUserTakeaways, isLoading: isUpdatingUserTakeaways } =
+		useMutation(
+			(userTakeaways: IUserTakeaways) => {
+				return takeawaysApi.updateOne(userTakeaways);
+			},
+			{
+				onMutate: (updated) => {
+					queryClient.setQueryData(
+						[takeawaysApi.Keys.all, userTakeaways.id],
+						updated
+					);
+				},
+				onSuccess: (updated) => {
+					queryClient.invalidateQueries([
+						takeawaysApi.Keys.all,
+						userTakeaways.id,
+					]);
+				},
+			}
+		);
+
+	const { mutate: createUserTakeaways, isLoading: isCreatingUserTakeaways } =
+		useMutation(
+			(userTakeaways: IUserTakeaways) =>
+				takeawaysApi.insertOne(userTakeaways),
+			{
+				onMutate: (updated) => {
+					queryClient.setQueryData(
+						[takeawaysApi.Keys.all, userTakeaways.id],
+						updated
+					);
+				},
+				onSuccess: (updated) => {
+					queryClient.invalidateQueries([
+						takeawaysApi.Keys.all,
+						userTakeaways.id,
+					]);
+					queryClient.invalidateQueries([takeawaysApi.Keys.all]);
+				},
+			}
+		);
 
 	return (
 		<>
@@ -239,13 +323,47 @@ const DisruptionContent = ({
 				</div>
 			</div>
 
-			<Takeaways
-				className='flex gap-[5.5rem] flex-wrap w-full my-5 px-6'
-				type={takeawayTypeEnums.disruption}
+			<DisruptionTakeaways
+				userTakeaways={userTakeaways}
+				dispatchUserTakeaways={setUserTakeaways}
+				isLoading={isLoadingTakeaways}
+				className='flex gap-[5.5rem] flex-wrap xl:flex-nowrap w-full my-5 px-6'
 			/>
 
+			<div className='h-10'>
+				{isUpdatingUserTakeaways && (
+					<Spinner
+						className='pl-10 flex items-center text-2xl'
+						message='Saving your takeaways...'
+					/>
+				)}
+				{isCreatingUserTakeaways && (
+					<Spinner
+						className='pl-10 flex items-center text-2xl'
+						message='Saving your takeaways...'
+					/>
+				)}
+			</div>
+
 			{(session?.user as any)?.role !== "admin" && (
-				<div className='mt-20 flex gap-5 justify-end'>
+				<div className='flex gap-5 justify-end'>
+					{!!userTakeaways && (
+						<button
+							onClick={() => {
+								if (!userTakeaways.id) {
+									createUserTakeaways({
+										...userTakeaways,
+									});
+								} else {
+									updateUserTakeaways({
+										...userTakeaways,
+									});
+								}
+							}}
+							className='btn-rev'>
+							Save
+						</button>
+					)}
 					{!!videos.id && (
 						<div
 							className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
@@ -261,13 +379,32 @@ const DisruptionContent = ({
 				</div>
 			)}
 			{(session?.user as any)?.role === "admin" && (
-				<div className='mt-20 flex gap-5 justify-between'>
-					<button
-						className='btn-primary-light'
-						onClick={() => toggleEditUrlsModal(true)}>
-						<span>Edit video Urls</span>
-						<FontAwesomeIcon className='w-7' icon={faEdit} />
-					</button>
+				<div className='flex gap-5 justify-between'>
+					<div className='flex gap-5'>
+						<button
+							className='btn-primary-light'
+							onClick={() => toggleEditUrlsModal(true)}>
+							<span>Edit video Urls</span>
+							<FontAwesomeIcon className='w-7' icon={faEdit} />
+						</button>
+						{!!userTakeaways && (
+							<button
+								onClick={() => {
+									if (!userTakeaways.id) {
+										createUserTakeaways({
+											...userTakeaways,
+										});
+									} else {
+										updateUserTakeaways({
+											...userTakeaways,
+										});
+									}
+								}}
+								className='btn-rev'>
+								Save
+							</button>
+						)}
+					</div>
 					{!!videos.id && (
 						<div
 							className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
