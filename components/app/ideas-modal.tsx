@@ -113,6 +113,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 										className='flex gap-5 justify-between items-center text-dark-200 border-t'>
 										<div className='flex gap-5'>
 											<span className='text-xl'>{idea.name}</span>
+											<span>-</span>
 											<span className='text-xl'>
 												{idea.ownerName}
 											</span>

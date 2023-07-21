@@ -27,6 +27,7 @@ const RoadMapContent = ({
 		return {
 			uuid: "",
 			name: "",
+			ownerName: "",
 			startMonth: todayDateStr,
 			durationInMonths: 6,
 		} as IIdea;
@@ -122,7 +123,7 @@ const RoadMapContent = ({
 									<li
 										key={index}
 										className='flex gap-5 items-center py-2'>
-										<div className='flex flex-col gap-2'>
+										<div className='grow flex flex-col gap-2'>
 											<label className='text-xl'>Idea</label>
 											<input
 												value={idea.name}
@@ -150,7 +151,20 @@ const RoadMapContent = ({
 												className='light-input w-min'
 											/>
 										</div>
-										<div className='grow flex flex-col gap-2'>
+										<div className='flex flex-col gap-2'>
+											<label className='text-xl'>Idea Owner</label>
+											<input
+												type='text'
+												value={idea.ownerName}
+												onChange={(e) => {
+													userIdeas.ideas[index].ownerName =
+														e.target.value;
+													dispatchUserIdeas({ ...userIdeas });
+												}}
+												className='light-input'
+											/>
+										</div>
+										<div className='flex flex-col gap-2'>
 											<label className='text-xl'>
 												Duration (months)
 											</label>
@@ -186,9 +200,12 @@ const RoadMapContent = ({
 									</li>
 								))}
 						</ul>
-						<div className='h-10 '>
+						<div className='h-10 flex justify-end'>
 							{(isUpdatingIdeas || isCreatingIdeas) && (
-								<Spinner className='' message='Saving Ideas ...' />
+								<Spinner
+									className='items-center'
+									message='Saving Ideas ...'
+								/>
 							)}
 						</div>
 						<div className='flex justify-between gap-5 my-5'>
@@ -196,7 +213,7 @@ const RoadMapContent = ({
 								type='button'
 								onClick={() => {
 									const newIdea = { ...emptyIdea };
-									newIdea.name = `Idea ${userIdeas.ideas.length + 1}`;
+									newIdea.name = `New Idea`;
 									userIdeas.ideas.push(newIdea);
 									dispatchUserIdeas({ ...userIdeas });
 								}}
