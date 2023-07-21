@@ -10,6 +10,7 @@ export async function getOne(currentUserId: string) {
       return result?.toJSON();
    } catch (error) {
       console.log(error);
+      throw error;
    }
 }
 
@@ -22,12 +23,14 @@ export async function getOneLookup(currentUserId: string) {
             return {
                uuid: idea.uuid,
                name: idea.name,
+               ownerName: idea.ownerName,
             }
          });
       }
       return result;
    } catch (error) {
       console.log(error);
+      throw error;
    }
 }
 
@@ -39,6 +42,7 @@ export async function insertOne(userIdeas: IUserIdeas) {
       return frontEndUserIdeas?.toJSON() ?? "faild to create userIdeas collection";
    } catch (error) {
       console.log(error);
+      throw error;
    }
 }
 
@@ -56,14 +60,13 @@ export async function updateOne(frontEndUserIdeas: IUserIdeas) {
       return updatedUserIdeas?.toJSON();
    } catch (error) {
       console.log(error);
+      throw error;
    }
 }
 
 export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
    try {
       await dbConnect();
-
-      if (!sessionUser?.id) throw new Error("You are not logged in !");
 
       const result = await UserIdeas.findOne({ userId: sessionUser.id });
 
@@ -95,6 +98,7 @@ export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
       return newUserIdeas?.toJSON();
    } catch (error) {
       console.log(error);
+      throw error;
    }
 }
 
@@ -128,5 +132,6 @@ export async function deleteOne(uuid: string, sessionUser: any) {
 
    } catch (error) {
       console.log(error);
+      throw error;
    }
 }

@@ -31,6 +31,9 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
     const idea = req.body;
 
     const sessionUser: any = await getToken({ req });
+    if (!sessionUser?.id) {
+      throw new Error("You are not logged in !");
+    }
 
     const result = await service.insertOrUpdateIdea(idea, sessionUser);
     res.status(200).json(result);

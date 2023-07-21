@@ -47,6 +47,7 @@ export interface IIdea {
    name: string;
    startMonth: string;
    durationInMonths: number;
+   ownerName: string;
 }
 
 export interface ICompetitor {

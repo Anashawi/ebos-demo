@@ -76,7 +76,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 			<Modal
 				config={{
 					className:
-						"p-5 lg:p-10 w-2/3 min-w-[320px] max-w-[650px] max-h-[650px]",
+						"p-5 lg:p-10 w-2/3 min-w-[320px] max-w-[850px] max-h-[650px]",
 					isShown: isOpen,
 					closeCallback: toggle,
 				}}>
@@ -111,7 +111,12 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 									<li
 										key={index}
 										className='flex gap-5 justify-between items-center text-dark-200 border-t'>
-										<span className='text-xl'> {idea.name} </span>
+										<div className='flex gap-5'>
+											<span className='text-xl'>{idea.name}</span>
+											<span className='text-xl'>
+												{idea.ownerName}
+											</span>
+										</div>
 										<button
 											onClick={() => {
 												deleteIdea(idea.uuid);
@@ -130,22 +135,27 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 						<Formik
 							initialValues={{
 								name: "",
+								ownerName: "",
 							}}
 							validationSchema={object({
-								name: string().required("required").test((e) => {
-									return !!e.trim();
-								}),
+								name: string()
+									.required("required")
+									.test((e) => {
+										return !!e.trim();
+									}),
 							})}
 							onSubmit={async (values, actions) => {
 								if (userIdeasId) {
 									await updateIdea({
 										uuid: crypto.randomUUID(),
 										name: values.name,
+										ownerName: values.ownerName,
 									} as IIdea);
 								} else {
 									await createIdea({
 										uuid: crypto.randomUUID(),
 										name: values.name,
+										ownerName: values.ownerName,
 									} as IIdea);
 								}
 								actions.setSubmitting(false);
@@ -155,22 +165,39 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 							{({ values, isSubmitting, isValid }) => (
 								<Form>
 									<div className='flex flex-wrap gap-5 items-start'>
-										<div className='grow'>
-											<Field
-												type='text'
-												className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
-												placeholder='New idea'
-												name='name'
-											/>
-											<ErrorMessage name={`name`}>
-												{(msg) => (
-													<div className='text-lg text-rose-500'>
-														{msg}
-													</div>
-												)}
-											</ErrorMessage>
+										<div className='grow flex gap-5'>
+											<div className='grow'>
+												<Field
+													type='text'
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+													placeholder='New idea'
+													name='name'
+												/>
+												<ErrorMessage name={`name`}>
+													{(msg) => (
+														<div className='text-lg text-rose-500'>
+															{msg}
+														</div>
+													)}
+												</ErrorMessage>
+											</div>
+											<div className='grow max-w-[15rem]'>
+												<Field
+													type='text'
+													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+													placeholder='idea owner'
+													name='ownerName'
+												/>
+												<ErrorMessage name={`ownerName`}>
+													{(msg) => (
+														<div className='text-lg text-rose-500'>
+															{msg}
+														</div>
+													)}
+												</ErrorMessage>
+											</div>
 										</div>
-										<div className='flex justify-end text-xl'>
+										<div className='grow lg:grow-0 flex justify-end text-xl'>
 											<button
 												type='submit'
 												className={
