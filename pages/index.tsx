@@ -79,13 +79,17 @@ export default function Home() {
 								{!isLoading &&
 									!!videos[videoPropNamesEnum.introductoryVideo] && (
 										<div className='w-[90%] p-3 flex gap-9 items-center rounded-full bg-dark'>
-											<div className='w-[6rem] h-[6rem] rounded-full'>
-												<Image
-													src='/bulb.svg'
-													alt='Introductory Video'
-													width='100'
-													height='100'
-												/>
+											<div className='w-[7rem] rounded-full overflow-hidden'>
+												<div className='w-[13rem] h-[6.5rem]'>
+													<Image
+														src='/video-image.png'
+														alt='Introductory Video'
+														width='90'
+														height='90'
+														quality={100}
+														className='translate-x-[-0.75rem] w-[13rem] h-[6.5rem]'
+													/>
+												</div>
 											</div>
 											<p className='grow text-white'>
 												Watch Introductory Video
