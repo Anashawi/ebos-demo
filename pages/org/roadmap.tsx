@@ -57,7 +57,7 @@ const RoadMap = () => {
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto gap-5'>
 						<Navbar selectedNode={navbarNodesEnum.roadMap} />
 						<div className='content-container'>
-							<div className='left-content'>
+							<div className='left-content grow'>
 								<RoadMapContent
 									userIdeas={userIdeas}
 									dispatchUserIdeas={setUserIdeas}
@@ -65,7 +65,7 @@ const RoadMap = () => {
 									isLoading={isLoading}
 								/>
 							</div>
-							<div className='right-content'>
+							<div className='right-content w-auto'>
 								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
 									<button
 										type='button'
@@ -93,7 +93,8 @@ const RoadMap = () => {
 								{!isLoading && !userIdeas.ideas.length && (
 									<div className='w-full flex items-center'>
 										<p className='text-2xl text-center italic'>
-											Start adding your ideas to see roadmap ideas chart...
+											Start adding your ideas to see roadmap ideas
+											chart...
 										</p>
 									</div>
 								)}

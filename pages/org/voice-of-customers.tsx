@@ -24,7 +24,7 @@ const VoiceOfCustomers = () => {
 					<FontAwesomeIcon className='w-7' icon={faEdit} />
 				</button>
 			)} */}
-			
+
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
@@ -33,10 +33,10 @@ const VoiceOfCustomers = () => {
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
 						<Navbar selectedNode={navbarNodesEnum.voiceOfCustomers} />
 						<div className='content-container'>
-							<div className='left-content'>
+							<div className='left-content grow'>
 								<VoiceOfCustomersContent />
 							</div>
-							<div className='right-content'>
+							<div className='right-content w-auto'>
 								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
 									<button
 										type='button'

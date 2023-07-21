@@ -23,10 +23,10 @@ const Goals = () => {
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
 						<Navbar selectedNode={navbarNodesEnum.visualizeSuccess} />
 						<div className='content-container'>
-							<div className='left-content'>
+							<div className='left-content grow'>
 								<GoalsContent />
 							</div>
-							<div className='right-content'>
+							<div className='right-content w-auto'>
 								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
 									<button
 										type='button'
