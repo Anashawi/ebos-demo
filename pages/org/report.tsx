@@ -34,7 +34,7 @@ const Report = () => {
 					<h1 className='text-5xl font-hero-bold'>Report</h1>
 				</div>
 				<section className='flex flex-col gap-10 min-h-[29.7cm]'>
-					{/* <GoalsReport />
+					<GoalsReport />
 					<PioneerMigratorSettlerReport
 						userProduct={userProduct}
 						isLoading={isLoading}
@@ -46,7 +46,7 @@ const Report = () => {
 					<RedOceanReport
 						userProduct={userProduct}
 						isLoading={isLoading}
-					/> */}
+					/>
 					<BlueOceanReport
 						userProduct={userProduct}
 						isLoading={isLoading}
