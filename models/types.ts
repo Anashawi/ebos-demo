@@ -59,7 +59,7 @@ export interface ICompetitor {
 
 export interface IFactorCompetitor {
    uuid: string;
-   value: string;
+   value: string | number;
 }
 
 export interface IFactor {

@@ -15,7 +15,7 @@ const useFuturesChart = (products: IProduct[]) => {
 		if (products) {
 			updateChartProps();
 		}
-	}, [products]);
+	}, [products.length]);
 
 	const updateChartProps = () => {
 		let ticks: any = products.map((prod) => prod.futures?.map((future) => {
@@ -52,8 +52,6 @@ const useFuturesChart = (products: IProduct[]) => {
 			).flat(1);
 
 		chart.data = [["Product Name", "Year", "Level", "Product Name", "Sales"], ...rows];
-
-		console.log("chart.data", chart.data);
 
 		const vAxisTicks: any = [
 			{

@@ -14,6 +14,7 @@ import RoadmapChart from "../../components/roadmap/roadmap-chart";
 import IdeasModal from "../../components/app/ideas-modal";
 import { useQuery } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/ideas.client";
+import Link from "next/link";
 
 const RoadMap = () => {
 	const { data: session }: any = useSession();
@@ -66,7 +67,7 @@ const RoadMap = () => {
 								/>
 							</div>
 							<div className='right-content w-auto'>
-								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
+								<div className='p-1 bg-white rounded-xl'>
 									<button
 										type='button'
 										onClick={() => {
@@ -76,7 +77,7 @@ const RoadMap = () => {
 										My Ideas
 									</button>
 								</div>
-								<div className='flex flex-col gap-1 p-1 bg-white rounded-xl'>
+								<div className='p-1 bg-white rounded-xl'>
 									<button
 										type='button'
 										onClick={() => {
@@ -85,6 +86,13 @@ const RoadMap = () => {
 										className='w-full btn-primary-light rounded-xl'>
 										Resource Videos
 									</button>
+								</div>
+								<div className='p-1 bg-white rounded-xl'>
+									<Link
+										href='/org/report'
+										className='w-full btn-primary-light rounded-xl hover:text-white'>
+										Generate Report
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -131,7 +139,7 @@ const RoadMap = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
-						onClick={() => toggleVideoModal(true)}>
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>

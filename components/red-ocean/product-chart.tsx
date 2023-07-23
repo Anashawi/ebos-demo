@@ -1,12 +1,16 @@
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
+import Chart, {
+	ChartWrapperOptions,
+	ReactGoogleChartProps,
+} from "react-google-charts";
 import { IProduct } from "../../models/types";
 import { useState, useEffect } from "react";
 
 interface Props {
 	product: IProduct;
+	customOptions?: ChartWrapperOptions["options"];
 }
 
-const RedOceanProductChart = ({ product }: Props) => {
+const RedOceanProductChart = ({ product, customOptions }: Props) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "LineChart",
 		width: "100%",
@@ -79,6 +83,7 @@ const RedOceanProductChart = ({ product }: Props) => {
 				width: "100%",
 				height: "100%",
 			},
+			...customOptions,
 		};
 		setChart({ ...chart });
 	};

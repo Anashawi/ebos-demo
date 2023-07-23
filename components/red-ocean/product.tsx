@@ -21,8 +21,8 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 			name: "",
 			competitors: product.competitors?.map((comp) => {
 				return {
-					uuid: crypto.randomUUID(),
-					value: "1",
+					uuid: comp.uuid,
+					value: 1,
 				} as IFactorCompetitor;
 			}),
 		} as IFactor;
@@ -79,7 +79,7 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 																	</label>
 																	<Field
 																		as='select'
-																		placeholder={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
+																		placeholder={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
 																		className='light-input'
 																		name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
 																		<option

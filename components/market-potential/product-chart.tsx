@@ -1,12 +1,16 @@
-import Chart, { ReactGoogleChartProps } from "react-google-charts";
+import Chart, {
+	ChartWrapperOptions,
+	ReactGoogleChartProps,
+} from "react-google-charts";
 import { IProduct } from "../../models/types";
 import { useState, useEffect } from "react";
 
 interface Props {
 	product: IProduct;
+	customOptions?: ChartWrapperOptions["options"];
 }
 
-const MarketPotentialProductChart = ({ product }: Props) => {
+const MarketPotentialProductChart = ({ product, customOptions }: Props) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "PieChart",
 		width: "100%",
@@ -37,11 +41,6 @@ const MarketPotentialProductChart = ({ product }: Props) => {
 				},
 			},
 			tooltip: { trigger: "none" },
-			bubble: {
-				textStyle: {
-					fontSize: 11,
-				},
-			},
 			chartArea: {
 				left: 10,
 				top: 40,
@@ -49,6 +48,7 @@ const MarketPotentialProductChart = ({ product }: Props) => {
 				width: "100%",
 				height: "100%",
 			},
+			...customOptions,
 		};
 		setChart({ ...chart });
 	};

@@ -37,7 +37,7 @@ const VoiceOfCustomers = () => {
 								<VoiceOfCustomersContent />
 							</div>
 							<div className='right-content w-auto'>
-								<div className='flex flex-col gap-2 p-1 bg-white rounded-xl'>
+								<div className='p-1 bg-white rounded-xl'>
 									<button
 										type='button'
 										onClick={() => {
@@ -47,7 +47,7 @@ const VoiceOfCustomers = () => {
 										My Ideas
 									</button>
 								</div>
-								<div className='flex flex-col gap-1 p-1 bg-white rounded-xl'>
+								<div className='p-1 bg-white rounded-xl'>
 									<button
 										type='button'
 										onClick={() => {

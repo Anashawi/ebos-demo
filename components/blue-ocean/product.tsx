@@ -12,12 +12,12 @@ interface Props {
 const BlueOceanProduct = ({ product, index }: Props) => {
 	const emptyFactor = useMemo(() => {
 		return {
-			id: "0",
+			id: 0,
 			name: "",
 			competitors: product.competitors?.map((comp) => {
 				return {
-					id: "0",
-					value: "1",
+					id: 0,
+					value: 1,
 				};
 			}),
 		};
