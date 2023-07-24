@@ -15,6 +15,7 @@ export enum productPagesEnum {
 }
 
 export enum videoPropNamesEnum {
+  introductoryVideo = "introductoryVideo",
   goalsVideo = "goalsVideo",
   staffOnDemand = "staffOnDemand",
   communityAndCrowd = "communityAndCrowd",
@@ -41,4 +42,22 @@ export enum videoPropNamesEnum {
   nonCustomers = "nonCustomers",
   stepUpStepDownModel = "stepUpStepDownModel",
   roadMap = "roadMap",
+}
+
+export enum navbarNodesEnum {
+  visualizeSuccess = "Visualize Success",
+  pioneerMigratorSettler = "Pioneer Migrator Settler",
+  marketPotential = "Market Potential",
+  redOceanCanvas = "Red Ocean Canvas",
+  disruption = "Disruption",
+  voiceOfCustomers = "Voice of Customers",
+  blueOceanCanvas = "Blue ocean",
+  nonCustomers = "Non customers",
+  stepUpStepDownModel = "Step Up Step Down Model",
+  roadMap = "Road map",
+}
+
+export enum takeawayTypeEnums {
+  scale = "on-scale",
+  ideas = "on-ideas",
 }

@@ -6,7 +6,7 @@ const useFuturesChart = (products: IProduct[]) => {
 	const [chart, setChart] = useState<ReactGoogleChartProps>({
 		chartType: "BubbleChart",
 		width: "100%",
-		height: "100%",
+		height: "90%",
 		options: [],
 		data: [],
 	});
@@ -15,7 +15,7 @@ const useFuturesChart = (products: IProduct[]) => {
 		if (products) {
 			updateChartProps();
 		}
-	}, [products]);
+	}, [products.length]);
 
 	const updateChartProps = () => {
 		let ticks: any = products.map((prod) => prod.futures?.map((future) => {
@@ -53,8 +53,6 @@ const useFuturesChart = (products: IProduct[]) => {
 
 		chart.data = [["Product Name", "Year", "Level", "Product Name", "Sales"], ...rows];
 
-		console.log("chart.data", chart.data);
-
 		const vAxisTicks: any = [
 			{
 				v: 1,
@@ -62,7 +60,7 @@ const useFuturesChart = (products: IProduct[]) => {
 			},
 			{
 				v: 2,
-				f: "Migrate",
+				f: "Migrator",
 			},
 			{
 				v: 3,
@@ -75,7 +73,7 @@ const useFuturesChart = (products: IProduct[]) => {
 			legend: {
 				position: "top",
 				textStyle: {
-					fontSize: 14,
+					fontSize: 11,
 				},
 			},
 			colors: [
@@ -96,6 +94,7 @@ const useFuturesChart = (products: IProduct[]) => {
 			hAxis: {
 				textStyle: {
 					bold: true,
+					fontSize: 11,
 				},
 				allowContainerBoundaryTextCutoff: false,
 				gridlines: {
@@ -111,6 +110,9 @@ const useFuturesChart = (products: IProduct[]) => {
 				gridlines: {
 					color: "#eee",
 				},
+				textStyle: {
+					fontSize: 11,
+				},
 			},
 			bubble: {
 				textStyle: {
@@ -118,10 +120,10 @@ const useFuturesChart = (products: IProduct[]) => {
 				},
 			},
 			chartArea: {
-				left: 80,
-				top: 80,
+				left: 70,
+				top: 70,
 				bottom: 60,
-				right: 100,
+				right: 20,
 				width: "100%",
 				height: "90%",
 			},

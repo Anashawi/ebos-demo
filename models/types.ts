@@ -1,10 +1,24 @@
-export interface ConfirmDialog {
-   isShown: boolean;
+import { takeawayTypeEnums } from "./enums";
+
+export interface NavbarNode {
    title: string;
-   confirmMessage: string;
-   okBtnText: string;
-   cancelBtnText: string;
-   okCallback: () => void;
+   step: string;
+   url: string;
+   iconPath: string;
+   selectedIconPath: string;
+}
+
+export type ConfirmDialog = {
+   isShown: boolean,
+   title: string,
+   message: string,
+   actionBtnText: string,
+   cancelBtnText: string,
+   actionCallback: () => void,
+   cancelCallback: () => void,
+   isDangerAction: boolean,
+   loadingMessage: string,
+   isLoading: boolean,
 }
 
 export interface IModal {
@@ -33,6 +47,7 @@ export interface IIdea {
    name: string;
    startMonth: string;
    durationInMonths: number;
+   ownerName: string;
 }
 
 export interface ICompetitor {
@@ -44,7 +59,7 @@ export interface ICompetitor {
 
 export interface IFactorCompetitor {
    uuid: string;
-   value: string;
+   value: string | number;
 }
 
 export interface IFactor {
@@ -55,4 +70,9 @@ export interface IFactor {
 export interface IIdeaFactor {
    name: string;
    competitors: IFactorCompetitor[];
+}
+
+export interface ITakeaway {
+   type: takeawayTypeEnums,
+   notes: string[];
 }

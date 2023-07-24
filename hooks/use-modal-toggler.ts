@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-const useModalToggler = () => {
-   const [isShown, setToggler] = useState<any>(false);
+type Toggle = [
+   onOff: boolean,
+   toggle: (state?: boolean | null | undefined) => void
+]
+const useModalToggler = (state?: boolean | null | undefined): Toggle => {
+   const [onOff, setToggler] = useState<boolean>(!!state ?? false);
 
-   const toggle = () => {
-      setToggler(!isShown);
-   };
+   function toggle(state?: boolean | null | undefined) {
+      if (state !== undefined && state !== null)
+         setToggler(state);
+      else
+         setToggler(!onOff);
+   }
 
-   return [isShown, toggle];
-};
+   return [
+      onOff,
+      toggle
+   ];
+}
 
 export default useModalToggler;

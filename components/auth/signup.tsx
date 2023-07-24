@@ -7,8 +7,15 @@ import { useState } from "react";
 import Spinner from "../common/spinner";
 import { useFormik } from "formik";
 import { object, string } from "yup";
+import { useRouter } from "next/router";
 
-const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
+interface Props {
+	closeCallback: () => void;
+}
+
+const Signup = ({ closeCallback }: Props) => {
+	const router = useRouter();
+
 	const [authState, setAuthState] = useState({
 		isLoading: false,
 		error: "",
@@ -47,13 +54,11 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 		},
 	});
 
-	const {
-		mutate,
-		isLoading: signUpLoading,
-		isError,
-		error,
-		isSuccess,
-	} = useMutation<{ id: string }, Error, IUser>(api.singUp, {
+	const { mutate, isLoading: signUpLoading } = useMutation<
+		{ id: string },
+		Error,
+		IUser
+	>(api.singUp, {
 		onSuccess: async (res) => {
 			if (res.id) {
 				await trySignIn(
@@ -67,10 +72,10 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 			if (error) {
 				setAuthState({
 					isLoading: false,
-					error: error.message
-				})
+					error: error.message,
+				});
 			}
-		}
+		},
 	});
 
 	async function trySignIn(email: string, password: string) {
@@ -83,6 +88,7 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 		if (!result?.error) {
 			//handle successful login.. close sign up modal, and stay in place.
 			closeCallback();
+			router.push("org/goals");
 		} else {
 			setAuthState((old) => ({
 				...old,
@@ -92,17 +98,17 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 		}
 	}
 
-
-
 	return (
 		<>
-			<div className='flex flex-col gap-3 p-3'>
+			<div className='flex flex-col p-3 p-5'>
 				<div className='flex items-center justify-between min-h-[58px] p-3'>
-					<div className='flex flex-col gap-3'>
-						<h2 className='text-gray-gunmetal text-5xl'>Register now</h2>
-						<h3 className='text-2xl text-gray-gunmetal'>
+					<div className='flex flex-col gap-5'>
+						<p className='text-gray-gunmetal text-4xl font-hero-semibold'>
+							Register now
+						</p>
+						<p className='text-2xl text-gray-gunmetal'>
 							to start your free sessions
-						</h3>
+						</p>
 					</div>
 				</div>
 
@@ -133,17 +139,17 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 					{/* submit form then redirect to app/goals */}
 					<form
 						onSubmit={formik.handleSubmit}
-						className='flex flex-col gap-10'>
+						className='flex flex-col gap-5'>
 						<div>
 							<input
 								id='fullName'
 								type='text'
 								placeholder='Full Name'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("fullName")}
 							/>
 							{formik.errors?.fullName && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.fullName}
 								</div>
 							)}
@@ -153,11 +159,11 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='email'
 								type='email'
 								placeholder='Email'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("email")}
 							/>
 							{formik.errors.email && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.email}
 								</div>
 							)}
@@ -167,11 +173,11 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='phoneNumber'
 								type='text'
 								placeholder='Phone Number'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("phoneNumber")}
 							/>
 							{formik.errors?.phoneNumber && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.phoneNumber}
 								</div>
 							)}
@@ -181,11 +187,11 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='password'
 								type='password'
 								placeholder='Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("password")}
 							/>
 							{formik.errors?.password && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.password}
 								</div>
 							)}
@@ -195,19 +201,17 @@ const Signup = ({ closeCallback }: { closeCallback: () => void }) => {
 								id='confirmPassword'
 								type='password'
 								placeholder='Confirm Password'
-								className='w-full p-3 bg-gray-100 outline-none border-none caret-dark-blue '
+								className='light-input w-full text-[1rem]'
 								{...formik.getFieldProps("confirmPassword")}
 							/>
 							{formik.errors?.confirmPassword && (
-								<div className='text-rose-400 text-sm'>
+								<div className='pl-4 text-rose-400 text-[1rem]'>
 									{formik.errors.confirmPassword}
 								</div>
 							)}
 						</div>
-						<div>
-							<button
-								type='submit'
-								className='w-full p-2 text-gray-900 bg-yellow-green bg-repeat-x rounded-md bg-gradient-to-br from-yellow-green to-[#A5C036] '>
+						<div className='flex justify-end'>
+							<button type='submit' className='btn-rev'>
 								Register
 							</button>
 						</div>

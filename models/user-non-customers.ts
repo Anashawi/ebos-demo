@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 interface UserNonCustomersAttrs {
    userId: string;
    soonNonCustomers: string[],
-   refusingCustomers: string[],
-   unwantedCustomers: string[],
+   refusingNonCustomers: string[],
+   unwantedNonCustomers: string[],
 }
 
 interface UserNonCustomersDocument extends mongoose.Document, UserNonCustomersAttrs { }
@@ -27,11 +27,11 @@ const userNonCustomersSchema = new mongoose.Schema(
          type: Array<String>,
          required: true
       },
-      refusingCustomers: {
+      refusingNonCustomers: {
          type: Array<String>,
          required: true
       },
-      unwantedCustomers: {
+      unwantedNonCustomers: {
          type: Array<String>,
          required: true
       },

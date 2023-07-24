@@ -17,7 +17,9 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
   try {
     const sessionUser: any = await getToken({ req });
 
-    if (!sessionUser?.id) throw new Error("You are not logged in !");
+    if (!sessionUser?.id) {
+      throw new Error("You are not logged in !");
+    }
 
     const result = await service.getOne(sessionUser.id);
     res.status(200).json(result);
@@ -33,6 +35,9 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
     const userIdeas = req.body;
 
     const sessionUser: any = await getToken({ req });
+    if (!sessionUser?.id) {
+      throw new Error("You are not logged in !");
+    }
 
     const result = await service.insertOne(userIdeas);
     res.status(200).json(result);
@@ -48,6 +53,9 @@ async function _put(req: NextApiRequest, res: NextApiResponse) {
     const userIdeas = req.body;
 
     const sessionUser: any = await getToken({ req });
+    if (!sessionUser?.id) {
+      throw new Error("You are not logged in !");
+    }
 
     const result = await service.updateOne(userIdeas);
     res.status(200).json(result);

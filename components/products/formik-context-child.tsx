@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { useFormikContext } from "formik";
+import { IUserProduct } from "../../models/user-product";
 
 interface Props {
-	dispatch: () => void;
+	dispatch: (userProduct: IUserProduct) => void;
 }
 
 const FormikContextChild = ({ dispatch }: Props) => {
-	const { values }: any = useFormikContext();
+	const { values: userProduct }: any = useFormikContext();
 	useEffect(() => {
-		dispatch();
-	}, [values.products]);
+		dispatch(userProduct);
+	}, [userProduct.products]);
 	return <></>;
 };
 

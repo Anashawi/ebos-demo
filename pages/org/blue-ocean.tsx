@@ -1,29 +1,35 @@
-import { FieldArray, Form, Formik } from "formik";
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import * as Yup from "yup";
+import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import { IProduct } from "../../models/types";
+import Modal from "../../components/common/modal";
+import SharedVideoForm from "../../components/disruption/shared-video-form";
+import Video from "../../components/disruption/video";
+import BlueOceanContent from "../../components/blue-ocean/content";
+import Navbar from "../../components/common/navbar";
+import VerticalNavbar from "../../components/common/vertical-navbar";
+import BlueOceanProductChart from "../../components/blue-ocean/product-chart";
+import Spinner from "../../components/common/spinner";
 import { useEffect, useMemo, useState } from "react";
-import IdeaFactorsProduct from "../../components/idea-factors/product";
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { productPagesEnum, videoPropNamesEnum } from "../../models/enums";
-import { IIdeaFactor } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
-import ConsultantReview from "../../components/common/consultant-review";
-import UserInfoHeader from "../../components/common/user-info-header";
-import Header from "../../components/common/header";
-import Link from "next/link";
-import Spinner from "../../components/common/spinner";
-import ZeroProductsWarning from "../../components/common/zero-products-warning";
-import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/videos/shared-video-form";
-import Video from "../../components/videos/video";
+import { IIdeaFactor } from "../../models/types";
 
-const IdeaFactors = () => {
+const BlueOceanCanvas = () => {
+	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
+	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
+	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+
 	const { data: session }: any = useSession();
+
+	const emptyFactor = useMemo(() => {
+		return {
+			name: "",
+			competitors: [],
+		} as IIdeaFactor;
+	}, []);
 
 	const emptyUserProduct = useMemo(() => {
 		return {
@@ -33,14 +39,10 @@ const IdeaFactors = () => {
 		} as IUserProduct;
 	}, []);
 
-	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
-	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
-
 	const [userProduct, setUserProduct] =
 		useState<IUserProduct>(emptyUserProduct);
 
-	const queryClient = useQueryClient();
+	const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
 	const { data, isLoading } = useQuery<IUserProduct>({
 		queryKey: [clientApi.Keys.All],
@@ -55,7 +57,7 @@ const IdeaFactors = () => {
 				prod.competitors?.map((comp) => {
 					return {
 						uuid: comp.uuid,
-						value: "1",
+						value: 1,
 					};
 				}) ?? [];
 			if (
@@ -67,7 +69,31 @@ const IdeaFactors = () => {
 					{ ...emptyFactor, name: "" },
 					{ ...emptyFactor, name: "" },
 				];
+			} else {
+				console.log("prod.ideaFactors before", prod.ideaFactors);
+				prod.ideaFactors = prod.ideaFactors.map((ideaFactor) => {
+					const newCompetitors = prod.competitors
+						?.filter(
+							(comp) =>
+								!ideaFactor.competitors.some(
+									(c) => comp.uuid === c.uuid
+								)
+						)
+						.map((comp) => {
+							return {
+								uuid: comp.uuid,
+								value: 1,
+							};
+						});
+					if (newCompetitors?.length) {
+						ideaFactor.competitors.concat(newCompetitors);
+					}
+					return {
+						...ideaFactor,
+					};
+				});
 			}
+			console.log("prod.ideaFactors after", prod.ideaFactors);
 		});
 		if (data) {
 			setUserProduct(data);
@@ -75,245 +101,84 @@ const IdeaFactors = () => {
 		setUserProduct(data ?? emptyUserProduct);
 	}, [data]);
 
-	const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
-		useMutation(
-			(userProduct: IUserProduct) => {
-				return clientApi.updateOne(userProduct, productPagesEnum.factors);
-			},
-			{
-				onMutate: (updated) => {
-					queryClient.setQueryData(
-						[clientApi.Keys.UserProduct, userProduct.id],
-						updated
-					);
-				},
-				onSuccess: (updated) => {
-					queryClient.invalidateQueries([
-						clientApi.Keys.UserProduct,
-						userProduct.id,
-					]);
-					queryClient.invalidateQueries([clientApi.Keys.All]);
-				},
-			}
-		);
-
-	const emptyFactor = useMemo(() => {
-		return {
-			name: "",
-			competitors: [],
-		} as IIdeaFactor;
-	}, []);
-
 	return (
 		<>
-			<IdeasModal isOpen={isIdeasModalOpen} toggle={toggleIdeasModal} />
-
-			<div className='factors-gradient bg-white'>
-				<div className='min-h-screen px-12 mx-0 my-auto md:w-[calc(1300px_-_1.5_*_2)] lg:w-[960px_-_1.5rem_*_2] xl:w-[1300_-_1.5rem_*_2]'>
-					<div className='flex flex-wrap'>
-						<div className='flex flex-col gap-7 w-full p-12 relative'>
-							<div className='flex gap-10 items-center'>
-								<UserInfoHeader className='w-1/2'></UserInfoHeader>
-								<Header
-									className='w-1/2'
-									toggleIdeasModal={toggleIdeasModal}></Header>
+			<div className='bg-gray-100 pt-9'>
+				<div className='flex gap-[4.4rem] px-16 m-auto'>
+					<div className='py-12'>
+						<VerticalNavbar />
+					</div>
+					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
+						<Navbar selectedNode={navbarNodesEnum.blueOceanCanvas} />
+						<div className='content-container'>
+							<div className='left-content'>
+								<BlueOceanContent
+									userProduct={userProduct}
+									dispatchProducts={(products) => {
+										setChartProducts(products);
+									}}
+									isLoading={isLoading}
+								/>
 							</div>
-							<div className='w-full flex gap-12 items-center justify-between mb-5 pr-12'>
-								<h3 className='w-1/2 text-[2.8rem] text-yellow-green'>
-									Blue Ocean Canvas
-								</h3>
-								<div className='w-1/2 pl-10 py-5 mx-auto'>
-									<div className='flex flex-wrap justify-start items-center gap-4'>
-										<ConsultantReview
-											pageTitle={
-												"Blue Ocean Canvas"
-											}></ConsultantReview>
-										{(session?.user as any)?.role === "admin" && (
-											<button
-												type='button'
-												className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-												onClick={toggleEditVideoModal}>
-												<span>Edit video Url</span>
-												<FontAwesomeIcon
-													className='w-7'
-													icon={faEdit}
-												/>
-											</button>
-										)}
-										<button
-											type='button'
-											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={toggleVideoModal}>
-											<span>Watch Video</span>
-											<FontAwesomeIcon
-												className='w-7'
-												icon={faEye}
-											/>
-										</button>
-									</div>
+							<div className='right-content'>
+								<div className='p-1 bg-white rounded-xl'>
+									<button
+										type='button'
+										onClick={() => {
+											toggleIdeasModal(true);
+										}}
+										className='w-full btn-primary-light rounded-xl'>
+										My Ideas
+									</button>
 								</div>
+								<div className='p-1 bg-white rounded-xl'>
+									<button
+										type='button'
+										onClick={() => {
+											toggleVideoModal(true);
+										}}
+										className='w-full btn-primary-light rounded-xl'>
+										Resource Videos
+									</button>
+								</div>
+								{isLoading && (
+									<Spinner
+										message='Loading blue ocean charts...'
+										className='p-5 items-center text-xl'
+									/>
+								)}
+								{!isLoading &&
+									!!chartProducts?.length &&
+									chartProducts.map((product, index) => (
+										<div key={index} className='h-[300px] mb-7'>
+											<BlueOceanProductChart product={product} />
+										</div>
+									))}
 							</div>
-							<Formik
-								initialValues={{
-									products: userProduct.products,
-								}}
-								validationSchema={Yup.object({
-									products: Yup.array(
-										Yup.object({
-											ideaFactors: Yup.array(
-												Yup.object({
-													name: Yup.string().required("required"),
-												})
-											)
-												.required(
-													"Must provide at least one idea factor !"
-												)
-												.min(
-													1,
-													"Must provide at least one idea factor !"
-												),
-										})
-									),
-								})}
-								onSubmit={async (values, actions) => {
-									values.products?.map((product) => {
-										if (!product.uuid) {
-											product.uuid = crypto.randomUUID();
-										}
-									});
-
-									if (userProduct?.id) {
-										userProduct.products = values.products;
-										await updateUserProduct({
-											...userProduct,
-										});
-									}
-									actions.setSubmitting(false);
-								}}
-								enableReinitialize
-								validateOnMount>
-								{({ values, isSubmitting, isValid, errors }) => {
-									return (
-										<Form>
-											<FieldArray name='products'>
-												{({ push, remove }) => {
-													return (
-														<>
-															<div className='flex flex-col gap-12'>
-																<div className='flex flex-col gap-20'>
-																	{!userProduct.products
-																		?.length &&
-																		!isLoading && (
-																			<ZeroProductsWarning />
-																		)}
-																	{!values.products?.length &&
-																		!!userProduct.products
-																			?.length &&
-																		!isLoading && (
-																			<p className='text-rose-300'>
-																				make a selection to
-																				view products !
-																			</p>
-																		)}
-																	{!!isLoading && (
-																		<Spinner
-																			className='flex items-center text-2xl'
-																			message='Loading Blue Ocean...'
-																		/>
-																	)}
-																	{!!values.products?.length &&
-																		values.products.map(
-																			(
-																				product,
-																				productIndex
-																			) => (
-																				<div
-																					key={
-																						productIndex
-																					}>
-																					<IdeaFactorsProduct
-																						product={
-																							product
-																						}
-																						index={
-																							productIndex
-																						}
-																						formUtilities={{
-																							isSubmitting,
-																							isValid,
-																							errors,
-																						}}
-																					/>
-																				</div>
-																			)
-																		)}
-																</div>
-															</div>
-															<div className='w-1/2 flex flex-col gap-3 pr-11'>
-																<div className='h-10'>
-																	{isUpdatingUserProduct && (
-																		<Spinner
-																			className='flex items-center text-xl'
-																			message='Saving Blue Ocean'
-																		/>
-																	)}
-																</div>
-																<div className='flex gap-5 justify-between items-center'>
-																	{!!values.products
-																		?.length && (
-																		<button
-																			type='submit'
-																			className={
-																				isSubmitting ||
-																				!isValid
-																					? "btn-rev btn-disabled"
-																					: "btn-rev"
-																			}
-																			disabled={
-																				isSubmitting ||
-																				!isValid
-																			}>
-																			Save
-																		</button>
-																	)}
-																	{userProduct?.products
-																		?.length > 0 && (
-																		<Link href={"/"}>
-																			<span className='text-md text-gray-400 italic'>
-																				go to next →{" "}
-																				<span className='text-gray-500'>
-																					Non Customers
-																				</span>
-																			</span>
-																		</Link>
-																	)}
-																</div>
-															</div>
-														</>
-													);
-												}}
-											</FieldArray>
-										</Form>
-									);
-								}}
-							</Formik>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* ideas modal */}
+			<IdeasModal
+				isOpen={isIdeasModalOpen}
+				toggle={() => toggleIdeasModal()}
+			/>
+
 			{/* video modal */}
 			<Modal
 				config={{
 					isShown: isVideoModalOn,
-					closeCallback: toggleVideoModal,
+					closeCallback: () => toggleVideoModal(false),
 					className:
 						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
 				}}>
-				<Video currVideoPropName={videoPropNamesEnum.blueOcean} />
+				<Video videoPropName={videoPropNamesEnum.blueOcean} />
 				<div className='flex justify-center p-5 bg-black'>
 					<button
-						className='btn-diff bg-gray-100 hover:bg-gray-300'
-						onClick={toggleVideoModal}>
+						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>
@@ -323,12 +188,12 @@ const IdeaFactors = () => {
 			<Modal
 				config={{
 					isShown: isEditUrlsModalOn,
-					closeCallback: toggleEditVideoModal,
+					closeCallback: () => toggleEditVideoModal(false),
 					className:
 						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
 				}}>
 				<SharedVideoForm
-					toggleEditVideoModal={toggleEditVideoModal}
+					toggleEditVideoModal={() => toggleEditVideoModal(false)}
 					videoPropName={videoPropNamesEnum.blueOcean}
 					videoLabel='Blue Ocean Video'
 				/>
@@ -337,4 +202,4 @@ const IdeaFactors = () => {
 	);
 };
 
-export default IdeaFactors;
+export default BlueOceanCanvas;
