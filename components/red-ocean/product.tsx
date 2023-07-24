@@ -64,56 +64,60 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 													</ErrorMessage>
 												</div>
 												<div className='flex-1 flex gap-5'>
-													{product.competitors
-														?.filter((comp) => !comp.isUntapped)
-														.map(
-															(
-																comp: ICompetitor,
-																compIndex: number
-															) => (
-																<div
-																	key={compIndex}
-																	className='flex-1 flex flex-col min-w-[140px]'>
-																	<label className='block max-w-[90%] text-ellipsis overflow-hidden break-keep'>
-																		<span>{comp.name}</span>
-																	</label>
-																	<Field
-																		as='select'
-																		placeholder={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
-																		className='light-input'
-																		name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
-																		<option
-																			className='text-lg'
-																			value={1}>
-																			Poor
-																		</option>
-																		<option
-																			className='text-lg'
-																			value={2}>
-																			Moderate
-																		</option>
-																		<option
-																			className='text-lg'
-																			value={3}>
-																			Good
-																		</option>
-																		<option
-																			className='text-lg'
-																			value={4}>
-																			Excellent
-																		</option>
-																	</Field>
-																	<ErrorMessage
-																		name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}>
-																		{(msg) => (
-																			<div className='w-full text-lg text-rose-500'>
-																				{msg}
-																			</div>
-																		)}
-																	</ErrorMessage>
-																</div>
-															)
-														)}
+													{product.competitors?.map(
+														(
+															comp: ICompetitor,
+															compIndex: number
+														) => (
+															<>
+																{!comp.isUntapped && (
+																	<div
+																		key={compIndex}
+																		className='flex-1 flex flex-col min-w-[140px]'>
+																		<label className='block max-w-[90%] text-ellipsis overflow-hidden break-keep'>
+																			<span>
+																				{comp.name}
+																			</span>
+																		</label>
+																		<Field
+																			as='select'
+																			placeholder={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
+																			className='light-input'
+																			name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}>
+																			<option
+																				className='text-lg'
+																				value={1}>
+																				Poor
+																			</option>
+																			<option
+																				className='text-lg'
+																				value={2}>
+																				Moderate
+																			</option>
+																			<option
+																				className='text-lg'
+																				value={3}>
+																				Good
+																			</option>
+																			<option
+																				className='text-lg'
+																				value={4}>
+																				Excellent
+																			</option>
+																		</Field>
+																		<ErrorMessage
+																			name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}>
+																			{(msg) => (
+																				<div className='w-full text-lg text-rose-500'>
+																					{msg}
+																				</div>
+																			)}
+																		</ErrorMessage>
+																	</div>
+																)}
+															</>
+														)
+													)}
 												</div>
 												<FontAwesomeIcon
 													icon={faTrash}

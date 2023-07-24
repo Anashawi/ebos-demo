@@ -2,7 +2,12 @@ import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import { useMemo } from "react";
-import { ICompetitor, IProduct } from "../../models/types";
+import {
+	ICompetitor,
+	IFactorCompetitor,
+	IIdeaFactor,
+	IProduct,
+} from "../../models/types";
 
 interface Props {
 	product: IProduct;
@@ -12,15 +17,14 @@ interface Props {
 const BlueOceanProduct = ({ product, index }: Props) => {
 	const emptyFactor = useMemo(() => {
 		return {
-			id: 0,
 			name: "",
 			competitors: product.competitors?.map((comp) => {
 				return {
-					id: 0,
+					uuid: comp.uuid,
 					value: 1,
-				};
+				} as IFactorCompetitor;
 			}),
-		};
+		} as IIdeaFactor;
 	}, []);
 
 	return (
@@ -59,56 +63,55 @@ const BlueOceanProduct = ({ product, index }: Props) => {
 											</ErrorMessage>
 										</div>
 										<div className='flex-1 flex gap-5'>
-											{product.competitors
-												?.filter((c) => !c.isUntapped)
-												?.map(
-													(
-														comp: ICompetitor,
-														compIndex: number
-													) => (
-														<div
-															key={compIndex}
-															className='flex-1 flex flex-col min-w-[140px]'>
-															<label className='text-lg'>
-																{comp.name}
-															</label>
-															<Field
-																as='select'
-																placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
-																className='light-input'
-																name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}>
-																<option
-																	className='text-lg'
-																	value={1}>
-																	Poor
-																</option>
-																<option
-																	className='text-lg'
-																	value={2}>
-																	Moderate
-																</option>
-																<option
-																	className='text-lg'
-																	value={3}>
-																	Good
-																</option>
-																<option
-																	className='text-lg'
-																	value={4}>
-																	Excellent
-																</option>
-															</Field>
-															<ErrorMessage
-																name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}>
-																{(msg) => (
-																	<div className='w-full text-sm text-rose-500'>
-																		{msg}
-																	</div>
-																)}
-															</ErrorMessage>
-														</div>
-													)
-												)}
+											{product.competitors?.map(
+												(comp: ICompetitor, compIndex: number) => (
+													<>
+														{!comp.isUntapped && (
+															<div
+																key={compIndex}
+																className='flex-1 flex flex-col min-w-[140px]'>
+																<label className='text-lg'>
+																	{comp.name}
+																</label>
+																<Field
+																	as='select'
+																	placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
+																	className='light-input'
+																	name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}>
+																	<option
+																		className='text-lg'
+																		value={1}>
+																		Poor
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={2}>
+																		Moderate
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={3}>
+																		Good
+																	</option>
+																	<option
+																		className='text-lg'
+																		value={4}>
+																		Excellent
+																	</option>
+																</Field>
+																<ErrorMessage
+																	name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}>
+																	{(msg) => (
+																		<div className='w-full text-sm text-rose-500'>
+																			{msg}
+																		</div>
+																	)}
+																</ErrorMessage>
+															</div>
+														)}
+													</>
+												)
+											)}
 										</div>
 										<FontAwesomeIcon
 											icon={faTrash}

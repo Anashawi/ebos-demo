@@ -57,7 +57,7 @@ const BlueOceanCanvas = () => {
 				prod.competitors?.map((comp) => {
 					return {
 						uuid: comp.uuid,
-						value: "1",
+						value: 1,
 					};
 				}) ?? [];
 			if (
@@ -69,7 +69,31 @@ const BlueOceanCanvas = () => {
 					{ ...emptyFactor, name: "" },
 					{ ...emptyFactor, name: "" },
 				];
+			} else {
+				console.log("prod.ideaFactors before", prod.ideaFactors);
+				prod.ideaFactors = prod.ideaFactors.map((ideaFactor) => {
+					const newCompetitors = prod.competitors
+						?.filter(
+							(comp) =>
+								!ideaFactor.competitors.some(
+									(c) => comp.uuid === c.uuid
+								)
+						)
+						.map((comp) => {
+							return {
+								uuid: comp.uuid,
+								value: 1,
+							};
+						});
+					if (newCompetitors?.length) {
+						ideaFactor.competitors.concat(newCompetitors);
+					}
+					return {
+						...ideaFactor,
+					};
+				});
 			}
+			console.log("prod.ideaFactors after", prod.ideaFactors);
 		});
 		if (data) {
 			setUserProduct(data);
@@ -126,7 +150,7 @@ const BlueOceanCanvas = () => {
 								{!isLoading &&
 									!!chartProducts?.length &&
 									chartProducts.map((product, index) => (
-										<div key={index} className='h-[300px]'>
+										<div key={index} className='h-[300px] mb-7'>
 											<BlueOceanProductChart product={product} />
 										</div>
 									))}
@@ -154,7 +178,7 @@ const BlueOceanCanvas = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
-						onClick={() => toggleVideoModal(true)}>
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>

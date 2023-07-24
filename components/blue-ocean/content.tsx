@@ -89,6 +89,7 @@ const BlueOceanContent = ({
 				{({ values, isSubmitting, isValid, errors }) => {
 					return (
 						<Form>
+							<>{console.log("values", values)}</>
 							<FieldArray name='products'>
 								{({ push, remove }) => {
 									return (

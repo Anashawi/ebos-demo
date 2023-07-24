@@ -123,7 +123,7 @@ const RedOceanCanvas = () => {
 								{!isLoading &&
 									!!chartProducts?.length &&
 									chartProducts.map((product, index) => (
-										<div key={index} className='h-[300px]'>
+										<div key={index} className='h-[300px] mb-7'>
 											<RedOceanProductChart product={product} />
 										</div>
 									))}
@@ -151,7 +151,7 @@ const RedOceanCanvas = () => {
 				<div className='flex justify-center p-5 bg-black'>
 					<button
 						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
-						onClick={() => toggleVideoModal(true)}>
+						onClick={() => toggleVideoModal(false)}>
 						close
 					</button>
 				</div>

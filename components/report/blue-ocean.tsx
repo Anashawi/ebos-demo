@@ -66,7 +66,7 @@ const BlueOceanReport = ({ userProduct, isLoading }: Props) => {
 								<table className='table-auto w-full border'>
 									<thead>
 										<tr className='bg-slate-50'>
-											<th className='p-3 border'>ideaFactor</th>
+											<th className='p-3 border'>Idea Factor</th>
 											{product.ideaFactors?.length &&
 												product.ideaFactors[0]?.competitors
 													?.filter(
@@ -112,7 +112,6 @@ const BlueOceanReport = ({ userProduct, isLoading }: Props) => {
 															<td
 																key={comp.uuid}
 																className='p-3 border'>
-																<>{console.log("comp", comp)}</>
 																{calcExcellenceLevel(
 																	comp.value
 																)}
