@@ -9,7 +9,7 @@ const ReportTakeawaysNotes = ({ title, takeaways }: Props) => {
 	return (
 		<>
 			<div className='grow flex flex-col gap-3'>
-				<label className='text-dark-400 text-[1.75rem]'>{title}</label>
+				<label className='text-dark-400 report-header-3'>{title}</label>
 				<ul className='flex flex-col gap-3'>
 					{!takeaways?.notes.length && (
 						<div className='w-full flex justify-start items-center'>

@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import RedOceanReport from "../../components/report/red-ocean";
 import BlueOceanReport from "../../components/report/blue-ocean";
 import DisruptionReport from "../../components/report/disruption";
+import VoiceOfCustomersReport from "../../components/report/voice-of-customers";
 
 const Report = () => {
 	const { data: session }: any = useSession();
@@ -59,6 +60,7 @@ const Report = () => {
 						isLoading={isLoading}
 					/>
 					<DisruptionReport />
+					<VoiceOfCustomersReport />
 				</section>
 			</div>
 		</div>
