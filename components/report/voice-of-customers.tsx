@@ -59,12 +59,12 @@ const VoiceOfCustomersReport = () => {
 							</p>
 						)}
 						{!isLoading && !!userCustomers.topCategories?.length && (
-							<ul className='flex flex-col gap-2'>
+							<ul className='flex flex-col gap-2 pl-6'>
 								{userCustomers.topCategories.map(
 									(category, categoryIndex) => (
 										<li
 											key={category + categoryIndex}
-											className='p-3 odd:bg-slate-50'>
+											className='p-3 odd:bg-slate-50 list-disc'>
 											{category}
 										</li>
 									)
@@ -82,12 +82,12 @@ const VoiceOfCustomersReport = () => {
 							</p>
 						)}
 						{!isLoading && !!userCustomers.wishlist?.length && (
-							<ul className='flex flex-col gap-2'>
+							<ul className='flex flex-col gap-2 pl-6'>
 								{userCustomers.wishlist.map(
 									(wishlistItem, wishlistItemIndex) => (
 										<li
 											key={wishlistItem + wishlistItemIndex}
-											className='p-3 odd:bg-slate-50'>
+											className='p-3 odd:bg-slate-50 list-disc'>
 											{wishlistItem}
 										</li>
 									)
@@ -105,12 +105,12 @@ const VoiceOfCustomersReport = () => {
 							</p>
 						)}
 						{!isLoading && !!userCustomers.fulfill?.length && (
-							<ul className='flex flex-col gap-2'>
+							<ul className='flex flex-col gap-2 pl-6'>
 								{userCustomers.fulfill.map(
 									(fulfillItem, fulfillItemIndex) => (
 										<li
 											key={fulfillItem + fulfillItemIndex}
-											className='p-3 odd:bg-slate-50'>
+											className='p-3 odd:bg-slate-50 list-disc'>
 											{fulfillItem}
 										</li>
 									)
