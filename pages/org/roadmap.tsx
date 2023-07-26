@@ -84,7 +84,7 @@ const RoadMap = () => {
 											toggleVideoModal(true);
 										}}
 										className='w-full btn-primary-light rounded-xl'>
-										Resource Videos
+										Watch Video
 									</button>
 								</div>
 								<div className='p-1 bg-white rounded-xl'>

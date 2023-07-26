@@ -54,7 +54,7 @@ const VoiceOfCustomers = () => {
 											toggleVideoModal(true);
 										}}
 										className='w-full btn-primary-light rounded-xl'>
-										Resource Videos
+										Watch Video
 									</button>
 								</div>
 							</div>

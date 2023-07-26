@@ -193,7 +193,6 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 													<span>Add New Future</span>
 												</button>
 											</div>
-
 											{!!product.futures?.length &&
 												product.futures?.length > 0 && (
 													<div className='p-2'>
@@ -215,7 +214,6 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
 														</button>
 													</div>
 												)}
-
 											<div className='p-2'>
 												<button
 													type='button'

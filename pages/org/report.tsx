@@ -43,7 +43,7 @@ const Report = () => {
 				</div>
 				<section className='flex flex-col gap-10 min-h-[29.7cm]'>
 					<GoalsReport />
-					{/* <PioneerMigratorSettlerReport
+					<PioneerMigratorSettlerReport
 						userProduct={userProduct}
 						isLoading={isLoading}
 					/>
@@ -59,7 +59,7 @@ const Report = () => {
 						userProduct={userProduct}
 						isLoading={isLoading}
 					/>
-					<DisruptionReport /> */}
+					<DisruptionReport />
 					<VoiceOfCustomersReport />
 				</section>
 			</div>

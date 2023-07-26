@@ -297,7 +297,7 @@ const GoalsContent = () => {
 													(str) => str?.length > 0
 												)?.length > 0 && (
 													<div
-														className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+														className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 														onClick={() => {
 															router.push("../org/products");
 														}}>
