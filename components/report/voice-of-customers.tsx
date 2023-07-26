@@ -1,4 +1,4 @@
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { IUserCustomers } from "../../models/user-customers";
