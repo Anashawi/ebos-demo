@@ -125,7 +125,7 @@ const VoiceOfCustomersContent = () => {
 								className='w-full h-auto'
 							/>
 						</div>
-						<h3 className='text-xl text-dark-300 font-normal'>
+						<h3 className='text-xl text-dark-300'>
 							what do your top customer categories want and how can you
 							fulfill their needs?
 						</h3>

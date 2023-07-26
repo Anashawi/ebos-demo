@@ -174,7 +174,7 @@ const GoalsContent = () => {
 										className='w-full h-auto'
 									/>
 								</div>
-								<h3 className='text-xl text-dark-300 font-normal'>
+								<h3 className='text-xl text-dark-300'>
 									Visualize success on this date, What does it look
 									like...?
 								</h3>

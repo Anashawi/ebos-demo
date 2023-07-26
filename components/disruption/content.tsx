@@ -138,7 +138,7 @@ const DisruptionContent = ({
 						className='w-full h-auto'
 					/>
 				</div>
-				<h3 className='text-xl text-dark-300 font-normal'>
+				<h3 className='text-xl text-dark-300'>
 					Watch help videos then update your ideas accordingly. Submit for
 					feedback.
 				</h3>
