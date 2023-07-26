@@ -37,11 +37,11 @@ const GoalsReport = () => {
 					<span>{userGoals?.targetDate}</span>
 				</div>
 			)}
+			{!isLoading && !userGoals?.goals?.length && (
+				<p className='text-yellow-600'>No goals are added yet</p>
+			)}
 			<div className='pl-6'>
 				<ul className='list-outside'>
-					{!isLoading && !userGoals?.goals?.length && (
-						<p className='text-yellow-600'>No goals were added</p>
-					)}
 					{!isLoading &&
 						userGoals?.goals?.map((goal, index) => (
 							<li

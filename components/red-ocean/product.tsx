@@ -2,7 +2,7 @@ import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
 import { NextPage } from "next";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import {
 	ICompetitor,
 	IFactorCompetitor,
@@ -69,11 +69,9 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 															comp: ICompetitor,
 															compIndex: number
 														) => (
-															<>
+															<Fragment key={comp.uuid}>
 																{!comp.isUntapped && (
-																	<div
-																		key={compIndex}
-																		className='flex-1 flex flex-col min-w-[140px]'>
+																	<div className='flex-1 flex flex-col min-w-[140px]'>
 																		<label className='block max-w-[90%] text-ellipsis overflow-hidden break-keep'>
 																			<span>
 																				{comp.name}
@@ -115,7 +113,7 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 																		</ErrorMessage>
 																	</div>
 																)}
-															</>
+															</Fragment>
 														)
 													)}
 												</div>

@@ -1,30 +1,24 @@
-import { IUserTakeaways } from "../../models/user-takeaways";
-import { takeawayTypeEnums } from "../../models/enums";
-import Spinner from "../common/spinner";
 import { useEffect, useState } from "react";
-import { ITakeaway } from "../../models/types";
-import TakeawaysNotes from "./takeaways-notes";
+import ReportTakeawaysNotes from "./takeaways-notes";
+import { takeawayTypeEnums } from "../../../models/enums";
+import { ITakeaway } from "../../../models/types";
+import { IUserTakeaways } from "../../../models/user-takeaways";
+import Spinner from "../../common/spinner";
 
 interface Props {
 	userTakeaways: IUserTakeaways;
-	dispatchUserTakeaways: (takeawaysCallback: any) => void;
 	isLoading: boolean;
 	className?: string;
 }
 
-const DisruptionTakeaways = ({
+const DisruptionReportTakeaways = ({
 	userTakeaways,
-	dispatchUserTakeaways,
 	isLoading,
 	className,
 }: Props) => {
-	const [scaleTakeaways, setScaleTakeaways] = useState<
-		ITakeaway | undefined
-	>();
+	const [scaleTakeaways, setScaleTakeaways] = useState<ITakeaway>();
 
-	const [ideasTakeaways, setIdeasTakeaways] = useState<
-		ITakeaway | undefined
-	>();
+	const [ideasTakeaways, setIdeasTakeaways] = useState<ITakeaway>();
 
 	useEffect(() => {
 		if (userTakeaways) {
@@ -48,20 +42,18 @@ const DisruptionTakeaways = ({
 					<Spinner message='Loading on scale takeaways...' className='' />
 				)}
 				{!isLoading && (
-					<TakeawaysNotes
+					<ReportTakeawaysNotes
 						title='Takeaways on Scale'
 						takeaways={scaleTakeaways}
-						dispatchUserTakeaways={dispatchUserTakeaways}
 					/>
 				)}
 				{isLoading && (
 					<Spinner message='Loading on ideas takeaways...' className='' />
 				)}
 				{!isLoading && (
-					<TakeawaysNotes
+					<ReportTakeawaysNotes
 						title='Takeaways on Ideas'
 						takeaways={ideasTakeaways}
-						dispatchUserTakeaways={dispatchUserTakeaways}
 					/>
 				)}
 			</div>
@@ -69,4 +61,4 @@ const DisruptionTakeaways = ({
 	);
 };
 
-export default DisruptionTakeaways;
+export default DisruptionReportTakeaways;

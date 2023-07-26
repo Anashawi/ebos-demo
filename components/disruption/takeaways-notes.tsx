@@ -29,7 +29,7 @@ const TakeawaysNotes = ({ title, takeaways, dispatchUserTakeaways }: Props) => {
 					<div className='w-full flex gap-5 xl:gap-2 items-center'>
 						<input
 							type='text'
-							className='w-full xl:w-[60%] light-input'
+							className='w-full light-input'
 							placeholder='Write your notes here...'
 							value={noteToBeAdded}
 							onChange={(e) => {
@@ -65,7 +65,7 @@ const TakeawaysNotes = ({ title, takeaways, dispatchUserTakeaways }: Props) => {
 					{takeaways?.notes.map((note, index) => (
 						<li
 							key={index}
-							className='relative w-[60%] flex items-center'>
+							className='relative flex items-center'>
 							<input
 								type='text'
 								className='dark-input'

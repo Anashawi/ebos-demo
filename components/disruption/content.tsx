@@ -63,7 +63,6 @@ const DisruptionContent = ({
 
 	const [userTakeaways, setUserTakeaways] =
 		useState<IUserTakeaways>(emptyUserTakeaways);
-	console.log("userTakeaways", userTakeaways);
 
 	const { data: userTakeawaysRes, isLoading: isLoadingTakeaways } =
 		useQuery<IUserTakeaways>(
@@ -327,7 +326,7 @@ const DisruptionContent = ({
 				userTakeaways={userTakeaways}
 				dispatchUserTakeaways={setUserTakeaways}
 				isLoading={isLoadingTakeaways}
-				className='flex gap-[5.5rem] flex-wrap xl:flex-nowrap w-full my-5 px-6'
+				className='flex flex-col gap-[5.5rem] xl:flex-nowrap w-full my-5 px-6'
 			/>
 
 			<div className='h-10'>

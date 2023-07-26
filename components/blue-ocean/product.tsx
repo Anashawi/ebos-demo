@@ -1,7 +1,7 @@
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import {
 	ICompetitor,
 	IFactorCompetitor,
@@ -65,11 +65,9 @@ const BlueOceanProduct = ({ product, index }: Props) => {
 										<div className='flex-1 flex gap-5'>
 											{product.competitors?.map(
 												(comp: ICompetitor, compIndex: number) => (
-													<>
+													<Fragment key={comp.uuid}>
 														{!comp.isUntapped && (
-															<div
-																key={compIndex}
-																className='flex-1 flex flex-col min-w-[140px]'>
+															<div className='flex-1 flex flex-col min-w-[140px]'>
 																<label className='text-lg'>
 																	{comp.name}
 																</label>
@@ -109,7 +107,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
 																</ErrorMessage>
 															</div>
 														)}
-													</>
+													</Fragment>
 												)
 											)}
 										</div>

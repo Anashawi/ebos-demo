@@ -66,6 +66,30 @@ const RedOceanCanvas = () => {
 					{ ...emptyFactor, name: "" },
 					{ ...emptyFactor, name: "" },
 				];
+			} else {
+				prod.factors.forEach((factor) => {
+					const newFactorCompetitors = prod.competitors
+						?.filter(
+							(comp) =>
+								!factor.competitors.some((c) => comp.uuid === c.uuid)
+						)
+						.map((comp) => {
+							return {
+								uuid: comp.uuid,
+								value: 1,
+							};
+						});
+					if (newFactorCompetitors?.length) {
+						// Add competitors that exist in  prod.competitors but not in factor.competitors
+						factor.competitors =
+							factor.competitors.concat(newFactorCompetitors);
+					}
+
+					// Remove competitors that exist in factor.competitors but not in prod.competitors
+					factor.competitors = factor.competitors.filter((comp) =>
+						prod.competitors?.some((c) => c.uuid === comp.uuid)
+					);
+				});
 			}
 		});
 		if (data) {

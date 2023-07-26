@@ -8,9 +8,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import RedOceanReport from "../../components/report/red-ocean";
 import BlueOceanReport from "../../components/report/blue-ocean";
+import DisruptionReport from "../../components/report/disruption";
 
 const Report = () => {
 	const { data: session }: any = useSession();
+
+	// const emptyUserProduct = {
+	// 	id: "",
+	// 	userId: session?.user?.id,
+	// 	products: [],
+	// } as IUserProduct;
 
 	const [userProduct, setUserProduct] = useState<IUserProduct>();
 
@@ -51,6 +58,7 @@ const Report = () => {
 						userProduct={userProduct}
 						isLoading={isLoading}
 					/>
+					<DisruptionReport />
 				</section>
 			</div>
 		</div>

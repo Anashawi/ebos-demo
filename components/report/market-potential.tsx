@@ -21,11 +21,11 @@ const MarketPotentialReport = ({ userProduct, isLoading }: Props) => {
 					/>
 				)}
 			</div>
+			{!isLoading && !userProduct?.products?.length && (
+				<p className='text-yellow-600'>No products are added yet</p>
+			)}
 			<div className='pl-6'>
 				<ul className='list-outside'>
-					{!isLoading && !userProduct?.products?.length && (
-						<p className='text-yellow-600'>No products were added</p>
-					)}
 					{!isLoading &&
 						userProduct?.products?.map((product, productIndex) => (
 							<li

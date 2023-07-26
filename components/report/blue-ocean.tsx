@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { IUserProduct } from "../../models/user-product";
 import Spinner from "../common/spinner";
-import RedOceanProductChart from "../red-ocean/product-chart";
-import { IFactorCompetitor } from "../../models/types";
+import { IFactorCompetitor, IProduct } from "../../models/types";
+import BlueOceanProductChart from "../blue-ocean/product-chart";
 
 interface Props {
 	userProduct?: IUserProduct;
@@ -14,6 +14,36 @@ const BlueOceanReport = ({ userProduct, isLoading }: Props) => {
 		if (value == "2") return "Moderate";
 		if (value == "3") return "Good";
 		if (value == "4") return "Excellent";
+	};
+
+	const getTableHeaderCellTSX = (
+		product: IProduct,
+		ideaFactorComp: IFactorCompetitor
+	) => {
+		const correspondingComp = product.competitors?.find(
+			(comp) => comp.uuid === ideaFactorComp.uuid
+		);
+
+		if (!correspondingComp || correspondingComp.isUntapped) return;
+
+		return <th className='p-3 border'>{correspondingComp.name + ""}</th>;
+	};
+
+	const getTableDataCellTSX = (
+		product: IProduct,
+		ideaFactorComp: IFactorCompetitor
+	) => {
+		const correspondingComp = product.competitors?.find(
+			(comp) => comp.uuid === ideaFactorComp.uuid
+		);
+
+		if (!correspondingComp || correspondingComp.isUntapped) return;
+
+		return (
+			<td className='p-3 border'>
+				{calcExcellenceLevel(ideaFactorComp.value)}
+			</td>
+		);
 	};
 
 	return (
@@ -31,21 +61,19 @@ const BlueOceanReport = ({ userProduct, isLoading }: Props) => {
 					/>
 				)}
 			</div>
+			{!isLoading && !userProduct?.products?.length && (
+				<p className='text-yellow-600'>No products are added yet</p>
+			)}
 			<div className='pl-6'>
 				<ul className='list-outside'>
-					{!isLoading && !userProduct?.products?.length && (
-						<p className='text-yellow-600'>No products were added</p>
-					)}
 					{!isLoading &&
-						userProduct?.products?.map((product, productIndex) => (
-							<li
-								key={product.name + productIndex}
-								className='list-decimal p-3'>
+						userProduct?.products?.map((product) => (
+							<li key={product.uuid} className='list-decimal p-3'>
 								<p className='report-header-3 font-hero-semibold mr-3 mb-3 py-5'>
 									{product.name}
 								</p>
 								<div className='relative h-[300px] mb-10'>
-									<RedOceanProductChart
+									<BlueOceanProductChart
 										product={product}
 										customOptions={{
 											backgroundColor: "#f8fafc",
@@ -68,55 +96,37 @@ const BlueOceanReport = ({ userProduct, isLoading }: Props) => {
 										<tr className='bg-slate-50'>
 											<th className='p-3 border'>Idea Factor</th>
 											{product.ideaFactors?.length &&
-												product.ideaFactors[0]?.competitors
-													?.filter(
-														(c) =>
-															!product.competitors?.find(
-																(pc) => pc.uuid === c.uuid
-															)?.isUntapped
-													)
-													?.map((competitor) => (
+												product.ideaFactors[0]?.competitors?.map(
+													(competitor) => (
 														<Fragment key={competitor.uuid}>
-															{
-																<th className='p-3 border'>
-																	{
-																		product.competitors?.find(
-																			(comp) =>
-																				comp.uuid ===
-																				competitor.uuid
-																		)?.name
-																	}
-																</th>
-															}
+															{getTableHeaderCellTSX(
+																product,
+																competitor
+															)}
 														</Fragment>
-													))}
+													)
+												)}
 										</tr>
 									</thead>
 									<tbody>
 										{product.ideaFactors?.map(
 											(ideaFactor, ideaFactorIndex) => (
 												<tr
-													key={ideaFactorIndex}
+													key={ideaFactor.name + ideaFactorIndex}
 													className='even:bg-slate-50'>
 													<td className='p-3 border'>
 														{ideaFactor.name}
 													</td>
-													{ideaFactor.competitors
-														?.filter(
-															(c) =>
-																!product.competitors?.find(
-																	(pc) => pc.uuid == c.uuid
-																)?.isUntapped
-														)
-														?.map((comp: IFactorCompetitor) => (
-															<td
-																key={comp.uuid}
-																className='p-3 border'>
-																{calcExcellenceLevel(
-																	comp.value
+													{ideaFactor.competitors?.map(
+														(comp: IFactorCompetitor) => (
+															<Fragment key={comp.uuid}>
+																{getTableDataCellTSX(
+																	product,
+																	comp
 																)}
-															</td>
-														))}
+															</Fragment>
+														)
+													)}
 												</tr>
 											)
 										)}

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { IFactorCompetitor } from "../../models/types";
+import { IFactorCompetitor, IProduct } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
 import Spinner from "../common/spinner";
 import RedOceanProductChart from "../red-ocean/product-chart";
@@ -16,6 +16,34 @@ const RedOceanReport = ({ userProduct, isLoading }: Props) => {
 		if (value == "4") return "Excellent";
 	};
 
+	const getTableHeaderCellTSX = (
+		product: IProduct,
+		factorComp: IFactorCompetitor
+	) => {
+		const correspondingComp = product.competitors?.find(
+			(comp) => comp.uuid === factorComp.uuid
+		);
+
+		if (!correspondingComp || correspondingComp.isUntapped) return;
+
+		return <th className='p-3 border'>{correspondingComp.name + ""}</th>;
+	};
+
+	const getTableDataCellTSX = (
+		product: IProduct,
+		factorComp: IFactorCompetitor
+	) => {
+		const correspondingComp = product.competitors?.find(
+			(comp) => comp.uuid === factorComp.uuid
+		);
+
+		if (!correspondingComp || correspondingComp.isUntapped) return;
+
+		return (
+			<td className='p-3 border'>{calcExcellenceLevel(factorComp.value)}</td>
+		);
+	};
+
 	return (
 		<div>
 			<div className='mb-5'>
@@ -29,16 +57,14 @@ const RedOceanReport = ({ userProduct, isLoading }: Props) => {
 					/>
 				)}
 			</div>
+			{!isLoading && !userProduct?.products?.length && (
+				<p className='text-yellow-600'>No products are added yet</p>
+			)}
 			<div className='pl-6'>
 				<ul className='list-outside'>
-					{!isLoading && !userProduct?.products?.length && (
-						<p className='text-yellow-600'>No products were added</p>
-					)}
 					{!isLoading &&
-						userProduct?.products?.map((product, productIndex) => (
-							<li
-								key={product.name + productIndex}
-								className='list-decimal p-3'>
+						userProduct?.products?.map((product) => (
+							<li key={product.uuid} className='list-decimal p-3'>
 								<p className='report-header-3 font-hero-semibold mr-3 mb-3 py-5'>
 									{product.name}
 								</p>
@@ -64,55 +90,38 @@ const RedOceanReport = ({ userProduct, isLoading }: Props) => {
 								<table className='table-auto w-full border'>
 									<thead>
 										<tr className='bg-slate-50'>
-											<th className='p-3 border'>factor</th>
+											<th className='p-3 border'>Factor</th>
 											{product.factors?.length &&
-												product.factors[0]?.competitors
-													?.filter(
-														(c) =>
-															!product.competitors?.find(
-																(pc) => pc.uuid === c.uuid
-															)?.isUntapped
-													)
-													?.map((competitor) => (
+												product.factors[0]?.competitors?.map(
+													(competitor) => (
 														<Fragment key={competitor.uuid}>
-															{
-																<th className='p-3 border'>
-																	{
-																		product.competitors?.find(
-																			(comp) =>
-																				comp.uuid ===
-																				competitor.uuid
-																		)?.name
-																	}
-																</th>
-															}
+															{getTableHeaderCellTSX(
+																product,
+																competitor
+															)}
 														</Fragment>
-													))}
+													)
+												)}
 										</tr>
 									</thead>
 									<tbody>
 										{product.factors?.map((factor, factorIndex) => (
 											<tr
-												key={factorIndex}
+												key={factor.name + factorIndex}
 												className='even:bg-slate-50'>
 												<td className='p-3 border'>
 													{factor.name}
 												</td>
-												{factor.competitors
-													?.filter(
-														(c) =>
-															!product.competitors?.find(
-																(pc) => pc.uuid == c.uuid
-															)?.isUntapped
+												{factor.competitors?.map(
+													(comp: IFactorCompetitor) => (
+														<Fragment key={comp.uuid}>
+															{getTableDataCellTSX(
+																product,
+																comp
+															)}
+														</Fragment>
 													)
-													?.map((comp: IFactorCompetitor) => (
-														<td
-															key={comp.uuid}
-															className='p-3 border'>
-															<>{console.log("comp", comp)}</>
-															{calcExcellenceLevel(comp.value)}
-														</td>
-													))}
+												)}
 											</tr>
 										))}
 									</tbody>
