@@ -13,6 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import html2canvas from "html2canvas";
 import NonCustomersReport from "../../components/report/none-customers";
+import PioneerMigratorSettlerReport from "../../components/report/pioneer-migrator-settler";
+import StepUpStepDownModelReport from "../../components/report/step-up-step-down-model-report";
 
 const MyComponent = () => {
 	const { data: session }: any = useSession();
@@ -104,6 +106,15 @@ const MyComponent = () => {
 		const pdfContentComponent7 = document.getElementById(
 			"pdf-content-component-7"
 		);
+		const pdfContentComponent8 = document.getElementById(
+			"pdf-content-component-8"
+		);
+		const pdfContentComponent9 = document.getElementById(
+			"pdf-content-component-9"
+		);
+		const pdfContentComponent10 = document.getElementById(
+			"pdf-content-component-10"
+		);
 
 		if (
 			!pdfContentContainer ||
@@ -113,7 +124,10 @@ const MyComponent = () => {
 			!pdfContentComponent4 ||
 			!pdfContentComponent5 ||
 			!pdfContentComponent6 ||
-			!pdfContentComponent7
+			!pdfContentComponent7 ||
+			!pdfContentComponent8 ||
+			!pdfContentComponent9 ||
+			!pdfContentComponent10
 		) {
 			console.error(
 				"one or more of pdfContentComponents or the Container is/are not defined"
@@ -137,6 +151,9 @@ const MyComponent = () => {
 		await addComponentPages(pdfContentComponent5);
 		await addComponentPages(pdfContentComponent6);
 		await addComponentPages(pdfContentComponent7);
+		await addComponentPages(pdfContentComponent8);
+		await addComponentPages(pdfContentComponent9);
+		await addComponentPages(pdfContentComponent10);
 
 		// Save the PDF
 		pdf.save("report.pdf");
@@ -157,30 +174,42 @@ const MyComponent = () => {
 							<GoalsReport />
 						</div>
 						<div id='pdf-content-component-2'>
-							<MarketPotentialReport
+							<PioneerMigratorSettlerReport
 								userProduct={userProduct}
 								isLoading={isLoading}
 							/>
 						</div>
 						<div id='pdf-content-component-3'>
-							<RedOceanReport
+							<MarketPotentialReport
 								userProduct={userProduct}
 								isLoading={isLoading}
 							/>
 						</div>
 						<div id='pdf-content-component-4'>
-							<DisruptionReport />
+							<RedOceanReport
+								userProduct={userProduct}
+								isLoading={isLoading}
+							/>
 						</div>
 						<div id='pdf-content-component-5'>
-							<VoiceOfCustomersReport />
+							<DisruptionReport />
 						</div>
 						<div id='pdf-content-component-6'>
+							<VoiceOfCustomersReport />
+						</div>
+						<div id='pdf-content-component-7'>
 							<BlueOceanReport
 								userProduct={userProduct}
 								isLoading={isLoading}
 							/>
 						</div>
-						<div id='pdf-content-component-7'>
+						<div id='pdf-content-component-8'>
+							<NonCustomersReport />
+						</div>
+						<div id='pdf-content-component-9'>
+							<StepUpStepDownModelReport />
+						</div>
+						<div id='pdf-content-component-10'>
 							<NonCustomersReport />
 						</div>
 					</div>
