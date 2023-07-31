@@ -12,6 +12,7 @@ import * as clientApi from "../../http-client/products.client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import html2canvas from "html2canvas";
+import NonCustomersReport from "../../components/report/none-customers";
 
 const MyComponent = () => {
 	const { data: session }: any = useSession();
@@ -100,6 +101,9 @@ const MyComponent = () => {
 		const pdfContentComponent6 = document.getElementById(
 			"pdf-content-component-6"
 		);
+		const pdfContentComponent7 = document.getElementById(
+			"pdf-content-component-7"
+		);
 
 		if (
 			!pdfContentContainer ||
@@ -108,7 +112,8 @@ const MyComponent = () => {
 			!pdfContentComponent3 ||
 			!pdfContentComponent4 ||
 			!pdfContentComponent5 ||
-			!pdfContentComponent6
+			!pdfContentComponent6 ||
+			!pdfContentComponent7
 		) {
 			console.error(
 				"one or more of pdfContentComponents or the Container is/are not defined"
@@ -131,6 +136,7 @@ const MyComponent = () => {
 		await addComponentPages(pdfContentComponent4);
 		await addComponentPages(pdfContentComponent5);
 		await addComponentPages(pdfContentComponent6);
+		await addComponentPages(pdfContentComponent7);
 
 		// Save the PDF
 		pdf.save("report.pdf");
@@ -163,16 +169,19 @@ const MyComponent = () => {
 							/>
 						</div>
 						<div id='pdf-content-component-4'>
+							<DisruptionReport />
+						</div>
+						<div id='pdf-content-component-5'>
+							<VoiceOfCustomersReport />
+						</div>
+						<div id='pdf-content-component-6'>
 							<BlueOceanReport
 								userProduct={userProduct}
 								isLoading={isLoading}
 							/>
 						</div>
-						<div id='pdf-content-component-5'>
-							<DisruptionReport />
-						</div>
-						<div id='pdf-content-component-6'>
-							<VoiceOfCustomersReport />
+						<div id='pdf-content-component-7'>
+							<NonCustomersReport />
 						</div>
 					</div>
 				</div>
