@@ -53,10 +53,10 @@ const MyComponent = () => {
 			pdf.addImage(
 				imageData,
 				"PNG",
-				20, // X-coordinate for the image
-				10, // Y-coordinate for the image
-				component.clientWidth - 10,
-				imageContentHeight - 10
+				40, // X-coordinate for the image
+				30, // Y-coordinate for the image
+				component.clientWidth - 40,
+				imageContentHeight - 30
 			);
 		};
 
