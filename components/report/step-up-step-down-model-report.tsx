@@ -45,7 +45,7 @@ const StepUpStepDownModelReport = () => {
 				)}
 			</div>
 			{!isLoading && !userAnalysis && (
-				<p className='text-yellow-700'>No step details are added</p>
+				<p className='p-3 text-yellow-700'>No step details are added</p>
 			)}
 			{!isLoading && !!userAnalysis && (
 				<div className='flex flex-col gap-5'>
@@ -54,7 +54,7 @@ const StepUpStepDownModelReport = () => {
 							10% above
 						</h3>
 						{!isLoading && !userAnalysis.above?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								you will have no customers if you step 10% above
 							</p>
 						)}
@@ -75,7 +75,7 @@ const StepUpStepDownModelReport = () => {
 							Your Customers
 						</h3>
 						{!isLoading && !userAnalysis.customers?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								You currently have no customers
 							</p>
 						)}
@@ -98,7 +98,7 @@ const StepUpStepDownModelReport = () => {
 							10% below
 						</h3>
 						{!isLoading && !userAnalysis.below?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								You will have no customers if you step 10% below
 							</p>
 						)}

@@ -43,7 +43,7 @@ const RoadmapChart = ({ userIdeas }: Props) => {
 	}, [userIdeas]);
 
 	return (
-		<div className='shadow h-full'>
+		<div className='h-full'>
 			<Chart {...chart} legendToggle />
 		</div>
 	);

@@ -212,7 +212,7 @@ input[type="text"]:focus:not("no-border") {
   }
 
   .right-content {
-    @apply w-full xl:w-[36%] min-h-screen px-6 py-5 flex flex-col gap-4 bg-ivory;
+    @apply w-full xl:w-[36%] min-h-screen px-6 py-5 flex flex-col gap-4 bg-nyanza rounded-3xl;
   }
 }
 

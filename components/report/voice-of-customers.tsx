@@ -45,7 +45,7 @@ const VoiceOfCustomersReport = () => {
 				)}
 			</div>
 			{!isLoading && !userCustomers && (
-				<p className='text-yellow-700'>No customers needs available</p>
+				<p className='p-3 text-yellow-700'>No customers needs available</p>
 			)}
 			{!isLoading && !!userCustomers && (
 				<div className='flex flex-col gap-5'>
@@ -54,7 +54,7 @@ const VoiceOfCustomersReport = () => {
 							Customer categories
 						</h3>
 						{!isLoading && !userCustomers.topCategories?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								No categories are added yet
 							</p>
 						)}
@@ -77,7 +77,7 @@ const VoiceOfCustomersReport = () => {
 							What they want
 						</h3>
 						{!isLoading && !userCustomers.wishlist?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								No categories are added yet
 							</p>
 						)}
@@ -100,7 +100,7 @@ const VoiceOfCustomersReport = () => {
 							How to fulfill it
 						</h3>
 						{!isLoading && !userCustomers.fulfill?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								No categories are added yet
 							</p>
 						)}

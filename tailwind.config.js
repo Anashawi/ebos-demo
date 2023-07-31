@@ -60,7 +60,7 @@ module.exports = {
         'blue-true': '#406ca9',
         'blue-ruddy': '#74a6ec',
         'blue-ncs': '#048bca',
-        'ivory': '#f0f6e8',
+        'nyanza': '#E0EDD0',
         'navbar-primary-title': '#557db4',
         'navbar-gray': '#adbbd1',
         'input-placeholder': '#a3b1d3',

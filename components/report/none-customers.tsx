@@ -44,7 +44,7 @@ const NonCustomersReport = () => {
 				)}
 			</div>
 			{!isLoading && !userNonCustomers && (
-				<p className='text-yellow-700'>No non-customers are added</p>
+				<p className='p-3 text-yellow-700'>No non-customers are added</p>
 			)}
 			{!isLoading && !!userNonCustomers && (
 				<div className='flex flex-col gap-5'>
@@ -53,7 +53,7 @@ const NonCustomersReport = () => {
 							Soon to be non-customers
 						</h3>
 						{!isLoading && !userNonCustomers.soonNonCustomers?.length && (
-							<p className='text-yellow-700'>
+							<p className='p-3 text-yellow-700'>
 								No customers most likely will be left out in this
 								transformation
 							</p>
@@ -79,7 +79,7 @@ const NonCustomersReport = () => {
 						</h3>
 						{!isLoading &&
 							!userNonCustomers.refusingNonCustomers?.length && (
-								<p className='text-yellow-700'>
+								<p className='p-3 text-yellow-700'>
 									No customers most likely will be refusing of this
 									transformation
 								</p>
@@ -111,7 +111,7 @@ const NonCustomersReport = () => {
 						</h3>
 						{!isLoading &&
 							!userNonCustomers.unwantedNonCustomers?.length && (
-								<p className='text-yellow-700'>
+								<p className='p-3 text-yellow-700'>
 									No Unwanted customers in this transformation
 								</p>
 							)}

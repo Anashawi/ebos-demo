@@ -31,14 +31,14 @@ const GoalsReport = () => {
 			{isLoading && (
 				<Spinner message='loading goals...' className='items-center' />
 			)}
-			{!isLoading && (
+			{!isLoading && !!userGoals?.targetDate && (
 				<div className='flex gap-5 mb-10'>
 					<span className='font-hero-semibold'>Target Date:</span>
-					<span>{userGoals?.targetDate}</span>
+					<span>{userGoals.targetDate}</span>
 				</div>
 			)}
 			{!isLoading && !userGoals?.goals?.length && (
-				<p className='text-yellow-600'>No goals are added yet</p>
+				<p className='p-3 text-yellow-700'>No goals are added yet</p>
 			)}
 			<div className='pl-6'>
 				<ul className='list-outside'>

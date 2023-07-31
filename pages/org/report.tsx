@@ -15,9 +15,13 @@ import html2canvas from "html2canvas";
 import NonCustomersReport from "../../components/report/none-customers";
 import PioneerMigratorSettlerReport from "../../components/report/pioneer-migrator-settler";
 import StepUpStepDownModelReport from "../../components/report/step-up-step-down-model-report";
+import RoadmapReport from "../../components/report/roadmap";
+import Spinner from "../../components/common/spinner";
 
 const MyComponent = () => {
 	const { data: session }: any = useSession();
+
+	const [isLoadingPdf, setIsLoadingPdf] = useState<boolean>(false);
 
 	const [userProduct, setUserProduct] = useState<IUserProduct>();
 
@@ -35,6 +39,8 @@ const MyComponent = () => {
 	}, [data]);
 
 	const handleDownloadPDF = async () => {
+		setIsLoadingPdf(true);
+
 		const a4_width = 2481; // in points
 		const a4_height = 3507; // in points
 
@@ -43,8 +49,11 @@ const MyComponent = () => {
 			component: HTMLElement,
 			imageContentHeight: number
 		) => {
-			const scale = 3;
-			const canvas = await html2canvas(component, { scale });
+			const scale = 2;
+			const canvas = await html2canvas(component, {
+				scale,
+				scrollY: -window.scrollY, // Set the scroll position to the current window's scrollY
+			});
 			const imageData = canvas.toDataURL("image/png"); // Get base64 image data
 			console.log("component.clientWidth", component.clientWidth);
 			console.log("component.clientHeight", component.clientHeight);
@@ -54,9 +63,9 @@ const MyComponent = () => {
 				imageData,
 				"PNG",
 				40, // X-coordinate for the image
-				30, // Y-coordinate for the image
+				20, // Y-coordinate for the image
 				component.clientWidth - 40,
-				imageContentHeight - 30
+				imageContentHeight - 20
 			);
 		};
 
@@ -157,17 +166,27 @@ const MyComponent = () => {
 
 		// Save the PDF
 		pdf.save("report.pdf");
+		setIsLoadingPdf(false);
 	};
 
 	return (
-		<div className='py-10 text-dark-400'>
+		<div className='py-10 text-dark-400 bg-slate-100'>
 			<div className='w-2/3 mx-auto'>
 				<button
 					onClick={handleDownloadPDF}
-					className='fixed top-16 right-16 btn-primary z-[99999]'>
-					Download PDF
+					disabled={isLoadingPdf}
+					className={
+						isLoadingPdf
+							? "fixed top-16 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none bg-primary-200 text-dark-400"
+							: "fixed top-16 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none hover:animate-shake"
+					}>
+					{isLoadingPdf ? (
+						<Spinner message='loading pdf...' className='items-center' />
+					) : (
+						"Download PDF"
+					)}
 				</button>
-				<div id='pdf-content-container' className='px-12 py-5'>
+				<div id='pdf-content-container' className='px-12 py-10 bg-white'>
 					<h1 className='text-5xl font-hero-bold mb-10'>Report</h1>
 					<div className='flex flex-col gap-10 min-h-[29.7cm]'>
 						<div id='pdf-content-component-1'>
@@ -210,7 +229,7 @@ const MyComponent = () => {
 							<StepUpStepDownModelReport />
 						</div>
 						<div id='pdf-content-component-10'>
-							<NonCustomersReport />
+							<RoadmapReport />
 						</div>
 					</div>
 				</div>
