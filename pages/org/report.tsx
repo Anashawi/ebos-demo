@@ -41,8 +41,8 @@ const MyComponent = () => {
 	const handleDownloadPDF = async () => {
 		setIsLoadingPdf(true);
 
-		const a4_width = 2481; // in points
-		const a4_height = 3507; // in points
+		const a4WidthInPoints = 595.28; // in points
+		const a4HeightInPoints = 841.89; // in points
 
 		// Function to add a base64 image to a page in the PDF
 		const addBase64ImageToPage = async (
@@ -55,26 +55,27 @@ const MyComponent = () => {
 				scrollY: -window.scrollY, // Set the scroll position to the current window's scrollY
 			});
 			const imageData = canvas.toDataURL("image/png"); // Get base64 image data
-			console.log("component.clientWidth", component.clientWidth);
-			console.log("component.clientHeight", component.clientHeight);
-			console.log("imageContentHeight", imageContentHeight);
+
+			const x = 10;
+			const y = 0;
 
 			pdf.addImage(
 				imageData,
 				"PNG",
-				40, // X-coordinate for the image
-				20, // Y-coordinate for the image
-				component.clientWidth - 40,
-				imageContentHeight - 20
+				x,
+				y,
+				a4WidthInPoints - x,
+				component.clientHeight * 0.75 - y // * 0.75 to convert from px to points
 			);
 		};
 
-		const addComponentPages = async (component: HTMLElement) => {
+		const addComponentImage = async (component: HTMLElement) => {
 			// const numOfPages = Math.ceil(component.clientHeight / a4_height); // to calc the number of pages needed to contain this component
 			// for (let i = 1; i <= numOfPages; i++) {
-			pdf.addPage();
 
 			let imageHeight = component.clientHeight;
+
+			// yDrawStartPoint += imageHeight;
 
 			// let imageHeight =
 			// 	(component.clientHeight -
@@ -147,22 +148,21 @@ const MyComponent = () => {
 		// Create a new PDF
 		const pdf = new jsPDF({
 			orientation: "portrait",
-			unit: "px",
-			format: [pdfContentContainer.clientWidth, a4_height],
+			unit: "pt",
+			format: [a4WidthInPoints, pdfContentContainer.clientHeight * 0.75], // A4 width and height in px (* 0.75 to convert from px to pt),
 		});
 
-		pdf.deletePage(1);
-
-		await addComponentPages(pdfContentComponent1);
-		await addComponentPages(pdfContentComponent2);
-		await addComponentPages(pdfContentComponent3);
-		await addComponentPages(pdfContentComponent4);
-		await addComponentPages(pdfContentComponent5);
-		await addComponentPages(pdfContentComponent6);
-		await addComponentPages(pdfContentComponent7);
-		await addComponentPages(pdfContentComponent8);
-		await addComponentPages(pdfContentComponent9);
-		await addComponentPages(pdfContentComponent10);
+		await addComponentImage(pdfContentContainer);
+		// await addComponentImage(pdfContentComponent1);
+		// await addComponentImage(pdfContentComponent2);
+		// await addComponentImage(pdfContentComponent3);
+		// await addComponentImage(pdfContentComponent4);
+		// await addComponentImage(pdfContentComponent5);
+		// await addComponentImage(pdfContentComponent6);
+		// await addComponentImage(pdfContentComponent7);
+		// await addComponentImage(pdfContentComponent8);
+		// await addComponentImage(pdfContentComponent9);
+		// await addComponentImage(pdfContentComponent10);
 
 		// Save the PDF
 		pdf.save("report.pdf");
@@ -170,8 +170,8 @@ const MyComponent = () => {
 	};
 
 	return (
-		<div className='py-10 text-dark-400 bg-slate-100'>
-			<div className='w-2/3 mx-auto'>
+		<div className='py-5 text-dark-400 bg-slate-100'>
+			<div className='w-[595.28pt] mx-auto'>
 				<button
 					onClick={handleDownloadPDF}
 					disabled={isLoadingPdf}

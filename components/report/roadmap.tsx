@@ -50,10 +50,8 @@ const RoadmapReport = () => {
 			</div>
 			{!isLoading && !!userIdeas?.ideas?.length && (
 				<div className='flex gap-3 mb-10'>
-					<p className='report-header-2 font-hero-bold mr-3'>Start Date</p>
-					<p className='report-header-2 font-hero-semibold mr-3'>
-						{userIdeas.startDate}
-					</p>
+					<p className='font-hero-semibold mr-3'>Start Date</p>
+					<p className='mr-3'>{userIdeas.startDate}</p>
 				</div>
 			)}
 			{!isLoading && !!userIdeas?.ideas?.length && (
