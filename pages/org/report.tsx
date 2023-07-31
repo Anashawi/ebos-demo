@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ReactDOMServer from "react-dom/server";
+import jsPDF from "jspdf";
 import GoalsReport from "../../components/report/goals";
 import MarketPotentialReport from "../../components/report/market-potential";
-import PioneerMigratorSettlerReport from "../../components/report/pioneer-migrator-settler";
-import { IUserProduct } from "../../models/user-product";
-import * as clientApi from "../../http-client/products.client";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import RedOceanReport from "../../components/report/red-ocean";
 import BlueOceanReport from "../../components/report/blue-ocean";
 import DisruptionReport from "../../components/report/disruption";
 import VoiceOfCustomersReport from "../../components/report/voice-of-customers";
+import { IUserProduct } from "../../models/user-product";
+import * as clientApi from "../../http-client/products.client";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import html2canvas from "html2canvas";
 
-const Report = () => {
+const MyComponent = () => {
 	const { data: session }: any = useSession();
-
-	// const emptyUserProduct = {
-	// 	id: "",
-	// 	userId: session?.user?.id,
-	// 	products: [],
-	// } as IUserProduct;
 
 	const [userProduct, setUserProduct] = useState<IUserProduct>();
 
@@ -35,36 +31,154 @@ const Report = () => {
 		}
 	}, [data]);
 
+	const handleDownloadPDF = async () => {
+		const a4_width = 2481; // in points
+		const a4_height = 3507; // in points
+
+		// Function to add a base64 image to a page in the PDF
+		const addBase64ImageToPage = async (
+			component: HTMLElement,
+			imageContentHeight: number
+		) => {
+			const scale = 3;
+			const canvas = await html2canvas(component, { scale });
+			const imageData = canvas.toDataURL("image/png"); // Get base64 image data
+			console.log("component.clientWidth", component.clientWidth);
+			console.log("component.clientHeight", component.clientHeight);
+			console.log("imageContentHeight", imageContentHeight);
+
+			pdf.addImage(
+				imageData,
+				"PNG",
+				20, // X-coordinate for the image
+				10, // Y-coordinate for the image
+				component.clientWidth - 10,
+				imageContentHeight - 10
+			);
+		};
+
+		const addComponentPages = async (component: HTMLElement) => {
+			// const numOfPages = Math.ceil(component.clientHeight / a4_height); // to calc the number of pages needed to contain this component
+			// for (let i = 1; i <= numOfPages; i++) {
+			pdf.addPage();
+
+			let imageHeight = component.clientHeight;
+
+			// let imageHeight =
+			// 	(component.clientHeight -
+			// 		((component.clientHeight / a4_height) % 1)) /
+			// 	Math.floor(component.clientHeight / a4_height); // the height of image content in a page
+
+			// if (i === numOfPages) {
+			// 	imageHeight =
+			// 		((component.clientHeight / a4_height) % 1) * a4_height; // to calc the height of image content in the last page
+			// }
+
+			await addBase64ImageToPage(component, imageHeight);
+			// }
+		};
+
+		const pdfContentContainer = document.getElementById(
+			"pdf-content-container"
+		);
+
+		const pdfContentComponent1 = document.getElementById(
+			"pdf-content-component-1"
+		);
+		const pdfContentComponent2 = document.getElementById(
+			"pdf-content-component-2"
+		);
+		const pdfContentComponent3 = document.getElementById(
+			"pdf-content-component-3"
+		);
+		const pdfContentComponent4 = document.getElementById(
+			"pdf-content-component-4"
+		);
+		const pdfContentComponent5 = document.getElementById(
+			"pdf-content-component-5"
+		);
+		const pdfContentComponent6 = document.getElementById(
+			"pdf-content-component-6"
+		);
+
+		if (
+			!pdfContentContainer ||
+			!pdfContentComponent1 ||
+			!pdfContentComponent2 ||
+			!pdfContentComponent3 ||
+			!pdfContentComponent4 ||
+			!pdfContentComponent5 ||
+			!pdfContentComponent6
+		) {
+			console.error(
+				"one or more of pdfContentComponents or the Container is/are not defined"
+			);
+			return;
+		}
+
+		// Create a new PDF
+		const pdf = new jsPDF({
+			orientation: "portrait",
+			unit: "px",
+			format: [pdfContentContainer.clientWidth, a4_height],
+		});
+
+		pdf.deletePage(1);
+
+		await addComponentPages(pdfContentComponent1);
+		await addComponentPages(pdfContentComponent2);
+		await addComponentPages(pdfContentComponent3);
+		await addComponentPages(pdfContentComponent4);
+		await addComponentPages(pdfContentComponent5);
+		await addComponentPages(pdfContentComponent6);
+
+		// Save the PDF
+		pdf.save("report.pdf");
+	};
+
 	return (
 		<div className='py-10 text-dark-400'>
-			<div className='w-[21cm] mx-auto p-10 border border-gray-100 shadow-lg'>
-				<div className='mb-10'>
-					<h1 className='text-5xl font-hero-bold'>Report</h1>
+			<div className='w-2/3 mx-auto'>
+				<button
+					onClick={handleDownloadPDF}
+					className='fixed top-16 right-16 btn-primary z-[99999]'>
+					Download PDF
+				</button>
+				<div id='pdf-content-container' className='px-12 py-5'>
+					<h1 className='text-5xl font-hero-bold mb-10'>Report</h1>
+					<div className='flex flex-col gap-10 min-h-[29.7cm]'>
+						<div id='pdf-content-component-1'>
+							<GoalsReport />
+						</div>
+						<div id='pdf-content-component-2'>
+							<MarketPotentialReport
+								userProduct={userProduct}
+								isLoading={isLoading}
+							/>
+						</div>
+						<div id='pdf-content-component-3'>
+							<RedOceanReport
+								userProduct={userProduct}
+								isLoading={isLoading}
+							/>
+						</div>
+						<div id='pdf-content-component-4'>
+							<BlueOceanReport
+								userProduct={userProduct}
+								isLoading={isLoading}
+							/>
+						</div>
+						<div id='pdf-content-component-5'>
+							<DisruptionReport />
+						</div>
+						<div id='pdf-content-component-6'>
+							<VoiceOfCustomersReport />
+						</div>
+					</div>
 				</div>
-				<section className='flex flex-col gap-10 min-h-[29.7cm]'>
-					<GoalsReport />
-					<PioneerMigratorSettlerReport
-						userProduct={userProduct}
-						isLoading={isLoading}
-					/>
-					<MarketPotentialReport
-						userProduct={userProduct}
-						isLoading={isLoading}
-					/>
-					<RedOceanReport
-						userProduct={userProduct}
-						isLoading={isLoading}
-					/>
-					<BlueOceanReport
-						userProduct={userProduct}
-						isLoading={isLoading}
-					/>
-					<DisruptionReport />
-					<VoiceOfCustomersReport />
-				</section>
 			</div>
 		</div>
 	);
 };
 
-export default Report;
+export default MyComponent;

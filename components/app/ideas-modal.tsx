@@ -110,7 +110,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 								{ideaFactors.map((idea: IIdea, index: number) => (
 									<li
 										key={index}
-										className='flex gap-5 justify-between items-center text-dark-200 border-t'>
+										className='flex gap-5 justify-between items-center text-dark-400 border-t'>
 										<div className='flex gap-5'>
 											<span className='text-xl'>{idea.name}</span>
 											<span>-</span>
@@ -170,7 +170,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 											<div className='grow'>
 												<Field
 													type='text'
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+													className='w-full light-input'
 													placeholder='New idea'
 													name='name'
 												/>
@@ -185,7 +185,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
 											<div className='grow max-w-[15rem]'>
 												<Field
 													type='text'
-													className='w-full p-3 bg-gray-100 outline-none caret-dark-blue border-none text-xl'
+													className='w-full light-input'
 													placeholder='idea owner'
 													name='ownerName'
 												/>
