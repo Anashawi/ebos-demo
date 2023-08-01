@@ -82,7 +82,7 @@ const NonCustomers = () => {
 											toggleVideoModal(true);
 										}}
 										className='w-full btn-primary-light rounded-xl'>
-										Resource Videos
+										Watch Video
 									</button>
 								</div>
 								{isLoading && (
@@ -101,49 +101,6 @@ const NonCustomers = () => {
 					</div>
 				</div>
 			</div>
-			{/* <div className='ml-5 p-5 relative rounded-lg bg-gray-100 text-gray-800'>
-								<div className='p-6 relative rounded-lg mb-10 bg-gray-300'>
-									<div className='p-6 relative rounded-lg mb-10 bg-yellow-jasmine text-gray-900'>
-										<h6 className='f6 mb-2 text-xl'>
-											Soon to be non Customers
-										</h6>
-										<ul className='normal mb-2'>
-											{!!userNonCustomers.soonNonCustomers?.length &&
-												userNonCustomers.soonNonCustomers.map(
-													(nonCustomers, index) => (
-														<li
-															key={index}
-															className='flex items-center'>
-															{nonCustomers}
-														</li>
-													)
-												)}
-										</ul>
-									</div>
-									<h6 className='f6 mb-2 text-xl'>
-										Refusing nonCustomers
-									</h6>
-									<ul className='normal mb-2'>
-										{!!userNonCustomers.refusingCustomers?.length &&
-											userNonCustomers.refusingCustomers.map(
-												(customer, index) => (
-													<li key={index}>{customer}</li>
-												)
-											)}
-									</ul>
-								</div>
-								<h6 className='f6 mb-2 text-xl'>
-									Unwanted nonCustomers
-								</h6>
-								<ul className='normal mb-2'>
-									{!!userNonCustomers.unwantedCustomers?.length &&
-										userNonCustomers.unwantedCustomers.map(
-											(customer, index) => (
-												<li key={index}>{customer}</li>
-											)
-										)}
-								</ul>
-							</div> */}
 
 			{/* ideas modal */}
 			<IdeasModal

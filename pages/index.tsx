@@ -61,7 +61,7 @@ export default function Home() {
 			<div className='flex flex-col items-center bg-dark-50 h-screen'>
 				<div className='w-[93.45vw] h-screen m-auto pb-10 flex bg-white rounded-3xl'>
 					<div className='xl:w-[50%] px-10 py-10 flex items-center'>
-						<div className='w-[70%] max-w-[1000px] mx-auto flex flex-col gap-[4rem]'>
+						<div className='w-[75%] max-w-[1000px] mx-auto flex flex-col gap-[4rem]'>
 							<Image
 								src='/CIP-Logo-Grey.svg'
 								width={120}
@@ -70,11 +70,11 @@ export default function Home() {
 							/>
 							<div className='flex flex-col gap-10'>
 								<h1 className='text-[5rem] text-onyx font-hero-medium leading-[5.75rem]'>
-									Exponential Project Tracking & Management
+									Every project is successful
 								</h1>
 								<h4 className='text-dark-300 text-3xl leading-[2.9rem]'>
-									Take full control of your project goals and tasks and
-									achieve exponential growth with the EBOS tool
+									Live and on-demand training, virtual reporting,
+									assistance, and online expert advice.
 								</h4>
 								{!isLoading &&
 									!!videos[videoPropNamesEnum.introductoryVideo] && (
@@ -84,8 +84,8 @@ export default function Home() {
 													<Image
 														src='/video-image.png'
 														alt='Introductory Video'
-														width='90'
-														height='90'
+														width='300'
+														height='300'
 														quality={100}
 														className='translate-x-[-0.75rem] w-[13rem] h-[6.5rem]'
 													/>

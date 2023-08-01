@@ -100,7 +100,7 @@ const StepUpStepDownContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-dark-300 font-normal'>
+							<h3 className='text-xl text-dark-300'>
 								Who are your customers if you step up 10% above?
 							</h3>
 						</div>
@@ -194,7 +194,7 @@ const StepUpStepDownContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-dark-300 font-normal'>
+							<h3 className='text-xl text-dark-300'>
 								Who are your current customers?
 							</h3>
 						</div>
@@ -290,7 +290,7 @@ const StepUpStepDownContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-dark-300 font-normal'>
+							<h3 className='text-xl text-dark-300'>
 								Who are your customers if you step down 10% below?
 							</h3>
 						</div>
@@ -395,7 +395,7 @@ const StepUpStepDownContent = ({
 						</button>
 						{!!userAnalysis.id && (
 							<div
-								className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+								className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 								onClick={() => {
 									router.push("../org/roadmap");
 								}}>

@@ -138,7 +138,7 @@ const DisruptionContent = ({
 						className='w-full h-auto'
 					/>
 				</div>
-				<h3 className='text-xl text-dark-300 font-normal'>
+				<h3 className='text-xl text-dark-300'>
 					Watch help videos then update your ideas accordingly. Submit for
 					feedback.
 				</h3>
@@ -365,7 +365,7 @@ const DisruptionContent = ({
 					)}
 					{!!videos.id && (
 						<div
-							className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+							className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 							onClick={() => {
 								router.push("../org/voice-of-customers");
 							}}>
@@ -406,7 +406,7 @@ const DisruptionContent = ({
 					</div>
 					{!!videos.id && (
 						<div
-							className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+							className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 							onClick={() => {
 								router.push("../org/voice-of-customers");
 							}}>

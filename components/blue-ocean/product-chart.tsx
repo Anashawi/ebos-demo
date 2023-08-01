@@ -2,7 +2,7 @@ import Chart, {
 	ChartWrapperOptions,
 	ReactGoogleChartProps,
 } from "react-google-charts";
-import { IProduct } from "../../models/types";
+import { IFactorCompetitor, IProduct } from "../../models/types";
 import { useState, useEffect } from "react";
 
 interface Props {
@@ -26,9 +26,13 @@ const BlueOceanProductChart = ({ product, customOptions }: Props) => {
 			product.ideaFactors?.map((ideaFactor) => {
 				return [
 					ideaFactor.name,
-					...competitors.map((comp, index) => {
-						if (ideaFactor.competitors[index]) {
-							return +ideaFactor.competitors[index].value;
+					...competitors.map((comp) => {
+						const ideaFactorComp: IFactorCompetitor | undefined =
+							ideaFactor.competitors.find(
+								(competitor) => comp.uuid === competitor.uuid
+							);
+						if (ideaFactorComp) {
+							return +ideaFactorComp.value;
 						}
 						return 1;
 					}),

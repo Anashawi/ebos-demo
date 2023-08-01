@@ -13,8 +13,8 @@ const ReportTakeawaysNotes = ({ title, takeaways }: Props) => {
 				<ul className='flex flex-col gap-3'>
 					{!takeaways?.notes.length && (
 						<div className='w-full flex justify-start items-center'>
-							<p className='p-5 text-dark-400 text-xl text-center italic'>
-								No notes are added...
+							<p className='p-3 text-yellow-700 text-xl text-center'>
+								No notes are added yet
 							</p>
 						</div>
 					)}

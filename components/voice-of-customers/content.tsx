@@ -125,7 +125,7 @@ const VoiceOfCustomersContent = () => {
 								className='w-full h-auto'
 							/>
 						</div>
-						<h3 className='text-xl text-dark-300 font-normal'>
+						<h3 className='text-xl text-dark-300'>
 							what do your top customer categories want and how can you
 							fulfill their needs?
 						</h3>
@@ -298,7 +298,7 @@ const VoiceOfCustomersContent = () => {
 							</button>
 							{!!userCustomers.id && (
 								<div
-									className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+									className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 									onClick={() => {
 										router.push("../org/blue-ocean");
 									}}>

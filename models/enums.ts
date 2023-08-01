@@ -54,7 +54,7 @@ export enum navbarNodesEnum {
   blueOceanCanvas = "Blue ocean",
   nonCustomers = "Non customers",
   stepUpStepDownModel = "Step Up Step Down Model",
-  roadMap = "Road map",
+  roadMap = "Roadmap",
 }
 
 export enum takeawayTypeEnums {

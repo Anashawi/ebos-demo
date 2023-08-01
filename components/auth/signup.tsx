@@ -104,10 +104,7 @@ const Signup = ({ closeCallback }: Props) => {
 				<div className='flex items-center justify-between min-h-[58px] p-3'>
 					<div className='flex flex-col gap-5'>
 						<p className='text-gray-gunmetal text-4xl font-hero-semibold'>
-							Register now
-						</p>
-						<p className='text-2xl text-gray-gunmetal'>
-							to start your free sessions
+							Create new account
 						</p>
 					</div>
 				</div>

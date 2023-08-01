@@ -22,7 +22,7 @@ const MarketPotentialReport = ({ userProduct, isLoading }: Props) => {
 				)}
 			</div>
 			{!isLoading && !userProduct?.products?.length && (
-				<p className='text-yellow-600'>No products are added yet</p>
+				<p className='p-3 text-yellow-700'>No products are added yet</p>
 			)}
 			<div className='pl-6'>
 				<ul className='list-outside'>

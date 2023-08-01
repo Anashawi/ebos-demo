@@ -15,7 +15,7 @@ const useFuturesChart = (products: IProduct[]) => {
 		if (products) {
 			updateChartProps();
 		}
-	}, [products.length]);
+	}, [products]);
 
 	const updateChartProps = () => {
 		let ticks: any = products.map((prod) => prod.futures?.map((future) => {

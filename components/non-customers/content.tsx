@@ -104,7 +104,7 @@ const NonCustomersContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-dark-300 font-normal'>
+							<h3 className='text-xl text-dark-300'>
 								Who are the customers most likely to be left out in this
 								transformation ?
 							</h3>
@@ -200,7 +200,7 @@ const NonCustomersContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-dark-300 font-normal'>
+							<h3 className='text-xl text-dark-300'>
 								Who are the customers most likely to be refusing of this
 								transformation ?
 							</h3>
@@ -296,7 +296,7 @@ const NonCustomersContent = ({
 									className='w-full h-auto'
 								/>
 							</div>
-							<h3 className='text-xl text-dark-300 font-normal'>
+							<h3 className='text-xl text-dark-300'>
 								Who are the customers you don&apos;t want in this
 								transformation ?
 							</h3>
@@ -407,7 +407,7 @@ const NonCustomersContent = ({
 						</button>
 						{!!userNonCustomers.id && (
 							<div
-								className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+								className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 								onClick={() => {
 									router.push("../org/step-up-step-down");
 								}}>

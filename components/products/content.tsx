@@ -150,7 +150,7 @@ const ProductsContent = ({
 									return (
 										<div className='flex flex-col gap-5'>
 											<div className='flex flex-wrap gap-5'>
-												<h3 className='w-full text-[2.8rem] text-[#93a7c4] font-normal'>
+												<h3 className='w-full title-header'>
 													Pioneer, Migrator, Settler
 												</h3>
 												<div className='w-full flex flex-col gap-10'>
@@ -236,7 +236,7 @@ const ProductsContent = ({
 													)}
 													{userProduct?.products?.length > 0 && (
 														<div
-															className='cursor-pointer bg-dark-200 px-9 py-3 rounded-full'
+															className='cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full'
 															onClick={() => {
 																router.push(
 																	"../org/market-potential"
