@@ -87,7 +87,7 @@ const RoadMapContent = ({
 					<h4 className='text-dark-400 text-[1.75rem] font-hero-semibold'>
 						Create a timeline for your ideas
 					</h4>
-					<form>
+					<form className='max-w-[900px]'>
 						<div className='flex flex-col gap-2 mb-5'>
 							<label className='text-xl'>Start date</label>
 							<div className='grow flex flex-col gap-2'>

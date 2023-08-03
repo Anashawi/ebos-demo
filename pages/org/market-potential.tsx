@@ -1,11 +1,11 @@
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
-import VerticalNavbar from "../../components/common/vertical-navbar";
-import Navbar from "../../components/common/navbar";
+import ActionsNavbar from "../../components/common/actions-navbar";
+import StepsNavbar from "../../components/common/steps-navbar";
 import MarketPotentialContent from "../../components/market-potential/content";
 import * as _ from "lodash";
 import MarketPotentialProductChart from "../../components/market-potential/product-chart";
@@ -16,6 +16,8 @@ import { IUserProduct } from "../../models/user-product";
 import { useSession } from "next-auth/react";
 import Spinner from "../../components/common/spinner";
 import { ICompetitor, IProduct } from "../../models/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const Competitors = () => {
 	const { data: session }: any = useSession();
@@ -75,10 +77,12 @@ const Competitors = () => {
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar
+							selectedStepTitle={stepNamesEnum.marketPotential}
+						/>
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.marketPotential} />
+						<StepsNavbar selectedNode={stepNamesEnum.marketPotential} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<MarketPotentialContent
@@ -108,6 +112,20 @@ const Competitors = () => {
 										Watch Video
 									</button>
 								</div>
+								{session?.user?.role === "admin" && (
+									<div className='p-1 bg-white rounded-xl'>
+										<button
+											type='button'
+											onClick={() => toggleEditVideoModal(true)}
+											className='w-full btn-primary-light rounded-xl'>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									</div>
+								)}
 								{isLoading && (
 									<Spinner
 										message='Loading product competitors charts...'

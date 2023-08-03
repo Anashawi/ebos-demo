@@ -1,13 +1,13 @@
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IProduct } from "../../models/types";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
 import BlueOceanContent from "../../components/blue-ocean/content";
-import Navbar from "../../components/common/navbar";
-import VerticalNavbar from "../../components/common/vertical-navbar";
+import StepsNavbar from "../../components/common/steps-navbar";
+import ActionsNavbar from "../../components/common/actions-navbar";
 import BlueOceanProductChart from "../../components/blue-ocean/product-chart";
 import Spinner from "../../components/common/spinner";
 import { useEffect, useMemo, useState } from "react";
@@ -16,13 +16,15 @@ import { useSession } from "next-auth/react";
 import { IUserProduct } from "../../models/user-product";
 import * as clientApi from "../../http-client/products.client";
 import { IIdeaFactor } from "../../models/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const BlueOceanCanvas = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
-
-	const { data: session }: any = useSession();
 
 	const emptyFactor = useMemo(() => {
 		return {
@@ -60,10 +62,7 @@ const BlueOceanCanvas = () => {
 						value: 1,
 					};
 				}) ?? [];
-			if (
-				!prod.ideaFactors ||
-				(prod.ideaFactors && prod.ideaFactors.length === 0)
-			) {
+			if (!prod.ideaFactors?.length) {
 				prod.ideaFactors = [
 					{ ...emptyFactor, name: "" },
 					{ ...emptyFactor, name: "" },
@@ -71,21 +70,21 @@ const BlueOceanCanvas = () => {
 				];
 			} else {
 				prod.ideaFactors.forEach((ideaFactor) => {
+					const existingCompetitorUuids = new Set(
+						ideaFactor.competitors.map((c) => c.uuid)
+					);
+
 					const newIdeaFactorCompetitors = prod.competitors
-						?.filter(
-							(comp) =>
-								!ideaFactor.competitors.some(
-									(c) => comp.uuid === c.uuid
-								)
-						)
+						?.filter((comp) => !existingCompetitorUuids.has(comp.uuid))
 						.map((comp) => {
 							return {
 								uuid: comp.uuid,
 								value: 1,
 							};
 						});
+
 					if (newIdeaFactorCompetitors?.length) {
-						// Add competitors that exist in  prod.competitors but not in ideaFactor.competitors
+						// Add competitors that exist in prod.competitors but not in ideaFactor.competitors
 						ideaFactor.competitors = ideaFactor.competitors.concat(
 							newIdeaFactorCompetitors
 						);
@@ -104,18 +103,22 @@ const BlueOceanCanvas = () => {
 		setUserProduct(data ?? emptyUserProduct);
 	}, [data]);
 
+	console.log("userProduct", userProduct);
+
 	return (
 		<>
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar
+							selectedStepTitle={stepNamesEnum.blueOceanCanvas}
+						/>
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.blueOceanCanvas} />
+						<StepsNavbar selectedNode={stepNamesEnum.blueOceanCanvas} />
 						<div className='content-container'>
-							<div className='left-content'>
-								<BlueOceanContent
+							<div className='left-content max-w-[1220px]'>
+								<BlueOceanContent	
 									userProduct={userProduct}
 									dispatchProducts={(products) => {
 										setChartProducts(products);
@@ -144,6 +147,20 @@ const BlueOceanCanvas = () => {
 										Watch Video
 									</button>
 								</div>
+								{session?.user?.role === "admin" && (
+									<div className='p-1 bg-white rounded-xl'>
+										<button
+											type='button'
+											onClick={() => toggleEditVideoModal(true)}
+											className='w-full btn-primary-light rounded-xl'>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									</div>
+								)}
 								{isLoading && (
 									<Spinner
 										message='Loading blue ocean charts...'

@@ -11,7 +11,7 @@ const ZeroProductCompetitorsWarning = ({ className }: Props) => {
 				this product yet...
 			</p>
 			<Link
-				href='./products'
+				href='./market-potential'
 				className='text-2xl text-center hover:text-black-eerie text-blue-ncs'>
 				Go define competitors?
 			</Link>

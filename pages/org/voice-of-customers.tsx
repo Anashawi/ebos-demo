@@ -3,35 +3,32 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
-import Navbar from "../../components/common/navbar";
-import VerticalNavbar from "../../components/common/vertical-navbar";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import StepsNavbar from "../../components/common/steps-navbar";
+import ActionsNavbar from "../../components/common/actions-navbar";
 import VoiceOfCustomersContent from "../../components/voice-of-customers/content";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { useSession } from "next-auth/react";
 
 const VoiceOfCustomers = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
 	return (
 		<>
-			{/* {(session?.user as any)?.role === "admin" && (
-				<button
-					type='button'
-					className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-					onClick={() => toggleEditVideoModal(true)}>
-					<span>Edit video Url</span>
-					<FontAwesomeIcon className='w-7' icon={faEdit} />
-				</button>
-			)} */}
-
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar
+							selectedStepTitle={stepNamesEnum.voiceOfCustomers}
+						/>
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.voiceOfCustomers} />
+						<StepsNavbar selectedNode={stepNamesEnum.voiceOfCustomers} />
 						<div className='content-container'>
 							<div className='left-content grow'>
 								<VoiceOfCustomersContent />
@@ -57,6 +54,20 @@ const VoiceOfCustomers = () => {
 										Watch Video
 									</button>
 								</div>
+								{session?.user?.role === "admin" && (
+									<div className='p-1 bg-white rounded-xl'>
+										<button
+											type='button'
+											onClick={() => toggleEditVideoModal(true)}
+											className='w-full btn-primary-light rounded-xl'>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

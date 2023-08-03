@@ -19,6 +19,8 @@ import objectPath from "object-path";
 import { useState, useEffect } from "react";
 import { IVideos } from "../models/videos";
 import * as clientApi from "../http-client/videos.client";
+import Spinner from "../components/common/spinner";
+import Link from "next/link";
 
 export default function Home() {
 	const { data: session }: any = useSession();
@@ -68,7 +70,7 @@ export default function Home() {
 								height={70}
 								alt='CIP Logo'
 							/>
-							<div className='flex flex-col gap-10'>
+							<div className='flex flex-col gap-8'>
 								<h1 className='text-[5rem] text-onyx font-hero-medium leading-[5.75rem]'>
 									Every project is successful
 								</h1>
@@ -76,6 +78,12 @@ export default function Home() {
 									Live and on-demand training, virtual reporting,
 									assistance, and online expert advice.
 								</h4>
+								{isLoading && (
+									<Spinner
+										message='loading introductory video...'
+										className='items-center text-dark-400'
+									/>
+								)}
 								{!isLoading &&
 									!!videos[videoPropNamesEnum.introductoryVideo] && (
 										<div className='w-[90%] p-3 flex gap-9 items-center rounded-full bg-dark'>
@@ -106,6 +114,25 @@ export default function Home() {
 											</div>
 										</div>
 									)}
+								<div className='flex justify-between items-center gap-5 w-[90%]'>
+									<Image
+										src='/ebose-intro.png'
+										width='160'
+										height='120'
+										quality={100}
+										alt='EBOS intro pdf review image'
+										className='border border-primary-200 rounded-lg'
+									/>
+									<Link
+										href='/pdf/EBOS-introduction.pdf'
+										target='_blank'
+										download
+										className='flex justify-end'>
+										<span className='text-primary italic font-hero-semibold hover:underline'>
+											Download EBOS introduction PDF
+										</span>
+									</Link>
+								</div>
 								{!isLoading &&
 									!videos[videoPropNamesEnum.introductoryVideo] && (
 										<div

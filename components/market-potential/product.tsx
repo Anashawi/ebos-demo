@@ -1,7 +1,6 @@
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FieldArray, Field, ErrorMessage } from "formik";
-import { useMemo } from "react";
 import { ICompetitor, IProduct } from "../../models/types";
 
 interface Props {
@@ -11,13 +10,11 @@ interface Props {
 }
 
 const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
-	const emptyCompetitor = useMemo(() => {
-		return {
-			uuid: crypto.randomUUID(),
-			name: "",
-			marketShare: 0,
-		} as ICompetitor;
-	}, []);
+	const emptyCompetitor = {
+		uuid: crypto.randomUUID(),
+		name: "",
+		marketShare: 0,
+	} as ICompetitor;
 
 	return (
 		<div className='flex justify-between text-lg bg-dark-50 rounded-2xl'>
