@@ -1,11 +1,11 @@
 import IdeasModal from "../../components/app/ideas-modal";
 import useModalToggler from "../../hooks/use-modal-toggler";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
-import Navbar from "../../components/common/navbar";
-import VerticalNavbar from "../../components/common/vertical-navbar";
+import StepsNavbar from "../../components/common/steps-navbar";
+import ActionsNavbar from "../../components/common/actions-navbar";
 import ProductsContent from "../../components/products/content";
 import useFuturesChart from "../../hooks/use-futures-chart";
 import Chart from "react-google-charts";
@@ -16,6 +16,8 @@ import { IUserProduct } from "../../models/user-product";
 import { IProduct } from "../../models/types";
 import { useSession } from "next-auth/react";
 import Spinner from "../../components/common/spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const Products = () => {
 	const { data: session }: any = useSession();
@@ -55,12 +57,12 @@ const Products = () => {
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar
+							selectedStepTitle={stepNamesEnum.pioneerMigratorSettler}
+						/>
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar
-							selectedNode={navbarNodesEnum.pioneerMigratorSettler}
-						/>
+						<StepsNavbar selectedNode={stepNamesEnum.pioneerMigratorSettler} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<ProductsContent
@@ -90,6 +92,20 @@ const Products = () => {
 										Watch Video
 									</button>
 								</div>
+								{session?.user?.role === "admin" && (
+									<div className='p-1 bg-white rounded-xl'>
+										<button
+											type='button'
+											onClick={() => toggleEditVideoModal(true)}
+											className='w-full btn-primary-light rounded-xl'>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									</div>
+								)}
 								{isLoading && (
 									<Spinner
 										message='Loading products chart...'
@@ -103,34 +119,6 @@ const Products = () => {
 								)}
 							</div>
 						</div>
-
-						{/* <div className='flex mt-5 mb-10'>
-							<div className='w-1/2'>
-								<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
-									<ConsultantReview
-										pageTitle={
-											"Pioneer, Migrator, Settler"
-										}></ConsultantReview>
-									{(session?.user as any)?.role === "admin" && (
-										<button
-											className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-											onClick={() => toggleEditVideoModal(true)}>
-											<span>Edit video Url</span>
-											<FontAwesomeIcon
-												className='w-7'
-												icon={faEdit}
-											/>
-										</button>
-									)}
-									<button
-										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={() => toggleVideoModal(true)}>
-										<span>Watch Video</span>
-										<FontAwesomeIcon className='w-7' icon={faEye} />
-									</button>
-								</div>
-							</div>
-						</div> */}
 					</div>
 				</div>
 			</div>

@@ -4,9 +4,9 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import { useMemo, useState } from "react";
 import VideosForm from "../../components/disruption/videos-form";
 import Video from "../../components/disruption/video";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
-import VerticalNavbar from "../../components/common/vertical-navbar";
-import Navbar from "../../components/common/navbar";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import ActionsNavbar from "../../components/common/actions-navbar";
+import StepsNavbar from "../../components/common/steps-navbar";
 import DisruptionContent from "../../components/disruption/content";
 import { IVideos } from "../../models/videos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,10 +48,12 @@ const Disruption = () => {
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar
+							selectedStepTitle={stepNamesEnum.disruption}
+						/>
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.disruption} />
+						<StepsNavbar selectedNode={stepNamesEnum.disruption} />
 						<div className='content-container'>
 							<div className='left-content'>
 								<DisruptionContent

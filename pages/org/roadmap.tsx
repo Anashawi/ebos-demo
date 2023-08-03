@@ -3,18 +3,20 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Video from "../../components/disruption/video";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import RoadMapContent from "../../components/roadmap/content";
 import { useEffect, useState } from "react";
 import { IUserIdeas } from "../../models/user-idea";
 import { useSession } from "next-auth/react";
-import Navbar from "../../components/common/navbar";
-import VerticalNavbar from "../../components/common/vertical-navbar";
+import StepsNavbar from "../../components/common/steps-navbar";
+import ActionsNavbar from "../../components/common/actions-navbar";
 import RoadmapChart from "../../components/roadmap/roadmap-chart";
 import IdeasModal from "../../components/app/ideas-modal";
 import { useQuery } from "@tanstack/react-query";
 import * as clientApi from "../../http-client/ideas.client";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const RoadMap = () => {
 	const { data: session }: any = useSession();
@@ -53,10 +55,10 @@ const RoadMap = () => {
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar selectedStepTitle={stepNamesEnum.roadMap} />
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto gap-5'>
-						<Navbar selectedNode={navbarNodesEnum.roadMap} />
+						<StepsNavbar selectedNode={stepNamesEnum.roadMap} />
 						<div className='content-container'>
 							<div className='left-content grow'>
 								<RoadMapContent
@@ -87,6 +89,20 @@ const RoadMap = () => {
 										Watch Video
 									</button>
 								</div>
+								{session?.user?.role === "admin" && (
+									<div className='p-1 bg-white rounded-xl'>
+										<button
+											type='button'
+											onClick={() => toggleEditVideoModal(true)}
+											className='w-full btn-primary-light rounded-xl'>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									</div>
+								)}
 								<div className='p-1 bg-white rounded-xl'>
 									<Link
 										href='/org/report'

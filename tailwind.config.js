@@ -64,6 +64,7 @@ module.exports = {
         'navbar-primary-title': '#557db4',
         'navbar-gray': '#adbbd1',
         'input-placeholder': '#a3b1d3',
+        'icons-gray': '#c6c6c5',
       },
       opacity: {
         '15': '0.15',

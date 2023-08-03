@@ -17,6 +17,9 @@ import PioneerMigratorSettlerReport from "../../components/report/pioneer-migrat
 import StepUpStepDownModelReport from "../../components/report/step-up-step-down-model-report";
 import RoadmapReport from "../../components/report/roadmap";
 import Spinner from "../../components/common/spinner";
+import ActionsNavbar from "../../components/common/actions-navbar";
+import { navbarDirectionsEnum, stepNamesEnum } from "../../models/enums";
+import ReportActionsNavbar from "../../components/common/report/actions-navbar";
 
 const MyComponent = () => {
 	const { data: session }: any = useSession();
@@ -171,14 +174,17 @@ const MyComponent = () => {
 
 	return (
 		<div className='py-5 text-dark-400 bg-slate-100'>
+			<div className='mb-10'>
+				<ReportActionsNavbar className='max-w-[60%] mx-auto' />
+			</div>
 			<div className='w-[595.28pt] mx-auto'>
 				<button
 					onClick={handleDownloadPDF}
 					disabled={isLoadingPdf}
 					className={
 						isLoadingPdf
-							? "fixed top-16 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none bg-primary-200 text-dark-400"
-							: "fixed top-16 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none hover:animate-shake"
+							? "fixed top-11 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none bg-primary-200 text-dark-400"
+							: "fixed top-11 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none hover:animate-shake"
 					}>
 					{isLoadingPdf ? (
 						<Spinner message='loading pdf...' className='items-center' />

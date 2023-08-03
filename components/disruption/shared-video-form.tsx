@@ -72,7 +72,7 @@ const SharedVideoForm = ({
 	});
 
 	return (
-		<div className='flex flex-col gap-10 p-5'>
+		<div className='flex flex-col gap-10'>
 			<p className='text-4xl text-gray-800 font-hero-semibold'>
 				{!!videos[videoPropName] ? "Edit Video Url" : "Add Video Url"}
 			</p>

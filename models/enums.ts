@@ -44,7 +44,7 @@ export enum videoPropNamesEnum {
   roadMap = "roadMap",
 }
 
-export enum navbarNodesEnum {
+export enum stepNamesEnum {
   visualizeSuccess = "Visualize Success",
   pioneerMigratorSettler = "Pioneer Migrator Settler",
   marketPotential = "Market Potential",
@@ -60,4 +60,16 @@ export enum navbarNodesEnum {
 export enum takeawayTypeEnums {
   scale = "on-scale",
   ideas = "on-ideas",
+}
+
+export enum navbarDirectionsEnum {
+  vertical = "vertical",
+  horizontal = "horizontal",
+}
+
+export enum tooltipDirectionsEnum {
+  left = "left",
+  top = "top",
+  right = "right",
+  bottom = "bottom",
 }

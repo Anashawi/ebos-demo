@@ -2,13 +2,18 @@ import useModalToggler from "../../hooks/use-modal-toggler";
 import IdeasModal from "../../components/app/ideas-modal";
 import Modal from "../../components/common/modal";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
-import { navbarNodesEnum, videoPropNamesEnum } from "../../models/enums";
-import Navbar from "../../components/common/navbar";
-import VerticalNavbar from "../../components/common/vertical-navbar";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import StepsNavbar from "../../components/common/steps-navbar";
+import ActionsNavbar from "../../components/common/actions-navbar";
 import Video from "../../components/disruption/video";
 import GoalsContent from "../../components/goals/goals-content";
+import { useSession } from "next-auth/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const Goals = () => {
+	const { data: session }: any = useSession();
+
 	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
 	const [isEditUrlModalOn, toggleEditVideoModal] = useModalToggler();
 	const [isVideoModalOn, toggleVideoModal] = useModalToggler(false);
@@ -18,10 +23,12 @@ const Goals = () => {
 			<div className='bg-gray-100 pt-9'>
 				<div className='flex gap-[4.4rem] px-16 m-auto'>
 					<div className='py-12'>
-						<VerticalNavbar />
+						<ActionsNavbar
+							selectedStepTitle={stepNamesEnum.visualizeSuccess}
+						/>
 					</div>
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<Navbar selectedNode={navbarNodesEnum.visualizeSuccess} />
+						<StepsNavbar selectedNode={stepNamesEnum.visualizeSuccess} />
 						<div className='content-container'>
 							<div className='left-content grow'>
 								<GoalsContent />
@@ -47,6 +54,20 @@ const Goals = () => {
 										Watch Video
 									</button>
 								</div>
+								{session?.user?.role === "admin" && (
+									<div className='p-1 bg-white rounded-xl'>
+										<button
+											type='button'
+											onClick={() => toggleEditVideoModal(true)}
+											className='w-full btn-primary-light rounded-xl'>
+											<span>Edit video Url</span>
+											<FontAwesomeIcon
+												className='w-7'
+												icon={faEdit}
+											/>
+										</button>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

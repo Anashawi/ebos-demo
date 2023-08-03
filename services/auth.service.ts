@@ -10,7 +10,7 @@ export async function createUser(user: IUser) {
 
     const existingUser = await User.findOne({ email: user.email });
     if (existingUser) {
-      throw new Error("This user is existing");
+      throw new Error("This user already exists");
     }
 
     const hashedPassword = await hash(user.password, 12);

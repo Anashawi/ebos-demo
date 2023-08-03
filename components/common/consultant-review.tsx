@@ -1,18 +1,18 @@
 interface Props {
 	pageTitle: string;
+	children: string | JSX.Element | JSX.Element[] | (() => JSX.Element);
 	className?: string;
 }
 
-const ConsultantReview = ({ pageTitle, className }: Props) => {
+const ConsultantReview = ({ pageTitle, children, className }: Props) => {
 	return (
-		<button
-			type='button'
+		<div
 			onClick={() => {
 				console.log("pageTitle", pageTitle);
 			}}
-			className={`btn text-black-eerie ${className ?? ""}`}>
-			<strong>Request </strong> for consultant review
-		</button>
+			className={`cursor-pointer ${className ?? ""}`}>
+			<>{children}</>
+		</div>
 	);
 };
 
