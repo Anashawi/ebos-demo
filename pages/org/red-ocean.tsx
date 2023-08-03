@@ -116,7 +116,7 @@ const RedOceanCanvas = () => {
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
 						<StepsNavbar selectedNode={stepNamesEnum.redOceanCanvas} />
 						<div className='content-container'>
-							<div className='left-content'>
+							<div className='left-content max-w-[1220px]'>
 								<RedOceanContent
 									userProduct={userProduct}
 									dispatchChartProducts={(products) => {

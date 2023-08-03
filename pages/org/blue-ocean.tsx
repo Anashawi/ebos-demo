@@ -117,8 +117,8 @@ const BlueOceanCanvas = () => {
 					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
 						<StepsNavbar selectedNode={stepNamesEnum.blueOceanCanvas} />
 						<div className='content-container'>
-							<div className='left-content'>
-								<BlueOceanContent
+							<div className='left-content max-w-[1220px]'>
+								<BlueOceanContent	
 									userProduct={userProduct}
 									dispatchProducts={(products) => {
 										setChartProducts(products);

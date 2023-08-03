@@ -57,7 +57,7 @@ const RoadMap = () => {
 					<div className='py-12'>
 						<ActionsNavbar selectedStepTitle={stepNamesEnum.roadMap} />
 					</div>
-					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto gap-5'>
+					<div className='grow max-w-[1920px] py-12 mx-auto'>
 						<StepsNavbar selectedNode={stepNamesEnum.roadMap} />
 						<div className='content-container'>
 							<div className='left-content grow'>
@@ -112,7 +112,7 @@ const RoadMap = () => {
 								</div>
 							</div>
 						</div>
-						<div className='grow p-5 rounded-2xl bg-white'>
+						<div className='grow mt-5 p-5 rounded-2xl bg-white'>
 							<div className='grow px-12 py-8 mx-auto'>
 								{!isLoading && !userIdeas.ideas.length && (
 									<div className='w-full flex items-center'>
