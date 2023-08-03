@@ -33,20 +33,11 @@ const ActionsNavbar = ({
 						? "flex flex-col gap-10"
 						: "flex gap-10 items-center"
 				}>
-				<li className='group relative flex justify-center hover:animate-shake'>
-					<Link href='/'>
-						<Image
-							width='55'
-							height='55'
-							src='/cp.svg'
-							alt='CaseInPoint'
-						/>
-					</Link>
-					{/* the parent of Tooltip must have the following css classes: "group relative" to work properly */}
-					<Tooltip dir={tooltipDirectionsEnum.bottom}>Homepage</Tooltip>
+				<li className='flex justify-center'>
+					<Image width='55' height='55' src='/cp.svg' alt='CaseInPoint' />
 				</li>
 				<li className='group relative flex justify-center hover:animate-shake'>
-					<Link href='#'>
+					<Link href='/'>
 						<Image
 							width='42'
 							height='42'
