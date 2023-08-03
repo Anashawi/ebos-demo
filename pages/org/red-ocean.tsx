@@ -59,10 +59,10 @@ const RedOceanCanvas = () => {
 				prod.competitors?.map((comp) => {
 					return {
 						uuid: comp.uuid,
-						value: "1",
+						value: 1,
 					};
 				}) ?? [];
-			if (!prod.factors || (prod.factors && prod.factors.length === 0)) {
+			if (!prod.factors?.length) {
 				prod.factors = [
 					{ ...emptyFactor, name: "" },
 					{ ...emptyFactor, name: "" },
@@ -70,21 +70,23 @@ const RedOceanCanvas = () => {
 				];
 			} else {
 				prod.factors.forEach((factor) => {
-					const newFactorCompetitors = prod.competitors
-						?.filter(
-							(comp) =>
-								!factor.competitors.some((c) => comp.uuid === c.uuid)
-						)
+					const existingCompetitorUuids = new Set(
+						factor.competitors.map((c) => c.uuid)
+					);
+
+					const newfactorCompetitors = prod.competitors
+						?.filter((comp) => !existingCompetitorUuids.has(comp.uuid))
 						.map((comp) => {
 							return {
 								uuid: comp.uuid,
 								value: 1,
 							};
 						});
-					if (newFactorCompetitors?.length) {
-						// Add competitors that exist in  prod.competitors but not in factor.competitors
+
+					if (newfactorCompetitors?.length) {
+						// Add competitors that exist in prod.competitors but not in factor.competitors
 						factor.competitors =
-							factor.competitors.concat(newFactorCompetitors);
+							factor.competitors.concat(newfactorCompetitors);
 					}
 
 					// Remove competitors that exist in factor.competitors but not in prod.competitors
@@ -96,9 +98,11 @@ const RedOceanCanvas = () => {
 		});
 		if (data) {
 			setUserProduct(data);
-			setChartProducts(data.products);
 		}
+		setUserProduct(data ?? emptyUserProduct);
 	}, [data]);
+
+	console.log("userProduct", userProduct);
 
 	return (
 		<>

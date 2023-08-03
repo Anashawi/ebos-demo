@@ -37,7 +37,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
 			<FieldArray name={`products.${index}.ideaFactors`}>
 				{({ remove, push }) => (
 					<>
-						<ul className='flex flex-col gap-5 mb-10 pr-5 pb-5 max-w-full overflow-auto'>
+						<ul className='flex flex-col gap-5 mb-10 pr-5 pb-5 overflow-auto'>
 							{!!product.ideaFactors?.length &&
 								product.ideaFactors.map((idea, ideaIndex) => (
 									<li

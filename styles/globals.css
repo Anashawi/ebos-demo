@@ -208,7 +208,7 @@ input[type="text"]:focus:not("no-border") {
   }
 
   .left-content {
-    @apply w-full xl:w-[63%] px-12 pt-7 pb-10 flex flex-col gap-3 bg-white relative rounded-3xl;
+    @apply w-full xl:w-[63%] max-w-[1220px] px-12 pt-7 pb-10 flex flex-col gap-3 bg-white relative rounded-3xl;
   }
 
   .right-content {

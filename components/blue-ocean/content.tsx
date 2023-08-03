@@ -86,7 +86,7 @@ const BlueOceanContent = ({
 				}}
 				enableReinitialize
 				validateOnMount>
-				{({ values, isSubmitting, isValid, errors }) => {
+				{({ values, isSubmitting, isValid }) => {
 					return (
 						<Form>
 							<>{console.log("values", values)}</>

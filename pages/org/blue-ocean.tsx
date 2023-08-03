@@ -62,10 +62,7 @@ const BlueOceanCanvas = () => {
 						value: 1,
 					};
 				}) ?? [];
-			if (
-				!prod.ideaFactors ||
-				(prod.ideaFactors && prod.ideaFactors.length === 0)
-			) {
+			if (!prod.ideaFactors?.length) {
 				prod.ideaFactors = [
 					{ ...emptyFactor, name: "" },
 					{ ...emptyFactor, name: "" },
@@ -73,21 +70,21 @@ const BlueOceanCanvas = () => {
 				];
 			} else {
 				prod.ideaFactors.forEach((ideaFactor) => {
+					const existingCompetitorUuids = new Set(
+						ideaFactor.competitors.map((c) => c.uuid)
+					);
+
 					const newIdeaFactorCompetitors = prod.competitors
-						?.filter(
-							(comp) =>
-								!ideaFactor.competitors.some(
-									(c) => comp.uuid === c.uuid
-								)
-						)
+						?.filter((comp) => !existingCompetitorUuids.has(comp.uuid))
 						.map((comp) => {
 							return {
 								uuid: comp.uuid,
 								value: 1,
 							};
 						});
+
 					if (newIdeaFactorCompetitors?.length) {
-						// Add competitors that exist in  prod.competitors but not in ideaFactor.competitors
+						// Add competitors that exist in prod.competitors but not in ideaFactor.competitors
 						ideaFactor.competitors = ideaFactor.competitors.concat(
 							newIdeaFactorCompetitors
 						);
@@ -105,6 +102,8 @@ const BlueOceanCanvas = () => {
 		}
 		setUserProduct(data ?? emptyUserProduct);
 	}, [data]);
+
+	console.log("userProduct", userProduct);
 
 	return (
 		<>
