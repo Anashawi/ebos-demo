@@ -125,6 +125,7 @@ export default function Home() {
 									/>
 									<Link
 										href='/pdf/EBOS-introduction.pdf'
+										target='_blank'
 										download
 										className='flex justify-end'>
 										<span className='text-primary italic font-hero-semibold hover:underline'>
