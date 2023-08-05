@@ -125,7 +125,6 @@ export default function Home() {
 									/>
 									<Link
 										href='/pdf/EBOS-introduction.pdf'
-										target='_blank'
 										download
 										className='flex justify-end'>
 										<span className='text-primary italic font-hero-semibold hover:underline'>
@@ -154,20 +153,20 @@ export default function Home() {
 										{!!videos[
 											videoPropNamesEnum.introductoryVideo
 										] && (
-											<div
-												onClick={() => {
-													toggleEditVideoModal(true);
-												}}
-												className='w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400  cursor-pointer hover:shadow-lg transition duration-200'>
-												<p className='grow text-white'>
-													Edit Video
-												</p>
-												<FontAwesomeIcon
-													className='w-6 text-white'
-													icon={faEdit}
-												/>
-											</div>
-										)}
+												<div
+													onClick={() => {
+														toggleEditVideoModal(true);
+													}}
+													className='w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400  cursor-pointer hover:shadow-lg transition duration-200'>
+													<p className='grow text-white'>
+														Edit Video
+													</p>
+													<FontAwesomeIcon
+														className='w-6 text-white'
+														icon={faEdit}
+													/>
+												</div>
+											)}
 										<div
 											onClick={() => {
 												router.push("org/goals");
