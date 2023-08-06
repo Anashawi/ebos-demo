@@ -124,7 +124,7 @@ export default function Home() {
 										className='border border-primary-200 rounded-lg'
 									/>
 									<Link
-										href='/pdf/EBOS-introduction.pdf'
+										href='/api/download-pdf'
 										target='_blank'
 										download
 										className='flex justify-end'>
