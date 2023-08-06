@@ -71,12 +71,11 @@ export default function Home() {
 								alt='CIP Logo'
 							/>
 							<div className='flex flex-col gap-8'>
-								<h1 className='text-[5rem] text-onyx font-hero-medium leading-[5.75rem]'>
-									Every project is successful
+								<h1 className='text-[4rem] text-onyx font-hero-medium leading-[5.75rem]'>
+									2x-20x Your Revenues
 								</h1>
 								<h4 className='text-dark-300 text-3xl leading-[2.9rem]'>
-									Live and on-demand training, virtual reporting,
-									assistance, and online expert advice.
+									The key to 20x growth: Exponential Blue Ocean Shift Strategy
 								</h4>
 								{isLoading && (
 									<Spinner
