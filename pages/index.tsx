@@ -72,7 +72,7 @@ export default function Home() {
 							/>
 							<div className='flex flex-col gap-8'>
 								<h1 className='text-[4rem] text-onyx font-hero-medium leading-[5.75rem]'>
-									2x-20x Your Revenues
+									2-20x Your Growth Target
 								</h1>
 								<h4 className='text-dark-300 text-3xl leading-[2.9rem]'>
 									The key to 20x growth: Exponential Blue Ocean Shift Strategy
