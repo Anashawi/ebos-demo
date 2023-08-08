@@ -118,7 +118,7 @@ const BlueOceanCanvas = () => {
 						<StepsNavbar selectedNode={stepNamesEnum.blueOceanCanvas} />
 						<div className='content-container'>
 							<div className='left-content max-w-[1220px]'>
-								<BlueOceanContent	
+								<BlueOceanContent
 									userProduct={userProduct}
 									dispatchProducts={(products) => {
 										setChartProducts(products);
@@ -144,7 +144,7 @@ const BlueOceanCanvas = () => {
 											toggleVideoModal(true);
 										}}
 										className='w-full btn-primary-light rounded-xl'>
-										Watch Video
+										Watch Video Tutorial
 									</button>
 								</div>
 								{session?.user?.role === "admin" && (

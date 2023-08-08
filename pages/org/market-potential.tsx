@@ -109,7 +109,7 @@ const Competitors = () => {
 											toggleVideoModal(true);
 										}}
 										className='w-full btn-primary-light rounded-xl'>
-										Watch Video
+										Watch Video Tutorial
 									</button>
 								</div>
 								{session?.user?.role === "admin" && (
@@ -159,7 +159,7 @@ const Competitors = () => {
 								<button
 									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
 									onClick={() => toggleVideoModal(true)}>
-									<span>Watch Video</span>
+									<span>Watch Video Tutorial</span>
 									<FontAwesomeIcon className='w-7' icon={faEye} />
 								</button>
 							</div>

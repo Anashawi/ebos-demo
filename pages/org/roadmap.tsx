@@ -86,7 +86,7 @@ const RoadMap = () => {
 											toggleVideoModal(true);
 										}}
 										className='w-full btn-primary-light rounded-xl'>
-										Watch Video
+										Watch Video Tutorial
 									</button>
 								</div>
 								{session?.user?.role === "admin" && (

@@ -72,10 +72,17 @@ export default function Home() {
 							/>
 							<div className='flex flex-col gap-8'>
 								<h1 className='text-[4rem] text-onyx font-hero-medium leading-[5.75rem]'>
-									2-20x Your Growth Target
+									2-20x Your Growth
 								</h1>
 								<h4 className='text-dark-300 text-3xl leading-[2.9rem]'>
-									The key to 20x growth: Exponential Blue Ocean Shift Strategy
+									<div>
+										The key to 20x growth:
+									</div>
+									<div>
+										Exponential Blue Ocean Shift Strategy
+									</div>
+								</h4>
+								<h4 className='text-dark-300 text-3xl leading-[2.9rem] p-0 m-0'>
 								</h4>
 								{isLoading && (
 									<Spinner
@@ -89,12 +96,12 @@ export default function Home() {
 											<div className='w-[7rem] rounded-full overflow-hidden'>
 												<div className='w-[13rem] h-[6.5rem]'>
 													<Image
-														src='/video-image.png'
+														src='/video-image.jpeg'
 														alt='Introductory Video'
 														width='300'
 														height='300'
 														quality={100}
-														className='translate-x-[-0.75rem] w-[13rem] h-[6.5rem]'
+														className='w-[13rem] h-[13rem] translate-x-[-3rem]'
 													/>
 												</div>
 											</div>
@@ -199,7 +206,7 @@ export default function Home() {
 										</div>
 										<div
 											onClick={() => toggleLoginModal()}
-											className='w-[45%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-dark-200 cursor-pointer hover:shadow-lg transition duration-200'>
+											className='w-[45%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400 cursor-pointer hover:shadow-lg transition duration-200'>
 											<p className='grow text-white'>Log In</p>
 											<div className='p-2 bg-dark-200 rounded-full border border-gray-200'>
 												<FontAwesomeIcon
