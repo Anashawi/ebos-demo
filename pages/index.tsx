@@ -208,7 +208,7 @@ export default function Home() {
 											onClick={() => toggleLoginModal()}
 											className='w-[45%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400 cursor-pointer hover:shadow-lg transition duration-200'>
 											<p className='grow text-white'>Log In</p>
-											<div className='p-2 bg-dark-200 rounded-full border border-gray-200'>
+											<div className='p-2 bg-primary-400 rounded-full border border-gray-200'>
 												<FontAwesomeIcon
 													className='w-[1rem] h-[1rem] text-gray-200 rounded-full'
 													icon={faAngleRight}
