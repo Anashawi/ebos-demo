@@ -11,36 +11,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Organizations = () => {
 	const { data: session }: any = useSession();
 
-	const generateEmptyOrganization = (): OrganizationModel => {
-		const newUUID = crypto.randomUUID();
+	const initEmptyOrganization = (uuid: string): OrganizationModel => {
 		return {
-			uuid: newUUID,
+			uuid,
 			name: "New Organization",
 			website: "",
 		};
 	};
 
-	const [defaultUserOrganizations, setDefaultUserOrganization] =
-		useState<IUserOrganizations>({
-			id: "",
-			userId: "",
-			organizations: [],
-		});
+	const emptyOrganization = initEmptyOrganization(
+		typeof window !== "undefined" ? crypto.randomUUID() : ""
+	);
 
-	useEffect(() => {
-		if (window) {
-			setDefaultUserOrganization({
-				...defaultUserOrganizations,
-				organizations: [
-					...defaultUserOrganizations.organizations,
-					generateEmptyOrganization(),
-				],
-			});
-		}
-	}, [window]);
+	const emptyUserOrganizations = {
+		id: "",
+		userId: "",
+		organizations: [],
+	};
 
 	const [userOrganizations, setUserOrganizations] =
-		useState<IUserOrganizations>(defaultUserOrganizations);
+		useState<IUserOrganizations>(emptyUserOrganizations);
 
 	const { data, isLoading } = useQuery(
 		[client.keys.all, session?.user?.id],
@@ -145,7 +135,7 @@ const Organizations = () => {
 										...prevValue,
 										organizations: [
 											...prevValue.organizations,
-											generateEmptyOrganization(),
+											emptyOrganization,
 										],
 									};
 								});
