@@ -70,7 +70,7 @@ const Organizations = () => {
 						/>
 					)}
 					{!isLoading && !userOrganizations.organizations?.length && (
-						<p className='text-yellow-700 text-xl'>
+						<p className='text-yellow-600 text-xl'>
 							Click to add an organization
 						</p>
 					)}
