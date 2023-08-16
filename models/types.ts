@@ -76,3 +76,9 @@ export interface ITakeaway {
    type: takeawayTypeEnums,
    notes: string[];
 }
+
+export interface OrganizationModel {
+   uuid: string;
+   name: string;
+   website: string;
+}

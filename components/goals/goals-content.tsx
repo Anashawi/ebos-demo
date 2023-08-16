@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Organizations from "../organizations";
 
 const GoalsContent = () => {
 	const [goalToBeAdded, setGoalToBeAdded] = useState("");
@@ -101,6 +102,7 @@ const GoalsContent = () => {
 
 	return (
 		<>
+			<Organizations />
 			<h3 className='title-header'>Goals</h3>
 			<Formik
 				initialValues={{
