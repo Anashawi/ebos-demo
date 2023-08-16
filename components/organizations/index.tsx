@@ -20,14 +20,27 @@ const Organizations = () => {
 		};
 	};
 
-	const emptyUserOrganizations = {
-		id: "",
-		userId: "",
-		organizations: [generateEmptyOrganization()],
-	};
+	const [defaultUserOrganizations, setDefaultUserOrganization] =
+		useState<IUserOrganizations>({
+			id: "",
+			userId: "",
+			organizations: [],
+		});
+
+	useEffect(() => {
+		if (window) {
+			setDefaultUserOrganization({
+				...defaultUserOrganizations,
+				organizations: [
+					...defaultUserOrganizations.organizations,
+					generateEmptyOrganization(),
+				],
+			});
+		}
+	}, [window]);
 
 	const [userOrganizations, setUserOrganizations] =
-		useState<IUserOrganizations>(emptyUserOrganizations);
+		useState<IUserOrganizations>(defaultUserOrganizations);
 
 	const { data, isLoading } = useQuery(
 		[client.keys.all, session?.user?.id],
