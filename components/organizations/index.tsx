@@ -5,7 +5,6 @@ import * as client from "../../http-client/organizations.client";
 import Spinner from "../common/spinner";
 import { useSession } from "next-auth/react";
 import { OrganizationModel } from "../../models/types";
-import { cloneDeep } from "lodash";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
