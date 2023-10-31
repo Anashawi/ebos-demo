@@ -1,0 +1,33 @@
+.container {
+    z-index: 99;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    min-height: 50vh;
+    max-height: 80vh;
+    color: #FFFFFF;
+}
+
+.chatWrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.chatContainer {
+    width: 400px;
+    min-height: 50vh;
+    max-height: 80vh;
+}
+
+.chatButton {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

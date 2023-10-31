@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import "../styles/report.css";
 import "../styles/globals.css";
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -15,6 +16,7 @@ interface Props {
 	Component: any;
 	pageProps: any;
 }
+
 const App: NextPage<Props> = ({ Component, pageProps }) => {
 	return (
 		<SessionProvider session={pageProps.session}>
