@@ -54,8 +54,8 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
 
     useEffect(() => {
         if (initialMessage) {
-            console.log(initialMessage);
-            // sendMessage("", initialMessage, "", null, true);
+            // console.log(initialMessage);
+            sendMessage("", initialMessage, "", null, true);
         }
     }, [initialMessage]);
 
