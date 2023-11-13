@@ -1,30 +1,21 @@
-import IdeasModal from "../../components/app/ideas-modal";
-import useModalToggler from "../../hooks/use-modal-toggler";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+
+import * as productsApi from "../../http-client/products.client";
+import { useQuery } from "@tanstack/react-query";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
-import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/disruption/shared-video-form";
-import Video from "../../components/disruption/video";
+import { ICompetitor, IProduct } from "../../models/types";
+import { IUserProduct } from "../../models/user-product";
+
 import ActionsNavbar from "../../components/common/actions-navbar";
 import StepsNavbar from "../../components/common/steps-navbar";
-import MarketPotentialContent from "../../components/market-potential/content";
+import MarketPotentialContent from "../../components/market-potential/market-potential-content";
+import ChartsContent from "../../components/common/charts-content";
+
 import * as _ from "lodash";
-import MarketPotentialProductChart from "../../components/market-potential/product-chart";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import * as clientApi from "../../http-client/products.client";
-import { IUserProduct } from "../../models/user-product";
-import { useSession } from "next-auth/react";
-import Spinner from "../../components/common/spinner";
-import { ICompetitor, IProduct } from "../../models/types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const Competitors = () => {
     const { data: session }: any = useSession();
-
-    const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-    const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
-    const [isVideoModalOn, toggleVideoModal] = useModalToggler();
 
     const emptyCompetitor = () => {
         const uuid = crypto.randomUUID();
@@ -41,20 +32,21 @@ const Competitors = () => {
         products: [],
     } as IUserProduct;
 
-    const [userProduct, setUserProduct] =
+    const [userProducts, setUserProducts] =
         useState<IUserProduct>(emptyUserProduct);
 
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
-    const { data, isLoading } = useQuery<IUserProduct>({
-        queryKey: [clientApi.Keys.All],
-        queryFn: clientApi.getAll,
-        refetchOnWindowFocus: false,
-        enabled: !!session?.user?.id,
-    });
+    const { data: fetchedUserProducts, isLoading: areProductsLoading } =
+        useQuery<IUserProduct>({
+            queryKey: [productsApi.Keys.All],
+            queryFn: productsApi.getAll,
+            refetchOnWindowFocus: false,
+            enabled: !!session?.user?.id,
+        });
 
     useEffect(() => {
-        data?.products?.forEach(prod => {
+        userProducts?.products?.forEach(prod => {
             if (
                 !prod.competitors ||
                 (prod.competitors && prod.competitors.length === 0)
@@ -66,89 +58,36 @@ const Competitors = () => {
                 ];
             }
         });
-        if (data) {
-            setUserProduct(data);
+        if (fetchedUserProducts) {
+            setUserProducts(fetchedUserProducts);
         }
-        setChartProducts(data?.products || []);
-    }, [data]);
+        setChartProducts(fetchedUserProducts?.products || []);
+    }, [fetchedUserProducts, userProducts?.products]);
 
     return (
         <>
-            <div className="bg-gray-100 pt-9">
-                <div className="flex gap-[4.4rem] px-16 m-auto">
-                    <div className="py-12">
-                        <ActionsNavbar
-                            selectedStepTitle={stepNamesEnum.marketPotential}
-                        />
-                    </div>
-                    <div className="grow max-w-[1920px] flex flex-col py-12 mx-auto">
+            <div className="px-16 py-24 bg-gray-100">
+                <div className="flex flex-row flex-wrap justify-center gap-16">
+                    <ActionsNavbar
+                        selectedStepTitle={stepNamesEnum.marketPotential}
+                    />
+                    <div className="grow flex flex-col justify-start gap-8">
                         <StepsNavbar
-                            selectedNode={stepNamesEnum.marketPotential}
+                            selectedNodeTitle={stepNamesEnum.marketPotential}
                         />
-                        <div className="content-container">
-                            <div className="left-content">
-                                <MarketPotentialContent
-                                    userProduct={userProduct}
-                                    dispatchChartProducts={setChartProducts}
-                                    isLoading={isLoading}
-                                />
-                            </div>
-                            <div className="right-content">
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            toggleIdeasModal(true);
-                                        }}
-                                        className="w-full btn-primary-light rounded-xl"
-                                    >
-                                        My Ideas
-                                    </button>
-                                </div>
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            toggleVideoModal(true);
-                                        }}
-                                        className="w-full btn-primary-light rounded-xl"
-                                    >
-                                        Watch Video Tutorial
-                                    </button>
-                                </div>
-                                {session?.user?.role === "admin" && (
-                                    <div className="p-1 bg-white rounded-xl">
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                toggleEditVideoModal(true)
-                                            }
-                                            className="w-full btn-primary-light rounded-xl"
-                                        >
-                                            <span>Edit video Url</span>
-                                            <FontAwesomeIcon
-                                                className="w-7"
-                                                icon={faEdit}
-                                            />
-                                        </button>
-                                    </div>
-                                )}
-                                {isLoading && (
-                                    <Spinner
-                                        message="Loading product competitors charts..."
-                                        className="p-5 items-center text-xl"
-                                    />
-                                )}
-                                {!isLoading &&
-                                    !!chartProducts?.length &&
-                                    chartProducts.map((product, index) => (
-                                        <div key={index} className="h-[300px]">
-                                            <MarketPotentialProductChart
-                                                product={product}
-                                            />
-                                        </div>
-                                    ))}
-                            </div>
+                        <div className="flex flex-row flex-wrap justify-center gap-8">
+                            <MarketPotentialContent
+                                userProduct={userProducts}
+                                isLoading={areProductsLoading}
+                                dispatchChartProducts={setChartProducts}
+                            />
+                            <ChartsContent
+                                videoPropName={
+                                    videoPropNamesEnum.marketPotential
+                                }
+                                videoLabel="Market Potential Video"
+                                chartProducts={chartProducts}
+                            />
                         </div>
 
                         {/* <div className='w-1/2'>
@@ -174,48 +113,6 @@ const Competitors = () => {
                     </div>
                 </div>
             </div>
-
-            {/* ideas modal */}
-            <IdeasModal
-                isOpen={isIdeasModalOpen}
-                toggle={() => toggleIdeasModal()}
-            />
-
-            {/* video modal */}
-            <Modal
-                config={{
-                    isShown: isVideoModalOn,
-                    closeCallback: () => toggleVideoModal(false),
-                    className:
-                        "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
-                }}
-            >
-                <Video videoPropName={videoPropNamesEnum.marketPotential} />
-                <div className="flex justify-center p-5 bg-black">
-                    <button
-                        className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
-                        onClick={() => toggleVideoModal(false)}
-                    >
-                        close
-                    </button>
-                </div>
-            </Modal>
-
-            {/* video url form modal */}
-            <Modal
-                config={{
-                    isShown: isEditUrlsModalOn,
-                    closeCallback: () => toggleEditVideoModal(false),
-                    className:
-                        "flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
-                }}
-            >
-                <SharedVideoForm
-                    toggleEditVideoModal={() => toggleEditVideoModal(false)}
-                    videoPropName={videoPropNamesEnum.marketPotential}
-                    videoLabel="Market Potential Video"
-                />
-            </Modal>
         </>
     );
 };

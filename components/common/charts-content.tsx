@@ -1,67 +1,125 @@
 import { useSession } from "next-auth/react";
+
+import { IProduct } from "../../models/types";
 import { videoPropNamesEnum } from "../../models/enums";
+
+import useFuturesChart from "../../hooks/use-futures-chart";
 import useModalToggler from "../../hooks/use-modal-toggler";
+import IdeasModal from "../app/ideas-modal";
+import Modal from "../common/modal";
+import Spinner from "../common/spinner";
+import SharedVideoForm from "../disruption/shared-video-form";
+import Video from "../disruption/video";
+import MarketPotentialProductChart from "../market-potential/product-chart";
+import RedOceanProductChart from "../red-ocean/product-chart";
+import BlueOceanProductChart from "../blue-ocean/product-chart";
 
-import IdeasModal from "../../components/app/ideas-modal";
-import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/disruption/shared-video-form";
-import Video from "../../components/disruption/video";
-
+import Chart from "react-google-charts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import ChartsButton from "./charts/charts-button";
 
-const ChartsContent = () => {
+interface Props {
+    videoPropName: videoPropNamesEnum;
+    videoLabel: string;
+    chartProducts: IProduct[];
+    isChartDataLoading?: boolean;
+}
+
+const ChartsContent = ({
+    videoPropName,
+    videoLabel,
+    chartProducts,
+    isChartDataLoading,
+}: Props) => {
     const { data: session }: any = useSession();
 
     const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-    const [isEditUrlModalOn, toggleEditVideoModal] = useModalToggler();
     const [isVideoModalOn, toggleVideoModal] = useModalToggler(false);
+    const [isEditUrlModalOn, toggleEditVideoModal] = useModalToggler();
+
+    const [chart] = useFuturesChart(chartProducts);
+
+    // UI checks
+    const isAdmin = session?.user?.role === "admin";
+    const isNotLoadingWithChartData =
+        !isChartDataLoading && chartProducts.length > 0;
 
     return (
         <>
-            <div className="right-content w-auto">
-                <div className="p-1 bg-white rounded-xl">
-                    <button
-                        type="button"
-                        onClick={() => {
-                            toggleIdeasModal(true);
-                        }}
-                        className="w-full btn-primary-light rounded-xl"
-                    >
-                        My Ideas
-                    </button>
-                </div>
-                <div className="p-1 bg-white rounded-xl">
-                    <button
-                        type="button"
-                        onClick={() => {
-                            toggleVideoModal(true);
-                        }}
-                        className="w-full btn-primary-light rounded-xl"
-                    >
-                        Watch Video Tutorial
-                    </button>
-                </div>
-                {session?.user?.role === "admin" && (
-                    <div className="p-1 bg-white rounded-xl">
-                        <button
-                            type="button"
-                            onClick={() => toggleEditVideoModal(true)}
-                            className="w-full btn-primary-light rounded-xl"
-                        >
-                            <span>Edit video Url</span>
-                            <FontAwesomeIcon className="w-7" icon={faEdit} />
-                        </button>
-                    </div>
+            <div className="min-h-max p-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
+                <ChartsButton
+                    title="My Ideas"
+                    icon={undefined}
+                    clickCallback={() => toggleIdeasModal(true)}
+                />
+                <ChartsButton
+                    title="Watch Video Tutorial"
+                    icon={undefined}
+                    clickCallback={() => toggleVideoModal(true)}
+                />
+                {isAdmin && (
+                    <ChartsButton
+                        title="Edit video Url"
+                        icon={<FontAwesomeIcon className="w-7" icon={faEdit} />}
+                        clickCallback={() => toggleEditVideoModal(true)}
+                    />
                 )}
-            </div>
+                {isChartDataLoading && (
+                    <Spinner
+                        message="Loading products chart..."
+                        className="p-5 items-center text-xl"
+                    />
+                )}
+                {isNotLoadingWithChartData &&
+                    chartProducts.map((product, index) => (
+                        <div
+                            key={index}
+                            className="w-[100%] xl:w-[400px] h-[324px]"
+                        >
+                            {videoPropName === videoPropNamesEnum.products && (
+                                <Chart {...chart} legendToggle />
+                            )}
+                            {videoPropName ===
+                                videoPropNamesEnum.marketPotential && (
+                                <MarketPotentialProductChart
+                                    product={product}
+                                />
+                            )}
+                            {videoPropName === videoPropNamesEnum.redOcean && (
+                                <RedOceanProductChart product={product} />
+                            )}
 
+                            {videoPropName === videoPropNamesEnum.blueOcean && (
+                                <BlueOceanProductChart product={product} />
+                            )}
+                        </div>
+                    ))}
+            </div>
             {/* ideas modal */}
             <IdeasModal
                 isOpen={isIdeasModalOpen}
                 toggle={() => toggleIdeasModal(false)}
             />
-
+            {/* video modal */}
+            <Modal
+                config={{
+                    isShown: isVideoModalOn,
+                    closeCallback: () => toggleVideoModal(false),
+                    className:
+                        "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+                }}
+            >
+                <Video videoPropName={videoPropName} />
+                <div className="flex justify-center p-5 bg-black">
+                    <button
+                        className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
+                        onClick={() => toggleVideoModal(false)}
+                    >
+                        close
+                    </button>
+                </div>
+            </Modal>
             {/* video url form modal */}
             <Modal
                 config={{
@@ -73,29 +131,9 @@ const ChartsContent = () => {
             >
                 <SharedVideoForm
                     toggleEditVideoModal={() => toggleEditVideoModal(false)}
-                    videoPropName={videoPropNamesEnum.goalsVideo}
-                    videoLabel="Goals Video"
+                    videoPropName={videoPropName}
+                    videoLabel={videoLabel}
                 />
-            </Modal>
-
-            {/* video modal */}
-            <Modal
-                config={{
-                    isShown: isVideoModalOn,
-                    closeCallback: () => toggleVideoModal(false),
-                    className:
-                        "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
-                }}
-            >
-                <Video videoPropName={videoPropNamesEnum.goalsVideo} />
-                <div className="flex justify-center p-5 bg-black">
-                    <button
-                        className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
-                        onClick={() => toggleVideoModal(false)}
-                    >
-                        close
-                    </button>
-                </div>
             </Modal>
         </>
     );

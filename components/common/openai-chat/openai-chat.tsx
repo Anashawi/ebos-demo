@@ -38,9 +38,12 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         dangerouslyAllowBrowser: true,
     });
     const messageInput = useRef<HTMLDivElement>(null);
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [isVisible, setIsVisible] = useState(false);
 
+    const [openAIMessages, setOpenAIMessages] = useState<
+        OpenAI.Chat.Completions.ChatCompletionMessageParam[]
+    >([]);
+    const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
+    const [isChatVisible, setIsChatVisible] = useState(false);
     const [waitingForResponse, setWaitingForResponse] = useState(false);
 
     useEffect(() => {
@@ -51,7 +54,8 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
 
     useEffect(() => {
         if (initialMessage) {
-            sendMessage("", initialMessage, "", null);
+            console.log(initialMessage);
+            // sendMessage("", initialMessage, "", null, true);
         }
     }, [initialMessage]);
 
@@ -59,53 +63,61 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         innerHtml: string,
         textContent: string,
         innerText: string,
-        nodes: NodeList | null
+        nodes: NodeList | null,
+        hideMessage?: boolean
     ) => {
-        console.log("sendingMessage");
-        const newMessageList = [...messages];
-        const newMessage: Message = {
+        const newOpenAIMessages = [...openAIMessages];
+        const newDisplayedMessages = [...displayedMessages];
+
+        // outgoing AI message
+        const newOpenAIMessage = {
+            role: ChatCompletionRequestMessageRoleEnum.User,
             content: textContent,
-            sentTime: Math.floor(Date.now() / 1000),
-            sender: "You",
-            direction: "outgoing",
         };
-        newMessageList.push(newMessage);
-        setMessages([...newMessageList]);
+        newOpenAIMessages.push(newOpenAIMessage);
+        setOpenAIMessages([...newOpenAIMessages]);
+
+        // displayed chat box messages
+        if (!hideMessage) {
+            const newDisplayedMessage: Message = {
+                content: textContent,
+                sentTime: Math.floor(Date.now() / 1000),
+                sender: "You",
+                direction: "outgoing",
+            };
+            newDisplayedMessages.push(newDisplayedMessage);
+            setDisplayedMessages([...newDisplayedMessages]);
+        }
 
         setWaitingForResponse(true);
-        const newMessageResponse: Message = {
+        await streamResponse(newOpenAIMessages, newDisplayedMessages);
+        setWaitingForResponse(false);
+    };
+
+    const streamResponse = async (
+        newOpenAIMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+        newDisplayedMessages: Message[]
+    ) => {
+        const newDisplayedMessageResponse: Message = {
             content: "",
             sentTime: Math.floor(Date.now() / 1000),
             sender: CHATGPT_USER,
             direction: "incoming",
         };
-        newMessageList.push(newMessageResponse);
-        setMessages([...newMessageList]);
-        await streamResponse(newMessageList);
-        setWaitingForResponse(false);
-    };
-
-    const streamResponse = async (newMessageList: Message[]) => {
-        const messagesHistory = newMessageList.map(message => {
-            return {
-                role:
-                    message.sender === CHATGPT_USER
-                        ? ChatCompletionRequestMessageRoleEnum.Assistant
-                        : ChatCompletionRequestMessageRoleEnum.User,
-                content: message.content,
-            };
-        });
+        newDisplayedMessages.push(newDisplayedMessageResponse);
 
         try {
             const stream = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo",
-                messages: [...messagesHistory],
+                messages: [...newOpenAIMessages],
                 stream: true,
             });
             try {
                 for await (const part of stream) {
-                    newMessageList[newMessageList.length - 1].content +=
-                        part.choices[0]?.delta.content || "";
+                    newDisplayedMessages[
+                        newDisplayedMessages.length - 1
+                    ].content += part.choices[0]?.delta.content || "";
+                    setDisplayedMessages([...newDisplayedMessages]);
                 }
             } catch (err) {
                 console.error("The stream had an error", err);
@@ -113,7 +125,9 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         } catch (error) {
             if (error instanceof OpenAI.APIError) {
                 if (error.status === 429)
-                    newMessageList[newMessageList.length - 1].content =
+                    newDisplayedMessages[
+                        newDisplayedMessages.length - 1
+                    ].content =
                         "Rate limit reached. Limit: 3 / min. Please try again in 20s";
                 console.error(error.status); // e.g. 401
                 console.error(error.message); // e.g. The authentication token you passed was invalid...
@@ -125,14 +139,21 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
             }
         }
 
-        setMessages([...newMessageList]);
+        // incoming AI message
+        const newOpenAIMessage = {
+            role: ChatCompletionRequestMessageRoleEnum.Assistant,
+            content:
+                newDisplayedMessages[newDisplayedMessages.length - 1].content,
+        };
+        newOpenAIMessages.push(newOpenAIMessage);
+        setOpenAIMessages([...newOpenAIMessages]);
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.chatWrapper}>
                 <div className={styles.chatContainer}>
-                    {isVisible && (
+                    {isChatVisible && (
                         <MainContainer>
                             <ChatContainer>
                                 <ConversationHeader>
@@ -144,7 +165,7 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                         <Button
                                             title="Close Chat"
                                             onClick={() =>
-                                                setIsVisible(!isVisible)
+                                                setIsChatVisible(!isChatVisible)
                                             }
                                             icon={
                                                 <FontAwesomeIcon
@@ -162,7 +183,7 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                         )
                                     }
                                 >
-                                    {messages.map((message, index) => {
+                                    {displayedMessages.map((message, index) => {
                                         return (
                                             <Message
                                                 key={index}
@@ -191,11 +212,11 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                             </ChatContainer>
                         </MainContainer>
                     )}
-                    {!isVisible && (
+                    {!isChatVisible && (
                         <Button
                             title="Open Chat"
                             className={styles.chatButton}
-                            onClick={() => setIsVisible(!isVisible)}
+                            onClick={() => setIsChatVisible(!isChatVisible)}
                             border
                             icon={
                                 <FontAwesomeIcon
