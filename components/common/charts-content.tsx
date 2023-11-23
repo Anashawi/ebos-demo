@@ -13,11 +13,11 @@ import Video from "../disruption/video";
 import MarketPotentialProductChart from "../market-potential/product-chart";
 import RedOceanProductChart from "../red-ocean/product-chart";
 import BlueOceanProductChart from "../blue-ocean/product-chart";
+import ChartsButton from "./charts/charts-button";
 
 import Chart from "react-google-charts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import ChartsButton from "./charts/charts-button";
 
 interface Props {
     videoPropName: videoPropNamesEnum;
@@ -49,14 +49,14 @@ const ChartsContent = ({
         <>
             <div className="min-h-max p-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
                 <ChartsButton
-                    title="My Ideas"
-                    icon={undefined}
-                    clickCallback={() => toggleIdeasModal(true)}
-                />
-                <ChartsButton
                     title="Watch Video Tutorial"
                     icon={undefined}
                     clickCallback={() => toggleVideoModal(true)}
+                />
+                <ChartsButton
+                    title="My Ideas"
+                    icon={undefined}
+                    clickCallback={() => toggleIdeasModal(true)}
                 />
                 {isAdmin && (
                     <ChartsButton

@@ -76,22 +76,22 @@ const Analysis = () => {
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            toggleIdeasModal(true);
+                                            toggleVideoModal(true);
                                         }}
                                         className="w-full btn-primary-light rounded-xl"
                                     >
-                                        My Ideas
+                                        Watch Video Tutorial
                                     </button>
                                 </div>
                                 <div className="p-1 bg-white rounded-xl">
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            toggleVideoModal(true);
+                                            toggleIdeasModal(true);
                                         }}
                                         className="w-full btn-primary-light rounded-xl"
                                     >
-                                        Watch Video Tutorial
+                                        My Ideas
                                     </button>
                                 </div>
                                 {session?.user?.role === "admin" && (

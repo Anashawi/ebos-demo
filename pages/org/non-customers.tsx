@@ -76,10 +76,10 @@ const NonCustomers = () => {
                                         type="button"
                                         className="w-full btn-primary-light rounded-xl"
                                         onClick={() => {
-                                            toggleIdeasModal(true);
+                                            toggleVideoModal(true);
                                         }}
                                     >
-                                        My Ideas
+                                        Watch Video Tutorial
                                     </button>
                                 </div>
                                 <div className="p-1 bg-white rounded-xl">
@@ -87,10 +87,10 @@ const NonCustomers = () => {
                                         type="button"
                                         className="w-full btn-primary-light rounded-xl"
                                         onClick={() => {
-                                            toggleVideoModal(true);
+                                            toggleIdeasModal(true);
                                         }}
                                     >
-                                        Watch Video Tutorial
+                                        My Ideas
                                     </button>
                                 </div>
                                 {session?.user?.role === "admin" && (
