@@ -76,7 +76,7 @@ const OrganizationsForm = ({
         userOrganizations.organizations?.length > 0;
 
     return (
-        <div className="organizations-form flex flex-col gap-4">
+        <div className="organizations-form flex flex-col gap-8">
             <h2 className="title-header">Organizations</h2>
             <div className="flex flex-col gap-4 bg-dark-50 rounded-2xl p-4">
                 <div className="flex flex-col gap-4">

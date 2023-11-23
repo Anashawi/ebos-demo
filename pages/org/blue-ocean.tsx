@@ -7,20 +7,10 @@ import { IUserProduct } from "../../models/user-product";
 import { IIdeaFactor, IProduct } from "../../models/types";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 
-import useModalToggler from "../../hooks/use-modal-toggler";
 import ActionsNavbar from "../../components/common/actions-navbar";
 import StepsNavbar from "../../components/common/steps-navbar";
 import BlueOceanContent from "../../components/blue-ocean/blue-ocean-content";
 import ChartsContent from "../../components/common/charts-content";
-import BlueOceanProductChart from "../../components/blue-ocean/product-chart";
-import Spinner from "../../components/common/spinner";
-import Video from "../../components/disruption/video";
-import SharedVideoForm from "../../components/disruption/shared-video-form";
-import Modal from "../../components/common/modal";
-import IdeasModal from "../../components/app/ideas-modal";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const BlueOceanCanvas = () => {
     const { data: session }: any = useSession();
@@ -107,36 +97,33 @@ const BlueOceanCanvas = () => {
     }, [products, emptyUserProduct, emptyFactor, setUserProduct]);
 
     return (
-        <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
-                    <ActionsNavbar
-                        selectedStepTitle={stepNamesEnum.blueOceanCanvas}
+        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+            <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
+                <ActionsNavbar
+                    selectedStepTitle={stepNamesEnum.blueOceanCanvas}
+                />
+            </div>
+            <div className="grow flex flex-col justify-start gap-8">
+                <StepsNavbar
+                    selectedNodeTitle={stepNamesEnum.blueOceanCanvas}
+                />
+                <div className="flex flex-row justify-center gap-8">
+                    <BlueOceanContent
+                        userProduct={userProduct}
+                        dispatchProducts={products => {
+                            setChartProducts(products);
+                        }}
+                        isLoading={areProductsLoading}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={stepNamesEnum.blueOceanCanvas}
-                        />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <BlueOceanContent
-                                userProduct={userProduct}
-                                dispatchProducts={products => {
-                                    setChartProducts(products);
-                                }}
-                                isLoading={areProductsLoading}
-                            />
-
-                            <ChartsContent
-                                videoPropName={videoPropNamesEnum.blueOcean}
-                                videoLabel="Blue Ocean Video"
-                                chartProducts={chartProducts}
-                                isChartDataLoading={areProductsLoading}
-                            />
-                        </div>
-                    </div>
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.blueOcean}
+                        videoLabel="Blue Ocean Video"
+                        chartProducts={chartProducts}
+                        isChartDataLoading={areProductsLoading}
+                    />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

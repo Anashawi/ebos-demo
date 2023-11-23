@@ -102,10 +102,15 @@ const BlueOceanContent = ({
     //     },
     // });
 
+    const isNotLoadingWithoutProducts =
+        !isLoading && userProduct.products.length === 0;
+    const isNotLoadingWithProducts =
+        !isLoading && userProduct.products.length > 0;
+
     return (
         <>
-            <div className="grow flex flex-col gap-2 px-16 py-8 bg-white relative rounded-3xl">
-                <h3 className="title-header">Blue Ocean Canvas</h3>
+            <div className="grow flex flex-col gap-4 px-8 py-8 bg-white relative rounded-3xl">
+                <h2 className="title-header">Blue Ocean Canvas</h2>
                 <Formik
                     initialValues={{
                         products: userProduct.products,
@@ -144,23 +149,19 @@ const BlueOceanContent = ({
                                 <FieldArray name="products">
                                     {({ push, remove }) => {
                                         return (
-                                            <>
-                                                <div className="flex flex-col gap-4">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
                                                     {isLoading && (
                                                         <Spinner
                                                             className="flex items-center text-2xl"
                                                             message="Loading Blue Ocean..."
                                                         />
                                                     )}
-                                                    {!isLoading &&
-                                                        userProduct.products
-                                                            .length === 0 && (
-                                                            <ZeroProductsWarning />
-                                                        )}
-                                                    {!isLoading &&
+                                                    {isNotLoadingWithoutProducts && (
+                                                        <ZeroProductsWarning />
+                                                    )}
+                                                    {isNotLoadingWithProducts &&
                                                         !values.products
-                                                            ?.length &&
-                                                        !!userProduct.products
                                                             ?.length && (
                                                             <p className="text-rose-400">
                                                                 make a selection
@@ -168,8 +169,8 @@ const BlueOceanContent = ({
                                                                 !
                                                             </p>
                                                         )}
-                                                    {!!values.products
-                                                        ?.length &&
+                                                    {values.products?.length >
+                                                        0 &&
                                                         values.products.map(
                                                             (
                                                                 product,
@@ -208,47 +209,45 @@ const BlueOceanContent = ({
                                                             )
                                                         )}
                                                 </div>
-                                                <div className="mt-10">
-                                                    <div className="h-10">
-                                                        {isUpdatingUserProduct && (
-                                                            <Spinner
-                                                                className="flex items-center text-xl"
-                                                                message="Saving Red Ocean"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                    <div className="flex gap-5 justify-between items-center">
-                                                        {!!userProduct.products
-                                                            ?.length && (
-                                                            <button
-                                                                type="submit"
-                                                                className={
-                                                                    isSubmitting ||
-                                                                    !isValid
-                                                                        ? "btn-rev btn-disabled"
-                                                                        : "btn-rev"
-                                                                }
-                                                                disabled={
-                                                                    isSubmitting ||
-                                                                    !isValid
-                                                                }
-                                                            >
-                                                                Save
-                                                            </button>
-                                                        )}
-                                                        <GoNextButton
-                                                            stepUri={`../org/non-customers`}
-                                                            nextStepTitle={`Non
-                                                            Customers`}
-                                                            clickable={
-                                                                userProduct
-                                                                    ?.products
-                                                                    ?.length > 0
-                                                            }
+                                                <div className="flex justify-end h-10">
+                                                    {isUpdatingUserProduct && (
+                                                        <Spinner
+                                                            className="flex items-center text-xl"
+                                                            message="Saving Red Ocean"
                                                         />
-                                                    </div>
+                                                    )}
                                                 </div>
-                                            </>
+                                                <div className="flex gap-4 justify-end items-center">
+                                                    {!!userProduct.products
+                                                        ?.length && (
+                                                        <button
+                                                            type="submit"
+                                                            className={
+                                                                isSubmitting ||
+                                                                !isValid
+                                                                    ? "btn-rev btn-disabled"
+                                                                    : "btn-rev"
+                                                            }
+                                                            disabled={
+                                                                isSubmitting ||
+                                                                !isValid
+                                                            }
+                                                        >
+                                                            Save
+                                                        </button>
+                                                    )}
+                                                    <GoNextButton
+                                                        stepUri={`../org/non-customers`}
+                                                        nextStepTitle={`Non
+                                                            Customers`}
+                                                        clickable={
+                                                            userProduct
+                                                                ?.products
+                                                                ?.length > 0
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
                                         );
                                     }}
                                 </FieldArray>

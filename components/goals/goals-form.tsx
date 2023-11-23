@@ -87,7 +87,7 @@ const GoalsForm = ({
         });
 
     return (
-        <div className="goals-form flex flex-col gap-4">
+        <div className="goals-form flex flex-col gap-8">
             <h2 className="title-header">Goals</h2>
             <div className="flex flex-col gap-4 bg-dark-50 rounded-2xl p-4">
                 <Formik

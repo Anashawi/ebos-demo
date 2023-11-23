@@ -356,23 +356,16 @@ const DisruptionContent = ({
                     className="flex flex-col gap-[5.5rem] xl:flex-nowrap w-full my-5 px-6"
                 />
 
-                <div className="h-10">
-                    {isUpdatingUserTakeaways && (
-                        <Spinner
-                            className="pl-10 flex items-center text-2xl"
-                            message="Saving your takeaways..."
-                        />
-                    )}
-                    {isCreatingUserTakeaways && (
+                <div className="flex justify-end h-10">
+                    {(isUpdatingUserTakeaways || isCreatingUserTakeaways) && (
                         <Spinner
                             className="pl-10 flex items-center text-2xl"
                             message="Saving your takeaways..."
                         />
                     )}
                 </div>
-
                 {(session?.user as any)?.role !== "admin" && (
-                    <div className="flex gap-5 justify-end">
+                    <div className="flex gap-4 justify-end">
                         {!!userTakeaways && (
                             <button
                                 onClick={() => {
@@ -409,7 +402,7 @@ const DisruptionContent = ({
                     </div>
                 )}
                 {(session?.user as any)?.role === "admin" && (
-                    <div className="flex gap-5 justify-between">
+                    <div className="flex gap-4 justify-between">
                         <div className="flex gap-5">
                             <button
                                 className="btn-primary-light"

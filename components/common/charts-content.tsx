@@ -47,7 +47,9 @@ const ChartsContent = ({
 
     return (
         <>
-            <div className="min-h-max p-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
+            <div
+                className={`grow max-w-[400px] p-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl`}
+            >
                 <ChartsButton
                     title="Watch Video Tutorial"
                     icon={undefined}
@@ -73,10 +75,7 @@ const ChartsContent = ({
                 )}
                 {isNotLoadingWithChartData &&
                     chartProducts.map((product, index) => (
-                        <div
-                            key={index}
-                            className="w-[100%] xl:w-[400px] h-[324px]"
-                        >
+                        <div key={index} className="h-[300px]">
                             {videoPropName === videoPropNamesEnum.products && (
                                 <Chart {...chart} legendToggle />
                             )}
@@ -89,7 +88,6 @@ const ChartsContent = ({
                             {videoPropName === videoPropNamesEnum.redOcean && (
                                 <RedOceanProductChart product={product} />
                             )}
-
                             {videoPropName === videoPropNamesEnum.blueOcean && (
                                 <BlueOceanProductChart product={product} />
                             )}

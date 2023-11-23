@@ -32,6 +32,13 @@ const emptyUserGoal: IUserGoals = {
 const GoalsContent = () => {
     const { data: session }: any = useSession();
 
+    emptyUserOrganizations.userId = session?.user?.id;
+    const [userOrganizations, setUserOrganizations] =
+        useState<IUserOrganizations>(emptyUserOrganizations);
+    emptyUserGoal.userId = session?.user?.id;
+    const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoal);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
+
     // fetch user organizations
     const {
         data: fetchedUserOrganizations,
@@ -44,9 +51,6 @@ const GoalsContent = () => {
             retry: 2,
         }
     );
-    emptyUserOrganizations.userId = session?.user?.id;
-    const [userOrganizations, setUserOrganizations] =
-        useState<IUserOrganizations>(emptyUserOrganizations);
 
     // fetch user goals
     const { data: fetchedUserGoals, isLoading: areUserGoalsLoading } =
@@ -56,17 +60,15 @@ const GoalsContent = () => {
             refetchOnWindowFocus: false,
             enabled: !!session?.user?.id,
         });
-    emptyUserGoal.userId = session?.user?.id;
-    const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoal);
-    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!areUserOrganizationsLoading && !areUserGoalsLoading) {
-            const combinedMsg = `${stepOneTranscript}\n\n${getUserOrganizationsMsg(
-                fetchedUserOrganizations
-            )}\n${getUserGoalsMsg(fetchedUserGoals)}`;
-            setChatGPTMessage(combinedMsg);
+            setChatGPTMessage(
+                `${stepOneTranscript}\n\n${getUserOrganizationsMsg(
+                    fetchedUserOrganizations
+                )}\n${getUserGoalsMsg(fetchedUserGoals)}`
+            );
         }
     }, [
         fetchedUserOrganizations,
@@ -76,33 +78,31 @@ const GoalsContent = () => {
     ]);
 
     return (
-        <>
-            <div className="grow flex flex-col gap-8 px-16 py-8 bg-white relative rounded-3xl">
-                <OrganizationsForm
-                    fetchedUserOrganizations={fetchedUserOrganizations}
-                    areUserOrganizationsLoading={areUserOrganizationsLoading}
-                    userOrganizations={userOrganizations}
-                    setUserOrganizations={setUserOrganizations}
-                    setChatGPTMessage={setChatGPTMessage}
-                />
-                <GoalsForm
-                    fetchedUserGoals={fetchedUserGoals}
-                    areUserGoalsLoading={areUserGoalsLoading}
-                    userGoals={userGoals}
-                    setUserGoals={setUserGoals}
-                    setChatGPTMessage={setChatGPTMessage}
-                />
-                <GoNextButton
-                    stepUri={`../org/products`}
-                    nextStepTitle={`pioneer, migrator, settler`}
-                    clickable={
-                        userOrganizations.organizations.length > 0 &&
-                        userGoals.goals.length > 0
-                    }
-                />
-            </div>
+        <div className="relative grow flex flex-col gap-8 px-16 py-8 bg-white rounded-3xl">
+            <OrganizationsForm
+                fetchedUserOrganizations={fetchedUserOrganizations}
+                areUserOrganizationsLoading={areUserOrganizationsLoading}
+                userOrganizations={userOrganizations}
+                setUserOrganizations={setUserOrganizations}
+                setChatGPTMessage={setChatGPTMessage}
+            />
+            <GoalsForm
+                fetchedUserGoals={fetchedUserGoals}
+                areUserGoalsLoading={areUserGoalsLoading}
+                userGoals={userGoals}
+                setUserGoals={setUserGoals}
+                setChatGPTMessage={setChatGPTMessage}
+            />
+            <GoNextButton
+                stepUri={`../org/products`}
+                nextStepTitle={`Pioneer Migrator Settler`}
+                clickable={
+                    userOrganizations.organizations.length > 0 &&
+                    userGoals.goals.length > 0
+                }
+            />
             <Chat initialMessage={chatGPTMessage}></Chat>
-        </>
+        </div>
     );
 };
 

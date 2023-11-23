@@ -14,6 +14,12 @@ import ChartsContent from "../../components/common/charts-content";
 
 import * as _ from "lodash";
 
+const emptyUserProduct = {
+    id: "",
+    userId: "",
+    products: [],
+} as IUserProduct;
+
 const Competitors = () => {
     const { data: session }: any = useSession();
 
@@ -26,15 +32,9 @@ const Competitors = () => {
         } as ICompetitor;
     };
 
-    const emptyUserProduct = {
-        id: "",
-        userId: session?.user?.id,
-        products: [],
-    } as IUserProduct;
-
+    emptyUserProduct.userId = session?.user?.id;
     const [userProducts, setUserProducts] =
         useState<IUserProduct>(emptyUserProduct);
-
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
     const { data: fetchedUserProducts, isLoading: areProductsLoading } =
@@ -65,32 +65,30 @@ const Competitors = () => {
     }, [fetchedUserProducts, userProducts?.products]);
 
     return (
-        <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
-                    <ActionsNavbar
-                        selectedStepTitle={stepNamesEnum.marketPotential}
+        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+            <div className="md:max-w-[100px] min-h-[50vh] flex flex-col justify-between px-4 py-8 bg-white rounded-full">
+                <ActionsNavbar
+                    selectedStepTitle={stepNamesEnum.marketPotential}
+                />
+            </div>
+            <div className="grow flex flex-col justify-start gap-8">
+                <StepsNavbar
+                    selectedNodeTitle={stepNamesEnum.marketPotential}
+                />
+                <div className="flex flex-row justify-center gap-8">
+                    <MarketPotentialContent
+                        userProduct={userProducts}
+                        isLoading={areProductsLoading}
+                        setChartProducts={setChartProducts}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={stepNamesEnum.marketPotential}
-                        />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <MarketPotentialContent
-                                userProduct={userProducts}
-                                isLoading={areProductsLoading}
-                                dispatchChartProducts={setChartProducts}
-                            />
-                            <ChartsContent
-                                videoPropName={
-                                    videoPropNamesEnum.marketPotential
-                                }
-                                videoLabel="Market Potential Video"
-                                chartProducts={chartProducts}
-                            />
-                        </div>
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.marketPotential}
+                        videoLabel="Market Potential Video"
+                        chartProducts={chartProducts}
+                    />
+                </div>
 
-                        {/* <div className='w-1/2'>
+                {/* <div className='w-1/2'>
 							<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
 								<ConsultantReview
 									pageTitle={"Market potential"}></ConsultantReview>
@@ -110,10 +108,8 @@ const Competitors = () => {
 								</button>
 							</div>
 						</div> */}
-                    </div>
-                </div>
             </div>
-        </>
+        </div>
     );
 };
 

@@ -46,121 +46,117 @@ const Disruption = () => {
 
     return (
         <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
+            <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+                <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
                     <ActionsNavbar
                         selectedStepTitle={stepNamesEnum.disruption}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={stepNamesEnum.disruption}
+                </div>
+                <div className="grow flex flex-col justify-start gap-8">
+                    <StepsNavbar selectedNodeTitle={stepNamesEnum.disruption} />
+                    <div className="flex flex-row justify-center gap-8">
+                        <DisruptionContent
+                            videos={videos}
+                            dispatchVideos={setVideos}
+                            setSelectedVideoPropName={setSelectedVideoPropName}
+                            toggleEditUrlsModal={toggleEditUrlsModal}
+                            toggleVideoModal={toggleVideoModal}
                         />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <DisruptionContent
-                                videos={videos}
-                                dispatchVideos={setVideos}
-                                setSelectedVideoPropName={
-                                    setSelectedVideoPropName
-                                }
-                                toggleEditUrlsModal={toggleEditUrlsModal}
-                                toggleVideoModal={toggleVideoModal}
-                            />
-                            <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            toggleIdeasModal(true);
-                                        }}
-                                        className="w-full btn-primary-light rounded-xl"
-                                    >
-                                        My Ideas
-                                    </button>
-                                </div>
-                                <div className="px-10 py-5">
-                                    <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">
-                                        7 Practical &amp; Quick
-                                    </h4>
-                                    <ul className="flex flex-col gap-2">
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="Eco Systems"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.ecoSystems
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="Info is Power"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.infoIsPower
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="OTCR"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.OTCR
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="Value Destruction"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.valueDestruction
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="Customer Journey"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.customerJourney
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="Digital Platforms"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.digitalPlatforms
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                        <li>
-                                            <PillPlayButton
-                                                buttonText="Building Capacity"
-                                                onClickCallback={() => {
-                                                    setSelectedVideoPropName(
-                                                        videoPropNamesEnum.buildingCapacity
-                                                    );
-                                                    toggleVideoModal();
-                                                }}
-                                            />
-                                        </li>
-                                    </ul>
-                                </div>
+                        <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
+                            <div className="p-1 bg-white rounded-xl">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        toggleIdeasModal(true);
+                                    }}
+                                    className="w-full btn-primary-light rounded-xl"
+                                >
+                                    My Ideas
+                                </button>
+                            </div>
+                            <div className="px-10 py-5">
+                                <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">
+                                    7 Practical &amp; Quick
+                                </h4>
+                                <ul className="flex flex-col gap-2">
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="Eco Systems"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.ecoSystems
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="Info is Power"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.infoIsPower
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="OTCR"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.OTCR
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="Value Destruction"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.valueDestruction
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="Customer Journey"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.customerJourney
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="Digital Platforms"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.digitalPlatforms
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <PillPlayButton
+                                            buttonText="Building Capacity"
+                                            onClickCallback={() => {
+                                                setSelectedVideoPropName(
+                                                    videoPropNamesEnum.buildingCapacity
+                                                );
+                                                toggleVideoModal();
+                                            }}
+                                        />
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

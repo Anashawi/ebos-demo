@@ -7,31 +7,27 @@ import ChartsContent from "../../components/common/charts-content";
 
 const VoiceOfCustomers = () => {
     return (
-        <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
-                    <ActionsNavbar
-                        selectedStepTitle={stepNamesEnum.voiceOfCustomers}
+        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+            <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
+                <ActionsNavbar
+                    selectedStepTitle={stepNamesEnum.voiceOfCustomers}
+                />
+            </div>
+            <div className="grow flex flex-col justify-start gap-8">
+                <StepsNavbar
+                    selectedNodeTitle={stepNamesEnum.voiceOfCustomers}
+                />
+                <div className="flex flex-row justify-center gap-8">
+                    <VoiceOfCustomersContent />
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.voiceOfCustomers}
+                        videoLabel="Voice of Customers Video"
+                        chartProducts={[]}
+                        isChartDataLoading={false}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={stepNamesEnum.voiceOfCustomers}
-                        />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <VoiceOfCustomersContent />
-                            <ChartsContent
-                                videoPropName={
-                                    videoPropNamesEnum.voiceOfCustomers
-                                }
-                                videoLabel="Voice of Customers Video"
-                                chartProducts={[]}
-                                isChartDataLoading={false}
-                            />
-                        </div>
-                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

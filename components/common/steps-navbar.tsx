@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Link from "next/link";
 
 import { stepNamesEnum } from "../../models/enums";
 import { NavbarNode } from "../../models/types";
@@ -10,7 +11,9 @@ interface Props {
 }
 
 const StepsNavbar = ({ selectedNodeTitle }: Props) => {
-    const nodes: NavbarNode[] = [
+    const router = useRouter();
+
+    const steps: NavbarNode[] = [
         {
             title: stepNamesEnum.visualizeSuccess,
             step: "Step One",
@@ -83,8 +86,6 @@ const StepsNavbar = ({ selectedNodeTitle }: Props) => {
         } as NavbarNode,
     ];
 
-    const router = useRouter();
-
     const renderSelectedIcon = (node: NavbarNode, isLastIcon: boolean) => {
         return (
             <li className="flex gap-8 hover:animate-vertical-shake">
@@ -145,24 +146,13 @@ const StepsNavbar = ({ selectedNodeTitle }: Props) => {
     };
 
     return (
-        <nav className="flex flex-row flex-wrap xl:justify-start justify-center gap-6">
-            {nodes.map((node, index) => (
+        <nav className="flex flex-row flex-wrap md:justify-start justify-center">
+            {steps.map((step, index) => (
                 <React.Fragment key={index}>
-                    {" "}
-                    {/* Add key prop to the fragment */}
-                    {node.title === selectedNodeTitle && (
-                        <div className="justify-items-center">
-                            {renderSelectedIcon(
-                                node,
-                                index === nodes.length - 1
-                            )}
-                        </div>
-                    )}
-                    {node.title !== selectedNodeTitle && (
-                        <div className="justify-items-center">
-                            {renderUnselectedIcon(node)}
-                        </div>
-                    )}
+                    {step.title === selectedNodeTitle &&
+                        renderSelectedIcon(step, index === steps.length - 1)}
+                    {step.title !== selectedNodeTitle &&
+                        renderUnselectedIcon(step)}
                 </React.Fragment>
             ))}
         </nav>

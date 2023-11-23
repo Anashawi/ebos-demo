@@ -14,6 +14,7 @@ import { getNonCustomersMessage } from "../common/openai-chat/custom-messages";
 
 import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import GoNextButton from "../common/go-next-button";
 
 interface Props {
     userNonCustomers: IUserNonCustomers;
@@ -99,7 +100,7 @@ const NonCustomersContent = ({
 
     return (
         <>
-            <div className="grow px-16 py-8 flex flex-col gap-2 bg-white relative rounded-3xl">
+            <div className="grow px-16 py-8 flex flex-col gap-8 bg-white relative rounded-3xl">
                 <h2 className="title-header">Non customers</h2>
                 {areNonCustomersLoading && (
                     <Spinner
@@ -108,8 +109,8 @@ const NonCustomersContent = ({
                     />
                 )}
                 {!areNonCustomersLoading && (
-                    <form className="flex flex-col gap-8">
-                        <div className="flex flex-col gap-4 p-5 bg-dark-50 rounded-2xl">
+                    <form className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-8 p-5 bg-dark-50 rounded-2xl">
                             <h3 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                 Soon to be non-customers
                             </h3>
@@ -128,7 +129,7 @@ const NonCustomersContent = ({
                                     out in this transformation ?
                                 </p>
                             </div>
-                            <ul className="flex flex-col gap-8">
+                            <ul className="flex flex-col gap-4">
                                 {!userNonCustomers.soonNonCustomers?.length &&
                                     !areNonCustomersLoading && (
                                         <div className="w-full flex justify-start items-center">
@@ -214,7 +215,7 @@ const NonCustomersContent = ({
                                     )}
                             </ul>
                         </div>
-                        <div className="flex flex-col gap-4 p-4 bg-dark-50 rounded-2xl">
+                        <div className="flex flex-col gap-8 p-4 bg-dark-50 rounded-2xl">
                             <h3 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                 Refusing non-customers
                             </h3>
@@ -233,7 +234,7 @@ const NonCustomersContent = ({
                                     refusing of this transformation ?
                                 </p>
                             </div>
-                            <ul className="flex flex-col gap-8">
+                            <ul className="flex flex-col gap-4">
                                 {!userNonCustomers.refusingNonCustomers
                                     ?.length &&
                                     !areNonCustomersLoading && (
@@ -321,7 +322,7 @@ const NonCustomersContent = ({
                                     )}
                             </ul>
                         </div>
-                        <div className="flex flex-col gap-4 p-4 bg-dark-50 rounded-2xl">
+                        <div className="flex flex-col gap-8 p-4 bg-dark-50 rounded-2xl">
                             <h3 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                 Unwanted non-customers
                             </h3>
@@ -341,7 +342,7 @@ const NonCustomersContent = ({
                                 </p>
                             </div>
 
-                            <ul className="flex flex-col gap-8">
+                            <ul className="flex flex-col gap-4">
                                 {!userNonCustomers.unwantedNonCustomers
                                     ?.length &&
                                     !areNonCustomersLoading && (
@@ -429,7 +430,7 @@ const NonCustomersContent = ({
                                     )}
                             </ul>
                         </div>
-                        <div className="h-10">
+                        <div className="flex justify-end h-10">
                             {(isUpdatingUserNonCustomers ||
                                 isCreatingUserNonCustomers) && (
                                 <Spinner
@@ -438,7 +439,7 @@ const NonCustomersContent = ({
                                 />
                             )}
                         </div>
-                        <div className="flex flex-wrap justify-between gap-4">
+                        <div className="flex flex-wrap justify-end gap-4">
                             <button
                                 type="button"
                                 onClick={() => {

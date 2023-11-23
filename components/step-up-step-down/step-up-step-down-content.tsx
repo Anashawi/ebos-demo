@@ -95,7 +95,7 @@ const StepUpStepDownContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-2 px-16 py-8 bg-white relative rounded-3xl">
+            <div className="grow flex flex-col gap-8 px-4 py-8 bg-white relative rounded-3xl">
                 <h2 className="title-header">Step-up step-down</h2>
                 {isAnalysisLoading && (
                     <Spinner
@@ -104,7 +104,7 @@ const StepUpStepDownContent = ({
                     />
                 )}
                 {!isAnalysisLoading && (
-                    <form className="flex flex-col gap-8">
+                    <form className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4 p-5 bg-dark-50 rounded-2xl">
                             <h3 className="text-dark-400 text-[1.75rem] font-hero-semibold">
                                 10% above
@@ -124,7 +124,7 @@ const StepUpStepDownContent = ({
                                     above?
                                 </p>
                             </div>
-                            <ul className="flex flex-col gap-5">
+                            <ul className="flex flex-col gap-4">
                                 {!userAnalysis.above?.length &&
                                     !isAnalysisLoading && (
                                         <div className="w-full flex justify-start items-center">
@@ -179,7 +179,7 @@ const StepUpStepDownContent = ({
                                         >
                                             <input
                                                 type="text"
-                                                className="dark-input"
+                                                className="dark-input text-ellipsis"
                                                 value={item}
                                                 readOnly
                                             />
@@ -425,7 +425,7 @@ const StepUpStepDownContent = ({
                                     ))}
                             </ul>
                         </div>
-                        <div className="h-10">
+                        <div className="flex justify-end h-10">
                             {(isUpdatingUserAnalysis ||
                                 isCreatingUserAnalysis) && (
                                 <Spinner
@@ -434,7 +434,7 @@ const StepUpStepDownContent = ({
                                 />
                             )}
                         </div>
-                        <div className="flex gap-5 justify-between items-center flex-wrap">
+                        <div className="flex gap-4 justify-end items-center flex-wrap">
                             <button
                                 type="button"
                                 onClick={() => {

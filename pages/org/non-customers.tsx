@@ -6,13 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { IUserNonCustomers } from "../../models/user-non-customers";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 
-import useModalToggler from "../../hooks/use-modal-toggler";
 import ActionsNavbar from "../../components/common/actions-navbar";
 import StepsNavbar from "../../components/common/steps-navbar";
 import NonCustomersContent from "../../components/non-customers/non-customers-content";
 import NonCustomersReview from "../../components/non-customers/review";
 import Spinner from "../../components/common/spinner";
 import Video from "../../components/disruption/video";
+import useModalToggler from "../../hooks/use-modal-toggler";
 import SharedVideoForm from "../../components/disruption/shared-video-form";
 import Modal from "../../components/common/modal";
 import IdeasModal from "../../components/app/ideas-modal";
@@ -55,73 +55,73 @@ const NonCustomers = () => {
 
     return (
         <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
+            <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+                <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
                     <ActionsNavbar
                         selectedStepTitle={stepNamesEnum.nonCustomers}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={stepNamesEnum.nonCustomers}
+                </div>
+                <div className="grow flex flex-col justify-start gap-8">
+                    <StepsNavbar
+                        selectedNodeTitle={stepNamesEnum.nonCustomers}
+                    />
+                    <div className="flex flex-row justify-center gap-8">
+                        <NonCustomersContent
+                            userNonCustomers={userNonCustomers}
+                            dispatchUserNonCustomers={setUserNonCustomers}
+                            isLoading={areNonCustomersLoading}
                         />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <NonCustomersContent
-                                userNonCustomers={userNonCustomers}
-                                dispatchUserNonCustomers={setUserNonCustomers}
-                                isLoading={areNonCustomersLoading}
-                            />
-                            <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        className="w-full btn-primary-light rounded-xl"
-                                        onClick={() => {
-                                            toggleVideoModal(true);
-                                        }}
-                                    >
-                                        Watch Video Tutorial
-                                    </button>
-                                </div>
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        className="w-full btn-primary-light rounded-xl"
-                                        onClick={() => {
-                                            toggleIdeasModal(true);
-                                        }}
-                                    >
-                                        My Ideas
-                                    </button>
-                                </div>
-                                {session?.user?.role === "admin" && (
-                                    <div className="p-1 bg-white rounded-xl">
-                                        <button
-                                            type="button"
-                                            className="w-full btn-primary-light rounded-xl"
-                                            onClick={() =>
-                                                toggleEditVideoModal(true)
-                                            }
-                                        >
-                                            <span>Edit video Url</span>
-                                            <FontAwesomeIcon
-                                                className="w-7"
-                                                icon={faEdit}
-                                            />
-                                        </button>
-                                    </div>
-                                )}
-                                {areNonCustomersLoading && (
-                                    <Spinner
-                                        message="Loading non-customers..."
-                                        className="p-5 items-center text-xl"
-                                    />
-                                )}
-                                {!areNonCustomersLoading && (
-                                    <NonCustomersReview
-                                        userNonCustomers={userNonCustomers}
-                                    />
-                                )}
+                        <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
+                            <div className="p-1 bg-white rounded-xl">
+                                <button
+                                    type="button"
+                                    className="w-full btn-primary-light rounded-xl"
+                                    onClick={() => {
+                                        toggleVideoModal(true);
+                                    }}
+                                >
+                                    Watch Video Tutorial
+                                </button>
                             </div>
+                            <div className="p-1 bg-white rounded-xl">
+                                <button
+                                    type="button"
+                                    className="w-full btn-primary-light rounded-xl"
+                                    onClick={() => {
+                                        toggleIdeasModal(true);
+                                    }}
+                                >
+                                    My Ideas
+                                </button>
+                            </div>
+                            {session?.user?.role === "admin" && (
+                                <div className="p-1 bg-white rounded-xl">
+                                    <button
+                                        type="button"
+                                        className="w-full btn-primary-light rounded-xl"
+                                        onClick={() =>
+                                            toggleEditVideoModal(true)
+                                        }
+                                    >
+                                        <span>Edit video Url</span>
+                                        <FontAwesomeIcon
+                                            className="w-7"
+                                            icon={faEdit}
+                                        />
+                                    </button>
+                                </div>
+                            )}
+                            {areNonCustomersLoading && (
+                                <Spinner
+                                    message="Loading non-customers..."
+                                    className="p-5 items-center text-xl"
+                                />
+                            )}
+                            {!areNonCustomersLoading && (
+                                <NonCustomersReview
+                                    userNonCustomers={userNonCustomers}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

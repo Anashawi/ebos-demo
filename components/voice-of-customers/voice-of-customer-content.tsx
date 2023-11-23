@@ -8,6 +8,7 @@ import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { IUserCustomers } from "../../models/user-customers";
 
 import Spinner from "../common/spinner";
+import GoNextButton from "../common/go-next-button";
 import Chat from "../common/openai-chat/openai-chat";
 import { stepSixTranscript } from "../common/openai-chat/openai-transcript";
 import { getVoiceOfCustomerMessage } from "../common/openai-chat/custom-messages";
@@ -123,9 +124,10 @@ const VoiceOfCustomersContent = () => {
         },
         enableReinitialize: true,
     });
+
     return (
         <>
-            <div className="grow flex flex-col gap-2 px-16 py-8 bg-white relative rounded-3xl">
+            <div className="grow flex flex-col gap-8 px-16 py-8 bg-white relative rounded-3xl">
                 <h2 className="title-header">Voice of customers</h2>
                 {isUserCustomersLoading && (
                     <Spinner
@@ -134,8 +136,8 @@ const VoiceOfCustomersContent = () => {
                     />
                 )}
                 {!isUserCustomersLoading && (
-                    <>
-                        <div className="pill-yellow-50 p-3 lg:w-full mb-5">
+                    <div className="flex flex-col gap-4">
+                        <div className="pill-yellow-50 p-3 md:w-full">
                             <div className="w-[3rem] h-[3rem]">
                                 <Image
                                     src="/bulb.svg"
@@ -145,17 +147,17 @@ const VoiceOfCustomersContent = () => {
                                     className="w-full h-auto"
                                 />
                             </div>
-                            <h3 className="text-xl text-dark-300">
+                            <p className="text-xl text-dark-300">
                                 what do your top customer categories want and
                                 how can you fulfill their needs?
-                            </h3>
+                            </p>
                         </div>
-                        <div className="flex gap-5 flex-wrap xl:flex-nowrap p-5 bg-dark-50 rounded-2xl">
-                            <div className="grow flex flex-col gap-3">
+                        <div className="flex gap-4 flex-wrap xl:flex-nowrap p-5 bg-dark-50 rounded-2xl">
+                            <div className="grow flex flex-col gap-8">
                                 <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                     Customer categories
                                 </h4>
-                                <ul className="flex flex-col gap-5">
+                                <ul className="flex flex-col gap-4">
                                     <li>
                                         <input
                                             type="text"
@@ -208,11 +210,11 @@ const VoiceOfCustomersContent = () => {
                                     </li>
                                 </ul>
                             </div>
-                            <div className="grow flex flex-col gap-3">
+                            <div className="grow flex flex-col gap-8">
                                 <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                     What they want
                                 </h4>
-                                <ul className="flex flex-col gap-5">
+                                <ul className="flex flex-col gap-4">
                                     <li>
                                         <input
                                             type="text"
@@ -265,11 +267,11 @@ const VoiceOfCustomersContent = () => {
                                     </li>
                                 </ul>
                             </div>
-                            <div className="grow flex flex-col gap-3">
+                            <div className="grow flex flex-col gap-8">
                                 <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                     How to fulfill it
                                 </h4>
-                                <ul className="flex flex-col gap-5">
+                                <ul className="flex flex-col gap-4">
                                     <li>
                                         <input
                                             type="text"
@@ -323,51 +325,39 @@ const VoiceOfCustomersContent = () => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="mt-20">
-                            <div className="h-10">
-                                {(isUpdatingUserCustomers ||
-                                    isCreatingUserCustomers) && (
-                                    <Spinner
-                                        className="flex items-center text-xl"
-                                        message="Saving Customers..."
-                                    />
-                                )}
-                            </div>
-                            <div className="flex gap-5 justify-between items-center">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        formik.handleSubmit();
-                                    }}
-                                    className={
-                                        formik.isSubmitting || !formik.isValid
-                                            ? "btn-rev btn-disabled"
-                                            : "btn-rev"
-                                    }
-                                    disabled={
-                                        formik.isSubmitting || !formik.isValid
-                                    }
-                                >
-                                    Save
-                                </button>
-                                {!!userCustomers.id && (
-                                    <div
-                                        className="cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full"
-                                        onClick={() => {
-                                            router.push("../org/blue-ocean");
-                                        }}
-                                    >
-                                        <span className="text-xl text-md text-white">
-                                            Go to next -{" "}
-                                            <span className="text-white">
-                                                Blue Ocean Canvas
-                                            </span>
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
+                        <div className="flex justify-end h-10">
+                            {(isUpdatingUserCustomers ||
+                                isCreatingUserCustomers) && (
+                                <Spinner
+                                    className="flex items-center text-xl"
+                                    message="Saving Customers..."
+                                />
+                            )}
                         </div>
-                    </>
+                        <div className="flex gap-4 justify-end">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    formik.handleSubmit();
+                                }}
+                                className={
+                                    formik.isSubmitting || !formik.isValid
+                                        ? "btn-rev btn-disabled"
+                                        : "btn-rev"
+                                }
+                                disabled={
+                                    formik.isSubmitting || !formik.isValid
+                                }
+                            >
+                                Save
+                            </button>
+                            <GoNextButton
+                                stepUri={`../org/blue-ocean`}
+                                nextStepTitle={`Blue Ocean Canvas`}
+                                clickable={!!userCustomers.id}
+                            />
+                        </div>
+                    </div>
                 )}
             </div>
             <Chat initialMessage={chatGPTMessage}></Chat>

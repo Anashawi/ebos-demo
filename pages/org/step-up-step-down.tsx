@@ -54,76 +54,74 @@ const Analysis = () => {
 
     return (
         <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
+            <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+                <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
                     <ActionsNavbar
                         selectedStepTitle={stepNamesEnum.stepUpStepDownModel}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={
-                                stepNamesEnum.stepUpStepDownModel
-                            }
+                </div>
+                <div className="grow flex flex-col justify-start gap-8">
+                    <StepsNavbar
+                        selectedNodeTitle={stepNamesEnum.stepUpStepDownModel}
+                    />
+                    <div className="flex flex-row justify-center gap-8">
+                        <StepUpStepDownContent
+                            userAnalysis={userAnalysis}
+                            dispatchUserAnalysis={setUserAnalysis}
+                            isLoading={isAnalysisLoading}
                         />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <StepUpStepDownContent
-                                userAnalysis={userAnalysis}
-                                dispatchUserAnalysis={setUserAnalysis}
-                                isLoading={isAnalysisLoading}
-                            />
-                            <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            toggleVideoModal(true);
-                                        }}
-                                        className="w-full btn-primary-light rounded-xl"
-                                    >
-                                        Watch Video Tutorial
-                                    </button>
-                                </div>
-                                <div className="p-1 bg-white rounded-xl">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            toggleIdeasModal(true);
-                                        }}
-                                        className="w-full btn-primary-light rounded-xl"
-                                    >
-                                        My Ideas
-                                    </button>
-                                </div>
-                                {session?.user?.role === "admin" && (
-                                    <div className="p-1 bg-white rounded-xl">
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                toggleEditVideoModal(true)
-                                            }
-                                            className="w-full btn-primary-light rounded-xl"
-                                        >
-                                            <span>Edit video Url</span>
-                                            <FontAwesomeIcon
-                                                className="w-7"
-                                                icon={faEdit}
-                                            />
-                                        </button>
-                                    </div>
-                                )}
-                                {isAnalysisLoading && (
-                                    <Spinner
-                                        message="Loading customers..."
-                                        className="p-5 items-center text-xl"
-                                    />
-                                )}
-                                {!isAnalysisLoading && (
-                                    <StepUpStepDownCustomersReview
-                                        userAnalysis={userAnalysis}
-                                        isLoading={isAnalysisLoading}
-                                    />
-                                )}
+                        <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
+                            <div className="p-1 bg-white rounded-xl">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        toggleVideoModal(true);
+                                    }}
+                                    className="w-full btn-primary-light rounded-xl"
+                                >
+                                    Watch Video Tutorial
+                                </button>
                             </div>
+                            <div className="p-1 bg-white rounded-xl">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        toggleIdeasModal(true);
+                                    }}
+                                    className="w-full btn-primary-light rounded-xl"
+                                >
+                                    My Ideas
+                                </button>
+                            </div>
+                            {session?.user?.role === "admin" && (
+                                <div className="p-1 bg-white rounded-xl">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            toggleEditVideoModal(true)
+                                        }
+                                        className="w-full btn-primary-light rounded-xl"
+                                    >
+                                        <span>Edit video Url</span>
+                                        <FontAwesomeIcon
+                                            className="w-7"
+                                            icon={faEdit}
+                                        />
+                                    </button>
+                                </div>
+                            )}
+                            {isAnalysisLoading && (
+                                <Spinner
+                                    message="Loading customers..."
+                                    className="p-5 items-center text-xl"
+                                />
+                            )}
+                            {!isAnalysisLoading && (
+                                <StepUpStepDownCustomersReview
+                                    userAnalysis={userAnalysis}
+                                    isLoading={isAnalysisLoading}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

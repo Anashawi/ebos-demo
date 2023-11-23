@@ -1,13 +1,17 @@
-import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FieldArray, Field, ErrorMessage } from "formik";
 import { Fragment, useMemo } from "react";
+
 import {
     ICompetitor,
     IFactorCompetitor,
     IIdeaFactor,
     IProduct,
 } from "../../models/types";
+
+import DeleteButton from "../common/delete-button";
+
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FieldArray, Field, ErrorMessage } from "formik";
 
 interface Props {
     product: IProduct;
@@ -25,26 +29,29 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                 } as IFactorCompetitor;
             }),
         } as IIdeaFactor;
-    }, []);
+    }, [product.competitors]);
 
     return (
-        <div key={index} className="p-5 bg-dark-50 rounded-2xl">
-            <div className="flex justify-between mb-10">
-                <h2 className="text-[1.75rem] text-dark-400 font-hero-semibold">
+        <div
+            key={index}
+            className="flex flex-col gap-8 p-4 bg-dark-50 rounded-2xl"
+        >
+            <div className="flex justify-between">
+                <h3 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                     {product.name}
-                </h2>
+                </h3>
             </div>
             <FieldArray name={`products.${index}.ideaFactors`}>
                 {({ remove, push }) => (
                     <>
-                        <ul className="flex flex-col gap-4 mb-10 pr-5 pb-5 overflow-auto">
+                        <ul className="flex flex-col gap-8">
                             {!!product.ideaFactors?.length &&
                                 product.ideaFactors.map((idea, ideaIndex) => (
                                     <li
                                         key={ideaIndex}
-                                        className="flex gap-8 items-start"
+                                        className="flex gap-4 items-start overflow-x-auto"
                                     >
-                                        <div className="grow flex flex-col">
+                                        <div className="flex flex-col">
                                             <label className="text-lg">
                                                 Idea {ideaIndex + 1}
                                             </label>
@@ -64,7 +71,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                                 )}
                                             </ErrorMessage>
                                         </div>
-                                        <div className="flex flex-wrap gap-4">
+                                        <div className="flex gap-2">
                                             {product.competitors?.map(
                                                 (
                                                     comp: ICompetitor,
@@ -72,7 +79,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                                 ) => (
                                                     <Fragment key={comp.uuid}>
                                                         {!comp.isUntapped && (
-                                                            <div className="flex flex-col min-w-[140px]">
+                                                            <div className="flex flex-col">
                                                                 <label className="text-lg">
                                                                     {comp.name}
                                                                 </label>
@@ -132,16 +139,14 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                                 )
                                             )}
                                         </div>
-                                        <FontAwesomeIcon
-                                            icon={faTrash}
-                                            onClick={() => {
+                                        <DeleteButton
+                                            callback={() => {
                                                 remove(ideaIndex);
                                             }}
-                                            className="self-center w-[1.2rem] h-auto relative cursor-pointer text-gray-200 hover:text-rose-500"
                                         />
                                     </li>
                                 ))}
-                            <div className="flex mt-5">
+                            <div className="flex">
                                 <button
                                     type="button"
                                     onClick={() => {

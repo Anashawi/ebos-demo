@@ -226,7 +226,7 @@ input[type="text"]:focus:not("no-border") {
     }
 
     .right-content {
-        @apply min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
+        @apply px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
     }
 }
 

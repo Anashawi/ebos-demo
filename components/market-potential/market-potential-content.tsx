@@ -8,6 +8,7 @@ import { IProduct } from "../../models/types";
 
 import CompetitorsProduct from "./product";
 import Spinner from "../common/spinner";
+import GoNextButton from "../common/go-next-button";
 import ZeroProductsWarning from "../common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
 import Chat from "../common/openai-chat/openai-chat";
@@ -17,18 +18,17 @@ import { getMarketPotentialMessage } from "../common/openai-chat/custom-messages
 import { FieldArray, Form, Formik } from "formik";
 import { object, array, string, number } from "yup";
 import { cloneDeep } from "lodash";
-import GoNextButton from "../common/go-next-button";
 
 interface Props {
     userProduct: IUserProduct;
     isLoading: boolean;
-    dispatchChartProducts: (products: IProduct[]) => void;
+    setChartProducts: (products: IProduct[]) => void;
 }
 
 const MarketPotentialContent = ({
     userProduct,
     isLoading: areUserProductsLoading,
-    dispatchChartProducts,
+    setChartProducts,
 }: Props) => {
     const queryClient = useQueryClient();
 
@@ -36,10 +36,11 @@ const MarketPotentialContent = ({
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!areUserProductsLoading && userProduct.id) {
-            const combinedMsg = `${stepThreeTranscript}\n\n${getMarketPotentialMessage(
-                userProduct
-            )}`;
-            setChatGPTMessage(combinedMsg);
+            setChatGPTMessage(
+                `${stepThreeTranscript}\n\n${getMarketPotentialMessage(
+                    userProduct
+                )}`
+            );
         }
     }, [areUserProductsLoading, userProduct]);
 
@@ -76,7 +77,7 @@ const MarketPotentialContent = ({
 
     return (
         <>
-            <div className="relative grow px-16 py-8 flex flex-col gap-2 bg-white rounded-3xl">
+            <div className="relative grow px-16 py-8 flex flex-col gap-4 bg-white rounded-3xl">
                 <h2 className="title-header">Market potential</h2>
                 <Formik
                     initialValues={{
@@ -150,7 +151,9 @@ const MarketPotentialContent = ({
                                                             market potential ...
                                                         </p>
                                                     )}
-                                                {values.products.length > 0 &&
+                                                {isNotLoadingWithProducts &&
+                                                    values.products.length >
+                                                        0 &&
                                                     values.products.map(
                                                         (
                                                             product,
@@ -177,7 +180,7 @@ const MarketPotentialContent = ({
                                                             </div>
                                                         )
                                                     )}
-                                                <div className="h-10">
+                                                <div className="flex justify-end h-10">
                                                     {isUpdatingUserProduct && (
                                                         <Spinner
                                                             className="flex items-center text-xl"
@@ -185,7 +188,7 @@ const MarketPotentialContent = ({
                                                         />
                                                     )}
                                                 </div>
-                                                <div className="flex items-center gap-4">
+                                                <div className="flex flex-row gap-4 justify-end">
                                                     <button
                                                         type="submit"
                                                         className={
@@ -201,6 +204,14 @@ const MarketPotentialContent = ({
                                                     >
                                                         Save
                                                     </button>
+                                                    <GoNextButton
+                                                        stepUri={`../org/red-ocean`}
+                                                        nextStepTitle={`Red Ocean Canvas`}
+                                                        clickable={
+                                                            userProduct.products
+                                                                .length > 0
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
                                         );
@@ -209,7 +220,7 @@ const MarketPotentialContent = ({
 
                                 <FormikContextChild
                                     dispatch={values => {
-                                        dispatchChartProducts(
+                                        setChartProducts(
                                             cloneDeep(values.products)
                                         );
                                     }}
@@ -218,12 +229,6 @@ const MarketPotentialContent = ({
                         );
                     }}
                 </Formik>
-
-                <GoNextButton
-                    stepUri={`../org/red-ocean`}
-                    nextStepTitle={`Red Ocean Canvas`}
-                    clickable={userProduct.products.length > 0}
-                />
             </div>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>

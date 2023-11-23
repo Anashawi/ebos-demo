@@ -110,7 +110,7 @@ const ProductsContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-4 px-16 py-8 bg-white relative rounded-3xl">
+            <div className="grow flex flex-col gap-8 px-16 py-8 bg-white relative rounded-3xl">
                 <h3 className="title-header">Pioneer, Migrator, Settler</h3>
                 <Formik
                     initialValues={{
@@ -229,15 +229,7 @@ const ProductsContent = ({
                                                             </div>
                                                         )}
                                                 </div>
-                                                <div className="flex justify-end h-10">
-                                                    {isCreatingOrUpdating && (
-                                                        <Spinner
-                                                            className="flex items-center text-lg"
-                                                            message="Saving Products"
-                                                        />
-                                                    )}
-                                                </div>
-                                                <div className="flex flex-row gap-4 justify-between">
+                                                <div className="flex">
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -262,6 +254,16 @@ const ProductsContent = ({
                                                             Add New Product
                                                         </span>
                                                     </button>
+                                                </div>
+                                                <div className="flex justify-end h-10">
+                                                    {isCreatingOrUpdating && (
+                                                        <Spinner
+                                                            className="flex items-center text-lg"
+                                                            message="Saving Products"
+                                                        />
+                                                    )}
+                                                </div>
+                                                <div className="flex flex-row justify-end gap-4">
                                                     <button
                                                         type="submit"
                                                         className={
@@ -279,6 +281,14 @@ const ProductsContent = ({
                                                     >
                                                         Save
                                                     </button>
+                                                    <GoNextButton
+                                                        stepUri={`../org/market-potential`}
+                                                        nextStepTitle={`Market Potential`}
+                                                        clickable={
+                                                            userProduct.products
+                                                                .length > 0
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
                                         );
@@ -296,11 +306,6 @@ const ProductsContent = ({
                         );
                     }}
                 </Formik>
-                <GoNextButton
-                    stepUri={`../org/market-potential`}
-                    nextStepTitle={`Market Potential`}
-                    clickable={userProduct.products.length > 0}
-                />
             </div>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>

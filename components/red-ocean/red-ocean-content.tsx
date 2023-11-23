@@ -72,7 +72,7 @@ const RedOceanContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-2 px-16 py-8 bg-white relative rounded-3xl">
+            <div className="grow flex flex-col gap-4 px-16 py-8 bg-white relative rounded-3xl">
                 <h3 className="title-header">Red Ocean Canvas</h3>
                 <Formik
                     initialValues={{
@@ -119,8 +119,8 @@ const RedOceanContent = ({
                                 <FieldArray name="products">
                                     {({ push, remove }) => {
                                         return (
-                                            <>
-                                                <div className="flex flex-col gap-4">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
                                                     {isLoading && (
                                                         <Spinner
                                                             className="flex items-center text-2xl"
@@ -183,37 +183,40 @@ const RedOceanContent = ({
                                                             )
                                                         )}
                                                 </div>
-                                                <div className="mt-10">
-                                                    <div className="h-10">
-                                                        {isUpdatingUserProduct && (
-                                                            <Spinner
-                                                                className="flex items-center text-xl"
-                                                                message="Saving Red Ocean"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                    <div className="flex gap-5 justify-between items-center">
-                                                        {!!userProduct.products
-                                                            ?.length && (
-                                                            <button
-                                                                type="submit"
-                                                                className={
-                                                                    isSubmitting ||
-                                                                    !isValid
-                                                                        ? "btn-rev btn-disabled"
-                                                                        : "btn-rev"
-                                                                }
-                                                                disabled={
-                                                                    isSubmitting ||
-                                                                    !isValid
-                                                                }
-                                                            >
-                                                                Save
-                                                            </button>
-                                                        )}
-                                                    </div>
+                                                <div className="flex justify-end h-10">
+                                                    {isUpdatingUserProduct && (
+                                                        <Spinner
+                                                            className="flex items-center text-xl"
+                                                            message="Saving Red Ocean"
+                                                        />
+                                                    )}
                                                 </div>
-                                            </>
+                                                <div className="flex gap-4 justify-end">
+                                                    <button
+                                                        type="submit"
+                                                        className={
+                                                            isSubmitting ||
+                                                            !isValid
+                                                                ? "btn-rev btn-disabled"
+                                                                : "btn-rev"
+                                                        }
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            !isValid
+                                                        }
+                                                    >
+                                                        Save
+                                                    </button>
+                                                    <GoNextButton
+                                                        stepUri={`../org/disruption`}
+                                                        nextStepTitle={`Disruption`}
+                                                        clickable={
+                                                            userProduct.products
+                                                                .length > 0
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
                                         );
                                     }}
                                 </FieldArray>
@@ -229,11 +232,6 @@ const RedOceanContent = ({
                         );
                     }}
                 </Formik>
-                <GoNextButton
-                    stepUri={`../org/disruption`}
-                    nextStepTitle={`Disruption`}
-                    clickable={userProduct.products.length > 0}
-                />
             </div>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>

@@ -78,7 +78,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                         <FieldArray name={`products.${index}.futures`}>
                             {({ remove, push, form }) => {
                                 return (
-                                    <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col gap-4">
                                         <div>
                                             {!!product.futures?.length &&
                                                 product.futures?.map(
@@ -90,7 +90,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                                                 }
                                                                 className="flex flex-col"
                                                             >
-                                                                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                                                                <div className="grid grid-cols-3 gap-4">
                                                                     <div className="p-2 flex flex-col gap-2">
                                                                         <label>
                                                                             {futureIndex ===
@@ -190,8 +190,8 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                                     </div>
                                                 )}
                                         </div>
-                                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                                            <div className="p-2">
+                                        <div className="flex gap-2">
+                                            <div className="grow">
                                                 <button
                                                     type="button"
                                                     onClick={() => {
@@ -235,7 +235,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                             </div>
                                             {!!product.futures?.length &&
                                                 product.futures?.length > 0 && (
-                                                    <div className="p-2">
+                                                    <div className="grow">
                                                         <button
                                                             type="button"
                                                             onClick={() => {
@@ -263,7 +263,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                                         </button>
                                                     </div>
                                                 )}
-                                            <div className="p-2">
+                                            <div className="grow">
                                                 <button
                                                     type="button"
                                                     className="w-full btn-danger"

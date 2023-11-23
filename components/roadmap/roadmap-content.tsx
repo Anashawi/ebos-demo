@@ -13,6 +13,7 @@ import { getIdeasMessage } from "../common/openai-chat/custom-messages";
 
 import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DeleteButton from "../common/delete-button";
 
 interface Props {
     userIdeas: IUserIdeas;
@@ -101,18 +102,21 @@ const RoadMapContent = ({
         return todayDateStr;
     };
 
+    const isNotLoadingWithoutIdeas = !isLoading && userIdeas.ideas.length === 0;
+    const isNotLoadingWithIdeas = !isLoading && userIdeas.ideas?.length > 0;
+
     return (
         <>
-            <div className="grow flex flex-col gap-2 px-16 py-8 bg-white relative rounded-3xl">
+            <div className="grow flex flex-col gap-8 px-8 py-4 bg-white relative rounded-3xl">
                 <h2 className="title-header">Roadmap</h2>
-                <div className="flex flex-col gap-4 p-4 bg-dark-50 rounded-2xl">
+                <div className="flex flex-col gap-8 p-4 bg-dark-50 rounded-2xl">
                     <h3 className="text-dark-400 text-[1.75rem] font-hero-semibold">
                         Create a timeline for your ideas
                     </h3>
-                    <form className="flex flex-col gap-8">
-                        <div className="flex flex-col gap-2">
+                    <form className="flex flex-col gap-4">
+                        <div className="flex flex-col">
                             <label className="text-xl">Start date</label>
-                            <div className="grow flex flex-col gap-2">
+                            <div className="flex">
                                 <input
                                     type="month"
                                     value={userIdeas.startDate}
@@ -121,32 +125,28 @@ const RoadMapContent = ({
                                         dispatchUserIdeas({ ...userIdeas });
                                     }}
                                     min={getMinDateStr(userIdeas.startDate)}
-                                    className="w-full xl:w-min light-input"
+                                    className="light-input"
                                 />
                             </div>
                         </div>
-                        <ul className="flex flex-col overflow-auto">
-                            {!isLoading && !userIdeas.ideas.length && (
-                                <div className="w-full flex items-center">
-                                    <p className="text-xl text-center italic">
-                                        Start adding your ideas...
-                                    </p>
-                                </div>
-                            )}
+                        <ul className="flex flex-col gap-6 overflow-auto">
                             {isLoading && (
                                 <Spinner
                                     className="flex items-center px-1 text-2xl"
                                     message="Loading ideas..."
                                 />
                             )}
-                            {!!userIdeas.ideas?.length &&
-                                !isLoading &&
+                            {isNotLoadingWithoutIdeas && (
+                                <div className="w-full flex items-center">
+                                    <p className="text-xl text-center italic">
+                                        Start adding your ideas...
+                                    </p>
+                                </div>
+                            )}
+                            {isNotLoadingWithIdeas &&
                                 userIdeas.ideas.map((idea, index) => (
-                                    <li
-                                        key={index}
-                                        className="flex gap-4 items-center"
-                                    >
-                                        <div className="grow flex flex-col gap-2">
+                                    <li key={index} className="flex gap-2">
+                                        <div className="flex flex-col">
                                             <label className="text-xl">
                                                 Idea
                                             </label>
@@ -163,7 +163,7 @@ const RoadMapContent = ({
                                                 className="light-input"
                                             />
                                         </div>
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col">
                                             <label className="text-xl">
                                                 Start (month)
                                             </label>
@@ -183,10 +183,10 @@ const RoadMapContent = ({
                                                     userIdeas.startDate ||
                                                     todayDateStr
                                                 }
-                                                className="light-input w-min"
+                                                className="light-input"
                                             />
                                         </div>
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col">
                                             <label className="text-xl">
                                                 Idea Owner
                                             </label>
@@ -205,7 +205,7 @@ const RoadMapContent = ({
                                                 className="light-input"
                                             />
                                         </div>
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col">
                                             <label className="text-xl">
                                                 Duration (months)
                                             </label>
@@ -226,27 +226,18 @@ const RoadMapContent = ({
                                                 className="light-input"
                                             />
                                         </div>
-                                        <div className="self-end">
-                                            <div
-                                                onClick={() => {
-                                                    userIdeas.ideas =
-                                                        userIdeas.ideas.filter(
-                                                            (idea, ideaIndex) =>
-                                                                ideaIndex !==
-                                                                index
-                                                        );
-                                                    dispatchUserIdeas({
-                                                        ...userIdeas,
-                                                    });
-                                                }}
-                                                className="w-[3.75rem] h-[3.75rem] inline-flex justify-center items-center rounded-full bg-gray-200 cursor-pointer text-dark-300 hover:text-dark-400"
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={faTimes}
-                                                    className="w-4"
-                                                />
-                                            </div>
-                                        </div>
+                                        <DeleteButton
+                                            callback={() => {
+                                                userIdeas.ideas =
+                                                    userIdeas.ideas.filter(
+                                                        (idea, ideaIndex) =>
+                                                            ideaIndex !== index
+                                                    );
+                                                dispatchUserIdeas({
+                                                    ...userIdeas,
+                                                });
+                                            }}
+                                        />
                                     </li>
                                 ))}
                         </ul>

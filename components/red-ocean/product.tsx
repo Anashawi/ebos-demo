@@ -1,14 +1,17 @@
-import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FieldArray, Field, ErrorMessage } from "formik";
-import { NextPage } from "next";
-import { Fragment, useMemo } from "react";
 import {
     ICompetitor,
     IFactorCompetitor,
     IFactor,
     IProduct,
 } from "../../models/types";
+
+import DeleteButton from "../common/delete-button";
+
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FieldArray, Field, ErrorMessage } from "formik";
+import { NextPage } from "next";
+import { Fragment, useMemo } from "react";
 
 interface Props {
     product: IProduct;
@@ -30,20 +33,23 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
 
     return (
         <>
-            <div key={index} className="p-5 bg-dark-50 rounded-2xl">
-                <h3 className="mb-10 text-[1.75rem] text-dark-400 font-hero-bold">
+            <div
+                key={index}
+                className="flex flex-col gap-8 p-5 bg-dark-50 rounded-2xl"
+            >
+                <h3 className="text-[1.75rem] text-dark-400 font-hero-bold">
                     {product.name}
                 </h3>
                 <FieldArray name={`products.${index}.factors`}>
                     {({ remove, push }) => (
                         <>
-                            <ul className="flex flex-col gap-4 mb-10 max-w-full overflow-auto">
+                            <ul className="flex flex-col gap-4 overflow-auto">
                                 {!!product.factors?.length &&
                                     product.factors.map(
                                         (factor, factorIndex) => (
                                             <li
                                                 key={factorIndex}
-                                                className="flex flex-wrap justify-start gap-4 items-start"
+                                                className="flex gap-2 items-start"
                                             >
                                                 <div className="flex flex-col">
                                                     <label>
@@ -65,91 +71,85 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
                                                         )}
                                                     </ErrorMessage>
                                                 </div>
-                                                <div className="flex flex-row flex-wrap justify-center gap-4">
-                                                    {product.competitors?.map(
-                                                        (
-                                                            comp: ICompetitor,
-                                                            compIndex: number
-                                                        ) => (
-                                                            <Fragment
-                                                                key={comp.uuid}
-                                                            >
-                                                                {!comp.isUntapped && (
-                                                                    <div className="flex-1 flex flex-col min-w-[140px]">
-                                                                        <label className="block max-w-[90%] text-ellipsis overflow-hidden break-keep">
-                                                                            <span>
+                                                {product.competitors?.map(
+                                                    (
+                                                        comp: ICompetitor,
+                                                        compIndex: number
+                                                    ) => (
+                                                        <Fragment
+                                                            key={comp.uuid}
+                                                        >
+                                                            {!comp.isUntapped && (
+                                                                <div className="flex flex-col">
+                                                                    <label>
+                                                                        {
+                                                                            comp.name
+                                                                        }
+                                                                    </label>
+                                                                    <Field
+                                                                        as="select"
+                                                                        placeholder={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
+                                                                        className="light-input"
+                                                                        name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
+                                                                    >
+                                                                        <option
+                                                                            className="text-lg"
+                                                                            value={
+                                                                                1
+                                                                            }
+                                                                        >
+                                                                            Poor
+                                                                        </option>
+                                                                        <option
+                                                                            className="text-lg"
+                                                                            value={
+                                                                                2
+                                                                            }
+                                                                        >
+                                                                            Moderate
+                                                                        </option>
+                                                                        <option
+                                                                            className="text-lg"
+                                                                            value={
+                                                                                3
+                                                                            }
+                                                                        >
+                                                                            Good
+                                                                        </option>
+                                                                        <option
+                                                                            className="text-lg"
+                                                                            value={
+                                                                                4
+                                                                            }
+                                                                        >
+                                                                            Excellent
+                                                                        </option>
+                                                                    </Field>
+                                                                    <ErrorMessage
+                                                                        name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
+                                                                    >
+                                                                        {msg => (
+                                                                            <div className="w-full text-lg text-rose-500">
                                                                                 {
-                                                                                    comp.name
+                                                                                    msg
                                                                                 }
-                                                                            </span>
-                                                                        </label>
-                                                                        <Field
-                                                                            as="select"
-                                                                            placeholder={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
-                                                                            className="light-input"
-                                                                            name={`products.${index}.factors.${factorIndex}.competitors.${compIndex}.value`}
-                                                                        >
-                                                                            <option
-                                                                                className="text-lg"
-                                                                                value={
-                                                                                    1
-                                                                                }
-                                                                            >
-                                                                                Poor
-                                                                            </option>
-                                                                            <option
-                                                                                className="text-lg"
-                                                                                value={
-                                                                                    2
-                                                                                }
-                                                                            >
-                                                                                Moderate
-                                                                            </option>
-                                                                            <option
-                                                                                className="text-lg"
-                                                                                value={
-                                                                                    3
-                                                                                }
-                                                                            >
-                                                                                Good
-                                                                            </option>
-                                                                            <option
-                                                                                className="text-lg"
-                                                                                value={
-                                                                                    4
-                                                                                }
-                                                                            >
-                                                                                Excellent
-                                                                            </option>
-                                                                        </Field>
-                                                                        <ErrorMessage
-                                                                            name={`products.${index}.factors.${factorIndex}.competitors.${index}.value`}
-                                                                        >
-                                                                            {msg => (
-                                                                                <div className="w-full text-lg text-rose-500">
-                                                                                    {
-                                                                                        msg
-                                                                                    }
-                                                                                </div>
-                                                                            )}
-                                                                        </ErrorMessage>
-                                                                    </div>
-                                                                )}
-                                                            </Fragment>
-                                                        )
-                                                    )}
-                                                </div>
-                                                <FontAwesomeIcon
-                                                    icon={faTrash}
-                                                    onClick={() => {
+                                                                            </div>
+                                                                        )}
+                                                                    </ErrorMessage>
+                                                                </div>
+                                                            )}
+                                                        </Fragment>
+                                                    )
+                                                )}
+                                                <DeleteButton
+                                                    callback={() => {
                                                         remove(factorIndex);
                                                     }}
-                                                    className="self-center w-[1.2rem] h-auto cursor-pointer text-gray-200 hover:text-rose-500 transition duration-200"
                                                 />
                                             </li>
                                         )
                                     )}
-                                <div className="flex mt-5">
+                                <div className="flex">
                                     <button
                                         type="button"
                                         onClick={() => {

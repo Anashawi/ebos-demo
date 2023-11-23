@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 
+import * as clientApi from "../../http-client/products.client";
 import { useQuery } from "@tanstack/react-query";
 import { IUserProduct } from "../../models/user-product";
-import * as clientApi from "../../http-client/products.client";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IFactor, IProduct } from "../../models/types";
 
@@ -95,35 +95,31 @@ const RedOceanCanvas = () => {
     }, [fetchedUserProducts]);
 
     return (
-        <>
-            <div className="px-16 py-24 bg-gray-100">
-                <div className="flex flex-row flex-wrap justify-center gap-16">
-                    <ActionsNavbar
-                        selectedStepTitle={stepNamesEnum.redOceanCanvas}
+        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
+            <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
+                <ActionsNavbar
+                    selectedStepTitle={stepNamesEnum.redOceanCanvas}
+                />
+            </div>
+            <div className="grow flex flex-col justify-start gap-8">
+                <StepsNavbar selectedNodeTitle={stepNamesEnum.redOceanCanvas} />
+                <div className="flex flex-row justify-center gap-8">
+                    <RedOceanContent
+                        userProduct={userProducts}
+                        dispatchChartProducts={products => {
+                            setChartProducts(products);
+                        }}
+                        isLoading={areUserProductsLoading}
                     />
-                    <div className="grow flex flex-col justify-start gap-8">
-                        <StepsNavbar
-                            selectedNodeTitle={stepNamesEnum.redOceanCanvas}
-                        />
-                        <div className="flex flex-row flex-wrap justify-center gap-8">
-                            <RedOceanContent
-                                userProduct={userProducts}
-                                dispatchChartProducts={products => {
-                                    setChartProducts(products);
-                                }}
-                                isLoading={areUserProductsLoading}
-                            />
-                            <ChartsContent
-                                videoPropName={videoPropNamesEnum.redOcean}
-                                videoLabel="Red Ocean Video"
-                                chartProducts={chartProducts}
-                                isChartDataLoading={areUserProductsLoading}
-                            />
-                        </div>
-                    </div>
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.redOcean}
+                        videoLabel="Red Ocean Video"
+                        chartProducts={chartProducts}
+                        isChartDataLoading={areUserProductsLoading}
+                    />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
