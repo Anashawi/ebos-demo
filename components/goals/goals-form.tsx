@@ -199,8 +199,8 @@ const GoalsForm = ({
                                                         <button
                                                             className={`btn-primary px-8 ${
                                                                 !!goalToBeAdded
-                                                                    ? `btn-disabled`
-                                                                    : ``
+                                                                    ? ``
+                                                                    : `btn-disabled`
                                                             }`}
                                                             type="button"
                                                             disabled={

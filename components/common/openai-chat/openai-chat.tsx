@@ -31,6 +31,7 @@ enum ChatCompletionRequestMessageRoleEnum {
 }
 
 const CHATGPT_USER = "ChatGPT";
+const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
 
 export default function Chat({ initialMessage }: { initialMessage: string }) {
     const openai = new OpenAI({
@@ -39,12 +40,15 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
     });
     const messageInput = useRef<HTMLDivElement>(null);
 
+    // chat messages between system/user/AI [required for AI]
     const [openAIMessages, setOpenAIMessages] = useState<
         OpenAI.Chat.Completions.ChatCompletionMessageParam[]
     >([]);
+    // chat messages that are displayed in the chat box
     const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
     const [isChatVisible, setIsChatVisible] = useState(false);
     const [waitingForResponse, setWaitingForResponse] = useState(false);
+    const [isAILearning, setIsAILearning] = useState(false);
 
     useEffect(() => {
         if (!waitingForResponse) {
@@ -54,22 +58,75 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
 
     useEffect(() => {
         if (initialMessage) {
-            // console.log(initialMessage);
-            // sendMessage("", initialMessage, "", null, true);
+            sendSystemMessage(initialMessage);
         }
     }, [initialMessage]);
 
-    const sendMessage = async (
+    // Feature: system messages/response are not displayed on the chat ui
+    const sendSystemMessage = async (automaticallyGenSystemMsg: string) => {
+        const newOpenAIMessages = [...openAIMessages];
+
+        // outgoing AI message
+        const newOpenAIMessage = {
+            role: ChatCompletionRequestMessageRoleEnum.System,
+            content: automaticallyGenSystemMsg,
+        };
+        newOpenAIMessages.push(newOpenAIMessage);
+        setOpenAIMessages([...newOpenAIMessages]);
+
+        setIsAILearning(true);
+        await sendMessagesAndGetResponse(newOpenAIMessages);
+        setIsAILearning(false);
+        setTimeout(() => console.log(openAIMessages), 500);
+    };
+
+    const sendMessagesAndGetResponse = async (
+        newOpenAIMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[]
+    ) => {
+        try {
+            const chatRepsonse = await openai.chat.completions.create({
+                model: "gpt-3.5-turbo-1106",
+                messages: [...newOpenAIMessages], // openAI requires all old msgs
+            });
+            const newOpenAIMessage = {
+                role: ChatCompletionRequestMessageRoleEnum.Assistant,
+                content: chatRepsonse["choices"][0]["message"]["content"] ?? "",
+            };
+            newOpenAIMessages.push(newOpenAIMessage);
+            setOpenAIMessages([...newOpenAIMessages]);
+        } catch (error) {
+            if (error instanceof OpenAI.APIError) {
+                if (error.status === 429) {
+                    const newDisplayedMessages = [...displayedMessages];
+                    newDisplayedMessages.push({
+                        content:
+                            "Rate limit reached. Limit: 3 / min. Please try again in 20s",
+                        sentTime: Math.floor(Date.now() / 1000),
+                        sender: CHATGPT_USER,
+                        direction: "incoming",
+                    } as Message);
+                    setDisplayedMessages([...newDisplayedMessages]);
+                }
+                console.error(error.status); // e.g. 401
+                console.error(error.message); // e.g. The authentication token you passed was invalid...
+                console.error(error.code); // e.g. 'invalid_api_key'
+                console.error(error.type); // e.g. 'invalid_request_error'
+            } else {
+                // Non-API error
+                console.log(error);
+            }
+        }
+    };
+
+    const sendUserMessage = async (
         innerHtml: string,
         textContent: string,
         innerText: string,
-        nodes: NodeList | null,
-        hideMessage?: boolean
+        nodes: NodeList | null
     ) => {
         const newOpenAIMessages = [...openAIMessages];
         const newDisplayedMessages = [...displayedMessages];
 
-        // outgoing AI message
         const newOpenAIMessage = {
             role: ChatCompletionRequestMessageRoleEnum.User,
             content: textContent,
@@ -77,21 +134,19 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         newOpenAIMessages.push(newOpenAIMessage);
         setOpenAIMessages([...newOpenAIMessages]);
 
-        // displayed chat box messages
-        if (!hideMessage) {
-            const newDisplayedMessage: Message = {
-                content: textContent,
-                sentTime: Math.floor(Date.now() / 1000),
-                sender: "You",
-                direction: "outgoing",
-            };
-            newDisplayedMessages.push(newDisplayedMessage);
-            setDisplayedMessages([...newDisplayedMessages]);
-        }
+        const newDisplayedMessage: Message = {
+            content: textContent,
+            sentTime: Math.floor(Date.now() / 1000),
+            sender: "You",
+            direction: "outgoing",
+        };
+        newDisplayedMessages.push(newDisplayedMessage);
+        setDisplayedMessages([...newDisplayedMessages]);
 
         setWaitingForResponse(true);
         await streamResponse(newOpenAIMessages, newDisplayedMessages);
         setWaitingForResponse(false);
+        setTimeout(() => console.log(openAIMessages), 500);
     };
 
     const streamResponse = async (
@@ -108,7 +163,7 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
 
         try {
             const stream = await openai.chat.completions.create({
-                model: "gpt-3.5-turbo",
+                model: CHATGPT_MODEL,
                 messages: [...newOpenAIMessages],
                 stream: true,
             });
@@ -116,7 +171,7 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                 for await (const part of stream) {
                     newDisplayedMessages[
                         newDisplayedMessages.length - 1
-                    ].content += part.choices[0]?.delta.content || "";
+                    ].content += part.choices[0]?.delta.content ?? "";
                     setDisplayedMessages([...newDisplayedMessages]);
                 }
             } catch (err) {
@@ -159,8 +214,8 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                 <ChatContainer>
                                     <ConversationHeader>
                                         <ConversationHeader.Content
-                                            userName="OpenAI"
-                                            info="model gpt-3.5-turbo"
+                                            userName="AI Chat Assistant"
+                                            info={`model ${CHATGPT_MODEL}`}
                                         />
                                         <ConversationHeader.Actions>
                                             <Button
@@ -181,8 +236,15 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                     </ConversationHeader>
                                     <MessageList
                                         typingIndicator={
-                                            waitingForResponse && (
-                                                <TypingIndicator content="ChatGPT is typing" />
+                                            (waitingForResponse ||
+                                                isAILearning) && (
+                                                <TypingIndicator
+                                                    content={`ChatGPT is ${
+                                                        isAILearning
+                                                            ? `learning`
+                                                            : `typing`
+                                                    }`}
+                                                />
                                             )
                                         }
                                     >
@@ -208,7 +270,7 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                     </MessageList>
                                     <MessageInput
                                         placeholder="Type message here"
-                                        onSend={sendMessage}
+                                        onSend={sendUserMessage}
                                         autoFocus={true}
                                         attachButton={false}
                                         sendButton={false} // if true, it needs width 40px to work
