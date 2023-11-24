@@ -14,6 +14,7 @@ import { getStepUpDownMessage } from "../common/openai-chat/custom-messages";
 
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import GoNextButton from "../common/go-next-button";
 
 interface Props {
     userAnalysis: IUserAnalysis;
@@ -95,8 +96,8 @@ const StepUpStepDownContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-8 px-4 py-8 bg-white relative rounded-3xl">
-                <h2 className="title-header">Step-up step-down</h2>
+            <section className="form-container">
+                <h3 className="title-header">Step-up step-down</h3>
                 {isAnalysisLoading && (
                     <Spinner
                         className="flex items-center px-1 text-2xl"
@@ -106,9 +107,9 @@ const StepUpStepDownContent = ({
                 {!isAnalysisLoading && (
                     <form className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4 p-5 bg-dark-50 rounded-2xl">
-                            <h3 className="text-dark-400 text-[1.75rem] font-hero-semibold">
+                            <h4 className="text-dark-400 text-[1.75rem] font-hero-semibold">
                                 10% above
-                            </h3>
+                            </h4>
                             <div className="pill-yellow-50 p-3">
                                 <div className="w-[3rem] h-[3rem]">
                                     <Image
@@ -161,7 +162,7 @@ const StepUpStepDownContent = ({
                                         className={
                                             !!aboveCustomerToBeAdded
                                                 ? "btn-primary"
-                                                : "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
+                                                : "btn-primary hover:bg-primary-300 cursor-not-allowed"
                                         }
                                     >
                                         <FontAwesomeIcon
@@ -213,9 +214,9 @@ const StepUpStepDownContent = ({
                             </ul>
                         </div>
                         <div className="flex flex-col gap-4 p-4 bg-dark-50 rounded-2xl">
-                            <h3 className="text-dark-400 text-[1.75rem] font-hero-semibold">
+                            <h4 className="text-dark-400 text-[1.75rem] font-hero-semibold">
                                 Your Customers
-                            </h3>
+                            </h4>
                             <div className="pill-yellow-50 p-3">
                                 <div className="w-[3rem] h-[3rem]">
                                     <Image
@@ -265,7 +266,7 @@ const StepUpStepDownContent = ({
                                     className={
                                         !!currentCustomerToBeAdded
                                             ? "btn-primary"
-                                            : "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
+                                            : "btn-primary hover:bg-primary-300 cursor-not-allowed"
                                     }
                                 >
                                     <FontAwesomeIcon
@@ -320,9 +321,9 @@ const StepUpStepDownContent = ({
                             </ul>
                         </div>
                         <div className="flex flex-col gap-4 p-5 bg-dark-50 rounded-2xl">
-                            <h3 className="text-dark-400 text-[1.75rem] font-hero-semibold">
+                            <h4 className="text-dark-400 text-[1.75rem] font-hero-semibold">
                                 10% below
-                            </h3>
+                            </h4>
                             <div className="pill-yellow-50 p-3">
                                 <div className="w-[3rem] h-[3rem]">
                                     <Image
@@ -373,7 +374,7 @@ const StepUpStepDownContent = ({
                                     className={
                                         !!belowCustomerToBeAdded
                                             ? "btn-primary"
-                                            : "btn-primary-light hover:bg-primary-300 cursor-not-allowed"
+                                            : "btn-primary hover:bg-primary-300 cursor-not-allowed"
                                     }
                                 >
                                     <FontAwesomeIcon
@@ -468,7 +469,7 @@ const StepUpStepDownContent = ({
                         </div>
                     </form>
                 )}
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

@@ -77,8 +77,8 @@ const MarketPotentialContent = ({
 
     return (
         <>
-            <div className="relative grow px-16 py-8 flex flex-col gap-4 bg-white rounded-3xl">
-                <h2 className="title-header">Market potential</h2>
+            <section className="form-container">
+                <h3 className="title-header">Market potential</h3>
                 <Formik
                     initialValues={{
                         products: userProduct.products,
@@ -191,13 +191,17 @@ const MarketPotentialContent = ({
                                                 <div className="flex flex-row gap-4 justify-end">
                                                     <button
                                                         type="submit"
-                                                        className={
+                                                        className={`btn-rev ${
+                                                            isUpdatingUserProduct ||
+                                                            areUserProductsLoading ||
                                                             isSubmitting ||
                                                             !isValid
-                                                                ? "btn-rev btn-disabled"
-                                                                : "btn-rev"
-                                                        }
+                                                                ? `btn-disabled`
+                                                                : ``
+                                                        }`}
                                                         disabled={
+                                                            isUpdatingUserProduct ||
+                                                            areUserProductsLoading ||
                                                             isSubmitting ||
                                                             !isValid
                                                         }
@@ -229,7 +233,7 @@ const MarketPotentialContent = ({
                         );
                     }}
                 </Formik>
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

@@ -72,7 +72,7 @@ const RedOceanContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-4 px-16 py-8 bg-white relative rounded-3xl">
+            <section className="form-container">
                 <h3 className="title-header">Red Ocean Canvas</h3>
                 <Formik
                     initialValues={{
@@ -195,12 +195,15 @@ const RedOceanContent = ({
                                                     <button
                                                         type="submit"
                                                         className={
+                                                            isLoading ||
+                                                            isUpdatingUserProduct ||
                                                             isSubmitting ||
                                                             !isValid
                                                                 ? "btn-rev btn-disabled"
                                                                 : "btn-rev"
                                                         }
                                                         disabled={
+                                                            isUpdatingUserProduct ||
                                                             isSubmitting ||
                                                             !isValid
                                                         }
@@ -232,7 +235,7 @@ const RedOceanContent = ({
                         );
                     }}
                 </Formik>
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

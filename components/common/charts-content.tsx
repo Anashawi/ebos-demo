@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 
-import { IProduct } from "../../models/types";
 import { videoPropNamesEnum } from "../../models/enums";
 
 import useFuturesChart from "../../hooks/use-futures-chart";
@@ -13,16 +12,19 @@ import Video from "../disruption/video";
 import MarketPotentialProductChart from "../market-potential/product-chart";
 import RedOceanProductChart from "../red-ocean/product-chart";
 import BlueOceanProductChart from "../blue-ocean/product-chart";
+import NonCustomersReview from "../non-customers/review";
 import ChartsButton from "./charts/charts-button";
 
 import Chart from "react-google-charts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import StepUpStepDownCustomersReview from "../step-up-step-down/customers-review";
+import Link from "next/link";
 
 interface Props {
     videoPropName: videoPropNamesEnum;
     videoLabel: string;
-    chartProducts: IProduct[];
+    chartProducts: any[];
     isChartDataLoading?: boolean;
 }
 
@@ -47,9 +49,7 @@ const ChartsContent = ({
 
     return (
         <>
-            <div
-                className={`grow max-w-[400px] p-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl`}
-            >
+            <article className="helpers-modals-and-charts">
                 <ChartsButton
                     title="Watch Video Tutorial"
                     icon={undefined}
@@ -67,6 +67,14 @@ const ChartsContent = ({
                         clickCallback={() => toggleEditVideoModal(true)}
                     />
                 )}
+                {videoPropName === videoPropNamesEnum.roadMap && (
+                    <Link
+                        href="/org/report"
+                        className="btn-primary-light text-center text-white hover:text-white"
+                    >
+                        Generate Report
+                    </Link>
+                )}
                 {isChartDataLoading && (
                     <Spinner
                         message="Loading products chart..."
@@ -74,11 +82,11 @@ const ChartsContent = ({
                     />
                 )}
                 {isNotLoadingWithChartData &&
+                    (videoPropName === videoPropNamesEnum.marketPotential ||
+                        videoPropName === videoPropNamesEnum.redOcean ||
+                        videoPropName === videoPropNamesEnum.blueOcean) &&
                     chartProducts.map((product, index) => (
                         <div key={index} className="h-[300px]">
-                            {videoPropName === videoPropNamesEnum.products && (
-                                <Chart {...chart} legendToggle />
-                            )}
                             {videoPropName ===
                                 videoPropNamesEnum.marketPotential && (
                                 <MarketPotentialProductChart
@@ -93,7 +101,25 @@ const ChartsContent = ({
                             )}
                         </div>
                     ))}
-            </div>
+                {isNotLoadingWithChartData &&
+                    videoPropName === videoPropNamesEnum.products && (
+                        <Chart {...chart} legendToggle />
+                    )}
+                {isNotLoadingWithChartData &&
+                    videoPropName === videoPropNamesEnum.nonCustomers && (
+                        <NonCustomersReview
+                            userNonCustomers={chartProducts[0]}
+                        />
+                    )}
+                {isNotLoadingWithChartData &&
+                    videoPropName ===
+                        videoPropNamesEnum.stepUpStepDownModel && (
+                        <StepUpStepDownCustomersReview
+                            userAnalysis={chartProducts[0]}
+                            isLoading={isNotLoadingWithChartData}
+                        />
+                    )}
+            </article>
             {/* ideas modal */}
             <IdeasModal
                 isOpen={isIdeasModalOpen}

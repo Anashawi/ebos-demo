@@ -143,9 +143,9 @@ const DisruptionContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-2 px-16 py-8 bg-white relative rounded-3xl">
+            <section className="form-container">
                 <h3 className="title-header">Disruption</h3>
-                <div className="pill-yellow-50 p-3 mb-5">
+                <div className="pill-yellow-50 p-3">
                     <div className="w-[3rem] h-[3rem]">
                         <Image
                             src="/bulb.svg"
@@ -155,10 +155,10 @@ const DisruptionContent = ({
                             className="w-full h-auto"
                         />
                     </div>
-                    <h3 className="text-xl text-dark-300">
+                    <p className="text-xl text-dark-300">
                         Watch help videos then update your ideas accordingly.
                         Submit for feedback.
-                    </h3>
+                    </p>
                 </div>
 
                 <div className="flex flex-wrap gap-5 p-5 bg-dark-50 rounded-2xl">
@@ -365,9 +365,16 @@ const DisruptionContent = ({
                     )}
                 </div>
                 {(session?.user as any)?.role !== "admin" && (
-                    <div className="flex gap-4 justify-end">
+                    <div className="flex justify-end gap-4">
                         {!!userTakeaways && (
                             <button
+                                className={`btn-rev ${
+                                    isLoadingTakeaways ||
+                                    isUpdatingUserTakeaways ||
+                                    isCreatingUserTakeaways
+                                        ? `btn-disabled`
+                                        : ``
+                                }`}
                                 onClick={() => {
                                     if (!userTakeaways.id) {
                                         createUserTakeaways({
@@ -379,7 +386,6 @@ const DisruptionContent = ({
                                         });
                                     }
                                 }}
-                                className="btn-rev"
                             >
                                 Save
                             </button>
@@ -450,7 +456,7 @@ const DisruptionContent = ({
                         )}
                     </div>
                 )}
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

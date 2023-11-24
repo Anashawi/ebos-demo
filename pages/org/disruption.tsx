@@ -8,10 +8,11 @@ import IdeasModal from "../../components/app/ideas-modal";
 import Modal from "../../components/common/modal";
 import ActionsNavbar from "../../components/common/actions-navbar";
 import StepsNavbar from "../../components/common/steps-navbar";
-import PillPlayButton from "../../components/common/pill-play-button";
 import DisruptionContent from "../../components/disruption/disruption-content";
 import Video from "../../components/disruption/video";
 import VideosForm from "../../components/disruption/videos-form";
+import VideosButtonList from "../../components/disruption/videos-button-list";
+import ChartsButton from "../../components/common/charts/charts-button";
 
 const Disruption = () => {
     const emptyVideos: IVideos = useMemo(() => {
@@ -45,16 +46,16 @@ const Disruption = () => {
     const [isEditUrlsModalOn, toggleEditUrlsModal] = useModalToggler();
 
     return (
-        <>
-            <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
-                <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
-                    <ActionsNavbar
-                        selectedStepTitle={stepNamesEnum.disruption}
-                    />
-                </div>
-                <div className="grow flex flex-col justify-start gap-8">
+        <div className="content-container">
+            <header className="left-side-main-navigation">
+                <ActionsNavbar selectedStepTitle={stepNamesEnum.disruption} />
+            </header>
+            <main className="right-side-step-content">
+                <nav className="top-navigation">
                     <StepsNavbar selectedNodeTitle={stepNamesEnum.disruption} />
-                    <div className="flex flex-row justify-center gap-8">
+                </nav>
+                <article className="main-content">
+                    <article className="forms-container">
                         <DisruptionContent
                             videos={videos}
                             dispatchVideos={setVideos}
@@ -62,148 +63,94 @@ const Disruption = () => {
                             toggleEditUrlsModal={toggleEditUrlsModal}
                             toggleVideoModal={toggleVideoModal}
                         />
-                        <div className="min-h-screen px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl">
-                            <div className="p-1 bg-white rounded-xl">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        toggleIdeasModal(true);
-                                    }}
-                                    className="w-full btn-primary-light rounded-xl"
-                                >
-                                    My Ideas
-                                </button>
-                            </div>
-                            <div className="px-10 py-5">
-                                <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">
-                                    7 Practical &amp; Quick
-                                </h4>
-                                <ul className="flex flex-col gap-2">
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="Eco Systems"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.ecoSystems
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="Info is Power"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.infoIsPower
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="OTCR"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.OTCR
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="Value Destruction"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.valueDestruction
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="Customer Journey"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.customerJourney
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="Digital Platforms"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.digitalPlatforms
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                    <li>
-                                        <PillPlayButton
-                                            buttonText="Building Capacity"
-                                            onClickCallback={() => {
-                                                setSelectedVideoPropName(
-                                                    videoPropNamesEnum.buildingCapacity
-                                                );
-                                                toggleVideoModal();
-                                            }}
-                                        />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* ideas modal */}
-            <IdeasModal
-                isOpen={isIdeasModalOpen}
-                toggle={() => toggleIdeasModal()}
-            />
-
-            {/* video modal */}
-            <Modal
-                config={{
-                    isShown: isVideoModalOn,
-                    closeCallback: () => toggleVideoModal(false),
-                    className:
-                        "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
-                }}
-            >
-                <Video videoPropName={selectedVideoPropName} />
-                <div className="flex justify-center p-5 bg-black">
-                    <button
-                        className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
-                        onClick={() => toggleVideoModal(false)}
-                    >
-                        close
-                    </button>
-                </div>
-            </Modal>
-
-            {/* video urls form modal */}
-            <Modal
-                config={{
-                    isShown: isEditUrlsModalOn,
-                    closeCallback: () => toggleEditUrlsModal(false),
-                    className:
-                        "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[750px] rounded-xl overflow-hidden p-5 lg:p-10",
-                }}
-            >
-                <VideosForm
-                    videos={videos}
-                    toggleEditUrlsModal={() => toggleEditUrlsModal(false)}
+                    </article>
+                    <aside className="aside-content">
+                        <article className="helpers-modals-and-charts">
+                            <ChartsButton
+                                title="My Ideas"
+                                icon={undefined}
+                                clickCallback={() => toggleIdeasModal(true)}
+                            />
+                            <VideosButtonList
+                                title="7 Practical &amp; Quick"
+                                videosProps={[
+                                    {
+                                        title: "Eco Systems",
+                                        name: videoPropNamesEnum.ecoSystems,
+                                    },
+                                    {
+                                        title: "Info is Power",
+                                        name: videoPropNamesEnum.infoIsPower,
+                                    },
+                                    {
+                                        title: "OTCR",
+                                        name: videoPropNamesEnum.OTCR,
+                                    },
+                                    {
+                                        title: "Value Destruction",
+                                        name: videoPropNamesEnum.valueDestruction,
+                                    },
+                                    {
+                                        title: "Customer Journey",
+                                        name: videoPropNamesEnum.customerJourney,
+                                    },
+                                    {
+                                        title: "Digital Platforms",
+                                        name: videoPropNamesEnum.digitalPlatforms,
+                                    },
+                                    {
+                                        title: "Building Capacity",
+                                        name: videoPropNamesEnum.buildingCapacity,
+                                    },
+                                ]}
+                                setSelectedVideoPropName={
+                                    setSelectedVideoPropName
+                                }
+                                toggleVideoModal={toggleVideoModal}
+                            />
+                        </article>
+                    </aside>
+                </article>
+                {/* ideas modal */}
+                <IdeasModal
+                    isOpen={isIdeasModalOpen}
+                    toggle={() => toggleIdeasModal()}
                 />
-            </Modal>
-        </>
+                {/* video modal */}
+                <Modal
+                    config={{
+                        isShown: isVideoModalOn,
+                        closeCallback: () => toggleVideoModal(false),
+                        className:
+                            "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
+                    }}
+                >
+                    <Video videoPropName={selectedVideoPropName} />
+                    <div className="flex justify-center p-5 bg-black">
+                        <button
+                            className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
+                            onClick={() => toggleVideoModal(false)}
+                        >
+                            close
+                        </button>
+                    </div>
+                </Modal>
+                {/* video urls form modal */}
+                <Modal
+                    config={{
+                        isShown: isEditUrlsModalOn,
+                        closeCallback: () => toggleEditUrlsModal(false),
+                        className:
+                            "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[750px] rounded-xl overflow-hidden p-5 lg:p-10",
+                    }}
+                >
+                    <VideosForm
+                        videos={videos}
+                        toggleEditUrlsModal={() => toggleEditUrlsModal(false)}
+                    />
+                </Modal>
+            </main>
+        </div>
     );
 };
 

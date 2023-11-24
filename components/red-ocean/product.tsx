@@ -155,7 +155,7 @@ const RedOceanProduct: NextPage<Props> = ({ product, index }) => {
                                         onClick={() => {
                                             push(emptyFactor);
                                         }}
-                                        className="btn-primary-light pl-9 pr-[4.5rem]"
+                                        className="btn-primary px-8"
                                     >
                                         <FontAwesomeIcon
                                             className="w-3 h-auto cursor-pointer hover:text-gray-600"

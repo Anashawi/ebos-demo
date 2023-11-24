@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 
 import * as organizationsApi from "../../http-client/organizations.client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUserOrganizations } from "../../models/organization";
 import { OrganizationModel } from "../../models/types";
 
@@ -35,7 +34,6 @@ const OrganizationsForm = ({
     setUserOrganizations,
     setChatGPTMessage,
 }: Props) => {
-    const { data: session }: any = useSession();
     const queryClient = useQueryClient();
 
     // render user organizations
@@ -76,8 +74,8 @@ const OrganizationsForm = ({
         userOrganizations.organizations?.length > 0;
 
     return (
-        <div className="organizations-form flex flex-col gap-8">
-            <h2 className="title-header">Organizations</h2>
+        <section className="form-container">
+            <h3 className="title-header">Organizations</h3>
             <div className="flex flex-col gap-4 bg-dark-50 rounded-2xl p-4">
                 <div className="flex flex-col gap-4">
                     {areUserOrganizationsLoading && (
@@ -181,27 +179,25 @@ const OrganizationsForm = ({
                                     className="w-[0.8rem] h-auto cursor-pointer"
                                     icon={faPlus}
                                 />
-                                <span className="text-xl">
-                                    Add New Organization
-                                </span>
+                                Add New Organization
                             </button>
                         )}
                         <button
+                            className={`btn-rev ${
+                                isSaving ? `opacity-50 cursor-not-allowed` : ``
+                            }`}
                             type="button"
                             disabled={isSaving}
                             onClick={() => {
                                 mutate(userOrganizations);
                             }}
-                            className={`btn-rev ${
-                                isSaving ? `opacity-50 cursor-not-allowed` : ``
-                            }`}
                         >
                             Save
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

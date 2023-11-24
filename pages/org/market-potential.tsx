@@ -65,30 +65,40 @@ const Competitors = () => {
     }, [fetchedUserProducts, userProducts?.products]);
 
     return (
-        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
-            <div className="md:max-w-[100px] min-h-[50vh] flex flex-col justify-between px-4 py-8 bg-white rounded-full">
+        <div className="content-container">
+            <header className="left-side-main-navigation">
                 <ActionsNavbar
                     selectedStepTitle={stepNamesEnum.marketPotential}
                 />
-            </div>
-            <div className="grow flex flex-col justify-start gap-8">
-                <StepsNavbar
-                    selectedNodeTitle={stepNamesEnum.marketPotential}
-                />
-                <div className="flex flex-row justify-center gap-8">
-                    <MarketPotentialContent
-                        userProduct={userProducts}
-                        isLoading={areProductsLoading}
-                        setChartProducts={setChartProducts}
+            </header>
+            <main className="right-side-step-content">
+                <nav className="top-navigation">
+                    <StepsNavbar
+                        selectedNodeTitle={stepNamesEnum.marketPotential}
                     />
-                    <ChartsContent
-                        videoPropName={videoPropNamesEnum.marketPotential}
-                        videoLabel="Market Potential Video"
-                        chartProducts={chartProducts}
-                    />
-                </div>
-
-                {/* <div className='w-1/2'>
+                </nav>
+                <article className="main-content">
+                    <article className="forms-container">
+                        <MarketPotentialContent
+                            userProduct={userProducts}
+                            isLoading={areProductsLoading}
+                            setChartProducts={setChartProducts}
+                        />
+                    </article>
+                    <aside className="aside-content">
+                        <ChartsContent
+                            videoPropName={videoPropNamesEnum.marketPotential}
+                            videoLabel="Market Potential Video"
+                            chartProducts={chartProducts}
+                        />
+                    </aside>
+                </article>
+            </main>
+        </div>
+    );
+};
+{
+    /* <div className='w-1/2'>
 							<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
 								<ConsultantReview
 									pageTitle={"Market potential"}></ConsultantReview>
@@ -107,10 +117,6 @@ const Competitors = () => {
 									<FontAwesomeIcon className='w-7' icon={faEye} />
 								</button>
 							</div>
-						</div> */}
-            </div>
-        </div>
-    );
-};
-
+						</div> */
+}
 export default Competitors;

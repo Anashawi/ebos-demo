@@ -44,7 +44,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
             <FieldArray name={`products.${index}.ideaFactors`}>
                 {({ remove, push }) => (
                     <>
-                        <ul className="flex flex-col gap-8">
+                        <ul className="flex flex-col gap-4">
                             {!!product.ideaFactors?.length &&
                                 product.ideaFactors.map((idea, ideaIndex) => (
                                     <li
@@ -152,7 +152,7 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                     onClick={() => {
                                         push(emptyFactor);
                                     }}
-                                    className="btn-primary-light px-10"
+                                    className="btn-primary px-10"
                                 >
                                     <FontAwesomeIcon
                                         className="w-3 h-auto cursor-pointer hover:text-gray-600"

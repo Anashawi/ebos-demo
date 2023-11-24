@@ -3,11 +3,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-    navbarDirectionsEnum,
-    stepNamesEnum,
-    tooltipDirectionsEnum,
-} from "../../models/enums";
+import { stepNamesEnum, tooltipDirectionsEnum } from "../../models/enums";
 
 import ConsultantReview from "./consultant-review";
 import Tooltip from "./tooltip";
@@ -23,9 +19,9 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
     const { data: session }: any = useSession();
 
     return (
-        <nav className="grow flex flex-col flex-wrap justify-between gap-8">
-            <ul className={`flex flex-col items-center gap-8`}>
-                <li className="flex justify-center">
+        <nav className="main-navigation">
+            <main className="nav-section-ul">
+                <li>
                     <Image
                         width="55"
                         height="55"
@@ -33,7 +29,7 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
                         alt="CaseInPoint"
                     />
                 </li>
-                <li className="group relative flex justify-center hover:animate-shake">
+                <li className="group relative hover:animate-shake">
                     <Link href="/">
                         <Image
                             width="42"
@@ -47,7 +43,7 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
                         Dashboard
                     </Tooltip>
                 </li>
-                <li className="group relative flex justify-center hover:animate-shake">
+                <li className="group relative hover:animate-shake">
                     <ConsultantReview pageTitle={displayedPageTitle}>
                         <Image
                             width="45"
@@ -63,20 +59,20 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
                         </p>
                     </Tooltip>
                 </li>
-            </ul>
-            <ul className="flex flex-col items-center gap-8">
+            </main>
+            <ul className="nav-section-ul">
                 <li>
                     <p className="text-center font-hero-semibold text-[1.3rem] text-[#4e79b2]">
                         {session?.user?.fullName}
                     </p>
                 </li>
                 <li
+                    className="group relative w-[4rem] h-[4rem] p-4 bg-icons-gray rounded-full hover:p-4 hover:btn-danger hover:cursor-pointer transition duration-200"
                     onClick={() => {
                         signOut({
                             callbackUrl: "/",
                         });
                     }}
-                    className="group relative rounded-full w-[4rem] h-[4rem] p-4 bg-icons-gray hover:p-4 hover:btn-danger hover:cursor-pointer transition duration-200"
                 >
                     <FontAwesomeIcon
                         icon={faArrowRightFromBracket}

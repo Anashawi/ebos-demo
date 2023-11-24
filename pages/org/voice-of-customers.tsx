@@ -7,26 +7,32 @@ import ChartsContent from "../../components/common/charts-content";
 
 const VoiceOfCustomers = () => {
     return (
-        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
-            <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
+        <div className="content-container">
+            <header className="left-side-main-navigation">
                 <ActionsNavbar
                     selectedStepTitle={stepNamesEnum.voiceOfCustomers}
                 />
-            </div>
-            <div className="grow flex flex-col justify-start gap-8">
-                <StepsNavbar
-                    selectedNodeTitle={stepNamesEnum.voiceOfCustomers}
-                />
-                <div className="flex flex-row justify-center gap-8">
-                    <VoiceOfCustomersContent />
-                    <ChartsContent
-                        videoPropName={videoPropNamesEnum.voiceOfCustomers}
-                        videoLabel="Voice of Customers Video"
-                        chartProducts={[]}
-                        isChartDataLoading={false}
+            </header>
+            <main className="right-side-step-content">
+                <nav className="top-navigation">
+                    <StepsNavbar
+                        selectedNodeTitle={stepNamesEnum.voiceOfCustomers}
                     />
-                </div>
-            </div>
+                </nav>
+                <article className="main-content">
+                    <article className="forms-container">
+                        <VoiceOfCustomersContent />
+                    </article>
+                    <aside className="aside-content">
+                        <ChartsContent
+                            videoPropName={videoPropNamesEnum.voiceOfCustomers}
+                            videoLabel="Voice of Customers Video"
+                            chartProducts={[]}
+                            isChartDataLoading={false}
+                        />
+                    </aside>
+                </article>
+            </main>
         </div>
     );
 };

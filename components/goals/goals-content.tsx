@@ -9,7 +9,6 @@ import { IUserGoals } from "../../models/user-goal";
 
 import OrganizationsForm from "./ogranizations-form";
 import GoalsForm from "./goals-form";
-import GoNextButton from "../common/go-next-button";
 import Chat from "../common/openai-chat/openai-chat";
 import { stepOneTranscript } from "../common/openai-chat/openai-transcript";
 import {
@@ -78,7 +77,7 @@ const GoalsContent = () => {
     ]);
 
     return (
-        <div className="relative grow flex flex-col gap-8 px-16 py-8 bg-white rounded-3xl">
+        <>
             <OrganizationsForm
                 fetchedUserOrganizations={fetchedUserOrganizations}
                 areUserOrganizationsLoading={areUserOrganizationsLoading}
@@ -93,16 +92,8 @@ const GoalsContent = () => {
                 setUserGoals={setUserGoals}
                 setChatGPTMessage={setChatGPTMessage}
             />
-            <GoNextButton
-                stepUri={`../org/products`}
-                nextStepTitle={`Pioneer Migrator Settler`}
-                clickable={
-                    userOrganizations.organizations.length > 0 &&
-                    userGoals.goals.length > 0
-                }
-            />
             <Chat initialMessage={chatGPTMessage}></Chat>
-        </div>
+        </>
     );
 };
 

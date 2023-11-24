@@ -88,7 +88,7 @@ const StepsNavbar = ({ selectedNodeTitle }: Props) => {
 
     const renderSelectedIcon = (node: NavbarNode, isLastIcon: boolean) => {
         return (
-            <li className="flex gap-8 hover:animate-vertical-shake">
+            <li className="flex gap-4 hover:animate-vertical-shake">
                 <div className="flex gap-2 items-center">
                     <div
                         className="cursor-pointer"
@@ -96,21 +96,23 @@ const StepsNavbar = ({ selectedNodeTitle }: Props) => {
                             router.push(`../${node.url}`);
                         }}
                     >
-                        <Image
-                            src={node.selectedIconPath}
-                            alt="icon"
-                            width={85}
-                            height={85}
-                        />
+                        <Link href={`../${node.url}`}>
+                            <Image
+                                src={node.selectedIconPath}
+                                alt="icon"
+                                width={82}
+                                height={82}
+                            />
+                        </Link>
                     </div>
-                    <div>
-                        <p className="leading-[1.57rem] text-[1.3rem] text-navbar-gray font-hero-semibold">
+                    <hgroup>
+                        <h1 className="leading-[1.57rem] text-[1.3rem] text-navbar-gray font-hero-semibold">
                             {node.step}
-                        </p>
-                        <h1 className="leading-[1.57rem] text-[1.3rem] font-hero-semibold text-navbar-primary-title">
-                            {node.title}
                         </h1>
-                    </div>
+                        <h2 className="leading-[1.57rem] text-[1.3rem] font-hero-semibold text-navbar-primary-title">
+                            {node.title}
+                        </h2>
+                    </hgroup>
                 </div>
                 <div className="max-w-[135px] self-center flex justify-center overflow-hidden">
                     <div className="flex gap-2">
@@ -134,28 +136,29 @@ const StepsNavbar = ({ selectedNodeTitle }: Props) => {
 
     const renderUnselectedIcon = (node: NavbarNode) => {
         return (
-            <li
-                className="cursor-pointer hover:animate-vertical-shake"
-                onClick={() => {
-                    router.push(`../${node.url}`);
-                }}
-            >
-                <Image src={node.iconPath} alt="icon" width={85} height={85} />
+            <li className="cursor-pointer hover:animate-vertical-shake">
+                <Link href={`../${node.url}`}>
+                    <Image
+                        src={node.iconPath}
+                        alt="icon"
+                        width={82}
+                        height={82}
+                    />
+                </Link>
             </li>
         );
     };
 
     return (
-        <nav className="flex flex-row flex-wrap md:justify-start justify-center">
+        <ul className="steps-list">
             {steps.map((step, index) => (
                 <React.Fragment key={index}>
-                    {step.title === selectedNodeTitle &&
-                        renderSelectedIcon(step, index === steps.length - 1)}
-                    {step.title !== selectedNodeTitle &&
-                        renderUnselectedIcon(step)}
+                    {step.title === selectedNodeTitle
+                        ? renderSelectedIcon(step, index === steps.length - 1)
+                        : renderUnselectedIcon(step)}
                 </React.Fragment>
             ))}
-        </nav>
+        </ul>
     );
 };
 

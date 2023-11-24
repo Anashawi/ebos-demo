@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import Image from "next/image";
 
 import * as customersApi from "../../http-client/customers.client";
@@ -18,7 +17,6 @@ import { array, object, string } from "yup";
 
 const VoiceOfCustomersContent = () => {
     const { data: session }: any = useSession();
-    const router = useRouter();
     const queryClient = useQueryClient();
 
     const emptyUserCustomers = useMemo(() => {
@@ -72,7 +70,7 @@ const VoiceOfCustomersContent = () => {
                     );
                     setChatGPTMessage(getVoiceOfCustomerMessage(newVoices));
                 },
-                onSuccess: updatedVoices => {
+                onSuccess: storedVoices => {
                     queryClient.invalidateQueries([
                         customersApi.Keys.All,
                         userCustomers.id,
@@ -87,14 +85,16 @@ const VoiceOfCustomersContent = () => {
             (userCustomers: IUserCustomers) =>
                 customersApi.insertOne(userCustomers),
             {
-                onMutate: updated => {
+                onMutate: newUserCustomers => {
                     queryClient.setQueryData(
                         [customersApi.Keys.All, userCustomers.id],
-                        updated
+                        newUserCustomers
                     );
-                    setChatGPTMessage(getVoiceOfCustomerMessage(updated));
+                    setChatGPTMessage(
+                        getVoiceOfCustomerMessage(newUserCustomers)
+                    );
                 },
-                onSuccess: updated => {
+                onSuccess: storedUserCustomer => {
                     queryClient.invalidateQueries([
                         customersApi.Keys.All,
                         userCustomers.id,
@@ -127,8 +127,8 @@ const VoiceOfCustomersContent = () => {
 
     return (
         <>
-            <div className="grow flex flex-col gap-8 px-16 py-8 bg-white relative rounded-3xl">
-                <h2 className="title-header">Voice of customers</h2>
+            <section className="form-container">
+                <h3 className="title-header">Voice of customers</h3>
                 {isUserCustomersLoading && (
                     <Spinner
                         className="flex items-center text-2xl"
@@ -152,7 +152,7 @@ const VoiceOfCustomersContent = () => {
                                 how can you fulfill their needs?
                             </p>
                         </div>
-                        <div className="flex gap-4 flex-wrap xl:flex-nowrap p-5 bg-dark-50 rounded-2xl">
+                        <div className="flex gap-4 p-4 bg-dark-50 rounded-2xl overflow-auto">
                             <div className="grow flex flex-col gap-8">
                                 <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
                                     Customer categories
@@ -336,17 +336,25 @@ const VoiceOfCustomersContent = () => {
                         </div>
                         <div className="flex gap-4 justify-end">
                             <button
+                                className={`btn-rev ${
+                                    isUserCustomersLoading ||
+                                    isCreatingUserCustomers ||
+                                    isUpdatingUserCustomers ||
+                                    formik.isSubmitting ||
+                                    !formik.isValid
+                                        ? `btn-disabled`
+                                        : ``
+                                }`}
                                 type="button"
                                 onClick={() => {
                                     formik.handleSubmit();
                                 }}
-                                className={
-                                    formik.isSubmitting || !formik.isValid
-                                        ? "btn-rev btn-disabled"
-                                        : "btn-rev"
-                                }
                                 disabled={
-                                    formik.isSubmitting || !formik.isValid
+                                    isUserCustomersLoading ||
+                                    isCreatingUserCustomers ||
+                                    isUpdatingUserCustomers ||
+                                    formik.isSubmitting ||
+                                    !formik.isValid
                                 }
                             >
                                 Save
@@ -359,7 +367,7 @@ const VoiceOfCustomersContent = () => {
                         </div>
                     </div>
                 )}
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

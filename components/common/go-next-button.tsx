@@ -17,7 +17,7 @@ const GoNextButton = ({
         <div className="self-end">
             <button
                 className={`px-8 py-4 rounded-full text-xl text-md text-white bg-dark-300 hover:shadow-lg ${
-                    !youShallNotPass ? `opacity-50 cursor-not-allowed` : ``
+                    !youShallNotPass ? `btn-disabled` : ``
                 }`}
                 disabled={!youShallNotPass}
                 onClick={() => {

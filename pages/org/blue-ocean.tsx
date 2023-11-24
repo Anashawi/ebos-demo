@@ -97,32 +97,38 @@ const BlueOceanCanvas = () => {
     }, [products, emptyUserProduct, emptyFactor, setUserProduct]);
 
     return (
-        <div className="min-w-[1366px] min-h-[100vh] flex flex-row justify-center gap-16 px-8 py-16 bg-gray-100">
-            <div className="md:max-w-[100px] flex flex-col px-4 py-8 bg-white rounded-full">
+        <div className="content-container">
+            <header className="left-side-main-navigation">
                 <ActionsNavbar
                     selectedStepTitle={stepNamesEnum.blueOceanCanvas}
                 />
-            </div>
-            <div className="grow flex flex-col justify-start gap-8">
-                <StepsNavbar
-                    selectedNodeTitle={stepNamesEnum.blueOceanCanvas}
-                />
-                <div className="flex flex-row justify-center gap-8">
-                    <BlueOceanContent
-                        userProduct={userProduct}
-                        dispatchProducts={products => {
-                            setChartProducts(products);
-                        }}
-                        isLoading={areProductsLoading}
+            </header>
+            <main className="right-side-step-content">
+                <nav className="top-navigation">
+                    <StepsNavbar
+                        selectedNodeTitle={stepNamesEnum.blueOceanCanvas}
                     />
-                    <ChartsContent
-                        videoPropName={videoPropNamesEnum.blueOcean}
-                        videoLabel="Blue Ocean Video"
-                        chartProducts={chartProducts}
-                        isChartDataLoading={areProductsLoading}
-                    />
-                </div>
-            </div>
+                </nav>
+                <article className="main-content">
+                    <article className="forms-container">
+                        <BlueOceanContent
+                            userProduct={userProduct}
+                            dispatchProducts={products => {
+                                setChartProducts(products);
+                            }}
+                            isLoading={areProductsLoading}
+                        />
+                    </article>
+                    <aside className="aside-content">
+                        <ChartsContent
+                            videoPropName={videoPropNamesEnum.blueOcean}
+                            videoLabel="Blue Ocean Video"
+                            chartProducts={chartProducts}
+                            isChartDataLoading={areProductsLoading}
+                        />
+                    </aside>
+                </article>
+            </main>
         </div>
     );
 };

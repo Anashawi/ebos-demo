@@ -110,7 +110,7 @@ const ProductsContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-8 px-16 py-8 bg-white relative rounded-3xl">
+            <section className="form-container">
                 <h3 className="title-header">Pioneer, Migrator, Settler</h3>
                 <Formik
                     initialValues={{
@@ -231,16 +231,17 @@ const ProductsContent = ({
                                                 </div>
                                                 <div className="flex">
                                                     <button
+                                                        className={`btn-primary px-8 ${
+                                                            isCreatingOrUpdating ||
+                                                            isLoading ||
+                                                            isSubmitting
+                                                                ? `btn-disabled`
+                                                                : ``
+                                                        }`}
                                                         type="button"
                                                         onClick={() => {
                                                             push(emptyProduct);
                                                         }}
-                                                        className={`btn-primary px-8 ${
-                                                            isLoading ||
-                                                            isSubmitting
-                                                                ? ` btn-disabled cursor-not-allowed`
-                                                                : ``
-                                                        }`}
                                                         disabled={
                                                             isLoading ||
                                                             isSubmitting
@@ -266,13 +267,14 @@ const ProductsContent = ({
                                                 <div className="flex flex-row justify-end gap-4">
                                                     <button
                                                         type="submit"
-                                                        className={
+                                                        className={`btn-rev ${
+                                                            isCreatingOrUpdating ||
                                                             isSubmitting ||
                                                             (!isValid &&
                                                                 !isValidating)
-                                                                ? "btn-rev btn-disabled cursor-not-allowed"
-                                                                : "btn-rev"
-                                                        }
+                                                                ? `btn-disabled`
+                                                                : ``
+                                                        }`}
                                                         disabled={
                                                             isSubmitting ||
                                                             (!isValid &&
@@ -306,7 +308,7 @@ const ProductsContent = ({
                         );
                     }}
                 </Formik>
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

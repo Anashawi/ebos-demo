@@ -154,6 +154,66 @@ input[type="text"]:focus:not("no-border") {
 }
 
 @layer components {
+    body {
+        @apply bg-gray-100;
+    }
+    .content-container {
+        @apply min-w-[1280px] h-[100vh] flex flex-row justify-center gap-8 px-8 py-16;
+    }
+    .content-container > .left-side-main-navigation {
+        @apply w-1/12 min-h-[84vh];
+    }
+    .content-container > .left-side-main-navigation > .main-navigation {
+        @apply w-full h-[100%] flex flex-col justify-between gap-8 px-4 py-8 bg-white rounded-full;
+    }
+    .content-container
+        > .left-side-main-navigation
+        > .main-navigation
+        .nav-section-ul {
+        @apply flex flex-col justify-between items-center gap-8;
+    }
+    .content-container > .right-side-step-content {
+        @apply w-11/12 flex flex-col justify-start gap-8;
+    }
+    .content-container > .right-side-step-content > .top-navigation {
+        @apply w-full;
+    }
+    .content-container
+        > .right-side-step-content
+        > .top-navigation
+        > .steps-list {
+        @apply flex flex-row flex-wrap md:justify-start justify-center;
+    }
+    .content-container > .right-side-step-content > .main-content {
+        @apply flex flex-row justify-start gap-4;
+    }
+    .content-container
+        > .right-side-step-content
+        > .main-content
+        > .forms-container {
+        @apply w-3/4 relative grow flex flex-col gap-8;
+    }
+    .content-container
+        > .right-side-step-content
+        > .main-content
+        > .forms-container
+        .form-container {
+        @apply grow flex flex-col gap-8 px-8 py-12 bg-white rounded-3xl;
+    }
+    .content-container
+        > .right-side-step-content
+        > .main-content
+        > .aside-content {
+        @apply w-1/4 h-[100%];
+    }
+    .content-container
+        > .right-side-step-content
+        > .main-content
+        > .aside-content
+        > .helpers-modals-and-charts {
+        @apply w-full h-full px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
+    }
+
     .logo-pane {
         @apply text-gray-900 mb-10 flex flex-nowrap justify-end items-center;
     }
@@ -182,7 +242,7 @@ input[type="text"]:focus:not("no-border") {
     }
 
     .btn-primary-light {
-        @apply inline-flex justify-center items-center gap-6 bg-primary text-white px-5 py-4 hover:bg-primary-hover text-xl rounded-full transition duration-200;
+        @apply inline-flex justify-center items-center gap-6 bg-primary text-white px-5 py-4 text-xl border-white border-solid border-2 rounded-2xl hover:bg-primary-hover transition duration-200;
     }
 
     .btn-danger {
@@ -215,10 +275,6 @@ input[type="text"]:focus:not("no-border") {
 
     .title-header {
         @apply text-[2.8rem] text-[#6d7e9a] font-normal;
-    }
-
-    .content-container {
-        @apply flex flex-wrap xl:gap-[1%];
     }
 
     .left-content {

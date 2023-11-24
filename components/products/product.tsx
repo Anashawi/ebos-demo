@@ -224,7 +224,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                                         }
                                                         push(newFuture);
                                                     }}
-                                                    className="w-full btn-primary-light"
+                                                    className="btn-primary w-full"
                                                 >
                                                     <FontAwesomeIcon
                                                         className="w-[0.8rem] h-auto cursor-pointer"
@@ -250,7 +250,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                                                     );
                                                                 }
                                                             }}
-                                                            className="w-full btn-primary-light"
+                                                            className="btn-primary w-full"
                                                         >
                                                             <FontAwesomeIcon
                                                                 className="w-2 h-auto cursor-pointer hover:text-rose-500"
@@ -266,7 +266,7 @@ const Product: NextPage<Props> = ({ product, index, onRemove }) => {
                                             <div className="grow">
                                                 <button
                                                     type="button"
-                                                    className="w-full btn-danger"
+                                                    className="btn-danger w-full"
                                                     onClick={() => {
                                                         setConfirmDialogConfig(
                                                             latestConfig => {

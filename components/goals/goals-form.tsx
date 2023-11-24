@@ -13,6 +13,7 @@ import { Field, FieldArray, Form, Formik, ErrorMessage } from "formik";
 import { array, date, object, string } from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import GoNextButton from "../common/go-next-button";
 
 interface Props {
     fetchedUserGoals: IUserGoals | undefined;
@@ -87,8 +88,8 @@ const GoalsForm = ({
         });
 
     return (
-        <div className="goals-form flex flex-col gap-8">
-            <h2 className="title-header">Goals</h2>
+        <section className="form-container">
+            <h3 className="title-header">Goals</h3>
             <div className="flex flex-col gap-4 bg-dark-50 rounded-2xl p-4">
                 <Formik
                     initialValues={{
@@ -196,7 +197,15 @@ const GoalsForm = ({
                                                             }}
                                                         />
                                                         <button
+                                                            className={`btn-primary px-8 ${
+                                                                !!goalToBeAdded
+                                                                    ? `btn-disabled`
+                                                                    : ``
+                                                            }`}
                                                             type="button"
+                                                            disabled={
+                                                                !goalToBeAdded
+                                                            }
                                                             onClick={() => {
                                                                 push(
                                                                     goalToBeAdded
@@ -205,14 +214,6 @@ const GoalsForm = ({
                                                                     ""
                                                                 );
                                                             }}
-                                                            disabled={
-                                                                !goalToBeAdded
-                                                            }
-                                                            className={
-                                                                !!goalToBeAdded
-                                                                    ? "btn-primary pl-9 pr-8"
-                                                                    : "btn-primary-light pl-9 pr-8 hover:bg-primary-300 cursor-not-allowed"
-                                                            }
                                                         >
                                                             <FontAwesomeIcon
                                                                 className="w-[0.8rem] h-auto cursor-pointer"
@@ -313,15 +314,19 @@ const GoalsForm = ({
                                                         </div>
                                                         <div className="flex justify-end">
                                                             <button
-                                                                type="submit"
-                                                                className={
+                                                                className={`btn-rev ${
                                                                     isSubmitting ||
+                                                                    isCreatingUserGoal ||
+                                                                    isUpdatingUserGoal ||
                                                                     !isValid
-                                                                        ? "btn-rev btn-disabled"
-                                                                        : "btn-rev"
-                                                                }
+                                                                        ? `btn-disabled"`
+                                                                        : ``
+                                                                }`}
+                                                                type="submit"
                                                                 disabled={
                                                                     isSubmitting ||
+                                                                    isCreatingUserGoal ||
+                                                                    isUpdatingUserGoal ||
                                                                     !isValid
                                                                 }
                                                             >
@@ -339,7 +344,13 @@ const GoalsForm = ({
                     )}
                 </Formik>
             </div>
-        </div>
+
+            <GoNextButton
+                stepUri={`../org/products`}
+                nextStepTitle={`Pioneer Migrator Settler`}
+                clickable={userGoals.goals.length > 0}
+            />
+        </section>
     );
 };
 

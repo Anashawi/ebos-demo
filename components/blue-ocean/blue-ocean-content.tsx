@@ -109,7 +109,7 @@ const BlueOceanContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-4 px-8 py-8 bg-white relative rounded-3xl">
+            <section className="form-container">
                 <h2 className="title-header">Blue Ocean Canvas</h2>
                 <Formik
                     initialValues={{
@@ -263,7 +263,7 @@ const BlueOceanContent = ({
                         );
                     }}
                 </Formik>
-            </div>
+            </section>
             <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );

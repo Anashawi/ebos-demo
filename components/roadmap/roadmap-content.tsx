@@ -11,7 +11,7 @@ import Chat from "../common/openai-chat/openai-chat";
 import { stepTenTranscript } from "../common/openai-chat/openai-transcript";
 import { getIdeasMessage } from "../common/openai-chat/custom-messages";
 
-import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DeleteButton from "../common/delete-button";
 
@@ -107,16 +107,16 @@ const RoadMapContent = ({
 
     return (
         <>
-            <div className="grow flex flex-col gap-8 px-8 py-4 bg-white relative rounded-3xl">
-                <h2 className="title-header">Roadmap</h2>
+            <div className="form-container">
+                <h3 className="title-header">Roadmap</h3>
                 <div className="flex flex-col gap-8 p-4 bg-dark-50 rounded-2xl">
-                    <h3 className="text-dark-400 text-[1.75rem] font-hero-semibold">
+                    <h4 className="text-dark-400 text-[1.75rem] font-hero-semibold">
                         Create a timeline for your ideas
-                    </h3>
+                    </h4>
                     <form className="flex flex-col gap-4">
                         <div className="flex flex-col">
                             <label className="text-xl">Start date</label>
-                            <div className="flex">
+                            <div className="flex flex-col w-1/6">
                                 <input
                                     type="month"
                                     value={userIdeas.startDate}
@@ -129,7 +129,7 @@ const RoadMapContent = ({
                                 />
                             </div>
                         </div>
-                        <ul className="flex flex-col gap-6 overflow-auto">
+                        <ul className="flex flex-col gap-4 overflow-auto">
                             {isLoading && (
                                 <Spinner
                                     className="flex items-center px-1 text-2xl"
@@ -146,7 +146,7 @@ const RoadMapContent = ({
                             {isNotLoadingWithIdeas &&
                                 userIdeas.ideas.map((idea, index) => (
                                     <li key={index} className="flex gap-2">
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col w-2/6">
                                             <label className="text-xl">
                                                 Idea
                                             </label>
@@ -163,7 +163,7 @@ const RoadMapContent = ({
                                                 className="light-input"
                                             />
                                         </div>
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col w-1/6">
                                             <label className="text-xl">
                                                 Start (month)
                                             </label>
@@ -186,7 +186,7 @@ const RoadMapContent = ({
                                                 className="light-input"
                                             />
                                         </div>
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col w-2/6">
                                             <label className="text-xl">
                                                 Idea Owner
                                             </label>
@@ -205,7 +205,7 @@ const RoadMapContent = ({
                                                 className="light-input"
                                             />
                                         </div>
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col w-1/6">
                                             <label className="text-xl">
                                                 Duration (months)
                                             </label>
