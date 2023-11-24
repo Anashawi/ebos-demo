@@ -6,8 +6,8 @@
     margin: 2rem;
     display: flex;
     flex-direction: column;
-    max-width: 40rem;
-    max-height: 80vh;
+    width: 40rem;
+    height: 80vh;
 }
 
 .chatWrapper {
@@ -18,13 +18,13 @@
 }
 
 .chatContainer {
-    min-height: 50vh;
-    max-height: 80vh;
+    width: 40rem;
+    height: 80vh;
 }
 
 .chatButton {
     background-color: #fff;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    position: fixed;
+    bottom: 2rem;
+    right: 3rem;
 }

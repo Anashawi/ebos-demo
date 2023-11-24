@@ -150,84 +150,86 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.chatWrapper}>
-                <div className={styles.chatContainer}>
-                    {isChatVisible && (
-                        <MainContainer>
-                            <ChatContainer>
-                                <ConversationHeader>
-                                    <ConversationHeader.Content
-                                        userName="OpenAI"
-                                        info="model gpt-3.5-turbo"
+        <>
+            {isChatVisible && (
+                <div className={styles.container}>
+                    <div className={styles.chatWrapper}>
+                        <div className={styles.chatContainer}>
+                            <MainContainer>
+                                <ChatContainer>
+                                    <ConversationHeader>
+                                        <ConversationHeader.Content
+                                            userName="OpenAI"
+                                            info="model gpt-3.5-turbo"
+                                        />
+                                        <ConversationHeader.Actions>
+                                            <Button
+                                                title="Close Chat"
+                                                onClick={() =>
+                                                    setIsChatVisible(
+                                                        !isChatVisible
+                                                    )
+                                                }
+                                                icon={
+                                                    <FontAwesomeIcon
+                                                        icon={faAngleDown}
+                                                        className="w-4"
+                                                    />
+                                                }
+                                            ></Button>
+                                        </ConversationHeader.Actions>
+                                    </ConversationHeader>
+                                    <MessageList
+                                        typingIndicator={
+                                            waitingForResponse && (
+                                                <TypingIndicator content="ChatGPT is typing" />
+                                            )
+                                        }
+                                    >
+                                        {displayedMessages.map(
+                                            (message, index) => {
+                                                return (
+                                                    <Message
+                                                        key={index}
+                                                        model={{
+                                                            message:
+                                                                message.content,
+                                                            sentTime: `${message.sentTime}`,
+                                                            sender: message.sender,
+                                                            direction:
+                                                                message.direction,
+                                                            position: "single",
+                                                            type: "text",
+                                                        }}
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    </MessageList>
+                                    <MessageInput
+                                        placeholder="Type message here"
+                                        onSend={sendMessage}
+                                        autoFocus={true}
+                                        attachButton={false}
+                                        sendButton={false} // if true, it needs width 40px to work
+                                        disabled={waitingForResponse}
+                                        ref={messageInput}
                                     />
-                                    <ConversationHeader.Actions>
-                                        <Button
-                                            title="Close Chat"
-                                            onClick={() =>
-                                                setIsChatVisible(!isChatVisible)
-                                            }
-                                            icon={
-                                                <FontAwesomeIcon
-                                                    icon={faAngleDown}
-                                                    className="w-4"
-                                                />
-                                            }
-                                        ></Button>
-                                    </ConversationHeader.Actions>
-                                </ConversationHeader>
-                                <MessageList
-                                    typingIndicator={
-                                        waitingForResponse && (
-                                            <TypingIndicator content="ChatGPT is typing" />
-                                        )
-                                    }
-                                >
-                                    {displayedMessages.map((message, index) => {
-                                        return (
-                                            <Message
-                                                key={index}
-                                                model={{
-                                                    message: message.content,
-                                                    sentTime: `${message.sentTime}`,
-                                                    sender: message.sender,
-                                                    direction:
-                                                        message.direction,
-                                                    position: "single",
-                                                    type: "text",
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </MessageList>
-                                <MessageInput
-                                    placeholder="Type message here"
-                                    onSend={sendMessage}
-                                    autoFocus={true}
-                                    attachButton={false}
-                                    sendButton={false} // if true, it needs width 40px to work
-                                    disabled={waitingForResponse}
-                                    ref={messageInput}
-                                />
-                            </ChatContainer>
-                        </MainContainer>
-                    )}
-                    {!isChatVisible && (
-                        <Button
-                            title="Open Chat"
-                            className={styles.chatButton}
-                            onClick={() => setIsChatVisible(!isChatVisible)}
-                            border
-                            icon={
-                                <FontAwesomeIcon
-                                    icon={faComment}
-                                    className="w-14"
-                                />
-                            }
-                        ></Button>
-                    )}
+                                </ChatContainer>
+                            </MainContainer>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            )}
+            {!isChatVisible && (
+                <Button
+                    title="Open Chat"
+                    className={styles.chatButton}
+                    onClick={() => setIsChatVisible(!isChatVisible)}
+                    border
+                    icon={<FontAwesomeIcon icon={faComment} className="w-14" />}
+                ></Button>
+            )}
+        </>
     );
 }
