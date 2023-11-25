@@ -8,8 +8,6 @@ import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 
 import Spinner from "../../components/common/spinner";
 import RoadMapContent from "../../components/roadmap/roadmap-content";
-import StepsNavbar from "../../components/common/steps-navbar";
-import ActionsNavbar from "../../components/common/actions-navbar";
 import ChartsContent from "../../components/common/charts-content";
 import RoadmapChart from "../../components/roadmap/roadmap-chart";
 
@@ -44,54 +42,48 @@ const RoadMap = () => {
     }, [fetchedIdeas]);
 
     return (
-        <div className="content-container">
-            <header className="left-side-main-navigation">
-                <ActionsNavbar selectedStepTitle={stepNamesEnum.roadMap} />
-            </header>
-            <main className="right-side-step-content">
-                <nav className="top-navigation">
-                    <StepsNavbar selectedNodeTitle={stepNamesEnum.roadMap} />
-                </nav>
-                <article className="main-content">
-                    <article className="forms-container">
-                        <RoadMapContent
-                            userIdeas={userIdeas}
-                            dispatchUserIdeas={setUserIdeas}
-                            todayDateStr={todayDateStr}
-                            isLoading={areIdeasLoading}
-                        />
-                    </article>
-                    <aside className="aside-content">
-                        <ChartsContent
-                            videoPropName={videoPropNamesEnum.roadMap}
-                            videoLabel="Road Map Video"
-                            chartProducts={[]}
-                            isChartDataLoading={false}
-                        />
-                    </aside>
+        <>
+            <article className="main-content">
+                <article className="forms-container">
+                    <RoadMapContent
+                        userIdeas={userIdeas}
+                        dispatchUserIdeas={setUserIdeas}
+                        todayDateStr={todayDateStr}
+                        isLoading={areIdeasLoading}
+                    />
                 </article>
-                <div className="p-8 rounded-2xl bg-white">
-                    {areIdeasLoading && (
-                        <Spinner
-                            className="flex items-center px-1 text-2xl"
-                            message="Loading roadmap ideas chart..."
-                        />
-                    )}
-                    {!areIdeasLoading && userIdeas.ideas.length === 0 && (
-                        <div className="w-full flex items-center">
-                            <p className="text-2xl text-center italic">
-                                Start adding your ideas to see roadmap ideas
-                                chart...
-                            </p>
-                        </div>
-                    )}
-                    {!areIdeasLoading && userIdeas.ideas.length > 0 && (
-                        <RoadmapChart userIdeas={userIdeas} />
-                    )}
-                </div>
-            </main>
-        </div>
+                <aside className="aside-content">
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.roadMap}
+                        videoLabel="Road Map Video"
+                        chartProducts={[]}
+                        isChartDataLoading={false}
+                    />
+                </aside>
+            </article>
+            <div className="p-8 rounded-2xl bg-white">
+                {areIdeasLoading && (
+                    <Spinner
+                        className="flex items-center px-1 text-2xl"
+                        message="Loading roadmap ideas chart..."
+                    />
+                )}
+                {!areIdeasLoading && userIdeas.ideas.length === 0 && (
+                    <div className="w-full flex items-center">
+                        <p className="text-2xl text-center italic">
+                            Start adding your ideas to see roadmap ideas
+                            chart...
+                        </p>
+                    </div>
+                )}
+                {!areIdeasLoading && userIdeas.ideas.length > 0 && (
+                    <RoadmapChart userIdeas={userIdeas} />
+                )}
+            </div>
+        </>
     );
 };
+
+RoadMap.stepTitle = stepNamesEnum.roadMap;
 
 export default RoadMap;

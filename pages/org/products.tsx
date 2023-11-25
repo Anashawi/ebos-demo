@@ -7,8 +7,6 @@ import { IUserProduct } from "../../models/user-product";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IProduct } from "../../models/types";
 
-import ActionsNavbar from "../../components/common/actions-navbar";
-import StepsNavbar from "../../components/common/steps-navbar";
 import ProductsContent from "../../components/products/products-content";
 import ChartsContent from "../../components/common/charts-content";
 
@@ -41,38 +39,26 @@ const Products = () => {
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
     return (
-        <div className="content-container">
-            <header className="left-side-main-navigation">
-                <ActionsNavbar
-                    selectedStepTitle={stepNamesEnum.pioneerMigratorSettler}
+        <article className="main-content">
+            <article className="forms-container">
+                <ProductsContent
+                    userProduct={userProducts}
+                    isLoading={isUserProductsLoading}
+                    dispatchChartProducts={setChartProducts}
                 />
-            </header>
-            <main className="right-side-step-content">
-                <nav className="top-navigation">
-                    <StepsNavbar
-                        selectedNodeTitle={stepNamesEnum.pioneerMigratorSettler}
-                    />
-                </nav>
-                <article className="main-content">
-                    <article className="forms-container">
-                        <ProductsContent
-                            userProduct={userProducts}
-                            isLoading={isUserProductsLoading}
-                            dispatchChartProducts={setChartProducts}
-                        />
-                    </article>
-                    <aside className="aside-content">
-                        <ChartsContent
-                            videoPropName={videoPropNamesEnum.products}
-                            videoLabel="Products Video"
-                            chartProducts={chartProducts}
-                            isChartDataLoading={isUserProductsLoading}
-                        />
-                    </aside>
-                </article>
-            </main>
-        </div>
+            </article>
+            <aside className="aside-content">
+                <ChartsContent
+                    videoPropName={videoPropNamesEnum.products}
+                    videoLabel="Products Video"
+                    chartProducts={chartProducts}
+                    isChartDataLoading={isUserProductsLoading}
+                />
+            </aside>
+        </article>
     );
 };
+
+Products.stepTitle = stepNamesEnum.pioneerMigratorSettler;
 
 export default Products;

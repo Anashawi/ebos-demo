@@ -6,8 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { IUserAnalysis } from "../../models/user-analysis";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 
-import ActionsNavbar from "../../components/common/actions-navbar";
-import StepsNavbar from "../../components/common/steps-navbar";
 import StepUpStepDownContent from "../../components/step-up-step-down/step-up-step-down-content";
 import ChartsContent from "../../components/common/charts-content";
 
@@ -40,40 +38,26 @@ const Analysis = () => {
     }, [fetchedAnalysis]);
 
     return (
-        <div className="content-container">
-            <header className="left-side-main-navigation">
-                <ActionsNavbar
-                    selectedStepTitle={stepNamesEnum.stepUpStepDownModel}
+        <article className="main-content">
+            <article className="forms-container">
+                <StepUpStepDownContent
+                    userAnalysis={userAnalysis}
+                    dispatchUserAnalysis={setUserAnalysis}
+                    isLoading={isAnalysisLoading}
                 />
-            </header>
-            <main className="right-side-step-content">
-                <nav className="top-navigation">
-                    <StepsNavbar
-                        selectedNodeTitle={stepNamesEnum.stepUpStepDownModel}
-                    />
-                </nav>
-                <article className="main-content">
-                    <article className="forms-container">
-                        <StepUpStepDownContent
-                            userAnalysis={userAnalysis}
-                            dispatchUserAnalysis={setUserAnalysis}
-                            isLoading={isAnalysisLoading}
-                        />
-                    </article>
-                    <aside className="aside-content">
-                        <ChartsContent
-                            videoPropName={
-                                videoPropNamesEnum.stepUpStepDownModel
-                            }
-                            videoLabel="Step Up Step Down Model Video"
-                            chartProducts={[userAnalysis]}
-                            isChartDataLoading={isAnalysisLoading}
-                        />
-                    </aside>
-                </article>
-            </main>
-        </div>
+            </article>
+            <aside className="aside-content">
+                <ChartsContent
+                    videoPropName={videoPropNamesEnum.stepUpStepDownModel}
+                    videoLabel="Step Up Step Down Model Video"
+                    chartProducts={[userAnalysis]}
+                    isChartDataLoading={isAnalysisLoading}
+                />
+            </aside>
+        </article>
     );
 };
+
+Analysis.stepTitle = stepNamesEnum.stepUpStepDownModel;
 
 export default Analysis;

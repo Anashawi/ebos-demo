@@ -7,8 +7,6 @@ import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { ICompetitor, IProduct } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
 
-import ActionsNavbar from "../../components/common/actions-navbar";
-import StepsNavbar from "../../components/common/steps-navbar";
 import MarketPotentialContent from "../../components/market-potential/market-potential-content";
 import ChartsContent from "../../components/common/charts-content";
 
@@ -65,58 +63,25 @@ const Competitors = () => {
     }, [fetchedUserProducts, userProducts?.products]);
 
     return (
-        <div className="content-container">
-            <header className="left-side-main-navigation">
-                <ActionsNavbar
-                    selectedStepTitle={stepNamesEnum.marketPotential}
+        <article className="main-content">
+            <article className="forms-container">
+                <MarketPotentialContent
+                    userProduct={userProducts}
+                    isLoading={areProductsLoading}
+                    setChartProducts={setChartProducts}
                 />
-            </header>
-            <main className="right-side-step-content">
-                <nav className="top-navigation">
-                    <StepsNavbar
-                        selectedNodeTitle={stepNamesEnum.marketPotential}
-                    />
-                </nav>
-                <article className="main-content">
-                    <article className="forms-container">
-                        <MarketPotentialContent
-                            userProduct={userProducts}
-                            isLoading={areProductsLoading}
-                            setChartProducts={setChartProducts}
-                        />
-                    </article>
-                    <aside className="aside-content">
-                        <ChartsContent
-                            videoPropName={videoPropNamesEnum.marketPotential}
-                            videoLabel="Market Potential Video"
-                            chartProducts={chartProducts}
-                        />
-                    </aside>
-                </article>
-            </main>
-        </div>
+            </article>
+            <aside className="aside-content">
+                <ChartsContent
+                    videoPropName={videoPropNamesEnum.marketPotential}
+                    videoLabel="Market Potential Video"
+                    chartProducts={chartProducts}
+                />
+            </aside>
+        </article>
     );
 };
-{
-    /* <div className='w-1/2'>
-							<div className='flex flex-wrap justify-start items-center gap-4 pl-10 py-5 mx-auto'>
-								<ConsultantReview
-									pageTitle={"Market potential"}></ConsultantReview>
-								{(session?.user as any)?.role === "admin" && (
-									<button
-										className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-										onClick={() => toggleEditVideoModal(true)}>
-										<span>Edit video Url</span>
-										<FontAwesomeIcon className='w-7' icon={faEdit} />
-									</button>
-								)}
-								<button
-									className='p-3 rounded inline-flex gap-5 items-center btn text-black-eerie hover:text-blue-ncs w-max'
-									onClick={() => toggleVideoModal(true)}>
-									<span>Watch Video Tutorial</span>
-									<FontAwesomeIcon className='w-7' icon={faEye} />
-								</button>
-							</div>
-						</div> */
-}
+
+Competitors.stepTitle = stepNamesEnum.marketPotential;
+
 export default Competitors;

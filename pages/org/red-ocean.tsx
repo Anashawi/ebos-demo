@@ -7,8 +7,6 @@ import { IUserProduct } from "../../models/user-product";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IFactor, IProduct } from "../../models/types";
 
-import ActionsNavbar from "../../components/common/actions-navbar";
-import StepsNavbar from "../../components/common/steps-navbar";
 import RedOceanContent from "../../components/red-ocean/red-ocean-content";
 import ChartsContent from "../../components/common/charts-content";
 
@@ -95,40 +93,28 @@ const RedOceanCanvas = () => {
     }, [fetchedUserProducts]);
 
     return (
-        <div className="content-container">
-            <header className="left-side-main-navigation">
-                <ActionsNavbar
-                    selectedStepTitle={stepNamesEnum.redOceanCanvas}
+        <article className="main-content">
+            <article className="forms-container">
+                <RedOceanContent
+                    userProduct={userProducts}
+                    dispatchChartProducts={products => {
+                        setChartProducts(products);
+                    }}
+                    isLoading={areUserProductsLoading}
                 />
-            </header>
-            <main className="right-side-step-content">
-                <nav className="top-navigation">
-                    <StepsNavbar
-                        selectedNodeTitle={stepNamesEnum.redOceanCanvas}
-                    />
-                </nav>
-                <article className="main-content">
-                    <article className="forms-container">
-                        <RedOceanContent
-                            userProduct={userProducts}
-                            dispatchChartProducts={products => {
-                                setChartProducts(products);
-                            }}
-                            isLoading={areUserProductsLoading}
-                        />
-                    </article>
-                    <aside className="aside-content">
-                        <ChartsContent
-                            videoPropName={videoPropNamesEnum.redOcean}
-                            videoLabel="Red Ocean Video"
-                            chartProducts={chartProducts}
-                            isChartDataLoading={areUserProductsLoading}
-                        />
-                    </aside>
-                </article>
-            </main>
-        </div>
+            </article>
+            <aside className="aside-content">
+                <ChartsContent
+                    videoPropName={videoPropNamesEnum.redOcean}
+                    videoLabel="Red Ocean Video"
+                    chartProducts={chartProducts}
+                    isChartDataLoading={areUserProductsLoading}
+                />
+            </aside>
+        </article>
     );
 };
+
+RedOceanCanvas.stepTitle = stepNamesEnum.redOceanCanvas;
 
 export default RedOceanCanvas;
