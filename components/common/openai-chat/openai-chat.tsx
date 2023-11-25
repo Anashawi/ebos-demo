@@ -11,16 +11,26 @@ import {
     MessageList,
     TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
-import { faComment, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+    faComment,
+    faAngleDown,
+    faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import styles from "../../../styles/Chat.module.css";
-
+enum MessageSendBy {
+    ChatGpt = "ChatGPT",
+    You = "You",
+}
+enum MessageDirection {
+    Incoming = "incoming",
+    Outgoing = "outgoing",
+}
 type Message = {
     content: string;
     sentTime: number;
-    sender: string;
-    direction: "incoming" | "outgoing";
+    sender: MessageSendBy;
+    direction: MessageDirection;
 };
 
 enum ChatCompletionRequestMessageRoleEnum {
@@ -30,83 +40,87 @@ enum ChatCompletionRequestMessageRoleEnum {
     Function = "function",
 }
 
-const CHATGPT_USER = "ChatGPT";
-const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
+enum ChatGPTIs {
+    Idle = "idle",
+    Learning = "learning",
+    Typing = "typing",
+}
+enum ChatIs {
+    Minimized = "minimized",
+    Maximized = "maximized",
+    Disabled = "disabled",
+}
 
 export default function Chat({ initialMessage }: { initialMessage: string }) {
+    const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
+
     const openai = new OpenAI({
         apiKey: "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",
         dangerouslyAllowBrowser: true,
     });
     const messageInput = useRef<HTMLDivElement>(null);
-
-    // chat messages between system/user/AI [required for AI]
+    // history of all chat messages between system/user/AI [required for AI]
     const [openAIMessages, setOpenAIMessages] = useState<
         OpenAI.Chat.Completions.ChatCompletionMessageParam[]
     >([]);
-    // chat messages that are displayed in the chat box
+    // only the chat messages that are displayed in the chat box
     const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
-    const [isChatVisible, setIsChatVisible] = useState(false);
-    const [waitingForResponse, setWaitingForResponse] = useState(false);
-    const [isAILearning, setIsAILearning] = useState(false);
+    const [state, setState] = useState<ChatIs>(ChatIs.Minimized);
+    const [chatGPTState, setChatGPTState] = useState<ChatGPTIs>(ChatGPTIs.Idle);
 
     useEffect(() => {
-        if (!waitingForResponse) {
+        if (chatGPTState === ChatGPTIs.Idle) {
             messageInput.current?.focus();
         }
-    }, [waitingForResponse]);
+    }, [chatGPTState]);
 
     useEffect(() => {
-        if (initialMessage) {
-            sendSystemMessage(initialMessage);
+        if (state !== ChatIs.Disabled && initialMessage) {
+            sendHiddenSystemMessage(initialMessage);
         }
-    }, [initialMessage]);
+    }, [state, initialMessage]);
 
     // Feature: system messages/response are not displayed on the chat ui
-    const sendSystemMessage = async (automaticallyGenSystemMsg: string) => {
+    const sendHiddenSystemMessage = async (
+        automaticallyGenSystemMsg: string
+    ) => {
         const newOpenAIMessages = [...openAIMessages];
 
         // outgoing AI message
         const newOpenAIMessage = {
             role: ChatCompletionRequestMessageRoleEnum.System,
             content: automaticallyGenSystemMsg,
-        };
+        } as OpenAI.Chat.Completions.ChatCompletionMessageParam;
         newOpenAIMessages.push(newOpenAIMessage);
         setOpenAIMessages([...newOpenAIMessages]);
 
-        setIsAILearning(true);
-        await sendMessagesAndGetResponse(newOpenAIMessages);
-        setIsAILearning(false);
-        setTimeout(() => console.log(openAIMessages), 500);
+        setChatGPTState(ChatGPTIs.Learning);
+        newOpenAIMessages.push({
+            role: ChatCompletionRequestMessageRoleEnum.Assistant,
+            content: await sendMessagesAndGetResponse(newOpenAIMessages),
+        } as OpenAI.Chat.Completions.ChatCompletionMessageParam);
+        setOpenAIMessages([...newOpenAIMessages]);
+        setChatGPTState(ChatGPTIs.Idle);
     };
 
     const sendMessagesAndGetResponse = async (
         newOpenAIMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[]
-    ) => {
+    ): Promise<string> => {
         try {
             const chatRepsonse = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo-1106",
                 messages: [...newOpenAIMessages], // openAI requires all old msgs
             });
-            const newOpenAIMessage = {
-                role: ChatCompletionRequestMessageRoleEnum.Assistant,
-                content: chatRepsonse["choices"][0]["message"]["content"] ?? "",
-            };
-            newOpenAIMessages.push(newOpenAIMessage);
-            setOpenAIMessages([...newOpenAIMessages]);
+            return chatRepsonse["choices"][0]["message"]["content"] ?? "";
         } catch (error) {
+            let errorMessage =
+                "Oops, something unexpected went wrong... try again later";
+            const newDisplayedMessages = [...displayedMessages];
             if (error instanceof OpenAI.APIError) {
-                if (error.status === 429) {
-                    const newDisplayedMessages = [...displayedMessages];
-                    newDisplayedMessages.push({
-                        content:
-                            "Rate limit reached. Limit: 3 / min. Please try again in 20s",
-                        sentTime: Math.floor(Date.now() / 1000),
-                        sender: CHATGPT_USER,
-                        direction: "incoming",
-                    } as Message);
-                    setDisplayedMessages([...newDisplayedMessages]);
-                }
+                if (error.status === 429)
+                    errorMessage =
+                        "Rate limit reached. Limit: 3 / min. Please try again in 20s";
+
                 console.error(error.status); // e.g. 401
                 console.error(error.message); // e.g. The authentication token you passed was invalid...
                 console.error(error.code); // e.g. 'invalid_api_key'
@@ -115,10 +129,18 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                 // Non-API error
                 console.log(error);
             }
+            setDisplayedMessages([...newDisplayedMessages]);
+            newDisplayedMessages.push({
+                content: errorMessage,
+                sentTime: Math.floor(Date.now() / 1000),
+                sender: MessageSendBy.ChatGpt,
+                direction: MessageDirection.Incoming,
+            } as Message);
+            return errorMessage;
         }
     };
 
-    const sendUserMessage = async (
+    const sendShownUserMessage = async (
         innerHtml: string,
         textContent: string,
         innerText: string,
@@ -137,16 +159,15 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         const newDisplayedMessage: Message = {
             content: textContent,
             sentTime: Math.floor(Date.now() / 1000),
-            sender: "You",
-            direction: "outgoing",
+            sender: MessageSendBy.You,
+            direction: MessageDirection.Outgoing,
         };
         newDisplayedMessages.push(newDisplayedMessage);
         setDisplayedMessages([...newDisplayedMessages]);
 
-        setWaitingForResponse(true);
+        setChatGPTState(ChatGPTIs.Typing);
         await streamResponse(newOpenAIMessages, newDisplayedMessages);
-        setWaitingForResponse(false);
-        setTimeout(() => console.log(openAIMessages), 500);
+        setChatGPTState(ChatGPTIs.Idle);
     };
 
     const streamResponse = async (
@@ -156,8 +177,8 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         const newDisplayedMessageResponse: Message = {
             content: "",
             sentTime: Math.floor(Date.now() / 1000),
-            sender: CHATGPT_USER,
-            direction: "incoming",
+            sender: MessageSendBy.ChatGpt,
+            direction: MessageDirection.Incoming,
         };
         newDisplayedMessages.push(newDisplayedMessageResponse);
 
@@ -206,10 +227,10 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
 
     return (
         <>
-            {isChatVisible && (
-                <div className={styles.container}>
-                    <div className={styles.chatWrapper}>
-                        <div className={styles.chatContainer}>
+            {state === ChatIs.Maximized && (
+                <div className="chatgpt-outer-container">
+                    <div className="chatgpt-wrapper">
+                        <div className="chatgpt-container">
                             <MainContainer>
                                 <ChatContainer>
                                     <ConversationHeader>
@@ -219,16 +240,26 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                         />
                                         <ConversationHeader.Actions>
                                             <Button
-                                                title="Close Chat"
+                                                title="Minimize Chat"
                                                 onClick={() =>
-                                                    setIsChatVisible(
-                                                        !isChatVisible
-                                                    )
+                                                    setState(ChatIs.Minimized)
                                                 }
                                                 icon={
                                                     <FontAwesomeIcon
                                                         icon={faAngleDown}
-                                                        className="w-4"
+                                                        className="w-9 px-2"
+                                                    />
+                                                }
+                                            ></Button>
+                                            <Button
+                                                title="Close Chat"
+                                                onClick={() =>
+                                                    setState(ChatIs.Disabled)
+                                                }
+                                                icon={
+                                                    <FontAwesomeIcon
+                                                        icon={faTimes}
+                                                        className="w-8 px-2"
                                                     />
                                                 }
                                             ></Button>
@@ -236,14 +267,12 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                     </ConversationHeader>
                                     <MessageList
                                         typingIndicator={
-                                            (waitingForResponse ||
-                                                isAILearning) && (
+                                            (chatGPTState ===
+                                                ChatGPTIs.Typing ||
+                                                chatGPTState ===
+                                                    ChatGPTIs.Learning) && (
                                                 <TypingIndicator
-                                                    content={`ChatGPT is ${
-                                                        isAILearning
-                                                            ? `learning`
-                                                            : `typing`
-                                                    }`}
+                                                    content={`ChatGPT is ${chatGPTState}`}
                                                 />
                                             )
                                         }
@@ -270,11 +299,14 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                                     </MessageList>
                                     <MessageInput
                                         placeholder="Type message here"
-                                        onSend={sendUserMessage}
+                                        onSend={sendShownUserMessage}
                                         autoFocus={true}
                                         attachButton={false}
                                         sendButton={false} // if true, it needs width 40px to work
-                                        disabled={waitingForResponse}
+                                        disabled={
+                                            chatGPTState === ChatGPTIs.Typing ||
+                                            chatGPTState === ChatGPTIs.Learning
+                                        }
                                         ref={messageInput}
                                     />
                                 </ChatContainer>
@@ -283,11 +315,11 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
                     </div>
                 </div>
             )}
-            {!isChatVisible && (
+            {state === ChatIs.Minimized && (
                 <Button
                     title="Open Chat"
-                    className={styles.chatButton}
-                    onClick={() => setIsChatVisible(!isChatVisible)}
+                    className="chatgpt-button"
+                    onClick={() => setState(ChatIs.Maximized)}
                     border
                     icon={<FontAwesomeIcon icon={faComment} className="w-14" />}
                 ></Button>

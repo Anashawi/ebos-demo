@@ -286,6 +286,38 @@ input[type="text"]:focus:not("no-border") {
     }
 }
 
+/* openAI chatGPT chat box */
+.chatgpt-outer-container {
+    width: 40rem;
+    height: 80vh;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 99;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.chatgpt-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.chatgpt-container {
+    width: 40rem;
+    height: 80vh;
+}
+
+.chatgpt-button {
+    background-color: #fff;
+    position: fixed;
+    bottom: 2rem;
+    right: 3rem;
+}
+
 .btn-disabled {
     cursor: not-allowed;
     opacity: 0.5;
