@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import OpenAI from "openai";
 import {
+    Avatar,
     Button,
     ChatContainer,
     ConversationHeader,
@@ -11,11 +12,7 @@ import {
     MessageList,
     TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
-import {
-    faComment,
-    faAngleDown,
-    faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faComment, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 enum MessageSendBy {
@@ -51,7 +48,11 @@ enum ChatIs {
     Disabled = "disabled",
 }
 
-export default function Chat({ initialMessage }: { initialMessage: string }) {
+export default function OpenAIChat({
+    initialMessage,
+}: {
+    initialMessage: string;
+}) {
     const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
 
     const openai = new OpenAI({
@@ -78,7 +79,7 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
         if (state !== ChatIs.Disabled && initialMessage) {
             sendHiddenSystemMessage(initialMessage);
         }
-    }, [state, initialMessage]);
+    }, [initialMessage]);
 
     // Feature: system messages/response are not displayed on the chat ui
     const sendHiddenSystemMessage = async (
@@ -228,102 +229,95 @@ export default function Chat({ initialMessage }: { initialMessage: string }) {
     return (
         <>
             {state === ChatIs.Maximized && (
-                <div className="chatgpt-outer-container">
-                    <div className="chatgpt-wrapper">
-                        <div className="chatgpt-container">
-                            <MainContainer>
-                                <ChatContainer>
-                                    <ConversationHeader>
-                                        <ConversationHeader.Content
-                                            userName="AI Chat Assistant"
-                                            info={`model ${CHATGPT_MODEL}`}
-                                        />
-                                        <ConversationHeader.Actions>
-                                            <Button
-                                                title="Minimize Chat"
-                                                onClick={() =>
-                                                    setState(ChatIs.Minimized)
-                                                }
-                                                icon={
-                                                    <FontAwesomeIcon
-                                                        icon={faAngleDown}
-                                                        className="w-9 px-2"
-                                                    />
-                                                }
-                                            ></Button>
-                                            <Button
-                                                title="Close Chat"
-                                                onClick={() =>
-                                                    setState(ChatIs.Disabled)
-                                                }
-                                                icon={
-                                                    <FontAwesomeIcon
-                                                        icon={faTimes}
-                                                        className="w-8 px-2"
-                                                    />
-                                                }
-                                            ></Button>
-                                        </ConversationHeader.Actions>
-                                    </ConversationHeader>
-                                    <MessageList
-                                        typingIndicator={
-                                            (chatGPTState ===
-                                                ChatGPTIs.Typing ||
-                                                chatGPTState ===
-                                                    ChatGPTIs.Learning) && (
-                                                <TypingIndicator
-                                                    content={`ChatGPT is ${chatGPTState}`}
-                                                />
-                                            )
-                                        }
-                                    >
-                                        {displayedMessages.map(
-                                            (message, index) => {
-                                                return (
-                                                    <Message
-                                                        key={index}
-                                                        model={{
-                                                            message:
-                                                                message.content,
-                                                            sentTime: `${message.sentTime}`,
-                                                            sender: message.sender,
-                                                            direction:
-                                                                message.direction,
-                                                            position: "single",
-                                                            type: "text",
-                                                        }}
-                                                    />
-                                                );
-                                            }
-                                        )}
-                                    </MessageList>
-                                    <MessageInput
-                                        placeholder="Type message here"
-                                        onSend={sendShownUserMessage}
-                                        autoFocus={true}
-                                        attachButton={false}
-                                        sendButton={false} // if true, it needs width 40px to work
-                                        disabled={
-                                            chatGPTState === ChatGPTIs.Typing ||
-                                            chatGPTState === ChatGPTIs.Learning
-                                        }
-                                        ref={messageInput}
+                <MainContainer className="chatgpt-main-container">
+                    <ChatContainer>
+                        <ConversationHeader className="chatgpt-header">
+                            <Avatar src="/settings.svg" name="ChatGPT" />
+                            <ConversationHeader.Content
+                                className="chatgpt-header"
+                                userName="AI Assistant"
+                                info={`model chat${CHATGPT_MODEL}`}
+                            />
+                            <ConversationHeader.Actions>
+                                <Button
+                                    className="w-6 text-white"
+                                    title="Disable Chat"
+                                    onClick={() => setState(ChatIs.Disabled)}
+                                    icon={<FontAwesomeIcon icon={faTimes} />}
+                                ></Button>
+                            </ConversationHeader.Actions>
+                        </ConversationHeader>
+                        <MessageList
+                            className="chatgpt-messages-container"
+                            typingIndicator={
+                                (chatGPTState === ChatGPTIs.Typing ||
+                                    chatGPTState === ChatGPTIs.Learning) && (
+                                    <TypingIndicator
+                                        content={`ChatGPT is ${chatGPTState}`}
                                     />
-                                </ChatContainer>
-                            </MainContainer>
-                        </div>
-                    </div>
-                </div>
+                                )
+                            }
+                        >
+                            {displayedMessages.map((message, index) => {
+                                return (
+                                    <Message
+                                        key={index}
+                                        model={{
+                                            message: message.content,
+                                            sentTime: `${message.sentTime}`,
+                                            sender: message.sender,
+                                            direction: message.direction,
+                                            position: "single",
+                                            type: "text",
+                                        }}
+                                    />
+                                );
+                            })}
+                        </MessageList>
+                        <MessageInput
+                            className="chatpgt-message-input"
+                            placeholder="Enter your message"
+                            onSend={sendShownUserMessage}
+                            autoFocus={true}
+                            attachButton={false}
+                            sendButton={true}
+                            disabled={
+                                chatGPTState === ChatGPTIs.Typing ||
+                                chatGPTState === ChatGPTIs.Learning
+                            }
+                            ref={messageInput}
+                        />
+                    </ChatContainer>
+                </MainContainer>
             )}
-            {state === ChatIs.Minimized && (
-                <Button
-                    title="Open Chat"
-                    className="chatgpt-button"
-                    onClick={() => setState(ChatIs.Maximized)}
-                    border
-                    icon={<FontAwesomeIcon icon={faComment} className="w-14" />}
-                ></Button>
-            )}
+            <Button
+                className="chatgpt-button"
+                title={
+                    state === ChatIs.Minimized
+                        ? "Open Chat"
+                        : state === ChatIs.Maximized
+                        ? "Minimize Chat"
+                        : "Enable Chat"
+                }
+                onClick={() =>
+                    setState(
+                        state === ChatIs.Minimized || state === ChatIs.Disabled
+                            ? ChatIs.Maximized
+                            : ChatIs.Minimized
+                    )
+                }
+                icon={
+                    <FontAwesomeIcon
+                        icon={
+                            state === ChatIs.Minimized ||
+                            state === ChatIs.Disabled
+                                ? faComment
+                                : faTimes
+                        }
+                        className={state === ChatIs.Maximized ? `w-8` : `w-14`}
+                    />
+                }
+            ></Button>
         </>
     );
 }

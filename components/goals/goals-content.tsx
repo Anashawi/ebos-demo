@@ -9,7 +9,7 @@ import { IUserGoals } from "../../models/user-goal";
 
 import OrganizationsForm from "./ogranizations-form";
 import GoalsForm from "./goals-form";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepOneTranscript } from "../common/openai-chat/openai-transcript";
 import {
     getUserGoalsMsg,

@@ -8,7 +8,7 @@ import { IUserCustomers } from "../../models/user-customers";
 
 import Spinner from "../common/spinner";
 import GoNextButton from "../common/go-next-button";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepSixTranscript } from "../common/openai-chat/openai-transcript";
 import { getVoiceOfCustomerMessage } from "../common/openai-chat/custom-messages";
 

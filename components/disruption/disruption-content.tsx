@@ -12,7 +12,7 @@ import { IUserTakeaways } from "../../models/user-takeaways";
 
 import DisruptionTakeaways from "./takeaways";
 import Spinner from "../common/spinner";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepFiveTranscript } from "../common/openai-chat/openai-transcript";
 import { getDisruptionMessage } from "../common/openai-chat/custom-messages";
 

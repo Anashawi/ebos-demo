@@ -7,7 +7,7 @@ import { IIdea } from "../../models/types";
 import { IUserIdeas } from "../../models/user-idea";
 
 import Spinner from "../common/spinner";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepTenTranscript } from "../common/openai-chat/openai-transcript";
 import { getIdeasMessage } from "../common/openai-chat/custom-messages";
 

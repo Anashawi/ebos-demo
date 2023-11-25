@@ -8,7 +8,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { IUserAnalysis } from "../../models/user-analysis";
 
 import Spinner from "../common/spinner";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepNineTranscript } from "../common/openai-chat/openai-transcript";
 import { getStepUpDownMessage } from "../common/openai-chat/custom-messages";
 

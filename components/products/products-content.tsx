@@ -10,7 +10,7 @@ import { IUserProduct } from "../../models/user-product";
 import Product from "./product";
 import Spinner from "../common/spinner";
 import GoNextButton from "../common/go-next-button";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepTwoTranscript } from "../common/openai-chat/openai-transcript";
 import { getCompanyProductMessage } from "../common/openai-chat/custom-messages";
 

@@ -11,7 +11,7 @@ import Spinner from "../common/spinner";
 import GoNextButton from "../common/go-next-button";
 import ZeroProductsWarning from "../common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepThreeTranscript } from "../common/openai-chat/openai-transcript";
 import { getMarketPotentialMessage } from "../common/openai-chat/custom-messages";
 

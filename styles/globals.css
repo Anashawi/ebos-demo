@@ -214,6 +214,63 @@ input[type="text"]:focus:not("no-border") {
         @apply w-full h-full px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
     }
 
+    /* openAI chatGPT chat box start */
+    .chatgpt-button {
+        @apply w-20 h-20 flex justify-center rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
+    }
+    .chatgpt-main-container {
+        @apply w-[36rem] h-[80vh] border-none rounded-3xl z-10 fixed bottom-32 right-8 shadow-xl;
+    }
+    .chatgpt-main-container .ps__thumb-y,
+    .chatgpt-main-container .ps__thumb-x {
+        @apply bg-gray-500;
+    }
+    .chatgpt-main-container .cs-typing-indicator__text {
+        @apply text-gray-500;
+    }
+    .chatgpt-main-container .cs-typing-indicator__dot {
+        @apply bg-gray-500;
+    }
+    .chatgpt-main-container .cs-message--incoming .cs-message__content {
+        @apply bg-white;
+    }
+    .chatgpt-main-container .cs-message--outgoing .cs-message__content {
+        @apply bg-blue-900 text-white;
+    }
+    .chatgpt-header,
+    .chatgpt-header > .cs-conversation-header__user-name,
+    .chatgpt-header > .cs-conversation-header__info {
+        @apply bg-blue-900 text-white;
+    }
+    .chatgpt-header > .cs-conversation-header__user-name {
+        @apply text-2xl;
+    }
+    .chatgpt-messages-container,
+    .chatgpt-main-container .cs-typing-indicator {
+        @apply bg-gray-200 text-white;
+    }
+    .chatpgt-message-input {
+        @apply !h-20 !p-0 !border-t-0;
+    }
+    .chatpgt-message-input > .cs-message-input__content-editor-wrapper {
+        @apply !p-0 !pl-4 !pt-2 !pb-2 !ml-0 !rounded-none !rounded-bl-3xl !bg-white;
+    }
+    .chatpgt-message-input > .cs-message-input__content-editor-wrapper {
+        @apply w-10/12;
+    }
+    .chatpgt-message-input
+        > .cs-message-input__content-editor-wrapper
+        .cs-message-input__content-editor {
+        @apply !bg-white;
+    }
+    .chatpgt-message-input > .cs-message-input__tools {
+        @apply w-2/12 h-full flex justify-center bg-gray-300;
+    }
+    .chatpgt-message-input > .cs-message-input__tools > button {
+        @apply w-20 h-20 text-white;
+    }
+    /* openAI chatGPT chat box end */
+
     .logo-pane {
         @apply text-gray-900 mb-10 flex flex-nowrap justify-end items-center;
     }
@@ -284,38 +341,6 @@ input[type="text"]:focus:not("no-border") {
     .right-content {
         @apply px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
     }
-}
-
-/* openAI chatGPT chat box */
-.chatgpt-outer-container {
-    width: 40rem;
-    height: 80vh;
-    margin: 2rem;
-    display: flex;
-    flex-direction: column;
-    z-index: 99;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-}
-
-.chatgpt-wrapper {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-}
-
-.chatgpt-container {
-    width: 40rem;
-    height: 80vh;
-}
-
-.chatgpt-button {
-    background-color: #fff;
-    position: fixed;
-    bottom: 2rem;
-    right: 3rem;
 }
 
 .btn-disabled {

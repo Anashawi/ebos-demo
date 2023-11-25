@@ -8,7 +8,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { IUserNonCustomers } from "../../models/user-non-customers";
 
 import Spinner from "../common/spinner";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepEightTranscript } from "../common/openai-chat/openai-transcript";
 import { getNonCustomersMessage } from "../common/openai-chat/custom-messages";
 

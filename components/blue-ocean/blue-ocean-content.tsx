@@ -12,7 +12,7 @@ import Spinner from "../common/spinner";
 import ZeroProductsWarning from "../common/zero-products-warning";
 import ZeroProductCompetitorsWarning from "../common/zero-product-competitors-warning";
 import GoNextButton from "../common/go-next-button";
-import Chat from "../common/openai-chat/openai-chat";
+import Chat from "../common/openai-chat";
 import { stepSevenTranscript } from "../common/openai-chat/openai-transcript";
 import { getBlueOceanMessage } from "../common/openai-chat/custom-messages";
 
