@@ -158,7 +158,7 @@ input[type="text"]:focus:not("no-border") {
         @apply bg-gray-100;
     }
     .content-container {
-        @apply min-w-[1280px] h-full flex flex-row justify-center gap-8 px-8 py-16;
+        @apply min-w-[1280px] h-[100vh] flex flex-row justify-center gap-8 px-8 py-16;
     }
     .content-container > .left-side-main-navigation {
         @apply w-1/12 min-h-[84vh];

@@ -11,14 +11,14 @@ import { getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const emptyOrganization: OrganizationModel = {
+const emptyUserOrganization: OrganizationModel = {
     uuid: typeof window !== "undefined" ? crypto.randomUUID() : "",
     name: "New Organization",
     website: "",
 };
 
 interface Props {
-    fetchedUserOrganizations: IUserOrganizations;
+    fetchedUserOrganizations: any;
     areUserOrganizationsLoading: boolean;
     userOrganizations: IUserOrganizations;
     setUserOrganizations: React.Dispatch<
@@ -38,33 +38,38 @@ const OrganizationsForm = ({
 
     // render user organizations
     useEffect(() => {
-        if (fetchedUserOrganizations) {
-            setUserOrganizations({ ...fetchedUserOrganizations });
+        console.log(fetchedUserOrganizations);
+        if (
+            fetchedUserOrganizations?.status === 200 &&
+            fetchedUserOrganizations?.data
+        ) {
+            setUserOrganizations({ ...fetchedUserOrganizations.data });
         }
     }, [fetchedUserOrganizations, setUserOrganizations]);
 
     // insert/update user organizations
-    const { mutate, isLoading: isSaving } = useMutation({
-        mutationFn: !userOrganizations.id
-            ? organizationsApi.insertOne
-            : organizationsApi.updateOne,
-        mutationKey: [
-            organizationsApi.keys.updateUserOrganizations,
-            userOrganizations.id ?? "",
-        ],
-        onMutate: newUserOrgs => {
-            setChatGPTMessage(getUserOrganizationsMsg(newUserOrgs));
-        },
-        onSuccess: storedUserOrgs => {
-            queryClient.invalidateQueries([
+    const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } =
+        useMutation({
+            mutationFn: !userOrganizations.id
+                ? organizationsApi.insertOne
+                : organizationsApi.updateOne,
+            mutationKey: [
                 organizationsApi.keys.updateUserOrganizations,
                 userOrganizations.id ?? "",
-            ]);
-            // flag locally stored goals as invalid, to be loaded onPageLoad
-            queryClient.invalidateQueries([organizationsApi.keys.all]);
-            setUserOrganizations(storedUserOrgs);
-        },
-    });
+            ],
+            onMutate: newUserOrgs => {
+                setChatGPTMessage(getUserOrganizationsMsg(newUserOrgs));
+            },
+            onSuccess: storedUserOrgs => {
+                queryClient.invalidateQueries([
+                    organizationsApi.keys.updateUserOrganizations,
+                    userOrganizations.id ?? "",
+                ]);
+                // flag locally stored goals as invalid, to be loaded onPageLoad
+                queryClient.invalidateQueries([organizationsApi.keys.all]);
+                setUserOrganizations(storedUserOrgs);
+            },
+        });
 
     const notLoadingWithoutOrgs =
         !areUserOrganizationsLoading &&
@@ -86,7 +91,7 @@ const OrganizationsForm = ({
                     )}
                     {notLoadingWithoutOrgs && (
                         <p className="text-yellow-600 text-xl">
-                            Click to add an organization
+                            Click add new organization to start
                         </p>
                     )}
                     {notLoadingWithOrgs &&
@@ -159,29 +164,27 @@ const OrganizationsForm = ({
                         )}
                     </div>
                     <div className="flex justify-between">
-                        {!areUserOrganizationsLoading && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setUserOrganizations(prevValue => {
-                                        return {
-                                            ...prevValue,
-                                            organizations: [
-                                                ...prevValue.organizations,
-                                                emptyOrganization,
-                                            ],
-                                        };
-                                    });
-                                }}
-                                className="btn-primary pl-9 pr-8"
-                            >
-                                <FontAwesomeIcon
-                                    className="w-[0.8rem] h-auto cursor-pointer"
-                                    icon={faPlus}
-                                />
-                                Add New Organization
-                            </button>
-                        )}
+                        <button
+                            className="btn-primary px-10"
+                            type="button"
+                            onClick={() => {
+                                setUserOrganizations(prevValue => {
+                                    return {
+                                        ...prevValue,
+                                        organizations: [
+                                            ...prevValue.organizations,
+                                            emptyUserOrganization,
+                                        ],
+                                    };
+                                });
+                            }}
+                        >
+                            <FontAwesomeIcon
+                                className="w-4 cursor-pointer"
+                                icon={faPlus}
+                            />
+                            Add New Organization
+                        </button>
                         <button
                             className={`btn-rev ${
                                 isSaving ? `opacity-50 cursor-not-allowed` : ``
@@ -189,7 +192,9 @@ const OrganizationsForm = ({
                             type="button"
                             disabled={isSaving}
                             onClick={() => {
-                                mutate(userOrganizations);
+                                createOrUpdateUserOrganizations(
+                                    userOrganizations
+                                );
                             }}
                         >
                             Save

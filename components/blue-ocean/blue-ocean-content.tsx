@@ -110,7 +110,7 @@ const BlueOceanContent = ({
     return (
         <>
             <section className="form-container">
-                <h2 className="title-header">Blue Ocean Canvas</h2>
+                <h3 className="title-header">Blue Ocean Canvas</h3>
                 <Formik
                     initialValues={{
                         products: userProduct.products,
@@ -118,11 +118,13 @@ const BlueOceanContent = ({
                     validationSchema={object({
                         products: array(
                             object({
-                                factors: array(
+                                ideaFactors: array(
                                     object({
                                         name: string().required("required"),
                                     })
-                                ).required("Must provide at least one factor!"),
+                                )
+                                    .required("at least 1 idea is required")
+                                    .min(1),
                             })
                         ),
                     })}
@@ -147,7 +149,7 @@ const BlueOceanContent = ({
                         return (
                             <Form>
                                 <FieldArray name="products">
-                                    {({ push, remove }) => {
+                                    {() => {
                                         return (
                                             <div className="flex flex-col gap-2">
                                                 <div className="flex flex-col gap-2">
@@ -161,16 +163,6 @@ const BlueOceanContent = ({
                                                         <ZeroProductsWarning />
                                                     )}
                                                     {isNotLoadingWithProducts &&
-                                                        !values.products
-                                                            ?.length && (
-                                                            <p className="text-rose-400">
-                                                                make a selection
-                                                                to view products
-                                                                !
-                                                            </p>
-                                                        )}
-                                                    {values.products?.length >
-                                                        0 &&
                                                         values.products.map(
                                                             (
                                                                 product,
@@ -181,6 +173,15 @@ const BlueOceanContent = ({
                                                                         productIndex
                                                                     }
                                                                 >
+                                                                    {!product
+                                                                        .competitors
+                                                                        ?.length && (
+                                                                        <ZeroProductCompetitorsWarning
+                                                                            name={
+                                                                                product.name
+                                                                            }
+                                                                        />
+                                                                    )}
                                                                     {!!product
                                                                         .competitors
                                                                         ?.length && (
@@ -192,18 +193,6 @@ const BlueOceanContent = ({
                                                                                 productIndex
                                                                             }
                                                                         />
-                                                                    )}
-                                                                    {!product
-                                                                        .competitors
-                                                                        ?.length && (
-                                                                        <>
-                                                                            <h3>
-                                                                                {
-                                                                                    product.name
-                                                                                }
-                                                                            </h3>
-                                                                            <ZeroProductCompetitorsWarning />
-                                                                        </>
                                                                     )}
                                                                 </div>
                                                             )
@@ -218,32 +207,28 @@ const BlueOceanContent = ({
                                                     )}
                                                 </div>
                                                 <div className="flex gap-4 justify-end items-center">
-                                                    {!!userProduct.products
-                                                        ?.length && (
-                                                        <button
-                                                            type="submit"
-                                                            className={
-                                                                isSubmitting ||
-                                                                !isValid
-                                                                    ? "btn-rev btn-disabled"
-                                                                    : "btn-rev"
-                                                            }
-                                                            disabled={
-                                                                isSubmitting ||
-                                                                !isValid
-                                                            }
-                                                        >
-                                                            Save
-                                                        </button>
-                                                    )}
+                                                    <button
+                                                        type="submit"
+                                                        className={
+                                                            isSubmitting ||
+                                                            !isValid
+                                                                ? "btn-rev btn-disabled"
+                                                                : "btn-rev"
+                                                        }
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            !isValid
+                                                        }
+                                                    >
+                                                        Save
+                                                    </button>
                                                     <GoNextButton
                                                         stepUri={`../org/non-customers`}
                                                         nextStepTitle={`Non
                                                             Customers`}
-                                                        clickable={
-                                                            userProduct
-                                                                ?.products
-                                                                ?.length > 0
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            !isValid
                                                         }
                                                     />
                                                 </div>

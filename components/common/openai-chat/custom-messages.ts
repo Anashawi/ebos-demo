@@ -10,6 +10,9 @@ import { IUserTakeaways } from "../../../models/user-takeaways";
 
 // Step 1: `org/goals` Visualize Success
 export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
+
+    if (!userOrgs || !userOrgs.organizations) return '';
+
     let chatGPTmsg = `Our organization's name is: ${userOrgs.organizations[0].name} and our organization's website is: ${userOrgs.organizations[0].website}.\n`;
     const competitorsListLength = userOrgs.organizations.length;
 
@@ -246,6 +249,7 @@ export function getIdeasMessage(ideas: IUserIdeas) {
     const ideasLength = ideas.ideas.length;
 
     if (ideasLength === 0) return msgForChatGPT;
+
     msgForChatGPT += `Starting from ${ideas.startDate} our idea`;
     if (ideasLength > 1) msgForChatGPT += `s are:\n`;
     else msgForChatGPT += ` is:\n`;

@@ -213,9 +213,9 @@ const RedOceanContent = ({
                                                     <GoNextButton
                                                         stepUri={`../org/disruption`}
                                                         nextStepTitle={`Disruption`}
-                                                        clickable={
-                                                            userProduct.products
-                                                                .length > 0
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            !isValid
                                                         }
                                                     />
                                                 </div>

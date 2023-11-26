@@ -21,7 +21,7 @@ const emptyUserOrganizations: IUserOrganizations = {
     userId: "",
     organizations: [],
 };
-const emptyUserGoal: IUserGoals = {
+const emptyUserGoals: IUserGoals = {
     id: "",
     userId: "",
     targetDate: "",
@@ -34,8 +34,8 @@ const GoalsContent = () => {
     emptyUserOrganizations.userId = session?.user?.id;
     const [userOrganizations, setUserOrganizations] =
         useState<IUserOrganizations>(emptyUserOrganizations);
-    emptyUserGoal.userId = session?.user?.id;
-    const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoal);
+    emptyUserGoals.userId = session?.user?.id;
+    const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoals);
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
     // fetch user organizations

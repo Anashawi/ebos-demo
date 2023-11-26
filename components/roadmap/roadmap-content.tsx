@@ -118,14 +118,14 @@ const RoadMapContent = ({
                             <label className="text-xl">Start date</label>
                             <div className="flex flex-col w-1/6">
                                 <input
+                                    className="light-input"
                                     type="month"
                                     value={userIdeas.startDate}
+                                    min={getMinDateStr(userIdeas.startDate)}
                                     onChange={e => {
                                         userIdeas.startDate = e.target.value;
                                         dispatchUserIdeas({ ...userIdeas });
                                     }}
-                                    min={getMinDateStr(userIdeas.startDate)}
-                                    className="light-input"
                                 />
                             </div>
                         </div>
@@ -251,6 +251,7 @@ const RoadMapContent = ({
                         </div>
                         <div className="flex justify-between gap-4">
                             <button
+                                className="btn-primary px-10 py-4"
                                 type="button"
                                 onClick={() => {
                                     const newIdea = { ...emptyIdea };
@@ -258,15 +259,15 @@ const RoadMapContent = ({
                                     userIdeas.ideas.push(newIdea);
                                     dispatchUserIdeas({ ...userIdeas });
                                 }}
-                                className="btn-primary px-[3.5rem] py-[1rem]"
                             >
                                 <FontAwesomeIcon
-                                    className="w-[0.8rem] h-auto cursor-pointer"
+                                    className="w-4 cursor-pointer"
                                     icon={faPlus}
                                 />
                                 <span className="text-xl">Add New Idea</span>
                             </button>
                             <button
+                                className="btn-rev"
                                 type="button"
                                 onClick={() => {
                                     userIdeas.userId = session?.user?.id;
@@ -285,7 +286,6 @@ const RoadMapContent = ({
                                         });
                                     }
                                 }}
-                                className="btn-rev"
                             >
                                 Save
                             </button>

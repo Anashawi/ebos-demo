@@ -90,21 +90,16 @@ const GoalsForm = ({
     return (
         <section className="form-container">
             <h3 className="title-header">Goals</h3>
-            <div className="flex flex-col gap-4 bg-dark-50 rounded-2xl p-4">
+            <div className="flex flex-col gap-4 p-4 bg-dark-50 rounded-2xl">
                 <Formik
                     initialValues={{
                         ...userGoals,
                     }}
                     validationSchema={object({
-                        goals: array(string())
-                            .required(
-                                "Start defining your goals toward success, click Add New Goal!"
-                            )
-                            .min(
-                                0,
-                                "Start defining your goals toward success, click Add New Goal!"
-                            ),
-                        targetDate: date().required("Must add a target date"),
+                        goals: array(string().required("required"))
+                            .required()
+                            .min(1, "at least 1 goal is required"),
+                        targetDate: date().required("must add a target date"),
                     })}
                     onSubmit={async (values, actions) => {
                         userGoals.userId = session?.user?.id;
@@ -138,19 +133,19 @@ const GoalsForm = ({
                                 </label>
                                 <div className="grow flex flex-col">
                                     <Field
-                                        type="date"
                                         className="light-input"
+                                        name="targetDate"
+                                        type="date"
                                         min={new Date()
                                             .toISOString()
                                             .slice(0, 10)} // 10 chars for dd/mm/yyyy
-                                        name="targetDate"
-                                        placeholder="Target Date"
+                                        placeholder="Enter target date"
                                     />
                                     <ErrorMessage name={`targetDate`}>
                                         {msg => (
-                                            <div className="text-lg text-rose-500">
+                                            <p className="text-lg text-rose-500">
                                                 {msg}
-                                            </div>
+                                            </p>
                                         )}
                                     </ErrorMessage>
                                 </div>
@@ -170,19 +165,23 @@ const GoalsForm = ({
                                                 className="w-full h-auto"
                                             />
                                         </div>
-                                        <h3 className="text-xl text-dark-300">
+                                        <p className="text-xl text-dark-300">
                                             Visualize success on this date, What
                                             does it look like...?
-                                        </h3>
+                                        </p>
                                     </div>
                                     <Form>
                                         <FieldArray name="goals">
-                                            {({ remove, push, form }) => (
+                                            {({
+                                                remove: removeGoal,
+                                                push: pushToGoalsList,
+                                            }) => (
                                                 <div className="flex flex-col gap-4">
-                                                    <div className="flex flex-wrap justify-start gap-2">
+                                                    <div className="flex flex-row justify-start gap-2">
                                                         <Field
+                                                            className="w-2/3 light-input"
+                                                            name="goals"
                                                             type="text"
-                                                            className="w-[100%] xl:w-[69%] light-input"
                                                             placeholder="Enter your goal here"
                                                             value={
                                                                 goalToBeAdded
@@ -197,17 +196,17 @@ const GoalsForm = ({
                                                             }}
                                                         />
                                                         <button
-                                                            className={`btn-primary px-8 ${
-                                                                !!goalToBeAdded
-                                                                    ? ``
-                                                                    : `btn-disabled`
+                                                            className={`btn-primary px-8 cursor-pointer ${
+                                                                !goalToBeAdded
+                                                                    ? `btn-disabled`
+                                                                    : ``
                                                             }`}
                                                             type="button"
                                                             disabled={
                                                                 !goalToBeAdded
                                                             }
                                                             onClick={() => {
-                                                                push(
+                                                                pushToGoalsList(
                                                                     goalToBeAdded
                                                                 );
                                                                 setGoalToBeAdded(
@@ -216,7 +215,7 @@ const GoalsForm = ({
                                                             }}
                                                         >
                                                             <FontAwesomeIcon
-                                                                className="w-[0.8rem] h-auto cursor-pointer"
+                                                                className="w-4 cursor-pointer"
                                                                 icon={faPlus}
                                                             />
                                                             <span className="text-xl">
@@ -248,18 +247,18 @@ const GoalsForm = ({
                                                             formValues.goals.map(
                                                                 (
                                                                     goal: string,
-                                                                    index: number
+                                                                    goalIndex: number
                                                                 ) => (
                                                                     <div
                                                                         key={
-                                                                            index
+                                                                            goalIndex
                                                                         }
                                                                     >
                                                                         <li className="relative w-[100%] xl:w-[69%]">
                                                                             <Field
                                                                                 type="text"
                                                                                 className="dark-input"
-                                                                                name={`goals.${index}`}
+                                                                                name={`goals.${goalIndex}`}
                                                                                 readOnly
                                                                                 placeholder="Goal"
                                                                             />
@@ -269,14 +268,14 @@ const GoalsForm = ({
                                                                                 }
                                                                                 className="w-4 cursor-pointer absolute right-6 top-5 text-dark-300 hover:text-dark-400"
                                                                                 onClick={() => {
-                                                                                    remove(
-                                                                                        index
+                                                                                    removeGoal(
+                                                                                        goalIndex
                                                                                     );
                                                                                 }}
                                                                             />
                                                                         </li>
                                                                         <ErrorMessage
-                                                                            name={`goals.${index}`}
+                                                                            name={`goals.${goalIndex}`}
                                                                         >
                                                                             {msg => (
                                                                                 <div className="text-lg text-rose-500">
@@ -289,13 +288,11 @@ const GoalsForm = ({
                                                                     </div>
                                                                 )
                                                             )}
-                                                        {form.errors?.goals && (
-                                                            <p className="p-3 text-center bg-rose-50 text-lg text-rose-500">
+                                                        {errors?.goals && (
+                                                            <p className="text-lg text-rose-500">
                                                                 <>
                                                                     {
-                                                                        form
-                                                                            .errors
-                                                                            .goals
+                                                                        errors.goals
                                                                     }
                                                                 </>
                                                             </p>
@@ -344,11 +341,10 @@ const GoalsForm = ({
                     )}
                 </Formik>
             </div>
-
             <GoNextButton
                 stepUri={`../org/products`}
                 nextStepTitle={`Pioneer Migrator Settler`}
-                clickable={userGoals.goals.length > 0}
+                disabled={userGoals.goals.length > 0}
             />
         </section>
     );

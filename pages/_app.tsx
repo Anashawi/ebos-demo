@@ -27,9 +27,13 @@ const App: NextPage<Props> = ({ Component, pageProps }) => {
     return (
         <SessionProvider session={pageProps.session}>
             <QueryClientProvider client={queryClient}>
-                <Layout stepTitle={Component.stepTitle}>
+                {Component.name === "Home" ? (
                     <Component {...pageProps} />
-                </Layout>
+                ) : (
+                    <Layout stepTitle={Component.stepTitle}>
+                        <Component {...pageProps} />
+                    </Layout>
+                )}
                 <ReactQueryDevtools />
             </QueryClientProvider>
         </SessionProvider>

@@ -19,7 +19,7 @@ interface Props {
 }
 
 const BlueOceanProduct = ({ product, index }: Props) => {
-    const emptyFactor = useMemo(() => {
+    const emptyIdea = useMemo(() => {
         return {
             name: "",
             competitors: product.competitors?.map(comp => {
@@ -32,46 +32,44 @@ const BlueOceanProduct = ({ product, index }: Props) => {
     }, [product.competitors]);
 
     return (
-        <div
+        <section
             key={index}
             className="flex flex-col gap-8 p-4 bg-dark-50 rounded-2xl"
         >
-            <div className="flex justify-between">
-                <h3 className="text-[1.75rem] text-dark-400 font-hero-semibold">
-                    {product.name}
-                </h3>
-            </div>
+            <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
+                {product.name}
+            </h4>
             <FieldArray name={`products.${index}.ideaFactors`}>
-                {({ remove, push }) => (
+                {({ remove: removeIdea, push: pushToIdeasList }) => (
                     <>
                         <ul className="flex flex-col gap-4">
                             {!!product.ideaFactors?.length &&
                                 product.ideaFactors.map((idea, ideaIndex) => (
                                     <li
                                         key={ideaIndex}
-                                        className="flex gap-4 items-start overflow-x-auto"
+                                        className="flex flex-row gap-4 items-start overflow-x-auto"
                                     >
                                         <div className="flex flex-col">
                                             <label className="text-lg">
                                                 Idea {ideaIndex + 1}
                                             </label>
                                             <Field
-                                                type="text"
-                                                placeholder="name"
                                                 className="grow light-input"
                                                 name={`products.${index}.ideaFactors.${ideaIndex}.name`}
+                                                type="text"
+                                                placeholder="Enter idea here"
                                             />
                                             <ErrorMessage
                                                 name={`products.${index}.ideaFactors.${ideaIndex}.name`}
                                             >
                                                 {msg => (
-                                                    <div className="text-sm text-rose-500">
+                                                    <p className="text-sm text-rose-500">
                                                         {msg}
-                                                    </div>
+                                                    </p>
                                                 )}
                                             </ErrorMessage>
                                         </div>
-                                        <div className="flex gap-2">
+                                        <div className="flex flex-row gap-2">
                                             {product.competitors?.map(
                                                 (
                                                     comp: ICompetitor,
@@ -84,10 +82,10 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                                                     {comp.name}
                                                                 </label>
                                                                 <Field
-                                                                    as="select"
-                                                                    placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
                                                                     className="light-input"
                                                                     name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${compIndex}.value`}
+                                                                    as="select"
+                                                                    placeholder={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
                                                                 >
                                                                     <option
                                                                         className="text-lg"
@@ -126,11 +124,11 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                                                     name={`products.${index}.ideaFactors.${ideaIndex}.competitors.${index}.value`}
                                                                 >
                                                                     {msg => (
-                                                                        <div className="w-full text-sm text-rose-500">
+                                                                        <p className="text-sm text-rose-500">
                                                                             {
                                                                                 msg
                                                                             }
-                                                                        </div>
+                                                                        </p>
                                                                     )}
                                                                 </ErrorMessage>
                                                             </div>
@@ -141,31 +139,31 @@ const BlueOceanProduct = ({ product, index }: Props) => {
                                         </div>
                                         <DeleteButton
                                             callback={() => {
-                                                remove(ideaIndex);
+                                                removeIdea(ideaIndex);
                                             }}
                                         />
                                     </li>
                                 ))}
-                            <div className="flex">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        push(emptyFactor);
-                                    }}
-                                    className="btn-primary px-10"
-                                >
-                                    <FontAwesomeIcon
-                                        className="w-3 h-auto cursor-pointer hover:text-gray-600"
-                                        icon={faPlus}
-                                    />
-                                    Add More Idea Factors
-                                </button>
-                            </div>
                         </ul>
+                        <div className="flex">
+                            <button
+                                className="btn-primary px-10"
+                                type="button"
+                                onClick={() => {
+                                    pushToIdeasList(emptyIdea);
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    className="w-4 h-auto cursor-pointer hover:text-gray-600"
+                                    icon={faPlus}
+                                />
+                                Add More Idea Factors
+                            </button>
+                        </div>
                     </>
                 )}
             </FieldArray>
-        </div>
+        </section>
     );
 };
 
