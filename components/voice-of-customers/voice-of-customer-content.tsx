@@ -362,7 +362,7 @@ const VoiceOfCustomersContent = () => {
                             <GoNextButton
                                 stepUri={`../org/blue-ocean`}
                                 nextStepTitle={`Blue Ocean Canvas`}
-                                clickable={!!userCustomers.id}
+                                disabled={!!userCustomers.id}
                             />
                         </div>
                     </div>

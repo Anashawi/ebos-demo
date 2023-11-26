@@ -211,7 +211,7 @@ const MarketPotentialContent = ({
                                                     <GoNextButton
                                                         stepUri={`../org/red-ocean`}
                                                         nextStepTitle={`Red Ocean Canvas`}
-                                                        clickable={
+                                                        disabled={
                                                             userProduct.products
                                                                 .length > 0
                                                         }

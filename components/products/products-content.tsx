@@ -286,7 +286,7 @@ const ProductsContent = ({
                                                     <GoNextButton
                                                         stepUri={`../org/market-potential`}
                                                         nextStepTitle={`Market Potential`}
-                                                        clickable={
+                                                        disabled={
                                                             userProduct.products
                                                                 .length > 0
                                                         }
