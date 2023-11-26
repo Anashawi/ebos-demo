@@ -38,7 +38,6 @@ const OrganizationsForm = ({
 
     // render user organizations
     useEffect(() => {
-        console.log(fetchedUserOrganizations);
         if (
             fetchedUserOrganizations?.status === 200 &&
             fetchedUserOrganizations?.data

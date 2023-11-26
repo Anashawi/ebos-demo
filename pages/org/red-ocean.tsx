@@ -87,16 +87,15 @@ const RedOceanCanvas = () => {
             }
         });
         if (fetchedUserProducts) {
-            setUserProducts(fetchedUserProducts);
+            setUserProducts(fetchedUserProducts ?? emptyUserProduct);
         }
-        setUserProducts(fetchedUserProducts ?? emptyUserProduct);
     }, [fetchedUserProducts]);
 
     return (
         <article className="main-content">
             <article className="forms-container">
                 <RedOceanContent
-                    userProduct={userProducts}
+                    userProducts={userProducts}
                     dispatchChartProducts={products => {
                         setChartProducts(products);
                     }}

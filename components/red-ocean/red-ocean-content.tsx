@@ -21,13 +21,13 @@ import { string, object, array } from "yup";
 import { cloneDeep } from "lodash";
 
 interface Props {
-    userProduct: IUserProduct;
+    userProducts: IUserProduct;
     dispatchChartProducts: (products: IProduct[]) => void;
     isLoading: boolean;
 }
 
 const RedOceanContent = ({
-    userProduct,
+    userProducts,
     dispatchChartProducts,
     isLoading,
 }: Props) => {
@@ -36,26 +36,26 @@ const RedOceanContent = ({
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
     // on data load send ChatGPT transcript with data
     useEffect(() => {
-        if (!isLoading && userProduct.id) {
+        if (!isLoading && userProducts.id) {
             const combinedMsg = `${stepFourTranscript}\n\n${getRedOceanMessage(
-                userProduct
+                userProducts
             )}`;
             setChatGPTMessage(combinedMsg);
         }
-    }, [isLoading, userProduct]);
+    }, [isLoading, userProducts]);
 
     const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
         useMutation(
-            (userProduct: IUserProduct) => {
+            (newUserProducts: IUserProduct) => {
                 return productsApi.updateOne(
-                    userProduct,
+                    newUserProducts,
                     productPagesEnum.factors
                 );
             },
             {
                 onMutate: newProducts => {
                     queryClient.setQueryData(
-                        [productsApi.Keys.UserProduct, userProduct.id],
+                        [productsApi.Keys.UserProduct, userProducts.id],
                         newProducts
                     );
                     setChatGPTMessage(getRedOceanMessage(newProducts));
@@ -63,7 +63,7 @@ const RedOceanContent = ({
                 onSuccess: storedProducts => {
                     queryClient.invalidateQueries([
                         productsApi.Keys.UserProduct,
-                        userProduct.id,
+                        userProducts.id,
                     ]);
                     queryClient.invalidateQueries([productsApi.Keys.All]);
                 },
@@ -76,7 +76,7 @@ const RedOceanContent = ({
                 <h3 className="title-header">Red Ocean Canvas</h3>
                 <Formik
                     initialValues={{
-                        products: userProduct.products,
+                        products: userProducts.products,
                     }}
                     validationSchema={object({
                         products: array(
@@ -102,10 +102,10 @@ const RedOceanContent = ({
                                 product.uuid = crypto.randomUUID();
                             }
                         });
-                        if (userProduct?.id) {
-                            userProduct.products = values.products;
+                        if (userProducts?.id) {
+                            userProducts.products = values.products;
                             await updateUserProduct({
-                                ...userProduct,
+                                ...userProducts,
                             });
                         }
                         actions.setSubmitting(false);
@@ -128,14 +128,14 @@ const RedOceanContent = ({
                                                         />
                                                     )}
                                                     {!isLoading &&
-                                                        userProduct.products
+                                                        userProducts.products
                                                             .length === 0 && (
                                                             <ZeroProductsWarning />
                                                         )}
                                                     {!isLoading &&
                                                         values.products
                                                             .length === 0 &&
-                                                        userProduct.products
+                                                        userProducts.products
                                                             .length > 0 && (
                                                             <p className="text-rose-400">
                                                                 make a selection

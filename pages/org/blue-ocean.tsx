@@ -89,9 +89,8 @@ const BlueOceanCanvas = () => {
             }
         });
         if (products) {
-            setUserProduct(products);
+            setUserProduct(products ?? emptyUserProduct);
         }
-        setUserProduct(products ?? emptyUserProduct);
     }, [products, emptyUserProduct, emptyFactor, setUserProduct]);
 
     return (
