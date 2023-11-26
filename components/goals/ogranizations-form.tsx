@@ -107,30 +107,32 @@ const OrganizationsForm = ({
                                             : `Competitor ${index}`}
                                     </label>
                                     <input
+                                        className="light-input"
                                         type="text"
+                                        defaultValue={org.name}
+                                        placeholder="Enter organization name"
                                         onChange={e => {
                                             org.name = e.target.value;
                                             setUserOrganizations(
                                                 userOrganizations
                                             );
                                         }}
-                                        defaultValue={org.name}
-                                        className="light-input"
                                     />
                                 </div>
                                 <div className="grow flex flex-col gap-1">
                                     <label>Website</label>
                                     <div className="relative">
                                         <input
+                                            className="light-input w-full"
                                             type="text"
+                                            defaultValue={org.website}
+                                            placeholder="Enter organization's website url"
                                             onChange={e => {
                                                 org.website = e.target.value;
                                                 setUserOrganizations(
                                                     userOrganizations
                                                 );
                                             }}
-                                            defaultValue={org.website}
-                                            className="light-input w-full"
                                         />
                                         {index !== 0 && (
                                             <FontAwesomeIcon

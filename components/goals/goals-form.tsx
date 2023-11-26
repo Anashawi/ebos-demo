@@ -99,7 +99,7 @@ const GoalsForm = ({
                         goals: array(string().required("required"))
                             .required()
                             .min(1, "at least 1 goal is required"),
-                        targetDate: date().required("must add a target date"),
+                        targetDate: date().required("required"),
                     })}
                     onSubmit={async (values, actions) => {
                         userGoals.userId = session?.user?.id;
@@ -125,6 +125,7 @@ const GoalsForm = ({
                         isSubmitting,
                         isValid,
                         errors,
+                        touched,
                     }) => (
                         <>
                             <div className="w-full xl:w-[40%] flex flex-col gap-2">
@@ -288,15 +289,16 @@ const GoalsForm = ({
                                                                     </div>
                                                                 )
                                                             )}
-                                                        {errors?.goals && (
-                                                            <p className="text-lg text-rose-500">
-                                                                <>
-                                                                    {
-                                                                        errors.goals
-                                                                    }
-                                                                </>
-                                                            </p>
-                                                        )}
+                                                        {errors?.goals &&
+                                                            touched.goals && (
+                                                                <p className="text-lg text-rose-500">
+                                                                    <>
+                                                                        {
+                                                                            errors.goals
+                                                                        }
+                                                                    </>
+                                                                </p>
+                                                            )}
                                                     </ul>
                                                     <div className="flex flex-col gap-2 justify-center">
                                                         <div className="flex justify-end h-10">
@@ -316,7 +318,7 @@ const GoalsForm = ({
                                                                     isCreatingUserGoal ||
                                                                     isUpdatingUserGoal ||
                                                                     !isValid
-                                                                        ? `btn-disabled"`
+                                                                        ? `btn-disabled`
                                                                         : ``
                                                                 }`}
                                                                 type="submit"
@@ -344,7 +346,7 @@ const GoalsForm = ({
             <GoNextButton
                 stepUri={`../org/products`}
                 nextStepTitle={`Pioneer Migrator Settler`}
-                disabled={userGoals.goals.length > 0}
+                disabled={userGoals.goals.length < 0}
             />
         </section>
     );
