@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+
+import { ChatIs } from "../../../models/enums";
+import { chatBoxStateData } from "../../../context/context";
 
 import OpenAI from "openai";
 import {
@@ -42,11 +45,6 @@ enum ChatGPTIs {
     Learning = "learning",
     Typing = "typing",
 }
-enum ChatIs {
-    Minimized = "minimized",
-    Maximized = "maximized",
-    Disabled = "disabled",
-}
 
 export default function OpenAIChat({
     initialMessage,
@@ -66,7 +64,7 @@ export default function OpenAIChat({
     >([]);
     // only the chat messages that are displayed in the chat box
     const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
-    const [state, setState] = useState<ChatIs>(ChatIs.Minimized);
+    const { chatBoxState, setChatBoxState } = useContext(chatBoxStateData);
     const [chatGPTState, setChatGPTState] = useState<ChatGPTIs>(ChatGPTIs.Idle);
 
     useEffect(() => {
@@ -76,7 +74,7 @@ export default function OpenAIChat({
     }, [chatGPTState]);
 
     useEffect(() => {
-        if (state !== ChatIs.Disabled && initialMessage) {
+        if (chatBoxState !== ChatIs.Disabled && initialMessage) {
             sendHiddenSystemMessage(initialMessage);
         }
     }, [initialMessage]);
@@ -228,7 +226,7 @@ export default function OpenAIChat({
 
     return (
         <>
-            {state === ChatIs.Maximized && (
+            {chatBoxState === ChatIs.Maximized && (
                 <MainContainer className="chatgpt-main-container">
                     <ChatContainer>
                         <ConversationHeader className="chatgpt-header">
@@ -242,7 +240,9 @@ export default function OpenAIChat({
                                 <Button
                                     className="w-6 text-white"
                                     title="Disable Chat"
-                                    onClick={() => setState(ChatIs.Disabled)}
+                                    onClick={() =>
+                                        setChatBoxState(ChatIs.Disabled)
+                                    }
                                     icon={<FontAwesomeIcon icon={faTimes} />}
                                 ></Button>
                             </ConversationHeader.Actions>
@@ -293,15 +293,16 @@ export default function OpenAIChat({
             <Button
                 className="chatgpt-button"
                 title={
-                    state === ChatIs.Minimized
+                    chatBoxState === ChatIs.Minimized
                         ? "Open Chat"
-                        : state === ChatIs.Maximized
+                        : chatBoxState === ChatIs.Maximized
                         ? "Minimize Chat"
                         : "Enable Chat"
                 }
                 onClick={() =>
-                    setState(
-                        state === ChatIs.Minimized || state === ChatIs.Disabled
+                    setChatBoxState(
+                        chatBoxState === ChatIs.Minimized ||
+                            chatBoxState === ChatIs.Disabled
                             ? ChatIs.Maximized
                             : ChatIs.Minimized
                     )
@@ -309,12 +310,14 @@ export default function OpenAIChat({
                 icon={
                     <FontAwesomeIcon
                         icon={
-                            state === ChatIs.Minimized ||
-                            state === ChatIs.Disabled
+                            chatBoxState === ChatIs.Minimized ||
+                            chatBoxState === ChatIs.Disabled
                                 ? faComment
                                 : faTimes
                         }
-                        className={state === ChatIs.Maximized ? `w-8` : `w-14`}
+                        className={
+                            chatBoxState === ChatIs.Maximized ? `w-8` : `w-14`
+                        }
                     />
                 }
             ></Button>
