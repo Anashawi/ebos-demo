@@ -29,16 +29,14 @@ const VoiceOfCustomersContent = () => {
         } as IUserCustomers;
     }, [session?.user?.id]);
 
-    const [userCustomers, setUserCustomers] =
-        useState<IUserCustomers>(emptyUserCustomers);
+    const [userCustomers, setUserCustomers] = useState<IUserCustomers>(emptyUserCustomers);
 
-    const { data: fetchedUserCustomers, isLoading: isUserCustomersLoading } =
-        useQuery<IUserCustomers>({
-            queryKey: [customersApi.Keys.All],
-            queryFn: customersApi.getOne,
-            refetchOnWindowFocus: false,
-            enabled: !!session?.user?.id,
-        });
+    const { data: fetchedUserCustomers, isLoading: isUserCustomersLoading } = useQuery<IUserCustomers>({
+        queryKey: [customersApi.Keys.All],
+        queryFn: customersApi.getOne,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
     useEffect(() => {
         if (fetchedUserCustomers) {
@@ -50,59 +48,40 @@ const VoiceOfCustomersContent = () => {
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!isUserCustomersLoading && fetchedUserCustomers?.id) {
-            const combinedMsg = `${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(
-                fetchedUserCustomers
-            )}`;
+            const combinedMsg = `${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(fetchedUserCustomers)}`;
             setChatGPTMessage(combinedMsg);
         }
     }, [isUserCustomersLoading, fetchedUserCustomers]);
 
-    const { mutate: updateUserCustomers, isLoading: isUpdatingUserCustomers } =
-        useMutation(
-            (userCustomers: IUserCustomers) => {
-                return customersApi.updateOne(userCustomers);
+    const { mutate: updateUserCustomers, isLoading: isUpdatingUserCustomers } = useMutation(
+        (userCustomers: IUserCustomers) => {
+            return customersApi.updateOne(userCustomers);
+        },
+        {
+            onMutate: newVoices => {
+                queryClient.setQueryData([customersApi.Keys.All, userCustomers.id], newVoices);
+                setChatGPTMessage(getVoiceOfCustomerMessage(newVoices));
             },
-            {
-                onMutate: newVoices => {
-                    queryClient.setQueryData(
-                        [customersApi.Keys.All, userCustomers.id],
-                        newVoices
-                    );
-                    setChatGPTMessage(getVoiceOfCustomerMessage(newVoices));
-                },
-                onSuccess: storedVoices => {
-                    queryClient.invalidateQueries([
-                        customersApi.Keys.All,
-                        userCustomers.id,
-                    ]);
-                    queryClient.invalidateQueries([customersApi.Keys.All]);
-                },
-            }
-        );
+            onSuccess: storedVoices => {
+                queryClient.invalidateQueries([customersApi.Keys.All, userCustomers.id]);
+                queryClient.invalidateQueries([customersApi.Keys.All]);
+            },
+        }
+    );
 
-    const { mutate: createUserCustomers, isLoading: isCreatingUserCustomers } =
-        useMutation(
-            (userCustomers: IUserCustomers) =>
-                customersApi.insertOne(userCustomers),
-            {
-                onMutate: newUserCustomers => {
-                    queryClient.setQueryData(
-                        [customersApi.Keys.All, userCustomers.id],
-                        newUserCustomers
-                    );
-                    setChatGPTMessage(
-                        getVoiceOfCustomerMessage(newUserCustomers)
-                    );
-                },
-                onSuccess: storedUserCustomer => {
-                    queryClient.invalidateQueries([
-                        customersApi.Keys.All,
-                        userCustomers.id,
-                    ]);
-                    queryClient.invalidateQueries([customersApi.Keys.All]);
-                },
-            }
-        );
+    const { mutate: createUserCustomers, isLoading: isCreatingUserCustomers } = useMutation(
+        (userCustomers: IUserCustomers) => customersApi.insertOne(userCustomers),
+        {
+            onMutate: newUserCustomers => {
+                queryClient.setQueryData([customersApi.Keys.All, userCustomers.id], newUserCustomers);
+                setChatGPTMessage(getVoiceOfCustomerMessage(newUserCustomers));
+            },
+            onSuccess: storedUserCustomer => {
+                queryClient.invalidateQueries([customersApi.Keys.All, userCustomers.id]);
+                queryClient.invalidateQueries([customersApi.Keys.All]);
+            },
+        }
+    );
 
     const formik = useFormik({
         initialValues: {
@@ -129,196 +108,147 @@ const VoiceOfCustomersContent = () => {
         <>
             <section className="form-container">
                 <h3 className="title-header">Voice of customers</h3>
-                {isUserCustomersLoading && (
-                    <Spinner
-                        className="flex items-center text-2xl"
-                        message="Loading Customers..."
-                    />
-                )}
-                {!isUserCustomersLoading && (
+                {isUserCustomersLoading ? (
+                    <Spinner className="flex items-center text-2xl" message="Loading Customers..." />
+                ) : (
                     <div className="flex flex-col gap-4">
                         <div className="pill-yellow-50 p-3 md:w-full">
-                            <div className="w-[3rem] h-[3rem]">
-                                <Image
-                                    src="/bulb.svg"
-                                    alt="Bulb Icon"
-                                    width={0}
-                                    height={0}
-                                    className="w-full h-auto"
-                                />
-                            </div>
+                            <Image src="/bulb.svg" alt="Bulb Icon" width={36} height={36} />
                             <p className="text-xl text-dark-300">
-                                what do your top customer categories want and
-                                how can you fulfill their needs?
+                                what do your top customer categories want and how can you fulfill their needs?
                             </p>
                         </div>
                         <div className="flex gap-4 p-4 bg-dark-50 rounded-2xl overflow-auto">
                             <div className="grow flex flex-col gap-8">
-                                <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
-                                    Customer categories
-                                </h4>
+                                <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">Customer categories</h4>
                                 <ul className="flex flex-col gap-4">
                                     <li>
                                         <input
+                                            className="light-input w-full"
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "topCategories.0"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("topCategories.0")}
+                                        />
+                                    </li>
+                                    <li>
+                                        <input
+                                            className="light-input w-full"
+                                            type="text"
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("topCategories.1")}
+                                        />
+                                    </li>
+                                    <li>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("topCategories.2")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "topCategories.1"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("topCategories.3")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "topCategories.2"
-                                            )}
-                                            className="light-input w-full"
-                                        />
-                                    </li>
-                                    <li>
-                                        <input
-                                            type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "topCategories.3"
-                                            )}
-                                            className="light-input w-full"
-                                        />
-                                    </li>
-                                    <li>
-                                        <input
-                                            type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "topCategories.4"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("topCategories.4")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                 </ul>
                             </div>
                             <div className="grow flex flex-col gap-8">
-                                <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
-                                    What they want
-                                </h4>
+                                <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">What they want</h4>
                                 <ul className="flex flex-col gap-4">
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "wishlist.0"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("wishlist.0")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "wishlist.1"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("wishlist.1")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "wishlist.2"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("wishlist.2")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "wishlist.3"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("wishlist.3")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "wishlist.4"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("wishlist.4")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                 </ul>
                             </div>
                             <div className="grow flex flex-col gap-8">
-                                <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">
-                                    How to fulfill it
-                                </h4>
+                                <h4 className="text-[1.75rem] text-dark-400 font-hero-semibold">How to fulfill it</h4>
                                 <ul className="flex flex-col gap-4">
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "fulfill.0"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("fulfill.0")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "fulfill.1"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("fulfill.1")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "fulfill.2"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("fulfill.2")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "fulfill.3"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("fulfill.3")}
                                             className="light-input w-full"
                                         />
                                     </li>
                                     <li>
                                         <input
                                             type="text"
-                                            placeholder="Write your notes here..."
-                                            {...formik.getFieldProps(
-                                                "fulfill.4"
-                                            )}
+                                            placeholder="Enter your notes here"
+                                            {...formik.getFieldProps("fulfill.4")}
                                             className="light-input w-full"
                                         />
                                     </li>
@@ -326,12 +256,8 @@ const VoiceOfCustomersContent = () => {
                             </div>
                         </div>
                         <div className="flex justify-end h-10">
-                            {(isUpdatingUserCustomers ||
-                                isCreatingUserCustomers) && (
-                                <Spinner
-                                    className="flex items-center text-xl"
-                                    message="Saving Customers..."
-                                />
+                            {(isUpdatingUserCustomers || isCreatingUserCustomers) && (
+                                <Spinner className="flex items-center text-xl" message="Saving Customers..." />
                             )}
                         </div>
                         <div className="flex gap-4 justify-end">
@@ -362,7 +288,7 @@ const VoiceOfCustomersContent = () => {
                             <GoNextButton
                                 stepUri={`../org/blue-ocean`}
                                 nextStepTitle={`Blue Ocean Canvas`}
-                                disabled={!!userCustomers.id}
+                                disabled={!userCustomers?.id}
                             />
                         </div>
                     </div>

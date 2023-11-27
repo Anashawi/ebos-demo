@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { ChatIs } from "../../../models/enums";
-import { chatBoxStateData } from "../../../context/context";
+import { chatBoxStateData } from "../../../context";
 
 import OpenAI from "openai";
 import {
@@ -46,25 +46,21 @@ enum ChatGPTIs {
     Typing = "typing",
 }
 
-export default function OpenAIChat({
-    initialMessage,
-}: {
-    initialMessage: string;
-}) {
+export default function OpenAIChat({ initialMessage }: { initialMessage: string }) {
     const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
 
     const openai = new OpenAI({
         apiKey: "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",
         dangerouslyAllowBrowser: true,
     });
+
+    const { chatBoxState, setChatBoxState } = useContext(chatBoxStateData);
     const messageInput = useRef<HTMLDivElement>(null);
+
     // history of all chat messages between system/user/AI [required for AI]
-    const [openAIMessages, setOpenAIMessages] = useState<
-        OpenAI.Chat.Completions.ChatCompletionMessageParam[]
-    >([]);
+    const [openAIMessages, setOpenAIMessages] = useState<OpenAI.Chat.Completions.ChatCompletionMessageParam[]>([]);
     // only the chat messages that are displayed in the chat box
     const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
-    const { chatBoxState, setChatBoxState } = useContext(chatBoxStateData);
     const [chatGPTState, setChatGPTState] = useState<ChatGPTIs>(ChatGPTIs.Idle);
 
     useEffect(() => {
@@ -80,9 +76,7 @@ export default function OpenAIChat({
     }, [initialMessage]);
 
     // Feature: system messages/response are not displayed on the chat ui
-    const sendHiddenSystemMessage = async (
-        automaticallyGenSystemMsg: string
-    ) => {
+    const sendHiddenSystemMessage = async (automaticallyGenSystemMsg: string) => {
         const newOpenAIMessages = [...openAIMessages];
 
         // outgoing AI message
@@ -112,13 +106,10 @@ export default function OpenAIChat({
             });
             return chatRepsonse["choices"][0]["message"]["content"] ?? "";
         } catch (error) {
-            let errorMessage =
-                "Oops, something unexpected went wrong... try again later";
+            let errorMessage = "Oops, something unexpected went wrong... try again later";
             const newDisplayedMessages = [...displayedMessages];
             if (error instanceof OpenAI.APIError) {
-                if (error.status === 429)
-                    errorMessage =
-                        "Rate limit reached. Limit: 3 / min. Please try again in 20s";
+                if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
 
                 console.error(error.status); // e.g. 401
                 console.error(error.message); // e.g. The authentication token you passed was invalid...
@@ -189,9 +180,8 @@ export default function OpenAIChat({
             });
             try {
                 for await (const part of stream) {
-                    newDisplayedMessages[
-                        newDisplayedMessages.length - 1
-                    ].content += part.choices[0]?.delta.content ?? "";
+                    newDisplayedMessages[newDisplayedMessages.length - 1].content +=
+                        part.choices[0]?.delta.content ?? "";
                     setDisplayedMessages([...newDisplayedMessages]);
                 }
             } catch (err) {
@@ -200,9 +190,7 @@ export default function OpenAIChat({
         } catch (error) {
             if (error instanceof OpenAI.APIError) {
                 if (error.status === 429)
-                    newDisplayedMessages[
-                        newDisplayedMessages.length - 1
-                    ].content =
+                    newDisplayedMessages[newDisplayedMessages.length - 1].content =
                         "Rate limit reached. Limit: 3 / min. Please try again in 20s";
                 console.error(error.status); // e.g. 401
                 console.error(error.message); // e.g. The authentication token you passed was invalid...
@@ -217,8 +205,7 @@ export default function OpenAIChat({
         // incoming AI message
         const newOpenAIMessage = {
             role: ChatCompletionRequestMessageRoleEnum.Assistant,
-            content:
-                newDisplayedMessages[newDisplayedMessages.length - 1].content,
+            content: newDisplayedMessages[newDisplayedMessages.length - 1].content,
         };
         newOpenAIMessages.push(newOpenAIMessage);
         setOpenAIMessages([...newOpenAIMessages]);
@@ -240,9 +227,7 @@ export default function OpenAIChat({
                                 <Button
                                     className="w-6 text-white"
                                     title="Disable Chat"
-                                    onClick={() =>
-                                        setChatBoxState(ChatIs.Disabled)
-                                    }
+                                    onClick={() => setChatBoxState(ChatIs.Disabled)}
                                     icon={<FontAwesomeIcon icon={faTimes} />}
                                 ></Button>
                             </ConversationHeader.Actions>
@@ -250,11 +235,8 @@ export default function OpenAIChat({
                         <MessageList
                             className="chatgpt-messages-container"
                             typingIndicator={
-                                (chatGPTState === ChatGPTIs.Typing ||
-                                    chatGPTState === ChatGPTIs.Learning) && (
-                                    <TypingIndicator
-                                        content={`ChatGPT is ${chatGPTState}`}
-                                    />
+                                (chatGPTState === ChatGPTIs.Typing || chatGPTState === ChatGPTIs.Learning) && (
+                                    <TypingIndicator content={`ChatGPT is ${chatGPTState}`} />
                                 )
                             }
                         >
@@ -281,10 +263,7 @@ export default function OpenAIChat({
                             autoFocus={true}
                             attachButton={false}
                             sendButton={true}
-                            disabled={
-                                chatGPTState === ChatGPTIs.Typing ||
-                                chatGPTState === ChatGPTIs.Learning
-                            }
+                            disabled={chatGPTState === ChatGPTIs.Typing || chatGPTState === ChatGPTIs.Learning}
                             ref={messageInput}
                         />
                     </ChatContainer>
@@ -301,8 +280,7 @@ export default function OpenAIChat({
                 }
                 onClick={() =>
                     setChatBoxState(
-                        chatBoxState === ChatIs.Minimized ||
-                            chatBoxState === ChatIs.Disabled
+                        chatBoxState === ChatIs.Minimized || chatBoxState === ChatIs.Disabled
                             ? ChatIs.Maximized
                             : ChatIs.Minimized
                     )
@@ -310,14 +288,9 @@ export default function OpenAIChat({
                 icon={
                     <FontAwesomeIcon
                         icon={
-                            chatBoxState === ChatIs.Minimized ||
-                            chatBoxState === ChatIs.Disabled
-                                ? faComment
-                                : faTimes
+                            chatBoxState === ChatIs.Minimized || chatBoxState === ChatIs.Disabled ? faComment : faTimes
                         }
-                        className={
-                            chatBoxState === ChatIs.Maximized ? `w-8` : `w-14`
-                        }
+                        className={chatBoxState === ChatIs.Maximized ? `w-8` : `w-14`}
                     />
                 }
             ></Button>

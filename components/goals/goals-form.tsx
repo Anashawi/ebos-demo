@@ -23,13 +23,7 @@ interface Props {
     setChatGPTMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const GoalsForm = ({
-    fetchedUserGoals,
-    areUserGoalsLoading,
-    userGoals,
-    setUserGoals,
-    setChatGPTMessage,
-}: Props) => {
+const GoalsForm = ({ fetchedUserGoals, areUserGoalsLoading, userGoals, setUserGoals, setChatGPTMessage }: Props) => {
     const { data: session }: any = useSession();
     const queryClient = useQueryClient();
 
@@ -43,49 +37,38 @@ const GoalsForm = ({
     }, [fetchedUserGoals, setUserGoals]);
 
     // update goal with local storage mutation
-    const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } =
-        useMutation(
-            (userGoals: IUserGoals) => {
-                return goalsApi.updateOne(userGoals);
-            },
-            {
-                onMutate: newGoal => {
-                    queryClient.setQueryData(
-                        [goalsApi.Keys.UserGoals, userGoals.id],
-                        newGoal
-                    );
-                    setChatGPTMessage(getUserGoalsMsg(newGoal));
-                },
-                onSuccess: storedGoal => {
-                    queryClient.invalidateQueries([
-                        goalsApi.Keys.UserGoals,
-                        userGoals.id,
-                    ]);
-                    // flag locally stored goals as invalid, to be loaded onPageLoad
-                    queryClient.invalidateQueries([goalsApi.Keys.All]);
-                },
-            }
-        );
-
-    // create goal with local storage mutation
-    const { mutate: createUserGoal, isLoading: isCreatingUserGoal } =
-        useMutation((userGoals: IUserGoals) => goalsApi.insertOne(userGoals), {
+    const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } = useMutation(
+        (userGoals: IUserGoals) => {
+            return goalsApi.updateOne(userGoals);
+        },
+        {
             onMutate: newGoal => {
-                queryClient.setQueryData(
-                    [goalsApi.Keys.UserGoals, userGoals.id],
-                    newGoal
-                );
+                queryClient.setQueryData([goalsApi.Keys.UserGoals, userGoals.id], newGoal);
                 setChatGPTMessage(getUserGoalsMsg(newGoal));
             },
             onSuccess: storedGoal => {
-                queryClient.invalidateQueries([
-                    goalsApi.Keys.UserGoals,
-                    userGoals.id,
-                ]);
+                queryClient.invalidateQueries([goalsApi.Keys.UserGoals, userGoals.id]);
                 // flag locally stored goals as invalid, to be loaded onPageLoad
                 queryClient.invalidateQueries([goalsApi.Keys.All]);
             },
-        });
+        }
+    );
+
+    // create goal with local storage mutation
+    const { mutate: createUserGoal, isLoading: isCreatingUserGoal } = useMutation(
+        (userGoals: IUserGoals) => goalsApi.insertOne(userGoals),
+        {
+            onMutate: newGoal => {
+                queryClient.setQueryData([goalsApi.Keys.UserGoals, userGoals.id], newGoal);
+                setChatGPTMessage(getUserGoalsMsg(newGoal));
+            },
+            onSuccess: storedGoal => {
+                queryClient.invalidateQueries([goalsApi.Keys.UserGoals, userGoals.id]);
+                // flag locally stored goals as invalid, to be loaded onPageLoad
+                queryClient.invalidateQueries([goalsApi.Keys.All]);
+            },
+        }
+    );
 
     return (
         <section className="form-container">
@@ -96,9 +79,7 @@ const GoalsForm = ({
                         ...userGoals,
                     }}
                     validationSchema={object({
-                        goals: array(string().required("required"))
-                            .required()
-                            .min(1, "at least 1 goal is required"),
+                        goals: array(string().required("required")).required().min(1, "at least 1 goal is required"),
                         targetDate: date().required("required"),
                     })}
                     onSubmit={async (values, actions) => {
@@ -120,34 +101,20 @@ const GoalsForm = ({
                     enableReinitialize
                     validateOnMount
                 >
-                    {({
-                        values: formValues,
-                        isSubmitting,
-                        isValid,
-                        errors,
-                        touched,
-                    }) => (
+                    {({ values: formValues, isSubmitting, isValid, errors, touched }) => (
                         <>
                             <div className="w-full xl:w-[40%] flex flex-col gap-2">
-                                <label className="font-semibold text-[#4e79b2]">
-                                    Choose a target date
-                                </label>
+                                <label className="font-semibold text-[#4e79b2]">Choose a target date</label>
                                 <div className="grow flex flex-col">
                                     <Field
                                         className="light-input"
                                         name="targetDate"
                                         type="date"
-                                        min={new Date()
-                                            .toISOString()
-                                            .slice(0, 10)} // 10 chars for dd/mm/yyyy
+                                        min={new Date().toISOString().slice(0, 10)} // 10 chars for dd/mm/yyyy
                                         placeholder="Enter target date"
                                     />
                                     <ErrorMessage name={`targetDate`}>
-                                        {msg => (
-                                            <p className="text-lg text-rose-500">
-                                                {msg}
-                                            </p>
-                                        )}
+                                        {msg => <p className="text-lg text-rose-500">{msg}</p>}
                                     </ErrorMessage>
                                 </div>
                             </div>
@@ -167,16 +134,12 @@ const GoalsForm = ({
                                             />
                                         </div>
                                         <p className="text-xl text-dark-300">
-                                            Visualize success on this date, What
-                                            does it look like...?
+                                            Visualize success on this date, What does it look like...?
                                         </p>
                                     </div>
                                     <Form>
                                         <FieldArray name="goals">
-                                            {({
-                                                remove: removeGoal,
-                                                push: pushToGoalsList,
-                                            }) => (
+                                            {({ remove: removeGoal, push: pushToGoalsList }) => (
                                                 <div className="flex flex-col gap-4">
                                                     <div className="flex flex-row justify-start gap-2">
                                                         <Field
@@ -184,121 +147,74 @@ const GoalsForm = ({
                                                             name="goals"
                                                             type="text"
                                                             placeholder="Enter your goal here"
-                                                            value={
-                                                                goalToBeAdded
-                                                            }
-                                                            onChange={(
-                                                                e: ChangeEvent<HTMLInputElement>
-                                                            ) => {
-                                                                setGoalToBeAdded(
-                                                                    e.target
-                                                                        .value
-                                                                );
+                                                            value={goalToBeAdded}
+                                                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                                                setGoalToBeAdded(e.target.value);
                                                             }}
                                                         />
                                                         <button
                                                             className={`btn-primary px-8 cursor-pointer ${
-                                                                !goalToBeAdded
-                                                                    ? `btn-disabled`
-                                                                    : ``
+                                                                !goalToBeAdded ? `btn-disabled` : ``
                                                             }`}
                                                             type="button"
-                                                            disabled={
-                                                                !goalToBeAdded
-                                                            }
+                                                            disabled={!goalToBeAdded}
                                                             onClick={() => {
-                                                                pushToGoalsList(
-                                                                    goalToBeAdded
-                                                                );
-                                                                setGoalToBeAdded(
-                                                                    ""
-                                                                );
+                                                                pushToGoalsList(goalToBeAdded);
+                                                                setGoalToBeAdded("");
                                                             }}
                                                         >
                                                             <FontAwesomeIcon
                                                                 className="w-4 cursor-pointer"
                                                                 icon={faPlus}
                                                             />
-                                                            <span className="text-xl">
-                                                                Add New Goal
-                                                            </span>
+                                                            <span className="text-xl">Add New Goal</span>
                                                         </button>
                                                     </div>
                                                     {areUserGoalsLoading && (
-                                                        <Spinner
-                                                            className=""
-                                                            message="Loading Goals"
-                                                        />
+                                                        <Spinner className="" message="Loading Goals" />
                                                     )}
-                                                    {!areUserGoalsLoading &&
-                                                        formValues.goals
-                                                            ?.length === 0 && (
-                                                            <div className="w-full flex items-center">
-                                                                <p className="pb-2 text-xl text-center italic">
-                                                                    Start adding
-                                                                    your
-                                                                    goals...
-                                                                </p>
-                                                            </div>
-                                                        )}
+                                                    {!areUserGoalsLoading && formValues.goals?.length === 0 && (
+                                                        <div className="w-full flex items-center">
+                                                            <p className="pb-2 text-xl text-center italic">
+                                                                Start adding your goals...
+                                                            </p>
+                                                        </div>
+                                                    )}
                                                     <ul className="flex flex-col gap-2 text-gray-gunmetal">
                                                         {!areUserGoalsLoading &&
-                                                            formValues.goals
-                                                                ?.length > 0 &&
-                                                            formValues.goals.map(
-                                                                (
-                                                                    goal: string,
-                                                                    goalIndex: number
-                                                                ) => (
-                                                                    <div
-                                                                        key={
-                                                                            goalIndex
-                                                                        }
-                                                                    >
-                                                                        <li className="relative w-[100%] xl:w-[69%]">
-                                                                            <Field
-                                                                                type="text"
-                                                                                className="dark-input"
-                                                                                name={`goals.${goalIndex}`}
-                                                                                readOnly
-                                                                                placeholder="Goal"
-                                                                            />
-                                                                            <FontAwesomeIcon
-                                                                                icon={
-                                                                                    faTimes
-                                                                                }
-                                                                                className="w-4 cursor-pointer absolute right-6 top-5 text-dark-300 hover:text-dark-400"
-                                                                                onClick={() => {
-                                                                                    removeGoal(
-                                                                                        goalIndex
-                                                                                    );
-                                                                                }}
-                                                                            />
-                                                                        </li>
-                                                                        <ErrorMessage
+                                                            formValues.goals?.length > 0 &&
+                                                            formValues.goals.map((goal: string, goalIndex: number) => (
+                                                                <div key={goalIndex}>
+                                                                    <li className="relative w-[100%] xl:w-[69%]">
+                                                                        <Field
+                                                                            type="text"
+                                                                            className="dark-input"
                                                                             name={`goals.${goalIndex}`}
-                                                                        >
-                                                                            {msg => (
-                                                                                <div className="text-lg text-rose-500">
-                                                                                    {
-                                                                                        msg
-                                                                                    }
-                                                                                </div>
-                                                                            )}
-                                                                        </ErrorMessage>
-                                                                    </div>
-                                                                )
-                                                            )}
-                                                        {errors?.goals &&
-                                                            touched.goals && (
-                                                                <p className="text-lg text-rose-500">
-                                                                    <>
-                                                                        {
-                                                                            errors.goals
-                                                                        }
-                                                                    </>
-                                                                </p>
-                                                            )}
+                                                                            readOnly
+                                                                            placeholder="Goal"
+                                                                        />
+                                                                        <FontAwesomeIcon
+                                                                            icon={faTimes}
+                                                                            className="w-4 cursor-pointer absolute right-6 top-5 text-dark-300 hover:text-dark-400"
+                                                                            onClick={() => {
+                                                                                removeGoal(goalIndex);
+                                                                            }}
+                                                                        />
+                                                                    </li>
+                                                                    <ErrorMessage name={`goals.${goalIndex}`}>
+                                                                        {msg => (
+                                                                            <div className="text-lg text-rose-500">
+                                                                                {msg}
+                                                                            </div>
+                                                                        )}
+                                                                    </ErrorMessage>
+                                                                </div>
+                                                            ))}
+                                                        {errors?.goals && touched.goals && (
+                                                            <p className="text-lg text-rose-500">
+                                                                <>{errors.goals}</>
+                                                            </p>
+                                                        )}
                                                     </ul>
                                                     <div className="flex flex-col gap-2 justify-center">
                                                         <div className="flex justify-end h-10">
@@ -346,7 +262,7 @@ const GoalsForm = ({
             <GoNextButton
                 stepUri={`../org/products`}
                 nextStepTitle={`Pioneer Migrator Settler`}
-                disabled={userGoals.goals.length < 0}
+                disabled={userGoals.goals.length < 1}
             />
         </section>
     );

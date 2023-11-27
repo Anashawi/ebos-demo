@@ -39,11 +39,7 @@ interface Props {
     dispatchChartProducts: (products: IProduct[]) => void;
 }
 
-const ProductsContent = ({
-    userProduct,
-    isLoading,
-    dispatchChartProducts,
-}: Props) => {
+const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts }: Props) => {
     const { data: session }: any = useSession();
     const queryClient = useQueryClient();
 
@@ -51,60 +47,40 @@ const ProductsContent = ({
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!isLoading && userProduct.id) {
-            const combinedMsg = `${stepTwoTranscript}\n\n${getCompanyProductMessage(
-                userProduct
-            )}`;
+            const combinedMsg = `${stepTwoTranscript}\n\n${getCompanyProductMessage(userProduct)}`;
             setChatGPTMessage(combinedMsg);
         }
     }, [isLoading, userProduct]);
 
-    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
-        useMutation(
-            (newUserProduct: IUserProduct) => {
-                return productsApi.updateOne(
-                    newUserProduct,
-                    productPagesEnum.futures
-                );
+    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
+        (newUserProduct: IUserProduct) => {
+            return productsApi.updateOne(newUserProduct, productPagesEnum.futures);
+        },
+        {
+            onMutate: newProduct => {
+                queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProduct);
+                setChatGPTMessage(getCompanyProductMessage(newProduct));
             },
-            {
-                onMutate: newProduct => {
-                    queryClient.setQueryData(
-                        [productsApi.Keys.UserProduct, userProduct.id],
-                        newProduct
-                    );
-                    setChatGPTMessage(getCompanyProductMessage(newProduct));
-                },
-                onSuccess: storedProduct => {
-                    queryClient.invalidateQueries([
-                        productsApi.Keys.UserProduct,
-                        userProduct.id,
-                    ]);
-                    queryClient.invalidateQueries([productsApi.Keys.All]);
-                },
-            }
-        );
+            onSuccess: storedProduct => {
+                queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
+                queryClient.invalidateQueries([productsApi.Keys.All]);
+            },
+        }
+    );
 
-    const { mutate: createUserProduct, isLoading: isCreatingUserProduct } =
-        useMutation(
-            (newUserProduct: IUserProduct) =>
-                productsApi.insertOne(newUserProduct),
-            {
-                onMutate: newProduct => {
-                    queryClient.setQueryData(
-                        [productsApi.Keys.UserProduct, userProduct.id],
-                        newProduct
-                    );
-                    setChatGPTMessage(getCompanyProductMessage(newProduct));
-                },
-                onSuccess: storedProduct => {
-                    queryClient.invalidateQueries([
-                        productsApi.Keys.UserProduct,
-                        userProduct.id,
-                    ]);
-                    queryClient.invalidateQueries([productsApi.Keys.All]);
-                },
-            }
-        );
+    const { mutate: createUserProduct, isLoading: isCreatingUserProduct } = useMutation(
+        (newUserProduct: IUserProduct) => productsApi.insertOne(newUserProduct),
+        {
+            onMutate: newProduct => {
+                queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProduct);
+                setChatGPTMessage(getCompanyProductMessage(newProduct));
+            },
+            onSuccess: storedProduct => {
+                queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
+                queryClient.invalidateQueries([productsApi.Keys.All]);
+            },
+        }
+    );
 
     const isCreatingOrUpdating = isUpdatingUserProduct || isCreatingUserProduct;
 
@@ -124,24 +100,14 @@ const ProductsContent = ({
                                     object({
                                         year: number()
                                             .typeError("specify a year")
-                                            .min(
-                                                new Date().getFullYear(),
-                                                `min year is ${new Date().getFullYear()}`
-                                            )
+                                            .min(new Date().getFullYear(), `min year is ${new Date().getFullYear()}`)
                                             .required("required"),
                                         level: number().required("required"),
-                                        sales: number()
-                                            .min(0, "must be greater than 0")
-                                            .required("required"),
+                                        sales: number().min(0, "must be greater than 0").required("required"),
                                     })
                                 )
-                                    .required(
-                                        "Must provide at least one future!"
-                                    )
-                                    .min(
-                                        1,
-                                        "Must provide at least one future!"
-                                    ),
+                                    .required("Must provide at least one future!")
+                                    .min(1, "Must provide at least one future!"),
                             })
                         )
                             .required("Start adding your products...")
@@ -184,47 +150,24 @@ const ProductsContent = ({
                                                             message="Loading products..."
                                                         />
                                                     )}
-                                                    {!!values.products
-                                                        ?.length &&
-                                                        values.products?.map(
-                                                            (
-                                                                product,
-                                                                productIndex
-                                                            ) => (
-                                                                <div
-                                                                    key={
-                                                                        productIndex
-                                                                    }
-                                                                >
-                                                                    <Product
-                                                                        product={
-                                                                            product
-                                                                        }
-                                                                        index={
-                                                                            productIndex
-                                                                        }
-                                                                        onRemove={() => {
-                                                                            remove(
-                                                                                productIndex
-                                                                            );
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            )
-                                                        )}
+                                                    {!!values.products?.length &&
+                                                        values.products?.map((product, productIndex) => (
+                                                            <div key={productIndex}>
+                                                                <Product
+                                                                    product={product}
+                                                                    index={productIndex}
+                                                                    onRemove={() => {
+                                                                        remove(productIndex);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        ))}
                                                     {!values.products?.length &&
                                                         !isLoading &&
-                                                        form.errors
-                                                            ?.products && (
+                                                        form.errors?.products && (
                                                             <div className="flex justify-start items-center">
                                                                 <p className="px-8 text-xl text-center italic">
-                                                                    <>
-                                                                        {
-                                                                            form
-                                                                                .errors
-                                                                                .products
-                                                                        }
-                                                                    </>
+                                                                    <>{form.errors.products}</>
                                                                 </p>
                                                             </div>
                                                         )}
@@ -232,9 +175,7 @@ const ProductsContent = ({
                                                 <div className="flex">
                                                     <button
                                                         className={`btn-primary px-8 ${
-                                                            isCreatingOrUpdating ||
-                                                            isLoading ||
-                                                            isSubmitting
+                                                            isCreatingOrUpdating || isLoading || isSubmitting
                                                                 ? `btn-disabled`
                                                                 : ``
                                                         }`}
@@ -242,18 +183,13 @@ const ProductsContent = ({
                                                         onClick={() => {
                                                             push(emptyProduct);
                                                         }}
-                                                        disabled={
-                                                            isLoading ||
-                                                            isSubmitting
-                                                        }
+                                                        disabled={isLoading || isSubmitting}
                                                     >
                                                         <FontAwesomeIcon
                                                             className="w-4 h-auto cursor-pointer"
                                                             icon={faPlus}
                                                         />
-                                                        <span>
-                                                            Add New Product
-                                                        </span>
+                                                        <span>Add New Product</span>
                                                     </button>
                                                 </div>
                                                 <div className="flex justify-end h-10">
@@ -270,15 +206,14 @@ const ProductsContent = ({
                                                         className={`btn-rev ${
                                                             isCreatingOrUpdating ||
                                                             isSubmitting ||
-                                                            (!isValid &&
-                                                                !isValidating)
+                                                            (!isValid && !isValidating)
                                                                 ? `btn-disabled`
                                                                 : ``
                                                         }`}
                                                         disabled={
+                                                            isCreatingOrUpdating ||
                                                             isSubmitting ||
-                                                            (!isValid &&
-                                                                !isValidating)
+                                                            (!isValid && !isValidating)
                                                         }
                                                     >
                                                         Save
@@ -286,10 +221,7 @@ const ProductsContent = ({
                                                     <GoNextButton
                                                         stepUri={`../org/market-potential`}
                                                         nextStepTitle={`Market Potential`}
-                                                        disabled={
-                                                            userProduct.products
-                                                                .length > 0
-                                                        }
+                                                        disabled={userProduct.products.length < 1}
                                                     />
                                                 </div>
                                             </div>
@@ -299,9 +231,7 @@ const ProductsContent = ({
 
                                 <FormikContextChild
                                     dispatch={values => {
-                                        dispatchChartProducts(
-                                            cloneDeep(values.products)
-                                        );
+                                        dispatchChartProducts(cloneDeep(values.products));
                                     }}
                                 />
                             </Form>

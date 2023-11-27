@@ -51,6 +51,8 @@ export function getCompanyProductMessage(userProduct: IUserProduct) {
         product = userProduct.products[i];
         msgForChatGPT += `- ${product.name}`;
 
+        if (!product.futures) return msgForChatGPT;
+
         for (let j = 0; j < product.futures!.length; j++) {
             const future = product.futures![j];
             if (j === 0)
@@ -75,8 +77,14 @@ export function getCompanyProductMessage(userProduct: IUserProduct) {
 // Step 3: `org/market-potential` Market Potential
 export function getMarketPotentialMessage(userProduct: IUserProduct) {
     let msgForChatGPT = ``;
+
+    if (!userProduct) return msgForChatGPT;
+
     for (let i = 0; i < userProduct.products.length; i++) {
         const product = userProduct.products[i];
+
+        if (!product.competitors) return msgForChatGPT;
+
         msgForChatGPT += `My product's name is: ${
             product.name
         } and its market share is $${product.competitors![0].marketShare}.\n`;
@@ -106,10 +114,10 @@ export function getRedOceanMessage(userProduct: IUserProduct) {
 
     for (let i = 0; i < productsLength; i++) {
         product = userProduct.products[i];
+
+        if (!product.factors) return msgForChatGPT;
+
         factorsLength = product.factors!.length;
-
-        if (factorsLength === 0) return msgForChatGPT;
-
         msgForChatGPT += `For the ${product.name}:\n`;
         for (let j = 0; j < factorsLength; j++) {
             factor = product.factors![j];

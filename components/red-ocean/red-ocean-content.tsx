@@ -26,49 +26,33 @@ interface Props {
     isLoading: boolean;
 }
 
-const RedOceanContent = ({
-    userProducts,
-    dispatchChartProducts,
-    isLoading,
-}: Props) => {
+const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading }: Props) => {
     const queryClient = useQueryClient();
 
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!isLoading && userProducts.id) {
-            const combinedMsg = `${stepFourTranscript}\n\n${getRedOceanMessage(
-                userProducts
-            )}`;
+            const combinedMsg = `${stepFourTranscript}\n\n${getRedOceanMessage(userProducts)}`;
             setChatGPTMessage(combinedMsg);
         }
     }, [isLoading, userProducts]);
 
-    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
-        useMutation(
-            (newUserProducts: IUserProduct) => {
-                return productsApi.updateOne(
-                    newUserProducts,
-                    productPagesEnum.factors
-                );
+    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
+        (newUserProducts: IUserProduct) => {
+            return productsApi.updateOne(newUserProducts, productPagesEnum.factors);
+        },
+        {
+            onMutate: newProducts => {
+                queryClient.setQueryData([productsApi.Keys.UserProduct, userProducts.id], newProducts);
+                setChatGPTMessage(getRedOceanMessage(newProducts));
             },
-            {
-                onMutate: newProducts => {
-                    queryClient.setQueryData(
-                        [productsApi.Keys.UserProduct, userProducts.id],
-                        newProducts
-                    );
-                    setChatGPTMessage(getRedOceanMessage(newProducts));
-                },
-                onSuccess: storedProducts => {
-                    queryClient.invalidateQueries([
-                        productsApi.Keys.UserProduct,
-                        userProducts.id,
-                    ]);
-                    queryClient.invalidateQueries([productsApi.Keys.All]);
-                },
-            }
-        );
+            onSuccess: storedProducts => {
+                queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProducts.id]);
+                queryClient.invalidateQueries([productsApi.Keys.All]);
+            },
+        }
+    );
 
     return (
         <>
@@ -86,13 +70,8 @@ const RedOceanContent = ({
                                         name: string().required("required"),
                                     })
                                 )
-                                    .required(
-                                        "Must provide at least one factor !"
-                                    )
-                                    .min(
-                                        1,
-                                        "Must provide at least one factor !"
-                                    ),
+                                    .required("Must provide at least one factor !")
+                                    .min(1, "Must provide at least one factor !"),
                             })
                         ),
                     })}
@@ -127,61 +106,35 @@ const RedOceanContent = ({
                                                             message="Loading Red Ocean..."
                                                         />
                                                     )}
+                                                    {!isLoading && userProducts.products.length === 0 && (
+                                                        <ZeroProductsWarning />
+                                                    )}
                                                     {!isLoading &&
-                                                        userProducts.products
-                                                            .length === 0 && (
-                                                            <ZeroProductsWarning />
-                                                        )}
-                                                    {!isLoading &&
-                                                        values.products
-                                                            .length === 0 &&
-                                                        userProducts.products
-                                                            .length > 0 && (
+                                                        values.products.length === 0 &&
+                                                        userProducts.products.length > 0 && (
                                                             <p className="text-rose-400">
-                                                                make a selection
-                                                                to view products
-                                                                !
+                                                                make a selection to view products !
                                                             </p>
                                                         )}
-                                                    {values.products.length >
-                                                        0 &&
-                                                        values.products.map(
-                                                            (
-                                                                product,
-                                                                productIndex
-                                                            ) => (
-                                                                <div
-                                                                    key={
-                                                                        productIndex
-                                                                    }
-                                                                >
-                                                                    {!!product
-                                                                        .competitors
-                                                                        ?.length && (
-                                                                        <RedOceanProduct
-                                                                            product={
-                                                                                product
-                                                                            }
-                                                                            index={
-                                                                                productIndex
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                    {!product
-                                                                        .competitors
-                                                                        ?.length && (
-                                                                        <>
-                                                                            <h3 className="text-[1.75rem] font-hero-semibold">
-                                                                                {
-                                                                                    product.name
-                                                                                }
-                                                                            </h3>
-                                                                            <ZeroProductCompetitorsWarning />
-                                                                        </>
-                                                                    )}
-                                                                </div>
-                                                            )
-                                                        )}
+                                                    {values.products.length > 0 &&
+                                                        values.products.map((product, productIndex) => (
+                                                            <div key={productIndex}>
+                                                                {!!product.competitors?.length && (
+                                                                    <RedOceanProduct
+                                                                        product={product}
+                                                                        index={productIndex}
+                                                                    />
+                                                                )}
+                                                                {!product.competitors?.length && (
+                                                                    <>
+                                                                        <h3 className="text-[1.75rem] font-hero-semibold">
+                                                                            {product.name}
+                                                                        </h3>
+                                                                        <ZeroProductCompetitorsWarning />
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        ))}
                                                 </div>
                                                 <div className="flex justify-end h-10">
                                                     {isUpdatingUserProduct && (
@@ -198,14 +151,16 @@ const RedOceanContent = ({
                                                             isLoading ||
                                                             isUpdatingUserProduct ||
                                                             isSubmitting ||
-                                                            !isValid
+                                                            !isValid ||
+                                                            userProducts.products.length === 0
                                                                 ? "btn-rev btn-disabled"
                                                                 : "btn-rev"
                                                         }
                                                         disabled={
                                                             isUpdatingUserProduct ||
                                                             isSubmitting ||
-                                                            !isValid
+                                                            !isValid ||
+                                                            userProducts.products.length === 0
                                                         }
                                                     >
                                                         Save
@@ -215,7 +170,8 @@ const RedOceanContent = ({
                                                         nextStepTitle={`Disruption`}
                                                         disabled={
                                                             isSubmitting ||
-                                                            !isValid
+                                                            !isValid ||
+                                                            userProducts.products.length === 0
                                                         }
                                                     />
                                                 </div>
@@ -226,9 +182,7 @@ const RedOceanContent = ({
 
                                 <FormikContextChild
                                     dispatch={values => {
-                                        dispatchChartProducts(
-                                            cloneDeep(values.products)
-                                        );
+                                        dispatchChartProducts(cloneDeep(values.products));
                                     }}
                                 />
                             </Form>

@@ -25,55 +25,35 @@ interface Props {
     setChartProducts: (products: IProduct[]) => void;
 }
 
-const MarketPotentialContent = ({
-    userProduct,
-    isLoading: areUserProductsLoading,
-    setChartProducts,
-}: Props) => {
+const MarketPotentialContent = ({ userProduct, isLoading: areUserProductsLoading, setChartProducts }: Props) => {
     const queryClient = useQueryClient();
 
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!areUserProductsLoading && userProduct.id) {
-            setChatGPTMessage(
-                `${stepThreeTranscript}\n\n${getMarketPotentialMessage(
-                    userProduct
-                )}`
-            );
+            setChatGPTMessage(`${stepThreeTranscript}\n\n${getMarketPotentialMessage(userProduct)}`);
         }
     }, [areUserProductsLoading, userProduct]);
 
-    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
-        useMutation(
-            (userProduct: IUserProduct) => {
-                return productsApi.updateOne(
-                    userProduct,
-                    productPagesEnum.competitors
-                );
+    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
+        (userProduct: IUserProduct) => {
+            return productsApi.updateOne(userProduct, productPagesEnum.competitors);
+        },
+        {
+            onMutate: newProducts => {
+                queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProducts);
+                setChatGPTMessage(getMarketPotentialMessage(newProducts));
             },
-            {
-                onMutate: newProducts => {
-                    queryClient.setQueryData(
-                        [productsApi.Keys.UserProduct, userProduct.id],
-                        newProducts
-                    );
-                    setChatGPTMessage(getMarketPotentialMessage(newProducts));
-                },
-                onSuccess: storedProducts => {
-                    queryClient.invalidateQueries([
-                        productsApi.Keys.UserProduct,
-                        userProduct.id,
-                    ]);
-                    queryClient.invalidateQueries([productsApi.Keys.All]);
-                },
-            }
-        );
+            onSuccess: storedProducts => {
+                queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
+                queryClient.invalidateQueries([productsApi.Keys.All]);
+            },
+        }
+    );
 
-    const isNotLoadingWithoutProducts =
-        !areUserProductsLoading && userProduct.products.length === 0;
-    const isNotLoadingWithProducts =
-        !areUserProductsLoading && userProduct.products.length > 0;
+    const isNotLoadingWithoutProducts = !areUserProductsLoading && userProduct.products.length === 0;
+    const isNotLoadingWithProducts = !areUserProductsLoading && userProduct.products.length > 0;
 
     return (
         <>
@@ -91,19 +71,11 @@ const MarketPotentialContent = ({
                                         name: string().required("required"),
                                         marketShare: number()
                                             .required("required")
-                                            .min(
-                                                0,
-                                                "Market share must be 0 or greater"
-                                            ),
+                                            .min(0, "Market share must be 0 or greater"),
                                     })
                                 )
-                                    .required(
-                                        "Must provide at least one competitor !"
-                                    )
-                                    .min(
-                                        1,
-                                        "Must provide at least one competitor !"
-                                    ),
+                                    .required("Must provide at least one competitor !")
+                                    .min(1, "Must provide at least one competitor !"),
                             })
                         ).required(),
                     })}
@@ -139,47 +111,27 @@ const MarketPotentialContent = ({
                                                         message="Loading Market Potential..."
                                                     ></Spinner>
                                                 )}
-                                                {isNotLoadingWithoutProducts && (
-                                                    <ZeroProductsWarning />
+                                                {isNotLoadingWithoutProducts && <ZeroProductsWarning />}
+                                                {isNotLoadingWithProducts && values.products.length === 0 && (
+                                                    <p className="w-max italic py-5">
+                                                        Select a product to start analyzing its market potential ...
+                                                    </p>
                                                 )}
                                                 {isNotLoadingWithProducts &&
-                                                    values.products.length ===
-                                                        0 && (
-                                                        <p className="w-max italic py-5">
-                                                            Select a product to
-                                                            start analyzing its
-                                                            market potential ...
-                                                        </p>
-                                                    )}
-                                                {isNotLoadingWithProducts &&
-                                                    values.products.length >
-                                                        0 &&
-                                                    values.products.map(
-                                                        (
-                                                            product,
-                                                            productIndex
-                                                        ) => (
-                                                            <div
-                                                                key={
-                                                                    productIndex
-                                                                }
-                                                            >
-                                                                <CompetitorsProduct
-                                                                    product={
-                                                                        product
-                                                                    }
-                                                                    index={
-                                                                        productIndex
-                                                                    }
-                                                                    formUtilities={{
-                                                                        isSubmitting,
-                                                                        isValid,
-                                                                        errors,
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        )
-                                                    )}
+                                                    values.products.length > 0 &&
+                                                    values.products.map((product, productIndex) => (
+                                                        <div key={productIndex}>
+                                                            <CompetitorsProduct
+                                                                product={product}
+                                                                index={productIndex}
+                                                                formUtilities={{
+                                                                    isSubmitting,
+                                                                    isValid,
+                                                                    errors,
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    ))}
                                                 <div className="flex justify-end h-10">
                                                     {isUpdatingUserProduct && (
                                                         <Spinner
@@ -195,7 +147,8 @@ const MarketPotentialContent = ({
                                                             isUpdatingUserProduct ||
                                                             areUserProductsLoading ||
                                                             isSubmitting ||
-                                                            !isValid
+                                                            !isValid ||
+                                                            userProduct.products.length < 1
                                                                 ? `btn-disabled`
                                                                 : ``
                                                         }`}
@@ -203,7 +156,8 @@ const MarketPotentialContent = ({
                                                             isUpdatingUserProduct ||
                                                             areUserProductsLoading ||
                                                             isSubmitting ||
-                                                            !isValid
+                                                            !isValid ||
+                                                            userProduct.products.length < 1
                                                         }
                                                     >
                                                         Save
@@ -212,8 +166,11 @@ const MarketPotentialContent = ({
                                                         stepUri={`../org/red-ocean`}
                                                         nextStepTitle={`Red Ocean Canvas`}
                                                         disabled={
-                                                            userProduct.products
-                                                                .length > 0
+                                                            isUpdatingUserProduct ||
+                                                            areUserProductsLoading ||
+                                                            isSubmitting ||
+                                                            !isValid ||
+                                                            userProduct.products.length < 1
                                                         }
                                                     />
                                                 </div>
@@ -224,9 +181,7 @@ const MarketPotentialContent = ({
 
                                 <FormikContextChild
                                     dispatch={values => {
-                                        setChartProducts(
-                                            cloneDeep(values.products)
-                                        );
+                                        setChartProducts(cloneDeep(values.products));
                                     }}
                                 />
                             </Form>

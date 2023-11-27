@@ -6,20 +6,18 @@ export interface ChatBoxStateContextType {
     setChatBoxState: React.Dispatch<React.SetStateAction<ChatIs>>;
 }
 
-export const chatBoxStateData = createContext<ChatBoxStateContextType>(
-    {} as ChatBoxStateContextType
-);
+export const chatBoxStateData = createContext<ChatBoxStateContextType>({} as ChatBoxStateContextType);
 
 function Context({ children }: { children: ReactNode }) {
     const [chatBoxState, setChatBoxState] = useState(ChatIs.Minimized);
 
-    const contextValue: ChatBoxStateContextType = {
-        chatBoxState,
-        setChatBoxState,
-    };
-
     return (
-        <chatBoxStateData.Provider value={contextValue}>
+        <chatBoxStateData.Provider
+            value={{
+                chatBoxState,
+                setChatBoxState,
+            }}
+        >
             {children}
         </chatBoxStateData.Provider>
     );

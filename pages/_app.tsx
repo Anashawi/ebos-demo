@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import Context from "../context/context";
+import Context from "../context";
 import Layout from "../components/org/layout";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
