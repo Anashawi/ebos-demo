@@ -70,73 +70,31 @@ li {
 }
 
 .homepage-bg-gradient {
-    background: linear-gradient(
-        90deg,
-        #fff 0%,
-        #fff 60%,
-        #86bf44 40%,
-        #1caa55 100%
-    );
+    background: linear-gradient(90deg, #fff 0%, #fff 60%, #86bf44 40%, #1caa55 100%);
 }
 
 .products-gradient {
-    background: linear-gradient(
-        90deg,
-        #fff 0%,
-        #fff 50%,
-        #86bf44 50%,
-        #1caa55 100%
-    );
+    background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
 
 .products-revese-gradient {
-    background: linear-gradient(
-        270deg,
-        #fff 0%,
-        #fff 50%,
-        #86bf44 50%,
-        #1caa55 100%
-    );
+    background: linear-gradient(270deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
 
 .market-potential-gradient {
-    background: linear-gradient(
-        90deg,
-        #fff 0%,
-        #fff 64%,
-        #86bf44 64%,
-        #1caa55 100%
-    );
+    background: linear-gradient(90deg, #fff 0%, #fff 64%, #86bf44 64%, #1caa55 100%);
 }
 
 .factors-gradient {
-    background: linear-gradient(
-        90deg,
-        #fff 0%,
-        #fff 50%,
-        #86bf44 50%,
-        #1caa55 100%
-    );
+    background: linear-gradient(90deg, #fff 0%, #fff 50%, #86bf44 50%, #1caa55 100%);
 }
 
 .pane-right-gradient {
-    background: linear-gradient(
-        90deg,
-        #86bf44 0%,
-        #86bf44 50%,
-        #86bf44 50%,
-        rgba(253, 198, 29, 0) 100%
-    );
+    background: linear-gradient(90deg, #86bf44 0%, #86bf44 50%, #86bf44 50%, rgba(253, 198, 29, 0) 100%);
 }
 
 .pane-lower-gradient {
-    background: linear-gradient(
-        90deg,
-        #86bf44 0%,
-        #86bf44 50%,
-        #86bf44 50%,
-        rgba(253, 198, 29, 0) 100%
-    );
+    background: linear-gradient(90deg, #86bf44 0%, #86bf44 50%, #86bf44 50%, rgba(253, 198, 29, 0) 100%);
 }
 
 .backdrop-blur {
@@ -158,7 +116,7 @@ input[type="text"]:focus:not("no-border") {
         @apply bg-gray-100;
     }
     .content-container {
-        @apply min-w-[1280px] h-[100vh] flex flex-row justify-center gap-8 px-8 py-16;
+        @apply min-w-[1280px] h-auto flex flex-row justify-center gap-8 px-8 py-16;
     }
     .content-container > .left-side-main-navigation {
         @apply w-1/12 min-h-[84vh];
@@ -166,10 +124,7 @@ input[type="text"]:focus:not("no-border") {
     .content-container > .left-side-main-navigation > .main-navigation {
         @apply w-full h-[100%] flex flex-col justify-between gap-8 px-4 py-8 bg-white rounded-full;
     }
-    .content-container
-        > .left-side-main-navigation
-        > .main-navigation
-        .nav-section-ul {
+    .content-container > .left-side-main-navigation > .main-navigation .nav-section-ul {
         @apply flex flex-col justify-between items-center gap-8;
     }
     .content-container > .right-side-step-content {
@@ -178,39 +133,22 @@ input[type="text"]:focus:not("no-border") {
     .content-container > .right-side-step-content > .top-navigation {
         @apply w-full;
     }
-    .content-container
-        > .right-side-step-content
-        > .top-navigation
-        > .steps-list {
+    .content-container > .right-side-step-content > .top-navigation > .steps-list {
         @apply flex flex-row flex-wrap md:justify-start justify-center;
     }
     .content-container > .right-side-step-content > .main-content {
         @apply flex flex-row justify-start gap-4;
     }
-    .content-container
-        > .right-side-step-content
-        > .main-content
-        > .forms-container {
+    .content-container > .right-side-step-content > .main-content > .forms-container {
         @apply w-3/4 relative grow flex flex-col gap-8;
     }
-    .content-container
-        > .right-side-step-content
-        > .main-content
-        > .forms-container
-        .form-container {
+    .content-container > .right-side-step-content > .main-content > .forms-container .form-container {
         @apply grow flex flex-col gap-8 px-8 py-12 bg-white rounded-3xl;
     }
-    .content-container
-        > .right-side-step-content
-        > .main-content
-        > .aside-content {
+    .content-container > .right-side-step-content > .main-content > .aside-content {
         @apply w-1/4 h-[100%];
     }
-    .content-container
-        > .right-side-step-content
-        > .main-content
-        > .aside-content
-        > .helpers-modals-and-charts {
+    .content-container > .right-side-step-content > .main-content > .aside-content > .helpers-modals-and-charts {
         @apply w-full h-full px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
     }
 
@@ -258,9 +196,7 @@ input[type="text"]:focus:not("no-border") {
     .chatpgt-message-input > .cs-message-input__content-editor-wrapper {
         @apply w-10/12;
     }
-    .chatpgt-message-input
-        > .cs-message-input__content-editor-wrapper
-        .cs-message-input__content-editor {
+    .chatpgt-message-input > .cs-message-input__content-editor-wrapper .cs-message-input__content-editor {
         @apply !bg-white;
     }
     .chatpgt-message-input > .cs-message-input__tools {

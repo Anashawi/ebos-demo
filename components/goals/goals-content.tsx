@@ -11,10 +11,7 @@ import OrganizationsForm from "./ogranizations-form";
 import GoalsForm from "./goals-form";
 import Chat from "../common/openai-chat";
 import { stepOneTranscript } from "../common/openai-chat/openai-transcript";
-import {
-    getUserGoalsMsg,
-    getUserOrganizationsMsg,
-} from "../common/openai-chat/custom-messages";
+import { getUserGoalsMsg, getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
 
 const emptyUserOrganizations: IUserOrganizations = {
     id: "",
@@ -32,17 +29,13 @@ const GoalsContent = () => {
     const { data: session }: any = useSession();
 
     emptyUserOrganizations.userId = session?.user?.id;
-    const [userOrganizations, setUserOrganizations] =
-        useState<IUserOrganizations>(emptyUserOrganizations);
+    const [userOrganizations, setUserOrganizations] = useState<IUserOrganizations>(emptyUserOrganizations);
     emptyUserGoals.userId = session?.user?.id;
     const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoals);
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
     // fetch user organizations
-    const {
-        data: fetchedUserOrganizations,
-        isLoading: areUserOrganizationsLoading,
-    } = useQuery(
+    const { data: fetchedUserOrganizations, isLoading: areUserOrganizationsLoading } = useQuery(
         [organizationsApi.keys.all, session?.user?.id],
         organizationsApi.getAll,
         {
@@ -52,29 +45,23 @@ const GoalsContent = () => {
     );
 
     // fetch user goals
-    const { data: fetchedUserGoals, isLoading: areUserGoalsLoading } =
-        useQuery<IUserGoals>({
-            queryKey: [goalsApi.Keys.All],
-            queryFn: goalsApi.getAll,
-            refetchOnWindowFocus: false,
-            enabled: !!session?.user?.id,
-        });
+    const { data: fetchedUserGoals, isLoading: areUserGoalsLoading } = useQuery<IUserGoals>({
+        queryKey: [goalsApi.Keys.All],
+        queryFn: goalsApi.getAll,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
     // on data load send ChatGPT transcript with data
     useEffect(() => {
         if (!areUserOrganizationsLoading && !areUserGoalsLoading) {
             setChatGPTMessage(
-                `${stepOneTranscript}\n\n${getUserOrganizationsMsg(
-                    fetchedUserOrganizations
-                )}\n${getUserGoalsMsg(fetchedUserGoals)}`
+                `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations)}\n${getUserGoalsMsg(
+                    fetchedUserGoals
+                )}`
             );
         }
-    }, [
-        fetchedUserOrganizations,
-        areUserOrganizationsLoading,
-        fetchedUserGoals,
-        areUserGoalsLoading,
-    ]);
+    }, [fetchedUserOrganizations, areUserOrganizationsLoading, fetchedUserGoals, areUserGoalsLoading]);
 
     return (
         <>
