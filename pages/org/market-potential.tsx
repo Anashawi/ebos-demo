@@ -11,6 +11,9 @@ import MarketPotentialContent from "../../components/market-potential/market-pot
 import ChartsContent from "../../components/common/charts-content";
 
 import * as _ from "lodash";
+import Chat from "../../components/common/openai-chat";
+import { stepThreeTranscript } from "../../components/common/openai-chat/openai-transcript";
+import { getMarketPotentialMessage } from "../../components/common/openai-chat/custom-messages";
 
 const emptyUserProduct = {
     id: "",
@@ -31,54 +34,61 @@ const Competitors = () => {
     };
 
     emptyUserProduct.userId = session?.user?.id;
-    const [userProducts, setUserProducts] =
-        useState<IUserProduct>(emptyUserProduct);
+    const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProduct);
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    const { data: fetchedUserProducts, isLoading: areProductsLoading } =
-        useQuery<IUserProduct>({
-            queryKey: [productsApi.Keys.All],
-            queryFn: productsApi.getAll,
-            refetchOnWindowFocus: false,
-            enabled: !!session?.user?.id,
-        });
+    const {
+        data: fetchedUserProducts,
+        isLoading: areProductsLoading,
+        status: fetchingProdsStatus,
+    } = useQuery<IUserProduct>({
+        queryKey: [productsApi.Keys.All],
+        queryFn: productsApi.getAll,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
     useEffect(() => {
-        userProducts?.products?.forEach(prod => {
-            if (
-                !prod.competitors ||
-                (prod.competitors && prod.competitors.length === 0)
-            ) {
-                prod.competitors = [
-                    { ...emptyCompetitor(), name: "Me" },
-                    { ...emptyCompetitor(), name: "", isUntapped: true },
-                    { ...emptyCompetitor(), name: "" },
-                ];
+        if (fetchingProdsStatus === "success") {
+            userProducts?.products?.forEach(prod => {
+                if (!prod.competitors || (prod.competitors && prod.competitors.length === 0)) {
+                    prod.competitors = [
+                        { ...emptyCompetitor(), name: "Me" },
+                        { ...emptyCompetitor(), name: "", isUntapped: true },
+                        { ...emptyCompetitor(), name: "" },
+                    ];
+                }
+            });
+            if (fetchedUserProducts) {
+                setUserProducts(fetchedUserProducts);
             }
-        });
-        if (fetchedUserProducts) {
-            setUserProducts(fetchedUserProducts);
+            setChartProducts(fetchedUserProducts?.products || []);
+            setChatGPTMessage(`${stepThreeTranscript}\n\n${getMarketPotentialMessage(fetchedUserProducts)}`);
         }
-        setChartProducts(fetchedUserProducts?.products || []);
-    }, [fetchedUserProducts, userProducts?.products]);
+    }, [fetchingProdsStatus]);
 
     return (
-        <article className="main-content">
-            <article className="forms-container">
-                <MarketPotentialContent
-                    userProduct={userProducts}
-                    isLoading={areProductsLoading}
-                    setChartProducts={setChartProducts}
-                />
+        <>
+            <article className="main-content">
+                <article className="forms-container">
+                    <MarketPotentialContent
+                        userProduct={userProducts}
+                        isLoading={areProductsLoading}
+                        setChartProducts={setChartProducts}
+                        setChatGPTMessage={setChatGPTMessage}
+                    />
+                </article>
+                <aside className="aside-content">
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.marketPotential}
+                        videoLabel="Market Potential Video"
+                        chartProducts={chartProducts}
+                    />
+                </aside>
             </article>
-            <aside className="aside-content">
-                <ChartsContent
-                    videoPropName={videoPropNamesEnum.marketPotential}
-                    videoLabel="Market Potential Video"
-                    chartProducts={chartProducts}
-                />
-            </aside>
-        </article>
+            <Chat initialMessage={chatGPTMessage}></Chat>
+        </>
     );
 };
 

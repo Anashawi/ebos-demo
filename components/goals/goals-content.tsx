@@ -35,33 +35,36 @@ const GoalsContent = () => {
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
     // fetch user organizations
-    const { data: fetchedUserOrganizations, isLoading: areUserOrganizationsLoading } = useQuery(
-        [organizationsApi.keys.all, session?.user?.id],
-        organizationsApi.getAll,
-        {
-            refetchOnWindowFocus: false,
-            retry: 2,
-        }
-    );
+    const {
+        data: fetchedUserOrganizations,
+        isLoading: areUserOrganizationsLoading,
+        status: fetchingOrgsStatus,
+    } = useQuery([organizationsApi.keys.all, session?.user?.id], organizationsApi.getAll, {
+        refetchOnWindowFocus: false,
+        retry: 2,
+    });
 
     // fetch user goals
-    const { data: fetchedUserGoals, isLoading: areUserGoalsLoading } = useQuery({
+    const {
+        data: fetchedUserGoals,
+        isLoading: areUserGoalsLoading,
+        status: fetchingGoalsStatus,
+    } = useQuery({
         queryKey: [goalsApi.Keys.All],
         queryFn: goalsApi.getAll,
         refetchOnWindowFocus: false,
         enabled: !!session?.user?.id,
     });
 
-    // on data load send ChatGPT transcript with data
     useEffect(() => {
-        if (!areUserOrganizationsLoading && !areUserGoalsLoading) {
+        if (fetchingOrgsStatus === "success" && fetchingGoalsStatus === "success") {
             setChatGPTMessage(
                 `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations.data)}\n${getUserGoalsMsg(
                     fetchedUserGoals
                 )}`
             );
         }
-    }, [areUserOrganizationsLoading, areUserGoalsLoading]);
+    }, [fetchingOrgsStatus, fetchingGoalsStatus]);
 
     return (
         <>

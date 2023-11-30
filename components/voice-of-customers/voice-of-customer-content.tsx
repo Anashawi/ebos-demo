@@ -45,7 +45,7 @@ const VoiceOfCustomersContent = () => {
 
     useEffect(() => {
         if (fetchingCustomersStatus === "success") {
-            setUserCustomers(fetchedUserCustomers);
+            if (fetchedUserCustomers) setUserCustomers(fetchedUserCustomers);
             setChatGPTMessage(`${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(fetchedUserCustomers)}`);
         }
     }, [fetchingCustomersStatus]);

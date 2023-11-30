@@ -38,17 +38,17 @@ const DisruptionContent = ({
     const queryClient = useQueryClient();
     const router = useRouter();
 
-    const { data: fetchedVideos, isLoading: areVideosLoading } = useQuery<IVideos>({
+    const { data: fetchedVideos, status: fetchingVideoStatus } = useQuery<IVideos>({
         queryKey: [videosApi.Keys.all],
         queryFn: videosApi.getOne,
         refetchOnWindowFocus: false,
     });
 
     useEffect(() => {
-        if (fetchedVideos) {
-            dispatchVideos(fetchedVideos);
+        if (fetchingVideoStatus === "success") {
+            if (fetchedVideos) dispatchVideos(fetchedVideos);
         }
-    }, [fetchedVideos, dispatchVideos]);
+    }, [fetchingVideoStatus]);
 
     const emptyScaleTakeaways = {
         type: takeawayTypeEnums.scale,

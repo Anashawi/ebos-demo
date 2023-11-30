@@ -9,6 +9,9 @@ import { IProduct } from "../../models/types";
 
 import ProductsContent from "../../components/products/products-content";
 import ChartsContent from "../../components/common/charts-content";
+import { stepTwoTranscript } from "../../components/common/openai-chat/openai-transcript";
+import { getCompanyProductMessage } from "../../components/common/openai-chat/custom-messages";
+import Chat from "../../components/common/openai-chat/";
 
 const emptyUserProducts = {
     id: "",
@@ -22,8 +25,13 @@ const Products = () => {
     emptyUserProducts.userId = session?.user?.id;
     const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProducts);
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    const { data: fetchedUserProducts, isLoading: areUserProductsLoading } = useQuery({
+    const {
+        data: fetchedUserProducts,
+        isLoading: areUserProductsLoading,
+        status: fetchingProdsStatus,
+    } = useQuery({
         queryKey: [productsApi.Keys.UserProduct, userProducts.id],
         queryFn: productsApi.getAll,
         refetchOnWindowFocus: false,
@@ -31,28 +39,34 @@ const Products = () => {
     });
 
     useEffect(() => {
-        if (fetchedUserProducts) setUserProducts(fetchedUserProducts);
-    }, [fetchedUserProducts]);
+        if (fetchingProdsStatus === "success") {
+            if (fetchedUserProducts) setUserProducts(fetchedUserProducts);
+            setChatGPTMessage(`${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`);
+        }
+    }, [fetchingProdsStatus]);
 
     return (
-        <article className="main-content">
-            <article className="forms-container">
-                <ProductsContent
-                    userProduct={userProducts}
-                    isLoading={areUserProductsLoading}
-                    fetchedUserProducts={fetchedUserProducts}
-                    dispatchChartProducts={setChartProducts}
-                />
+        <>
+            <article className="main-content">
+                <article className="forms-container">
+                    <ProductsContent
+                        userProduct={userProducts}
+                        isLoading={areUserProductsLoading}
+                        setChatGPTMessage={setChatGPTMessage}
+                        dispatchChartProducts={setChartProducts}
+                    />
+                </article>
+                <aside className="aside-content">
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.products}
+                        videoLabel="Products Video"
+                        chartProducts={chartProducts}
+                        isChartDataLoading={areUserProductsLoading}
+                    />
+                </aside>
             </article>
-            <aside className="aside-content">
-                <ChartsContent
-                    videoPropName={videoPropNamesEnum.products}
-                    videoLabel="Products Video"
-                    chartProducts={chartProducts}
-                    isChartDataLoading={areUserProductsLoading}
-                />
-            </aside>
-        </article>
+            <Chat initialMessage={chatGPTMessage}></Chat>
+        </>
     );
 };
 

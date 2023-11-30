@@ -46,8 +46,8 @@ const RoadMap = () => {
                     !idea.durationInMonths ? (idea.durationInMonths = 6) : null;
                 });
                 setUserIdeas(fetchedIdeas);
-                setChatGPTMessage(`${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`);
             }
+            setChatGPTMessage(`${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`);
         }
     }, [fetchingIdeasStatus]);
 

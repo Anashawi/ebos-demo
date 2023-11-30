@@ -9,6 +9,9 @@ import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 
 import BlueOceanContent from "../../components/blue-ocean/blue-ocean-content";
 import ChartsContent from "../../components/common/charts-content";
+import { stepSevenTranscript } from "../../components/common/openai-chat/openai-transcript";
+import { getBlueOceanMessage } from "../../components/common/openai-chat/custom-messages";
+import Chat from "../../components/common/openai-chat";
 
 const BlueOceanCanvas = () => {
     const { data: session }: any = useSession();
@@ -30,8 +33,13 @@ const BlueOceanCanvas = () => {
 
     const [userProduct, setUserProduct] = useState<IUserProduct>(emptyUserProduct);
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    const { data: products, isLoading: areProductsLoading } = useQuery<IUserProduct>({
+    const {
+        data: fetchedProducts,
+        isLoading: areProductsLoading,
+        status: fetchingProdsStatus,
+    } = useQuery<IUserProduct>({
         queryKey: [productsApi.Keys.All],
         queryFn: productsApi.getAll,
         refetchOnWindowFocus: false,
@@ -39,70 +47,77 @@ const BlueOceanCanvas = () => {
     });
 
     useEffect(() => {
-        products?.products?.forEach(prod => {
-            emptyFactor.competitors =
-                prod.competitors?.map(comp => {
-                    return {
-                        uuid: comp.uuid,
-                        value: 1,
-                    };
-                }) ?? [];
-            if (!prod.ideaFactors?.length) {
-                prod.ideaFactors = [
-                    { ...emptyFactor, name: "" },
-                    { ...emptyFactor, name: "" },
-                    { ...emptyFactor, name: "" },
-                ];
-            } else {
-                prod.ideaFactors.forEach(ideaFactor => {
-                    const existingCompetitorUuids = new Set(ideaFactor.competitors.map(c => c.uuid));
+        if (fetchingProdsStatus === "success") {
+            fetchedProducts?.products?.forEach(prod => {
+                emptyFactor.competitors =
+                    prod.competitors?.map(comp => {
+                        return {
+                            uuid: comp.uuid,
+                            value: 1,
+                        };
+                    }) ?? [];
+                if (!prod.ideaFactors?.length) {
+                    prod.ideaFactors = [
+                        { ...emptyFactor, name: "" },
+                        { ...emptyFactor, name: "" },
+                        { ...emptyFactor, name: "" },
+                    ];
+                } else {
+                    prod.ideaFactors.forEach(ideaFactor => {
+                        const existingCompetitorUuids = new Set(ideaFactor.competitors.map(c => c.uuid));
 
-                    const newIdeaFactorCompetitors = prod.competitors
-                        ?.filter(comp => !existingCompetitorUuids.has(comp.uuid))
-                        .map(comp => {
-                            return {
-                                uuid: comp.uuid,
-                                value: 1,
-                            };
-                        });
+                        const newIdeaFactorCompetitors = prod.competitors
+                            ?.filter(comp => !existingCompetitorUuids.has(comp.uuid))
+                            .map(comp => {
+                                return {
+                                    uuid: comp.uuid,
+                                    value: 1,
+                                };
+                            });
 
-                    if (newIdeaFactorCompetitors?.length) {
-                        // Add competitors that exist in prod.competitors but not in ideaFactor.competitors
-                        ideaFactor.competitors = ideaFactor.competitors.concat(newIdeaFactorCompetitors);
-                    }
+                        if (newIdeaFactorCompetitors?.length) {
+                            // Add competitors that exist in prod.competitors but not in ideaFactor.competitors
+                            ideaFactor.competitors = ideaFactor.competitors.concat(newIdeaFactorCompetitors);
+                        }
 
-                    // Remove competitors that exist in ideaFactor.competitors but not in prod.competitors
-                    ideaFactor.competitors = ideaFactor.competitors.filter(comp =>
-                        prod.competitors?.some(c => c.uuid === comp.uuid)
-                    );
-                });
+                        // Remove competitors that exist in ideaFactor.competitors but not in prod.competitors
+                        ideaFactor.competitors = ideaFactor.competitors.filter(comp =>
+                            prod.competitors?.some(c => c.uuid === comp.uuid)
+                        );
+                    });
+                }
+            });
+            if (fetchedProducts) {
+                setUserProduct(fetchedProducts ?? emptyUserProduct);
             }
-        });
-        if (products) {
-            setUserProduct(products ?? emptyUserProduct);
+            setChatGPTMessage(`${stepSevenTranscript}\n\n${getBlueOceanMessage(fetchedProducts)}`);
         }
-    }, [products, emptyUserProduct, emptyFactor, setUserProduct]);
+    }, [fetchingProdsStatus]);
 
     return (
-        <article className="main-content">
-            <article className="forms-container">
-                <BlueOceanContent
-                    userProduct={userProduct}
-                    dispatchProducts={products => {
-                        setChartProducts(products);
-                    }}
-                    isLoading={areProductsLoading}
-                />
+        <>
+            <article className="main-content">
+                <article className="forms-container">
+                    <BlueOceanContent
+                        userProduct={userProduct}
+                        dispatchProducts={products => {
+                            setChartProducts(products);
+                        }}
+                        isLoading={areProductsLoading}
+                        setChatGPTMessage={setChatGPTMessage}
+                    />
+                </article>
+                <aside className="aside-content">
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.blueOcean}
+                        videoLabel="Blue Ocean Video"
+                        chartProducts={chartProducts}
+                        isChartDataLoading={areProductsLoading}
+                    />
+                </aside>
             </article>
-            <aside className="aside-content">
-                <ChartsContent
-                    videoPropName={videoPropNamesEnum.blueOcean}
-                    videoLabel="Blue Ocean Video"
-                    chartProducts={chartProducts}
-                    isChartDataLoading={areProductsLoading}
-                />
-            </aside>
-        </article>
+            <Chat initialMessage={chatGPTMessage}></Chat>
+        </>
     );
 };
 

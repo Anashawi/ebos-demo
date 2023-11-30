@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
@@ -10,8 +10,6 @@ import { IUserProduct } from "../../models/user-product";
 import Product from "./product";
 import Spinner from "../common/spinner";
 import GoNextButton from "../common/go-next-button";
-import Chat from "../common/openai-chat";
-import { stepTwoTranscript } from "../common/openai-chat/openai-transcript";
 import { getCompanyProductMessage } from "../common/openai-chat/custom-messages";
 
 import { FieldArray, Form, Formik } from "formik";
@@ -36,21 +34,13 @@ const emptyProduct = {
 interface Props {
     userProduct: IUserProduct;
     isLoading: boolean;
-    fetchedUserProducts: any;
+    setChatGPTMessage: Dispatch<SetStateAction<string>>;
     dispatchChartProducts: (products: IProduct[]) => void;
 }
 
-const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts, fetchedUserProducts }: Props) => {
+const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchChartProducts }: Props) => {
     const { data: session }: any = useSession();
     const queryClient = useQueryClient();
-
-    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
-    // on data load send ChatGPT transcript with data
-    useEffect(() => {
-        if (!isLoading && fetchedUserProducts) {
-            setChatGPTMessage(`${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`);
-        }
-    }, [isLoading]);
 
     const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
         (newUserProduct: IUserProduct) => {
@@ -239,7 +229,6 @@ const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts, fetche
                     }}
                 </Formik>
             </section>
-            <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );
 };

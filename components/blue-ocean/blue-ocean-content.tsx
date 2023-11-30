@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import * as productsApi from "../../http-client/products.client";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -12,8 +12,6 @@ import Spinner from "../common/spinner";
 import ZeroProductsWarning from "../common/zero-products-warning";
 import ZeroProductCompetitorsWarning from "../common/zero-product-competitors-warning";
 import GoNextButton from "../common/go-next-button";
-import Chat from "../common/openai-chat";
-import { stepSevenTranscript } from "../common/openai-chat/openai-transcript";
 import { getBlueOceanMessage } from "../common/openai-chat/custom-messages";
 
 import { useFormik, FieldArray, Form, Formik } from "formik";
@@ -24,18 +22,11 @@ interface Props {
     userProduct: IUserProduct;
     dispatchProducts: (products: IProduct[]) => void;
     isLoading: boolean;
+    setChatGPTMessage: Dispatch<SetStateAction<string>>;
 }
 
-const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading }: Props) => {
+const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading, setChatGPTMessage }: Props) => {
     const queryClient = useQueryClient();
-
-    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
-
-    useEffect(() => {
-        if (!isLoading && userProduct.id) {
-            setChatGPTMessage(`${stepSevenTranscript}\n\n${getBlueOceanMessage(userProduct)}`);
-        }
-    }, [isLoading, userProduct]);
 
     const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
         (userProduct: IUserProduct) => {
@@ -197,7 +188,6 @@ const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading }: Props) =
                     }}
                 </Formik>
             </section>
-            <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );
 };

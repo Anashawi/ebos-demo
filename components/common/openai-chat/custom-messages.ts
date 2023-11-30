@@ -1,4 +1,3 @@
-import { Icon } from "next/dist/lib/metadata/types/metadata-types";
 import { IUserOrganizations } from "../../../models/organization";
 import { ICompetitor, IFactor, IFactorCompetitor, IFuture, IIdeaFactor, IProduct } from "../../../models/types";
 import { IUserAnalysis } from "../../../models/user-analysis";
@@ -13,7 +12,7 @@ import { IUserTakeaways } from "../../../models/user-takeaways";
 export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
     let chatGPTmsg = `The user haven't entered their organization's name or website or any competitor.`;
 
-    if (userOrgs.organizations.length === 0) return chatGPTmsg;
+    if (!userOrgs || userOrgs.organizations.length === 0) return chatGPTmsg;
     const orgs = userOrgs.organizations;
     const competitorsListLength = orgs.length - 1; // 0: own org, 1+: comp orgs
 
@@ -41,22 +40,22 @@ export function getUserGoalsMsg(usergoals: IUserGoals | undefined) {
 // Step 2: `org/products` Pioneer Migrator Settler
 export function getCompanyProductMessage(userProduct: IUserProduct) {
     let msgForChatGPT = `The user haven't entered any products yet.`;
-    const productsLength = userProduct.products.length;
     let product = {} as IProduct;
     let future = {} as IFuture; 
     let level = ``;
+    let i, j = 0;
 
-    if (productsLength === 0) return msgForChatGPT;
+    if (!userProduct || userProduct.products.length === 0) return msgForChatGPT;
 
-    msgForChatGPT = `The product${productsLength === 1 ? ` is:` : `s are:`}\n`;
+    msgForChatGPT = `The product${userProduct.products.length === 1 ? ` is:` : `s are:`}\n`;
 
-    for (let i = 0; i < productsLength; i++) {
+    for (i = 0; i < userProduct.products.length; i++) {
         product = userProduct.products[i];
         msgForChatGPT += `- ${product.name}:\n`;
 
         if (!product.futures) continue;
 
-        for (let j = 0; j < product.futures.length; j++) {
+        for (j = 0; j < product.futures.length; j++) {
             future = product.futures[j];
 
             if (future.level === 1) level = `settler`;
@@ -71,7 +70,7 @@ export function getCompanyProductMessage(userProduct: IUserProduct) {
 }
 
 // Step 3: `org/market-potential` Market Potential
-export function getMarketPotentialMessage(userProduct: IUserProduct) {
+export function getMarketPotentialMessage(userProduct: IUserProduct | undefined) {
     let msgForChatGPT = `The user haven't entered any market share.`;
     let product = {} as IProduct; 
     let competitor = {} as ICompetitor;
@@ -175,8 +174,10 @@ export function getDisruptionMessage(userTakeaways: IUserTakeaways | undefined) 
 
 // Step 6: `org/voice-of-customers` Voice of Customers
 export function getVoiceOfCustomerMessage(userCustomers: IUserCustomers) {
-    let msgForChatGPT = ``;
+    let msgForChatGPT = `The user haven't entered any voices of customers.`;
     let topCustomer, wants, fulfill = ``;
+
+    if (!userCustomers) return msgForChatGPT;
 
     msgForChatGPT = `The top customer categories are:\n`;
     for (let i = 0; i < userCustomers.topCategories.length; i++) {
@@ -193,7 +194,7 @@ export function getVoiceOfCustomerMessage(userCustomers: IUserCustomers) {
 }
 
 // Step 7: `org/blue-ocean` Blue Ocean Canvas
-export function getBlueOceanMessage(userProduct: IUserProduct) {
+export function getBlueOceanMessage(userProduct: IUserProduct | undefined) {
     let msgForChatGPT = `The user haven't entered any blue ocean ideas yet.`;
 
     if (!userProduct) return msgForChatGPT;
@@ -273,15 +274,14 @@ export function getStepUpDownMessage(analysis: IUserAnalysis) {
 // Step 10: `org/roadmap` Roadmap
 export function getIdeasMessage(ideas: IUserIdeas) {
     let msgForChatGPT = `The user haven't entered any roadmap ideas yet.`;
-    const ideasLength = ideas.ideas.length;
 
-    if (ideasLength === 0) return msgForChatGPT;
-
+    if (!ideas || ideas.ideas.length === 0) return msgForChatGPT;
+    
     msgForChatGPT = `Starting from ${ideas.startDate} our idea`;
-    if (ideasLength > 1) msgForChatGPT += `s are:\n`;
+    if (ideas.ideas.length > 1) msgForChatGPT += `s are:\n`;
     else msgForChatGPT += ` is:\n`;
 
-    for (let i = 0; i < ideasLength; i++) {
+    for (let i = 0; i < ideas.ideas.length; i++) {
         msgForChatGPT += `- The idea is to ${
             ideas.ideas[i].name
         } starting from ${ideas.ideas[i].startMonth} and lasting for ${

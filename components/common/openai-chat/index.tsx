@@ -73,8 +73,8 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
         if (chatBoxState === ChatIs.Disabled) return;
 
         if (initialMessage) {
-            console.log(initialMessage);
-            // sendHiddenSystemMessage(initialMessage);
+            // console.log(initialMessage);
+            sendHiddenSystemMessage(initialMessage);
         }
     }, [initialMessage]);
 
