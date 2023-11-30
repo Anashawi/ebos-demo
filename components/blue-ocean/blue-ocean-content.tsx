@@ -26,49 +26,32 @@ interface Props {
     isLoading: boolean;
 }
 
-const BlueOceanContent = ({
-    userProduct,
-    dispatchProducts,
-    isLoading,
-}: Props) => {
+const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading }: Props) => {
     const queryClient = useQueryClient();
 
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
-    // on data load send ChatGPT transcript with data
+
     useEffect(() => {
         if (!isLoading && userProduct.id) {
-            const combinedMsg = `${stepSevenTranscript}\n\n${getBlueOceanMessage(
-                userProduct
-            )}`;
-            setChatGPTMessage(combinedMsg);
+            setChatGPTMessage(`${stepSevenTranscript}\n\n${getBlueOceanMessage(userProduct)}`);
         }
     }, [isLoading, userProduct]);
 
-    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } =
-        useMutation(
-            (userProduct: IUserProduct) => {
-                return productsApi.updateOne(
-                    userProduct,
-                    productPagesEnum.factors
-                );
+    const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
+        (userProduct: IUserProduct) => {
+            return productsApi.updateOne(userProduct, productPagesEnum.factors);
+        },
+        {
+            onMutate: newProducts => {
+                queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProducts);
+                setChatGPTMessage(getBlueOceanMessage(newProducts));
             },
-            {
-                onMutate: newProducts => {
-                    queryClient.setQueryData(
-                        [productsApi.Keys.UserProduct, userProduct.id],
-                        newProducts
-                    );
-                    setChatGPTMessage(getBlueOceanMessage(newProducts));
-                },
-                onSuccess: newProducts => {
-                    queryClient.invalidateQueries([
-                        productsApi.Keys.UserProduct,
-                        userProduct.id,
-                    ]);
-                    queryClient.invalidateQueries([productsApi.Keys.All]);
-                },
-            }
-        );
+            onSuccess: newProducts => {
+                queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
+                queryClient.invalidateQueries([productsApi.Keys.All]);
+            },
+        }
+    );
 
     // // isn't this better formik usage for readability?
     // const formik = useFormik({
@@ -101,11 +84,6 @@ const BlueOceanContent = ({
     //         actions.setSubmitting(false);
     //     },
     // });
-
-    const isNotLoadingWithoutProducts =
-        !isLoading && userProduct.products.length === 0;
-    const isNotLoadingWithProducts =
-        !isLoading && userProduct.products.length > 0;
 
     return (
         <>
@@ -152,52 +130,31 @@ const BlueOceanContent = ({
                                     {() => {
                                         return (
                                             <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    {isLoading && (
-                                                        <Spinner
-                                                            className="flex items-center text-2xl"
-                                                            message="Loading Blue Ocean..."
-                                                        />
-                                                    )}
-                                                    {isNotLoadingWithoutProducts && (
-                                                        <ZeroProductsWarning />
-                                                    )}
-                                                    {isNotLoadingWithProducts &&
-                                                        values.products.map(
-                                                            (
-                                                                product,
-                                                                productIndex
-                                                            ) => (
-                                                                <div
-                                                                    key={
-                                                                        productIndex
-                                                                    }
-                                                                >
-                                                                    {!product
-                                                                        .competitors
-                                                                        ?.length && (
-                                                                        <ZeroProductCompetitorsWarning
-                                                                            name={
-                                                                                product.name
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                    {!!product
-                                                                        .competitors
-                                                                        ?.length && (
-                                                                        <BlueOceanProduct
-                                                                            product={
-                                                                                product
-                                                                            }
-                                                                            index={
-                                                                                productIndex
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </div>
+                                                {!isLoading ? (
+                                                    userProduct.products.length > 0 ? (
+                                                        values.products.map((product, productIndex) =>
+                                                            product.competitors && product.competitors.length > 2 ? (
+                                                                <BlueOceanProduct
+                                                                    key={productIndex}
+                                                                    product={product}
+                                                                    index={productIndex}
+                                                                />
+                                                            ) : (
+                                                                <ZeroProductCompetitorsWarning
+                                                                    key={productIndex}
+                                                                    name={product.name}
+                                                                />
                                                             )
-                                                        )}
-                                                </div>
+                                                        )
+                                                    ) : (
+                                                        <ZeroProductsWarning />
+                                                    )
+                                                ) : (
+                                                    <Spinner
+                                                        className="flex items-center text-2xl"
+                                                        message="Loading Blue Ocean..."
+                                                    />
+                                                )}
                                                 <div className="flex justify-end h-10">
                                                     {isUpdatingUserProduct && (
                                                         <Spinner
@@ -210,15 +167,11 @@ const BlueOceanContent = ({
                                                     <button
                                                         type="submit"
                                                         className={
-                                                            isSubmitting ||
-                                                            !isValid
+                                                            isSubmitting || !isValid
                                                                 ? "btn-rev btn-disabled"
                                                                 : "btn-rev"
                                                         }
-                                                        disabled={
-                                                            isSubmitting ||
-                                                            !isValid
-                                                        }
+                                                        disabled={isSubmitting || !isValid}
                                                     >
                                                         Save
                                                     </button>
@@ -226,10 +179,7 @@ const BlueOceanContent = ({
                                                         stepUri={`../org/non-customers`}
                                                         nextStepTitle={`Non
                                                             Customers`}
-                                                        disabled={
-                                                            isSubmitting ||
-                                                            !isValid
-                                                        }
+                                                        disabled={isSubmitting || !isValid}
                                                     />
                                                 </div>
                                             </div>
@@ -239,9 +189,7 @@ const BlueOceanContent = ({
 
                                 <FormikContextChild
                                     dispatch={values => {
-                                        dispatchProducts(
-                                            cloneDeep(values.products)
-                                        );
+                                        dispatchProducts(cloneDeep(values.products));
                                     }}
                                 />
                             </Form>

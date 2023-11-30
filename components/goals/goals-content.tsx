@@ -45,7 +45,7 @@ const GoalsContent = () => {
     );
 
     // fetch user goals
-    const { data: fetchedUserGoals, isLoading: areUserGoalsLoading } = useQuery<IUserGoals>({
+    const { data: fetchedUserGoals, isLoading: areUserGoalsLoading } = useQuery({
         queryKey: [goalsApi.Keys.All],
         queryFn: goalsApi.getAll,
         refetchOnWindowFocus: false,
@@ -56,12 +56,12 @@ const GoalsContent = () => {
     useEffect(() => {
         if (!areUserOrganizationsLoading && !areUserGoalsLoading) {
             setChatGPTMessage(
-                `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations)}\n${getUserGoalsMsg(
+                `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations.data)}\n${getUserGoalsMsg(
                     fetchedUserGoals
                 )}`
             );
         }
-    }, [fetchedUserOrganizations, areUserOrganizationsLoading, fetchedUserGoals, areUserGoalsLoading]);
+    }, [areUserOrganizationsLoading, areUserGoalsLoading]);
 
     return (
         <>

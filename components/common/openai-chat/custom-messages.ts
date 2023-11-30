@@ -1,5 +1,6 @@
+import { Icon } from "next/dist/lib/metadata/types/metadata-types";
 import { IUserOrganizations } from "../../../models/organization";
-import { IFactor, IProduct } from "../../../models/types";
+import { ICompetitor, IFactor, IFactorCompetitor, IFuture, IIdeaFactor, IProduct } from "../../../models/types";
 import { IUserAnalysis } from "../../../models/user-analysis";
 import { IUserCustomers } from "../../../models/user-customers";
 import { IUserGoals } from "../../../models/user-goal";
@@ -10,64 +11,59 @@ import { IUserTakeaways } from "../../../models/user-takeaways";
 
 // Step 1: `org/goals` Visualize Success
 export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
+    let chatGPTmsg = `The user haven't entered their organization's name or website or any competitor.`;
 
-    if (!userOrgs || !userOrgs.organizations) return '';
+    if (userOrgs.organizations.length === 0) return chatGPTmsg;
+    const orgs = userOrgs.organizations;
+    const competitorsListLength = orgs.length - 1; // 0: own org, 1+: comp orgs
 
-    let chatGPTmsg = `Our organization's name is: ${userOrgs.organizations[0].name} and our organization's website is: ${userOrgs.organizations[0].website}.\n`;
-    const competitorsListLength = userOrgs.organizations.length;
+    chatGPTmsg = `The organization's name is: ${orgs[0].name} and our organization's website is: ${orgs[0].website}.\n`;
 
-    // no competitors
-    if (competitorsListLength === 1) return chatGPTmsg;
+    if (competitorsListLength === 0) return chatGPTmsg;
 
-    chatGPTmsg += `Our competitors' organization names and websites are:\n`;
+    chatGPTmsg += `It's competitors' organization names and websites are:\n`;
     for (let i = 1; i < competitorsListLength; i++) {
-        chatGPTmsg += `- Competitor ${i}'s organization name is ${userOrgs.organizations[i].name} and their website is ${userOrgs.organizations[i].website}\n`;
+        chatGPTmsg += `- Competitor ${i}'s organization name is ${orgs[i].name} and their website is ${orgs[i].website}\n`;
     }
 
     return chatGPTmsg;
 }
 export function getUserGoalsMsg(usergoals: IUserGoals | undefined) {
+    let chatGPTmsg = `The user haven't entered a goals' target date or any goal.`;
 
-    if (!usergoals) return ``;
+    if (!usergoals || usergoals.goals?.length === 0) return chatGPTmsg;
 
-    return `Our goals date is ${
-        usergoals.targetDate
-    } and they are: ${usergoals.goals.join()}.\n`;
+    chatGPTmsg = `The goals' date is ${usergoals.targetDate} and they are:\n${usergoals.goals.join()}.\n`;
+
+    return chatGPTmsg;
 }
 
 // Step 2: `org/products` Pioneer Migrator Settler
 export function getCompanyProductMessage(userProduct: IUserProduct) {
-    let msgForChatGPT = ``;
-    const productsListLength = userProduct.products.length;
-    let product: IProduct | undefined = undefined;
+    let msgForChatGPT = `The user haven't entered any products yet.`;
+    const productsLength = userProduct.products.length;
+    let product = {} as IProduct;
+    let future = {} as IFuture; 
+    let level = ``;
 
-    if (productsListLength === 0) return msgForChatGPT;
+    if (productsLength === 0) return msgForChatGPT;
 
-    msgForChatGPT += `Our Product${
-        productsListLength === 1 ? ` is:` : `s are:`
-    }\n`;
+    msgForChatGPT = `The product${productsLength === 1 ? ` is:` : `s are:`}\n`;
 
-    for (let i = 0; i < productsListLength; i++) {
+    for (let i = 0; i < productsLength; i++) {
         product = userProduct.products[i];
-        msgForChatGPT += `- ${product.name}`;
+        msgForChatGPT += `- ${product.name}:\n`;
 
-        if (!product.futures) return msgForChatGPT;
+        if (!product.futures) continue;
 
-        for (let j = 0; j < product.futures!.length; j++) {
-            const future = product.futures![j];
-            if (j === 0)
-                msgForChatGPT += ` in ${future.year} we have $${future.sales} in sales at a`;
-            if (j === 1)
-                msgForChatGPT += ` in ${future.year} we plan to have $${future.sales} in sales at a`;
-            else if (j > 1)
-                msgForChatGPT += ` and in ${future.year}, $${future.sales} in sales at a`;
+        for (let j = 0; j < product.futures.length; j++) {
+            future = product.futures[j];
 
-            let level = ``;
-            if (future.level == 1) level = `settler`;
-            if (future.level == 2) level = `migrator`;
-            if (future.level == 3) level = `pioneer`;
+            if (future.level === 1) level = `settler`;
+            else if (future.level === 2) level = `migrator`;
+            else if (future.level === 3) level = `pioneer`;
 
-            msgForChatGPT += ` ${level} level,`;
+            msgForChatGPT += `  - in ${future.year} we ${ j > 0 ? `plan to ` : ``}have $${future.sales} in sales at a ${level} level.\n`;
         }
     }
 
@@ -76,27 +72,26 @@ export function getCompanyProductMessage(userProduct: IUserProduct) {
 
 // Step 3: `org/market-potential` Market Potential
 export function getMarketPotentialMessage(userProduct: IUserProduct) {
-    let msgForChatGPT = ``;
+    let msgForChatGPT = `The user haven't entered any market share.`;
+    let product = {} as IProduct; 
+    let competitor = {} as ICompetitor;
+    let i, j = 0;
 
     if (!userProduct) return msgForChatGPT;
 
-    for (let i = 0; i < userProduct.products.length; i++) {
-        const product = userProduct.products[i];
+    msgForChatGPT = `The market potential data is:\n`;
+    for (i = 0; i < userProduct.products.length; i++) {
+        product = userProduct.products[i];
 
         if (!product.competitors) return msgForChatGPT;
 
-        msgForChatGPT += `My product's name is: ${
-            product.name
-        } and its market share is $${product.competitors![0].marketShare}.\n`;
-        for (let j = 1; j < product.competitors!.length; j++) {
-            const competitor = product.competitors![j];
-            if (j === 1)
-                msgForChatGPT += `The untapped market is ${competitor.name} and its market share is $${competitor.marketShare}.\n`;
-            else {
-                msgForChatGPT += `- Competitor ${j - 1} is ${
-                    competitor.name
-                } and their market share is $${competitor.marketShare}.\n`;
-            }
+        msgForChatGPT += `- For ${product.name} product:\n`;
+        for (j = 0; j < product.competitors!.length; j++) {
+            competitor = product.competitors![j];
+
+            if (j === 0) msgForChatGPT += `  - Our market share is $${product.competitors![0].marketShare}.\n`;
+            else if (j === 1) msgForChatGPT += `  - The untapped market is ${competitor.name} and its market share is $${competitor.marketShare}.\n`;
+            else msgForChatGPT += `  - Competitor ${j - 1} is ${competitor.name} and their market share is $${competitor.marketShare}.\n`;
         }
     }
 
@@ -104,38 +99,43 @@ export function getMarketPotentialMessage(userProduct: IUserProduct) {
 }
 
 // Step 4: `org/red-ocean` Red Ocean Canvas
-export function getRedOceanMessage(userProduct: IUserProduct) {
-    let msgForChatGPT = ``;
-    const productsLength = userProduct.products.length;
-    let product: IProduct | undefined;
-    let factorsLength = 0;
-    let factor: IFactor | undefined;
+export function getRedOceanMessage(userProduct: IUserProduct | undefined) {
+    let msgForChatGPT = `The user haven't entered any factors yet`;
+
+    if (!userProduct) return msgForChatGPT
+
+    let product = {} as IProduct;
+    let factor = {} as IFactor;
+    let factorCompetitor = {} as IFactorCompetitor;
+    let i, j, k = 0;
     let level = ``;
 
-    for (let i = 0; i < productsLength; i++) {
+    msgForChatGPT = `The red ocean canvas factors are:\n`;
+    for (i = 0; i < userProduct.products.length; i++) {
         product = userProduct.products[i];
+        msgForChatGPT += `- ${product.name}:\n`;
 
-        if (!product.factors) return msgForChatGPT;
+        if (!product.factors) {
+            msgForChatGPT += `The user haven't entered any factors for this product.\n`;
+            continue;
+        }
 
-        factorsLength = product.factors!.length;
-        msgForChatGPT += `For the ${product.name}:\n`;
-        for (let j = 0; j < factorsLength; j++) {
+        for (j = 0; j < product.factors.length; j++) {
             factor = product.factors![j];
+            msgForChatGPT += `  - The ${factor.name} factor`;
 
-            msgForChatGPT += `- The ${factor.name} factor`;
-            for (let k = 0; k < factor.competitors.length; k++) {
-                const competitor = factor.competitors[k];
+            for (k = 0; k < factor.competitors.length; k++) {
+                factorCompetitor = factor.competitors[k];
 
-                if (k === 0) msgForChatGPT += `, is `; // first
+                if (k < factor.competitors.length - 1) msgForChatGPT += `, `;
+                else if (k === 0) msgForChatGPT += `, is `;
                 else if (k === 1) continue; // untapped market is not used here
-                else if (k < factor.competitors.length - 1)
-                    msgForChatGPT += `, `; // in between
-                else msgForChatGPT += `, and is `; // last
+                else if (k === factor.competitors.length - 1) msgForChatGPT += `, and is `;
 
-                if (competitor.value == 1) level = `poor`;
-                if (competitor.value == 2) level = `moderate`;
-                if (competitor.value == 3) level = `good`;
-                if (competitor.value == 4) level = `excellent`;
+                if (factorCompetitor.value == 1) level = `poor`;
+                else if (factorCompetitor.value == 2) level = `moderate`;
+                else if (factorCompetitor.value == 3) level = `good`;
+                else if (factorCompetitor.value == 4) level = `excellent`;
 
                 msgForChatGPT += `${level} for ${product.competitors![k].name}`;
             }
@@ -147,24 +147,26 @@ export function getRedOceanMessage(userProduct: IUserProduct) {
 }
 
 // Step 5: `org/disruption` Disruption
-export function getDisruptionMessage(userTakeaways: IUserTakeaways) {
-    let msgForChatGPT = ``;
+export function getDisruptionMessage(userTakeaways: IUserTakeaways | undefined) {
+    let msgForChatGPT = `The user haven't entered any takeaways`;
+
+    if (!userTakeaways) return msgForChatGPT;
+
     const takeAwaysLength = userTakeaways.takeaways.length;
-    let notesLength = 0;
+    let notesLength, i, j = 0;
 
-    if (takeAwaysLength === 0 ) return msgForChatGPT;
-
-    for (let i = 0; i < takeAwaysLength; i++) {
+    msgForChatGPT = `The takeaways are:\n`;
+    for (i = 0; i < takeAwaysLength; i++) {
         notesLength = userTakeaways.takeaways[i].notes.length;
+        msgForChatGPT += `- ${userTakeaways.takeaways[i].type}:\n`;
 
-        if (notesLength === 0) continue;
+        if (notesLength === 0) {
+            msgForChatGPT += `The user haven't entered any takeaways.\n`;
+            continue;
+        }
 
-        msgForChatGPT += `The takeaways ${
-            userTakeaways.takeaways[i].type
-        }:\n`;
-
-        for (let j = 0; j < notesLength; j++) {
-            msgForChatGPT += `- ${userTakeaways.takeaways[i].notes[j]}.\n`;
+        for (j = 0; j < notesLength; j++) {
+            msgForChatGPT += `  - ${userTakeaways.takeaways[i].notes[j]}.\n`;
         }
     }
 
@@ -174,11 +176,13 @@ export function getDisruptionMessage(userTakeaways: IUserTakeaways) {
 // Step 6: `org/voice-of-customers` Voice of Customers
 export function getVoiceOfCustomerMessage(userCustomers: IUserCustomers) {
     let msgForChatGPT = ``;
+    let topCustomer, wants, fulfill = ``;
 
+    msgForChatGPT = `The top customer categories are:\n`;
     for (let i = 0; i < userCustomers.topCategories.length; i++) {
-        const topCustomer = userCustomers.topCategories[i];
-        const wants = userCustomers.wishlist[i];
-        const fulfill = userCustomers.fulfill[i];
+        topCustomer = userCustomers.topCategories[i];
+        wants = userCustomers.wishlist[i];
+        fulfill = userCustomers.fulfill[i];
 
         if (!topCustomer) continue;
 
@@ -190,26 +194,35 @@ export function getVoiceOfCustomerMessage(userCustomers: IUserCustomers) {
 
 // Step 7: `org/blue-ocean` Blue Ocean Canvas
 export function getBlueOceanMessage(userProduct: IUserProduct) {
-    let msgForChatGPT = ``;
+    let msgForChatGPT = `The user haven't entered any blue ocean ideas yet.`;
+
+    if (!userProduct) return msgForChatGPT;
+
     const productsLength = userProduct.products.length;
-    let product: IProduct | undefined;
-    let ideaFactorsLength = 0;
-    let ideaFactor: IFactor | undefined;
+    let product = {} as IProduct;
+    let ideaFactor = {} as IIdeaFactor;
+    let ideaFactorCompetitor = {} as IFactorCompetitor;
+    let ideaFactorsLength, i, j, k = 0;
     let level = ``;
 
-    for (let i = 0; i < productsLength; i++) {
+    
+    msgForChatGPT = `The blue ocean canvas ideas are:\n`;
+    for (i = 0; i < productsLength; i++) {
         product = userProduct.products[i];
         ideaFactorsLength = product.ideaFactors!.length;
 
-        if (ideaFactorsLength === 0) return msgForChatGPT;
+        if (ideaFactorsLength) {
+            msgForChatGPT += `The user haven't entered any ideas for this product.\n`;
+            continue;
+        }
 
-        msgForChatGPT += `For the ${product.name}:\n`;
-        for (let j = 0; j < ideaFactorsLength; j++) {
+        msgForChatGPT += `- ${product.name}:\n`;
+        for (j = 0; j < ideaFactorsLength; j++) {
             ideaFactor = product.ideaFactors![j];
 
-            msgForChatGPT += `- The ${ideaFactor.name} factor`;
-            for (let k = 0; k < ideaFactor.competitors.length; k++) {
-                const competitor = ideaFactor.competitors[k];
+            msgForChatGPT += `  - The ${ideaFactor.name} factor`;
+            for (k = 0; k < ideaFactor.competitors.length; k++) {
+                ideaFactorCompetitor = ideaFactor.competitors[k];
 
                 if (k === 0) msgForChatGPT += `, is `; // first
                 else if (k === 1) continue; // untapped market is not used here
@@ -217,10 +230,10 @@ export function getBlueOceanMessage(userProduct: IUserProduct) {
                     msgForChatGPT += `, `; // in between
                 else msgForChatGPT += `, and is `; // last
 
-                if (competitor.value == 1) level = `poor`;
-                if (competitor.value == 2) level = `moderate`;
-                if (competitor.value == 3) level = `good`;
-                if (competitor.value == 4) level = `excellent`;
+                if (ideaFactorCompetitor.value == 1) level = `poor`;
+                if (ideaFactorCompetitor.value == 2) level = `moderate`;
+                if (ideaFactorCompetitor.value == 3) level = `good`;
+                if (ideaFactorCompetitor.value == 4) level = `excellent`;
 
                 msgForChatGPT += `${level} for ${product.competitors![k].name}`;
             }
@@ -233,8 +246,11 @@ export function getBlueOceanMessage(userProduct: IUserProduct) {
 
 // Step 8: `org/non-customers` Non Customers
 export function getNonCustomersMessage(nonCustomers: IUserNonCustomers) {
-    let msgForChatGPT = ``;
-    msgForChatGPT += `The soon to be non customers are: ${nonCustomers.soonNonCustomers.join()}.\n`;
+    let msgForChatGPT = `The user haven't entered any non customers logic.`;
+
+    if (!nonCustomers) return msgForChatGPT;
+
+    msgForChatGPT = `The soon to be non customers are: ${nonCustomers.soonNonCustomers.join()}.\n`;
     msgForChatGPT += `The refusing non customers are: ${nonCustomers.refusingNonCustomers.join()}.\n`;
     msgForChatGPT += `The unwanted non customers are: ${nonCustomers.unwantedNonCustomers.join()}.\n`;
 
@@ -243,8 +259,11 @@ export function getNonCustomersMessage(nonCustomers: IUserNonCustomers) {
 
 // Step 9: `org/step-up-step-down` Step-up step-down
 export function getStepUpDownMessage(analysis: IUserAnalysis) {
-    let msgForChatGPT = ``;
-    msgForChatGPT += `The 10% step up customers are: ${analysis.above.join()}.\n`;
+    let msgForChatGPT = `The user haven't entered any step-up step-down logic.`;
+
+    if (!analysis) return msgForChatGPT;
+
+    msgForChatGPT = `The 10% step up customers are: ${analysis.above.join()}.\n`;
     msgForChatGPT += `The current customers are: ${analysis.customers.join()}.\n`;
     msgForChatGPT += `The 10% step down customers are: ${analysis.below.join()}.\n`;
 
@@ -253,12 +272,12 @@ export function getStepUpDownMessage(analysis: IUserAnalysis) {
 
 // Step 10: `org/roadmap` Roadmap
 export function getIdeasMessage(ideas: IUserIdeas) {
-    let msgForChatGPT = ``;
+    let msgForChatGPT = `The user haven't entered any roadmap ideas yet.`;
     const ideasLength = ideas.ideas.length;
 
     if (ideasLength === 0) return msgForChatGPT;
 
-    msgForChatGPT += `Starting from ${ideas.startDate} our idea`;
+    msgForChatGPT = `Starting from ${ideas.startDate} our idea`;
     if (ideasLength > 1) msgForChatGPT += `s are:\n`;
     else msgForChatGPT += ` is:\n`;
 

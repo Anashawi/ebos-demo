@@ -24,19 +24,20 @@ interface Props {
     userProducts: IUserProduct;
     dispatchChartProducts: (products: IProduct[]) => void;
     isLoading: boolean;
+    fetchedUserProducts: IUserProduct | undefined;
 }
 
-const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading }: Props) => {
+const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading, fetchedUserProducts }: Props) => {
     const queryClient = useQueryClient();
 
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
     // on data load send ChatGPT transcript with data
     useEffect(() => {
-        if (!isLoading && userProducts.id) {
-            const combinedMsg = `${stepFourTranscript}\n\n${getRedOceanMessage(userProducts)}`;
+        if (!isLoading) {
+            const combinedMsg = `${stepFourTranscript}\n\n${getRedOceanMessage(fetchedUserProducts)}`;
             setChatGPTMessage(combinedMsg);
         }
-    }, [isLoading, userProducts]);
+    }, [isLoading]);
 
     const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
         (newUserProducts: IUserProduct) => {
@@ -99,43 +100,31 @@ const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading }: Pro
                                     {({ push, remove }) => {
                                         return (
                                             <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    {isLoading && (
-                                                        <Spinner
-                                                            className="flex items-center text-2xl"
-                                                            message="Loading Red Ocean..."
-                                                        />
-                                                    )}
-                                                    {!isLoading && userProducts.products.length === 0 && (
+                                                {!isLoading ? (
+                                                    values.products.length > 0 ? (
+                                                        values.products.map((product, productIndex) =>
+                                                            product.competitors && product.competitors.length > 2 ? (
+                                                                <RedOceanProduct
+                                                                    key={`prod-${productIndex}`}
+                                                                    product={product}
+                                                                    index={productIndex}
+                                                                />
+                                                            ) : (
+                                                                <ZeroProductCompetitorsWarning
+                                                                    key={`prod-${productIndex}`}
+                                                                    name={product.name}
+                                                                />
+                                                            )
+                                                        )
+                                                    ) : (
                                                         <ZeroProductsWarning />
-                                                    )}
-                                                    {!isLoading &&
-                                                        values.products.length === 0 &&
-                                                        userProducts.products.length > 0 && (
-                                                            <p className="text-rose-400">
-                                                                make a selection to view products !
-                                                            </p>
-                                                        )}
-                                                    {values.products.length > 0 &&
-                                                        values.products.map((product, productIndex) => (
-                                                            <div key={productIndex}>
-                                                                {!!product.competitors?.length && (
-                                                                    <RedOceanProduct
-                                                                        product={product}
-                                                                        index={productIndex}
-                                                                    />
-                                                                )}
-                                                                {!product.competitors?.length && (
-                                                                    <>
-                                                                        <h3 className="text-[1.75rem] font-hero-semibold">
-                                                                            {product.name}
-                                                                        </h3>
-                                                                        <ZeroProductCompetitorsWarning />
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        ))}
-                                                </div>
+                                                    )
+                                                ) : (
+                                                    <Spinner
+                                                        className="flex items-center text-2xl"
+                                                        message="Loading Red Ocean..."
+                                                    />
+                                                )}
                                                 <div className="flex justify-end h-10">
                                                     {isUpdatingUserProduct && (
                                                         <Spinner

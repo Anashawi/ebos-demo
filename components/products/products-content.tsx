@@ -36,21 +36,21 @@ const emptyProduct = {
 interface Props {
     userProduct: IUserProduct;
     isLoading: boolean;
+    fetchedUserProducts: any;
     dispatchChartProducts: (products: IProduct[]) => void;
 }
 
-const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts }: Props) => {
+const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts, fetchedUserProducts }: Props) => {
     const { data: session }: any = useSession();
     const queryClient = useQueryClient();
 
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
     // on data load send ChatGPT transcript with data
     useEffect(() => {
-        if (!isLoading && userProduct.id) {
-            const combinedMsg = `${stepTwoTranscript}\n\n${getCompanyProductMessage(userProduct)}`;
-            setChatGPTMessage(combinedMsg);
+        if (!isLoading && fetchedUserProducts) {
+            setChatGPTMessage(`${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`);
         }
-    }, [isLoading, userProduct]);
+    }, [isLoading]);
 
     const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
         (newUserProduct: IUserProduct) => {

@@ -39,7 +39,7 @@ const OrganizationsForm = ({
         if (fetchedUserOrganizations?.status === 200 && fetchedUserOrganizations.data) {
             setUserOrganizations({ ...fetchedUserOrganizations.data });
         }
-    }, [fetchedUserOrganizations, setUserOrganizations]);
+    }, [fetchedUserOrganizations]);
 
     // insert/update user organizations
     const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } = useMutation({

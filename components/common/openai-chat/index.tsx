@@ -15,7 +15,7 @@ import {
     MessageList,
     TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
-import { faComment, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faCommentSlash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 enum MessageSendBy {
@@ -70,12 +70,14 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     }, [chatGPTState]);
 
     useEffect(() => {
-        if (chatBoxState !== ChatIs.Disabled && initialMessage) {
-            sendHiddenSystemMessage(initialMessage);
+        if (chatBoxState === ChatIs.Disabled) return;
+
+        if (initialMessage) {
+            console.log(initialMessage);
+            // sendHiddenSystemMessage(initialMessage);
         }
     }, [initialMessage]);
 
-    // Feature: system messages/response are not displayed on the chat ui
     const sendHiddenSystemMessage = async (automaticallyGenSystemMsg: string) => {
         const newOpenAIMessages = [...openAIMessages];
 
@@ -217,18 +219,18 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
                 <MainContainer className="chatgpt-main-container">
                     <ChatContainer>
                         <ConversationHeader className="chatgpt-header">
-                            <Avatar src="/settings.svg" name="ChatGPT" />
+                            <Avatar src="/chatgpt-icon.svg" name="ChatGPT" />
                             <ConversationHeader.Content
                                 className="chatgpt-header"
-                                userName="AI Assistant"
-                                info={`model chat${CHATGPT_MODEL}`}
+                                userName="ChatGPT Assistant"
+                                info={`model ${CHATGPT_MODEL}`}
                             />
                             <ConversationHeader.Actions>
                                 <Button
-                                    className="w-6 text-white"
+                                    className="w-10 text-white"
                                     title="Disable Chat"
                                     onClick={() => setChatBoxState(ChatIs.Disabled)}
-                                    icon={<FontAwesomeIcon icon={faTimes} />}
+                                    icon={<FontAwesomeIcon icon={faCommentSlash} />}
                                 ></Button>
                             </ConversationHeader.Actions>
                         </ConversationHeader>

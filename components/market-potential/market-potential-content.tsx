@@ -29,9 +29,9 @@ const MarketPotentialContent = ({ userProduct, isLoading: areUserProductsLoading
     const queryClient = useQueryClient();
 
     const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
-    // on data load send ChatGPT transcript with data
+
     useEffect(() => {
-        if (!areUserProductsLoading && userProduct.id) {
+        if (!areUserProductsLoading && userProduct?.id) {
             setChatGPTMessage(`${stepThreeTranscript}\n\n${getMarketPotentialMessage(userProduct)}`);
         }
     }, [areUserProductsLoading, userProduct]);
@@ -166,11 +166,9 @@ const MarketPotentialContent = ({ userProduct, isLoading: areUserProductsLoading
                                                         stepUri={`../org/red-ocean`}
                                                         nextStepTitle={`Red Ocean Canvas`}
                                                         disabled={
-                                                            isUpdatingUserProduct ||
                                                             areUserProductsLoading ||
-                                                            isSubmitting ||
-                                                            !isValid ||
-                                                            userProduct.products.length < 1
+                                                            userProduct.products.length === 0 ||
+                                                            isUpdatingUserProduct
                                                         }
                                                     />
                                                 </div>

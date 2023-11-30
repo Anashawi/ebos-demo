@@ -8,6 +8,9 @@ import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 
 import NonCustomersContent from "../../components/non-customers/non-customers-content";
 import ChartsContent from "../../components/common/charts-content";
+import Chat from "../../components/common/openai-chat";
+import { stepEightTranscript } from "../../components/common/openai-chat/openai-transcript";
+import { getNonCustomersMessage } from "../../components/common/openai-chat/custom-messages";
 
 const NonCustomers = () => {
     const { data: session }: any = useSession();
@@ -20,42 +23,49 @@ const NonCustomers = () => {
         unwantedNonCustomers: [],
     } as IUserNonCustomers;
 
-    const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(
-        emptyUserNonCustomers
-    );
+    const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(emptyUserNonCustomers);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    const { data: fetchedNonCustomers, isLoading: areNonCustomersLoading } =
-        useQuery<IUserNonCustomers>({
-            queryKey: [nonCustomersApi.Keys.All],
-            queryFn: nonCustomersApi.getOne,
-            refetchOnWindowFocus: false,
-            enabled: !!session?.user?.id,
-        });
+    const {
+        data: fetchedNonCustomers,
+        isLoading: areNonCustomersLoading,
+        status: fetchingNonCustomersStatus,
+    } = useQuery<IUserNonCustomers>({
+        queryKey: [nonCustomersApi.Keys.All],
+        queryFn: nonCustomersApi.getOne,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
     useEffect(() => {
-        if (fetchedNonCustomers) {
-            setUserNonCustomers(fetchedNonCustomers);
+        if (fetchingNonCustomersStatus === "success") {
+            setUserNonCustomers(fetchedNonCustomers ?? emptyUserNonCustomers);
+            setChatGPTMessage(`${stepEightTranscript}\n\n${getNonCustomersMessage(fetchedNonCustomers)}`);
         }
-    }, [fetchedNonCustomers]);
+    }, [fetchingNonCustomersStatus]);
 
     return (
-        <article className="main-content">
-            <article className="forms-container">
-                <NonCustomersContent
-                    userNonCustomers={userNonCustomers}
-                    dispatchUserNonCustomers={setUserNonCustomers}
-                    isLoading={areNonCustomersLoading}
-                />
+        <>
+            <article className="main-content">
+                <article className="forms-container">
+                    <NonCustomersContent
+                        userNonCustomers={userNonCustomers}
+                        dispatchUserNonCustomers={setUserNonCustomers}
+                        isLoading={areNonCustomersLoading}
+                        setChatGPTMessage={setChatGPTMessage}
+                    />
+                </article>
+                <aside className="aside-content">
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.nonCustomers}
+                        videoLabel="Non Customers Video"
+                        chartProducts={[userNonCustomers]}
+                        isChartDataLoading={areNonCustomersLoading}
+                    />
+                </aside>
             </article>
-            <aside className="aside-content">
-                <ChartsContent
-                    videoPropName={videoPropNamesEnum.nonCustomers}
-                    videoLabel="Non Customers Video"
-                    chartProducts={[userNonCustomers]}
-                    isChartDataLoading={areNonCustomersLoading}
-                />
-            </aside>
-        </article>
+            <Chat initialMessage={chatGPTMessage}></Chat>
+        </>
     );
 };
 NonCustomers.stepTitle = stepNamesEnum.nonCustomers;

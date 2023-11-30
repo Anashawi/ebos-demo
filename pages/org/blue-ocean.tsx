@@ -28,18 +28,15 @@ const BlueOceanCanvas = () => {
         } as IUserProduct;
     }, [session?.user?.id]);
 
-    const [userProduct, setUserProduct] =
-        useState<IUserProduct>(emptyUserProduct);
-
+    const [userProduct, setUserProduct] = useState<IUserProduct>(emptyUserProduct);
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
-    const { data: products, isLoading: areProductsLoading } =
-        useQuery<IUserProduct>({
-            queryKey: [productsApi.Keys.All],
-            queryFn: productsApi.getAll,
-            refetchOnWindowFocus: false,
-            enabled: !!session?.user?.id,
-        });
+    const { data: products, isLoading: areProductsLoading } = useQuery<IUserProduct>({
+        queryKey: [productsApi.Keys.All],
+        queryFn: productsApi.getAll,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
     useEffect(() => {
         products?.products?.forEach(prod => {
@@ -58,14 +55,10 @@ const BlueOceanCanvas = () => {
                 ];
             } else {
                 prod.ideaFactors.forEach(ideaFactor => {
-                    const existingCompetitorUuids = new Set(
-                        ideaFactor.competitors.map(c => c.uuid)
-                    );
+                    const existingCompetitorUuids = new Set(ideaFactor.competitors.map(c => c.uuid));
 
                     const newIdeaFactorCompetitors = prod.competitors
-                        ?.filter(
-                            comp => !existingCompetitorUuids.has(comp.uuid)
-                        )
+                        ?.filter(comp => !existingCompetitorUuids.has(comp.uuid))
                         .map(comp => {
                             return {
                                 uuid: comp.uuid,
@@ -75,15 +68,12 @@ const BlueOceanCanvas = () => {
 
                     if (newIdeaFactorCompetitors?.length) {
                         // Add competitors that exist in prod.competitors but not in ideaFactor.competitors
-                        ideaFactor.competitors = ideaFactor.competitors.concat(
-                            newIdeaFactorCompetitors
-                        );
+                        ideaFactor.competitors = ideaFactor.competitors.concat(newIdeaFactorCompetitors);
                     }
 
                     // Remove competitors that exist in ideaFactor.competitors but not in prod.competitors
-                    ideaFactor.competitors = ideaFactor.competitors.filter(
-                        comp =>
-                            prod.competitors?.some(c => c.uuid === comp.uuid)
+                    ideaFactor.competitors = ideaFactor.competitors.filter(comp =>
+                        prod.competitors?.some(c => c.uuid === comp.uuid)
                     );
                 });
             }

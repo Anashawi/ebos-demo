@@ -28,18 +28,16 @@ const RedOceanCanvas = () => {
         } as IUserProduct;
     }, [session?.user?.id]);
 
-    const [userProducts, setUserProducts] =
-        useState<IUserProduct>(emptyUserProduct);
+    const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProduct);
 
     const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
 
-    const { data: fetchedUserProducts, isLoading: areUserProductsLoading } =
-        useQuery<IUserProduct>({
-            queryKey: [clientApi.Keys.All],
-            queryFn: clientApi.getAll,
-            refetchOnWindowFocus: false,
-            enabled: !!session?.user?.id,
-        });
+    const { data: fetchedUserProducts, isLoading: areUserProductsLoading } = useQuery<IUserProduct>({
+        queryKey: [clientApi.Keys.All],
+        queryFn: clientApi.getAll,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
     useEffect(() => {
         fetchedUserProducts?.products?.forEach(prod => {
@@ -58,14 +56,10 @@ const RedOceanCanvas = () => {
                 ];
             } else {
                 prod.factors.forEach(factor => {
-                    const existingCompetitorUuids = new Set(
-                        factor.competitors.map(c => c.uuid)
-                    );
+                    const existingCompetitorUuids = new Set(factor.competitors.map(c => c.uuid));
 
                     const newfactorCompetitors = prod.competitors
-                        ?.filter(
-                            comp => !existingCompetitorUuids.has(comp.uuid)
-                        )
+                        ?.filter(comp => !existingCompetitorUuids.has(comp.uuid))
                         .map(comp => {
                             return {
                                 uuid: comp.uuid,
@@ -75,8 +69,7 @@ const RedOceanCanvas = () => {
 
                     if (newfactorCompetitors?.length) {
                         // Add competitors that exist in prod.competitors but not in factor.competitors
-                        factor.competitors =
-                            factor.competitors.concat(newfactorCompetitors);
+                        factor.competitors = factor.competitors.concat(newfactorCompetitors);
                     }
 
                     // Remove competitors that exist in factor.competitors but not in prod.competitors
@@ -100,6 +93,7 @@ const RedOceanCanvas = () => {
                         setChartProducts(products);
                     }}
                     isLoading={areUserProductsLoading}
+                    fetchedUserProducts={fetchedUserProducts}
                 />
             </article>
             <aside className="aside-content">

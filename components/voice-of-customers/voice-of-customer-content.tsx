@@ -19,7 +19,7 @@ const VoiceOfCustomersContent = () => {
     const { data: session }: any = useSession();
     const queryClient = useQueryClient();
 
-    const emptyUserCustomers = useMemo(() => {
+    let emptyUserCustomers = useMemo(() => {
         return {
             id: "",
             userId: session?.user?.id,
@@ -30,8 +30,13 @@ const VoiceOfCustomersContent = () => {
     }, [session?.user?.id]);
 
     const [userCustomers, setUserCustomers] = useState<IUserCustomers>(emptyUserCustomers);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    const { data: fetchedUserCustomers, isLoading: isUserCustomersLoading } = useQuery<IUserCustomers>({
+    const {
+        data: fetchedUserCustomers,
+        isLoading: isUserCustomersLoading,
+        status: fetchingCustomersStatus,
+    } = useQuery<IUserCustomers>({
         queryKey: [customersApi.Keys.All],
         queryFn: customersApi.getOne,
         refetchOnWindowFocus: false,
@@ -39,19 +44,11 @@ const VoiceOfCustomersContent = () => {
     });
 
     useEffect(() => {
-        if (fetchedUserCustomers) {
+        if (fetchingCustomersStatus === "success") {
             setUserCustomers(fetchedUserCustomers);
+            setChatGPTMessage(`${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(fetchedUserCustomers)}`);
         }
-    }, [fetchedUserCustomers]);
-
-    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
-    // on data load send ChatGPT transcript with data
-    useEffect(() => {
-        if (!isUserCustomersLoading && fetchedUserCustomers?.id) {
-            const combinedMsg = `${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(fetchedUserCustomers)}`;
-            setChatGPTMessage(combinedMsg);
-        }
-    }, [isUserCustomersLoading, fetchedUserCustomers]);
+    }, [fetchingCustomersStatus]);
 
     const { mutate: updateUserCustomers, isLoading: isUpdatingUserCustomers } = useMutation(
         (userCustomers: IUserCustomers) => {

@@ -10,6 +10,9 @@ import Spinner from "../../components/common/spinner";
 import RoadMapContent from "../../components/roadmap/roadmap-content";
 import ChartsContent from "../../components/common/charts-content";
 import RoadmapChart from "../../components/roadmap/roadmap-chart";
+import { stepTenTranscript } from "../../components/common/openai-chat/openai-transcript";
+import { getIdeasMessage } from "../../components/common/openai-chat/custom-messages";
+import Chat from "../../components/common/openai-chat";
 
 const RoadMap = () => {
     const { data: session }: any = useSession();
@@ -24,22 +27,29 @@ const RoadMap = () => {
         ideas: [],
     } as IUserIdeas;
     const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    const { data: fetchedIdeas, isLoading: areIdeasLoading } =
-        useQuery<IUserIdeas>({
-            queryKey: [ideasApi.Keys.All],
-            queryFn: ideasApi.getOne,
-            refetchOnWindowFocus: false,
-        });
+    const {
+        data: fetchedIdeas,
+        isLoading: areIdeasLoading,
+        status: fetchingIdeasStatus,
+    } = useQuery<IUserIdeas>({
+        queryKey: [ideasApi.Keys.All],
+        queryFn: ideasApi.getOne,
+        refetchOnWindowFocus: false,
+    });
 
     useEffect(() => {
-        if (fetchedIdeas) {
-            fetchedIdeas.ideas.forEach(idea => {
-                !idea.durationInMonths ? (idea.durationInMonths = 6) : null;
-            });
-            setUserIdeas(fetchedIdeas);
+        if (fetchingIdeasStatus === "success") {
+            if (fetchedIdeas) {
+                fetchedIdeas.ideas.forEach(idea => {
+                    !idea.durationInMonths ? (idea.durationInMonths = 6) : null;
+                });
+                setUserIdeas(fetchedIdeas);
+                setChatGPTMessage(`${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`);
+            }
         }
-    }, [fetchedIdeas]);
+    }, [fetchingIdeasStatus]);
 
     return (
         <>
@@ -50,6 +60,7 @@ const RoadMap = () => {
                         dispatchUserIdeas={setUserIdeas}
                         todayDateStr={todayDateStr}
                         isLoading={areIdeasLoading}
+                        setChatGPTMessage={setChatGPTMessage}
                     />
                 </article>
                 <aside className="aside-content">
@@ -63,23 +74,18 @@ const RoadMap = () => {
             </article>
             <div className="p-8 rounded-2xl bg-white">
                 {areIdeasLoading && (
-                    <Spinner
-                        className="flex items-center px-1 text-2xl"
-                        message="Loading roadmap ideas chart..."
-                    />
+                    <Spinner className="flex items-center px-1 text-2xl" message="Loading roadmap ideas chart..." />
                 )}
                 {!areIdeasLoading && userIdeas.ideas.length === 0 && (
                     <div className="w-full flex items-center">
                         <p className="text-2xl text-center italic">
-                            Start adding your ideas to see roadmap ideas
-                            chart...
+                            Start adding your ideas to see roadmap ideas chart...
                         </p>
                     </div>
                 )}
-                {!areIdeasLoading && userIdeas.ideas.length > 0 && (
-                    <RoadmapChart userIdeas={userIdeas} />
-                )}
+                {!areIdeasLoading && userIdeas.ideas.length > 0 && <RoadmapChart userIdeas={userIdeas} />}
             </div>
+            <Chat initialMessage={chatGPTMessage}></Chat>
         </>
     );
 };

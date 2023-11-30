@@ -238,12 +238,7 @@ const GoalsForm = ({ fetchedUserGoals, areUserGoalsLoading, userGoals, setUserGo
                                                                         : ``
                                                                 }`}
                                                                 type="submit"
-                                                                disabled={
-                                                                    isSubmitting ||
-                                                                    isCreatingUserGoal ||
-                                                                    isUpdatingUserGoal ||
-                                                                    !isValid
-                                                                }
+                                                                disabled={false}
                                                             >
                                                                 Save
                                                             </button>
