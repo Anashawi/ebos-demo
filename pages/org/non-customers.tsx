@@ -1,165 +1,76 @@
-import useModalToggler from "../../hooks/use-modal-toggler";
-import IdeasModal from "../../components/app/ideas-modal";
-import Modal from "../../components/common/modal";
-import SharedVideoForm from "../../components/disruption/shared-video-form";
-import Video from "../../components/disruption/video";
-import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
-import NonCustomersContent from "../../components/non-customers/content";
-import StepsNavbar from "../../components/common/steps-navbar";
-import ActionsNavbar from "../../components/common/actions-navbar";
-import NonCustomersReview from "../../components/non-customers/review";
-import { useEffect, useState } from "react";
-import { IUserNonCustomers } from "../../models/user-non-customers";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import * as clientApi from "../../http-client/non-customers.client";
+
+import * as nonCustomersApi from "../../http-client/non-customers.client";
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "../../components/common/spinner";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { IUserNonCustomers } from "../../models/user-non-customers";
+import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import { activeStepData } from "../../context";
+
+import NonCustomersContent from "../../components/non-customers/non-customers-content";
+import ChartsContent from "../../components/common/charts-content";
+import Chat from "../../components/common/openai-chat";
+import { stepEightTranscript } from "../../components/common/openai-chat/openai-transcript";
+import { getNonCustomersMessage } from "../../components/common/openai-chat/custom-messages";
 
 const NonCustomers = () => {
-	const { data: session }: any = useSession();
+    const { data: session }: any = useSession();
 
-	const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
-	const [isEditUrlsModalOn, toggleEditVideoModal] = useModalToggler();
-	const [isVideoModalOn, toggleVideoModal] = useModalToggler();
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.nonCustomers);
 
-	const emptyUserNonCustomers = {
-		id: "",
-		userId: session?.user?.id,
-		soonNonCustomers: [],
-		refusingNonCustomers: [],
-		unwantedNonCustomers: [],
-	} as IUserNonCustomers;
+    const emptyUserNonCustomers = {
+        id: "",
+        userId: session?.user?.id,
+        soonNonCustomers: [],
+        refusingNonCustomers: [],
+        unwantedNonCustomers: [],
+    } as IUserNonCustomers;
 
-	const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(
-		emptyUserNonCustomers
-	);
+    const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(emptyUserNonCustomers);
+    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-	const { data, isLoading } = useQuery<IUserNonCustomers>({
-		queryKey: [clientApi.Keys.All],
-		queryFn: clientApi.getOne,
-		refetchOnWindowFocus: false,
-		enabled: !!session?.user?.id,
-	});
+    const {
+        data: fetchedNonCustomers,
+        isLoading: areNonCustomersLoading,
+        status: fetchingNonCustomersStatus,
+    } = useQuery<IUserNonCustomers>({
+        queryKey: [nonCustomersApi.Keys.All],
+        queryFn: nonCustomersApi.getOne,
+        refetchOnWindowFocus: false,
+        enabled: !!session?.user?.id,
+    });
 
-	useEffect(() => {
-		if (data) {
-			setUserNonCustomers(data);
-		}
-	}, [data]);
+    useEffect(() => {
+        if (fetchingNonCustomersStatus === "success") {
+            setUserNonCustomers(fetchedNonCustomers ?? emptyUserNonCustomers);
+            setChatGPTMessage(`${stepEightTranscript}\n\n${getNonCustomersMessage(fetchedNonCustomers)}`);
+        }
+    }, [fetchingNonCustomersStatus]);
 
-	return (
-		<>
-			<div className='bg-gray-100 pt-9'>
-				<div className='flex gap-[4.4rem] px-16 m-auto'>
-					<div className='py-12'>
-						<ActionsNavbar
-							selectedStepTitle={stepNamesEnum.nonCustomers}
-						/>
-					</div>
-					<div className='grow max-w-[1920px] flex flex-col py-12 mx-auto'>
-						<StepsNavbar selectedNode={stepNamesEnum.nonCustomers} />
-						<div className='content-container'>
-							<div className='left-content'>
-								<NonCustomersContent
-									userNonCustomers={userNonCustomers}
-									dispatchUserNonCustomers={setUserNonCustomers}
-									isLoading={isLoading}
-								/>
-							</div>
-							<div className='right-content'>
-								<div className='p-1 bg-white rounded-xl'>
-									<button
-										type='button'
-										onClick={() => {
-											toggleIdeasModal(true);
-										}}
-										className='w-full btn-primary-light rounded-xl'>
-										My Ideas
-									</button>
-								</div>
-								<div className='p-1 bg-white rounded-xl'>
-									<button
-										type='button'
-										onClick={() => {
-											toggleVideoModal(true);
-										}}
-										className='w-full btn-primary-light rounded-xl'>
-										Watch Video Tutorial
-									</button>
-								</div>
-								{session?.user?.role === "admin" && (
-									<div className='p-1 bg-white rounded-xl'>
-										<button
-											type='button'
-											onClick={() => toggleEditVideoModal(true)}
-											className='w-full btn-primary-light rounded-xl'>
-											<span>Edit video Url</span>
-											<FontAwesomeIcon
-												className='w-7'
-												icon={faEdit}
-											/>
-										</button>
-									</div>
-								)}
-								{isLoading && (
-									<Spinner
-										message='Loading non-customers...'
-										className='p-5 items-center text-xl'
-									/>
-								)}
-								{!isLoading && (
-									<NonCustomersReview
-										userNonCustomers={userNonCustomers}
-									/>
-								)}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{/* ideas modal */}
-			<IdeasModal
-				isOpen={isIdeasModalOpen}
-				toggle={() => toggleIdeasModal()}
-			/>
-
-			{/* video modal */}
-			<Modal
-				config={{
-					isShown: isVideoModalOn,
-					closeCallback: () => toggleVideoModal(false),
-					className:
-						"flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
-				}}>
-				<Video videoPropName={videoPropNamesEnum.nonCustomers} />
-				<div className='flex justify-center p-5 bg-black'>
-					<button
-						className='btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400'
-						onClick={() => toggleVideoModal(false)}>
-						close
-					</button>
-				</div>
-			</Modal>
-
-			{/* video url form modal */}
-			<Modal
-				config={{
-					isShown: isEditUrlsModalOn,
-					closeCallback: () => toggleEditVideoModal(false),
-					className:
-						"flex flex-col lg:w-1/3 max-w-[1320px] rounded-xl overflow-hidden p-5 lg:p-10",
-				}}>
-				<SharedVideoForm
-					toggleEditVideoModal={() => toggleEditVideoModal(false)}
-					videoPropName={videoPropNamesEnum.nonCustomers}
-					videoLabel='Non Customers Video'
-				/>
-			</Modal>
-		</>
-	);
+    return (
+        <>
+            <article className="main-content">
+                <article className="forms-container">
+                    <NonCustomersContent
+                        userNonCustomers={userNonCustomers}
+                        dispatchUserNonCustomers={setUserNonCustomers}
+                        isLoading={areNonCustomersLoading}
+                        setChatGPTMessage={setChatGPTMessage}
+                    />
+                </article>
+                <aside className="aside-content">
+                    <ChartsContent
+                        videoPropName={videoPropNamesEnum.nonCustomers}
+                        videoLabel="Non Customers Video"
+                        chartProducts={[userNonCustomers]}
+                        isChartDataLoading={areNonCustomersLoading}
+                    />
+                </aside>
+            </article>
+            <Chat initialMessage={chatGPTMessage}></Chat>
+        </>
+    );
 };
 
 export default NonCustomers;
