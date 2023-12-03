@@ -119,7 +119,7 @@ input[type="text"]:focus:not("no-border") {
         @apply min-w-[1280px] h-auto flex flex-row justify-center gap-8 px-8 py-16;
     }
     .content-container > .left-side-main-navigation {
-        @apply w-1/12 min-h-[84vh];
+        @apply w-32 min-h-[84vh];
     }
     .content-container > .left-side-main-navigation > .main-navigation {
         @apply w-full h-[100%] flex flex-col justify-between gap-8 px-4 py-8 bg-white rounded-full;
@@ -154,7 +154,7 @@ input[type="text"]:focus:not("no-border") {
 
     /* openAI chatGPT chat box start */
     .chatgpt-button {
-        @apply w-20 h-20 flex justify-center rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
+        @apply w-20 h-20 flex justify-center align-middle rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
     }
     .chatgpt-main-container {
         @apply w-[36rem] h-[80vh] border-none rounded-3xl z-10 fixed bottom-32 right-8 shadow-xl;
