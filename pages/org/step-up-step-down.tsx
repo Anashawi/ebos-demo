@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 
 import * as analysisApi from "../../http-client/analysis.client";
 import { useQuery } from "@tanstack/react-query";
 import { IUserAnalysis } from "../../models/user-analysis";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import { activeStepData } from "../../context";
 
 import StepUpStepDownContent from "../../components/step-up-step-down/step-up-step-down-content";
 import ChartsContent from "../../components/common/charts-content";
@@ -14,6 +15,9 @@ import { getStepUpDownMessage } from "../../components/common/openai-chat/custom
 
 const Analysis = () => {
     const { data: session }: any = useSession();
+
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.stepUpStepDownModel);
 
     const emptyUserAnalysis = {
         id: "",
@@ -68,7 +72,5 @@ const Analysis = () => {
         </>
     );
 };
-
-Analysis.stepTitle = stepNamesEnum.stepUpStepDownModel;
 
 export default Analysis;

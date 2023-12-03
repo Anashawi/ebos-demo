@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as nonCustomersApi from "../../http-client/non-customers.client";
 import { useQuery } from "@tanstack/react-query";
 import { IUserNonCustomers } from "../../models/user-non-customers";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import { activeStepData } from "../../context";
 
 import NonCustomersContent from "../../components/non-customers/non-customers-content";
 import ChartsContent from "../../components/common/charts-content";
@@ -14,6 +15,9 @@ import { getNonCustomersMessage } from "../../components/common/openai-chat/cust
 
 const NonCustomers = () => {
     const { data: session }: any = useSession();
+
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.nonCustomers);
 
     const emptyUserNonCustomers = {
         id: "",
@@ -68,6 +72,5 @@ const NonCustomers = () => {
         </>
     );
 };
-NonCustomers.stepTitle = stepNamesEnum.nonCustomers;
 
 export default NonCustomers;

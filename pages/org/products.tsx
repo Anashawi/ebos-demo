@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IUserProduct } from "../../models/user-product";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IProduct } from "../../models/types";
+import { activeStepData } from "../../context";
 
 import ProductsContent from "../../components/products/products-content";
 import ChartsContent from "../../components/common/charts-content";
@@ -21,6 +22,9 @@ const emptyUserProducts = {
 
 const Products = () => {
     const { data: session }: any = useSession();
+
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.pioneerMigratorSettler);
 
     emptyUserProducts.userId = session?.user?.id;
     const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProducts);
@@ -69,7 +73,5 @@ const Products = () => {
         </>
     );
 };
-
-Products.stepTitle = stepNamesEnum.pioneerMigratorSettler;
 
 export default Products;

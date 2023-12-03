@@ -1,24 +1,25 @@
 import { createContext, useState, ReactNode } from "react";
-import { ChatIs } from "../models/enums";
+import { ChatIs, stepNamesEnum } from "../models/enums";
 
-export interface ChatBoxStateContextType {
+export type ChatBoxStateContextType = {
     chatBoxState: ChatIs;
     setChatBoxState: React.Dispatch<React.SetStateAction<ChatIs>>;
-}
+};
+export type activeStepContextType = {
+    activeStep: stepNamesEnum;
+    setActiveStep: React.Dispatch<React.SetStateAction<stepNamesEnum>>;
+};
 
 export const chatBoxStateData = createContext<ChatBoxStateContextType>({} as ChatBoxStateContextType);
+export const activeStepData = createContext<activeStepContextType>({} as activeStepContextType);
 
 function Context({ children }: { children: ReactNode }) {
-    const [chatBoxState, setChatBoxState] = useState(ChatIs.Minimized);
+    const [chatBoxState, setChatBoxState] = useState<ChatIs>(ChatIs.Minimized);
+    const [activeStep, setActiveStep] = useState<stepNamesEnum>(stepNamesEnum.home);
 
     return (
-        <chatBoxStateData.Provider
-            value={{
-                chatBoxState,
-                setChatBoxState,
-            }}
-        >
-            {children}
+        <chatBoxStateData.Provider value={{ chatBoxState, setChatBoxState }}>
+            <activeStepData.Provider value={{ activeStep, setActiveStep }}>{children}</activeStepData.Provider>
         </chatBoxStateData.Provider>
     );
 }

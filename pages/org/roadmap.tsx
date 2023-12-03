@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as ideasApi from "../../http-client/ideas.client";
 import { useQuery } from "@tanstack/react-query";
 import { IUserIdeas } from "../../models/user-idea";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
+import { activeStepData } from "../../context";
 
 import Spinner from "../../components/common/spinner";
 import RoadMapContent from "../../components/roadmap/roadmap-content";
@@ -16,6 +17,9 @@ import Chat from "../../components/common/openai-chat";
 
 const RoadMap = () => {
     const { data: session }: any = useSession();
+
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.roadMap);
 
     // "yyyy-mm"
     const todayDateStr = new Date().toISOString().substring(0, 7);
@@ -89,7 +93,5 @@ const RoadMap = () => {
         </>
     );
 };
-
-RoadMap.stepTitle = stepNamesEnum.roadMap;
 
 export default RoadMap;

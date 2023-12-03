@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { ICompetitor, IProduct } from "../../models/types";
 import { IUserProduct } from "../../models/user-product";
+import { activeStepData } from "../../context";
 
 import MarketPotentialContent from "../../components/market-potential/market-potential-content";
 import ChartsContent from "../../components/common/charts-content";
@@ -23,6 +24,9 @@ const emptyUserProduct = {
 
 const Competitors = () => {
     const { data: session }: any = useSession();
+
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.marketPotential);
 
     const emptyCompetitor = () => {
         const uuid = crypto.randomUUID();
@@ -91,7 +95,5 @@ const Competitors = () => {
         </>
     );
 };
-
-Competitors.stepTitle = stepNamesEnum.marketPotential;
 
 export default Competitors;

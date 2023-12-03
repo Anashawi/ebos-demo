@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import { useSession } from "next-auth/react";
 
 import * as clientApi from "../../http-client/products.client";
@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IUserProduct } from "../../models/user-product";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { IFactor, IProduct } from "../../models/types";
+import { activeStepData } from "../../context";
 
 import RedOceanContent from "../../components/red-ocean/red-ocean-content";
 import ChartsContent from "../../components/common/charts-content";
@@ -15,6 +16,9 @@ import Chat from "../../components/common/openai-chat";
 
 const RedOceanCanvas = () => {
     const { data: session }: any = useSession();
+
+    const { setActiveStep } = useContext(activeStepData);
+    setActiveStep(stepNamesEnum.redOceanCanvas);
 
     const emptyFactor = useMemo(() => {
         return {
@@ -120,7 +124,5 @@ const RedOceanCanvas = () => {
         </>
     );
 };
-
-RedOceanCanvas.stepTitle = stepNamesEnum.redOceanCanvas;
 
 export default RedOceanCanvas;

@@ -13,8 +13,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "../styles/report.css";
 import "../styles/globals.css";
 
-// Tell Font Awesome to skip adding the CSS automatically
-// since it's already imported above
+// font awesome already added
 config.autoAddCss = false;
 
 const queryClient = new QueryClient();
@@ -28,15 +27,11 @@ const App: NextPage<Props> = ({ Component, pageProps }) => {
     return (
         <SessionProvider session={pageProps.session}>
             <QueryClientProvider client={queryClient}>
-                {Component.name === "Home" ? (
-                    <Component {...pageProps} />
-                ) : (
-                    <Context>
-                        <Layout stepTitle={Component.stepTitle}>
-                            <Component {...pageProps} />
-                        </Layout>
-                    </Context>
-                )}
+                <Context>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
+                </Context>
                 <ReactQueryDevtools />
             </QueryClientProvider>
         </SessionProvider>

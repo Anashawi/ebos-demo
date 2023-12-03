@@ -45,6 +45,7 @@ export enum videoPropNamesEnum {
 }
 
 export enum stepNamesEnum {
+    home = "Home",
     visualizeSuccess = "Visualize Success",
     pioneerMigratorSettler = "Pioneer Migrator Settler",
     marketPotential = "Market Potential",
