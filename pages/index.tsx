@@ -124,8 +124,8 @@ export default function Home() {
                                         download
                                         className="flex justify-end"
                                     >
-                                        <span className="text-primary italic font-hero-semibold hover:underline">
-                                            Download EBOS introduction PDF
+                                        <span className="text-primary font-hero-semibold hover:underline">
+                                            Download EBOSS introduction PDF
                                         </span>
                                     </Link>
                                 </div>
