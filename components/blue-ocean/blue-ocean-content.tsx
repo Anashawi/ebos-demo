@@ -77,118 +77,114 @@ const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading, setChatGPT
     // });
 
     return (
-        <>
-            <section className="form-container">
-                <h3 className="title-header">Blue Ocean Canvas</h3>
-                <Formik
-                    initialValues={{
-                        products: userProduct.products,
-                    }}
-                    validationSchema={object({
-                        products: array(
-                            object({
-                                ideaFactors: array(
-                                    object({
-                                        name: string().required("required"),
-                                    })
-                                )
-                                    .required("at least 1 idea is required")
-                                    .min(1),
-                            })
-                        ),
-                    })}
-                    onSubmit={async (values, actions) => {
-                        values.products?.map(product => {
-                            if (!product.uuid) {
-                                product.uuid = crypto.randomUUID();
-                            }
-                        });
-                        if (userProduct?.id) {
-                            userProduct.products = values.products;
-                            await updateUserProduct({
-                                ...userProduct,
-                            });
+        <section className="form-container">
+            <h3 className="title-header">Blue Ocean Canvas</h3>
+            <Formik
+                initialValues={{
+                    products: userProduct.products,
+                }}
+                validationSchema={object({
+                    products: array(
+                        object({
+                            ideaFactors: array(
+                                object({
+                                    name: string().required("required"),
+                                })
+                            )
+                                .required("at least 1 idea is required")
+                                .min(1),
+                        })
+                    ),
+                })}
+                onSubmit={async (values, actions) => {
+                    values.products?.map(product => {
+                        if (!product.uuid) {
+                            product.uuid = crypto.randomUUID();
                         }
-                        actions.setSubmitting(false);
-                    }}
-                    enableReinitialize
-                    validateOnMount
-                >
-                    {({ values, isSubmitting, isValid }) => {
-                        return (
-                            <Form>
-                                <FieldArray name="products">
-                                    {() => {
-                                        return (
-                                            <div className="flex flex-col gap-2">
-                                                {!isLoading ? (
-                                                    userProduct.products.length > 0 ? (
-                                                        values.products.map((product, productIndex) =>
-                                                            product.competitors && product.competitors.length > 2 ? (
-                                                                <BlueOceanProduct
-                                                                    key={productIndex}
-                                                                    product={product}
-                                                                    index={productIndex}
-                                                                />
-                                                            ) : (
-                                                                <ZeroProductCompetitorsWarning
-                                                                    key={productIndex}
-                                                                    name={product.name}
-                                                                />
-                                                            )
+                    });
+                    if (userProduct?.id) {
+                        userProduct.products = values.products;
+                        await updateUserProduct({
+                            ...userProduct,
+                        });
+                    }
+                    actions.setSubmitting(false);
+                }}
+                enableReinitialize
+                validateOnMount
+            >
+                {({ values, isSubmitting, isValid }) => {
+                    return (
+                        <Form>
+                            <FieldArray name="products">
+                                {() => {
+                                    return (
+                                        <div className="flex flex-col gap-2">
+                                            {!isLoading ? (
+                                                userProduct.products.length > 0 ? (
+                                                    values.products.map((product, productIndex) =>
+                                                        product.competitors && product.competitors.length > 2 ? (
+                                                            <BlueOceanProduct
+                                                                key={productIndex}
+                                                                product={product}
+                                                                index={productIndex}
+                                                            />
+                                                        ) : (
+                                                            <ZeroProductCompetitorsWarning
+                                                                key={productIndex}
+                                                                name={product.name}
+                                                            />
                                                         )
-                                                    ) : (
-                                                        <ZeroProductsWarning />
                                                     )
                                                 ) : (
+                                                    <ZeroProductsWarning />
+                                                )
+                                            ) : (
+                                                <Spinner
+                                                    className="flex items-center text-2xl"
+                                                    message="Loading Blue Ocean..."
+                                                />
+                                            )}
+                                            <div className="flex justify-end h-10">
+                                                {isUpdatingUserProduct && (
                                                     <Spinner
-                                                        className="flex items-center text-2xl"
-                                                        message="Loading Blue Ocean..."
+                                                        className="flex items-center text-xl"
+                                                        message="Saving Red Ocean"
                                                     />
                                                 )}
-                                                <div className="flex justify-end h-10">
-                                                    {isUpdatingUserProduct && (
-                                                        <Spinner
-                                                            className="flex items-center text-xl"
-                                                            message="Saving Red Ocean"
-                                                        />
-                                                    )}
-                                                </div>
-                                                <div className="flex gap-4 justify-end items-center">
-                                                    <button
-                                                        type="submit"
-                                                        className={
-                                                            isSubmitting || !isValid
-                                                                ? "btn-rev btn-disabled"
-                                                                : "btn-rev"
-                                                        }
-                                                        disabled={isSubmitting || !isValid}
-                                                    >
-                                                        Save
-                                                    </button>
-                                                    <GoNextButton
-                                                        stepUri={`../org/non-customers`}
-                                                        nextStepTitle={`Non
-                                                            Customers`}
-                                                        disabled={isSubmitting || !isValid}
-                                                    />
-                                                </div>
                                             </div>
-                                        );
-                                    }}
-                                </FieldArray>
+                                            <div className="flex gap-4 justify-end items-center">
+                                                <button
+                                                    type="submit"
+                                                    className={
+                                                        isSubmitting || !isValid ? "btn-rev btn-disabled" : "btn-rev"
+                                                    }
+                                                    disabled={isSubmitting || !isValid}
+                                                >
+                                                    Save
+                                                </button>
+                                                <GoNextButton
+                                                    stepUri={`../org/non-customers`}
+                                                    nextStepTitle={`Non
+                                                            Customers`}
+                                                    disabled={isSubmitting || !isValid}
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                }}
+                            </FieldArray>
 
-                                <FormikContextChild
-                                    dispatch={values => {
-                                        dispatchProducts(cloneDeep(values.products));
-                                    }}
-                                />
-                            </Form>
-                        );
-                    }}
-                </Formik>
-            </section>
-        </>
+                            <FormikContextChild
+                                dispatch={values => {
+                                    dispatchProducts(cloneDeep(values.products));
+                                }}
+                            />
+                        </Form>
+                    );
+                }}
+            </Formik>
+        </section>
     );
 };
 
