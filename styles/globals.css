@@ -154,7 +154,7 @@ input[type="text"]:focus:not("no-border") {
 
     /* openAI chatGPT chat box start */
     .chatgpt-button {
-        @apply w-20 h-20 flex justify-center align-middle rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
+        @apply w-20 h-20 flex flex-col justify-center align-middle rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
     }
     .chatgpt-main-container {
         @apply w-[36rem] h-[80vh] border-none rounded-3xl z-10 fixed bottom-32 right-8 shadow-xl;
