@@ -140,13 +140,13 @@ input[type="text"]:focus:not("no-border") {
         @apply flex flex-row justify-start gap-4;
     }
     .content-container > .right-side-step-content > .main-content > .forms-container {
-        @apply w-3/4 relative grow flex flex-col gap-8;
+        @apply w-2/3 relative grow flex flex-col gap-8;
     }
     .content-container > .right-side-step-content > .main-content > .forms-container .form-container {
         @apply grow flex flex-col gap-8 px-8 py-12 bg-white rounded-3xl;
     }
     .content-container > .right-side-step-content > .main-content > .aside-content {
-        @apply w-1/4 h-[100%];
+        @apply w-1/3 h-[100%];
     }
     .content-container > .right-side-step-content > .main-content > .aside-content > .helpers-modals-and-charts {
         @apply w-full h-full px-4 py-8 flex flex-col gap-4 bg-nyanza rounded-3xl;
@@ -154,7 +154,7 @@ input[type="text"]:focus:not("no-border") {
 
     /* openAI chatGPT chat box start */
     .chatgpt-button {
-        @apply w-20 h-20 flex justify-center align-middle rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
+        @apply w-20 h-20 flex flex-col justify-center align-middle rounded-full z-10 fixed bottom-8 right-8 bg-blue-900 text-white;
     }
     .chatgpt-main-container {
         @apply w-[36rem] h-[80vh] border-none rounded-3xl z-10 fixed bottom-32 right-8 shadow-xl;

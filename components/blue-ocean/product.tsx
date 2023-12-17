@@ -32,10 +32,10 @@ const BlueOceanProduct = ({ product, index }: Props) => {
             <FieldArray name={`products.${index}.ideaFactors`}>
                 {({ remove: removeIdea, push: pushToIdeasList }) => (
                     <>
-                        <ul className="flex flex-col gap-4">
+                        <ul className="flex flex-col gap-4 overflow-x-auto">
                             {!!product.ideaFactors?.length &&
                                 product.ideaFactors.map((idea, ideaIndex) => (
-                                    <li key={ideaIndex} className="flex flex-row gap-4 items-start overflow-x-auto">
+                                    <li key={ideaIndex} className="flex flex-row gap-4 items-start">
                                         <div className="flex flex-col">
                                             <label className="text-lg">Idea {ideaIndex + 1}</label>
                                             <Field

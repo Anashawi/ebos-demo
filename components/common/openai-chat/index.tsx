@@ -18,7 +18,7 @@ import {
 import { faComment, faCommentSlash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-enum MessageSendBy {
+enum MessageSentBy {
     ChatGpt = "ChatGPT",
     You = "You",
 }
@@ -29,7 +29,7 @@ enum MessageDirection {
 type Message = {
     content: string;
     sentTime: number;
-    sender: MessageSendBy;
+    sender: MessageSentBy;
     direction: MessageDirection;
 };
 
@@ -125,7 +125,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
             newDisplayedMessages.push({
                 content: errorMessage,
                 sentTime: Math.floor(Date.now() / 1000),
-                sender: MessageSendBy.ChatGpt,
+                sender: MessageSentBy.ChatGpt,
                 direction: MessageDirection.Incoming,
             } as Message);
             return errorMessage;
@@ -151,7 +151,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
         const newDisplayedMessage: Message = {
             content: textContent,
             sentTime: Math.floor(Date.now() / 1000),
-            sender: MessageSendBy.You,
+            sender: MessageSentBy.You,
             direction: MessageDirection.Outgoing,
         };
         newDisplayedMessages.push(newDisplayedMessage);
@@ -169,7 +169,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
         const newDisplayedMessageResponse: Message = {
             content: "",
             sentTime: Math.floor(Date.now() / 1000),
-            sender: MessageSendBy.ChatGpt,
+            sender: MessageSentBy.ChatGpt,
             direction: MessageDirection.Incoming,
         };
         newDisplayedMessages.push(newDisplayedMessageResponse);
@@ -225,14 +225,6 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
                                 userName="ChatGPT Assistant"
                                 info={`model ${CHATGPT_MODEL}`}
                             />
-                            <ConversationHeader.Actions>
-                                <Button
-                                    className="w-10 text-white"
-                                    title="Disable Chat"
-                                    onClick={() => setChatBoxState(ChatIs.Disabled)}
-                                    icon={<FontAwesomeIcon icon={faCommentSlash} />}
-                                ></Button>
-                            </ConversationHeader.Actions>
                         </ConversationHeader>
                         <MessageList
                             className="chatgpt-messages-container"
@@ -271,31 +263,23 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
                     </ChatContainer>
                 </MainContainer>
             )}
-            <Button
-                className="chatgpt-button"
-                title={
-                    chatBoxState === ChatIs.Minimized
-                        ? "Open Chat"
-                        : chatBoxState === ChatIs.Maximized
-                        ? "Minimize Chat"
-                        : "Enable Chat"
-                }
-                onClick={() =>
-                    setChatBoxState(
-                        chatBoxState === ChatIs.Minimized || chatBoxState === ChatIs.Disabled
-                            ? ChatIs.Maximized
-                            : ChatIs.Minimized
-                    )
-                }
-                icon={
-                    <FontAwesomeIcon
-                        icon={
-                            chatBoxState === ChatIs.Minimized || chatBoxState === ChatIs.Disabled ? faComment : faTimes
-                        }
-                        className={chatBoxState === ChatIs.Maximized ? `w-8` : `w-14`}
-                    />
-                }
-            ></Button>
+            {chatBoxState !== ChatIs.Disabled && (
+                <Button
+                    className="chatgpt-button"
+                    title={chatBoxState === ChatIs.Minimized ? "Open Chat" : "Hide Chat"}
+                    onClick={() =>
+                        setChatBoxState(chatBoxState === ChatIs.Minimized ? ChatIs.Maximized : ChatIs.Minimized)
+                    }
+                    icon={
+                        <div className="flex flex-row justify-center">
+                            <FontAwesomeIcon
+                                className="w-10 h-10"
+                                icon={chatBoxState === ChatIs.Minimized ? faComment : faTimes}
+                            />
+                        </div>
+                    }
+                ></Button>
+            )}
         </>
     );
 }
