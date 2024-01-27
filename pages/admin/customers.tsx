@@ -5,24 +5,16 @@ import { useQuery } from "@tanstack/react-query";
 import { stepNamesEnum, videoPropNamesEnum } from "../../models/enums";
 import { appContextData } from "../../context";
 import { IUser } from "../../models/user";
+import { GetServerSidePropsContext } from "next";
+import { getToken } from "next-auth/jwt";
+import { getAll } from "../../services/users.service";
 
-const Customers = () => {
+const Customers = ({ users }: { users: IUser[] }) => {
     const { data: session }: any = useSession();
 
     const { appContext, setAppContext } = useContext(appContextData);
     useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.admin }), []);
 
-
-    const {
-        data: fetchedUsers,
-        isLoading: usersLoading,
-        status: fetchUsersStatus,
-    } = useQuery<IUser[]>({
-        queryKey: [usersAPI.Keys.All],
-        queryFn: usersAPI.getAll,
-        refetchOnWindowFocus: false,
-        enabled: !!session?.user?.id,
-    });
 
     return (
         <article className="main-content">
@@ -48,7 +40,7 @@ const Customers = () => {
                         </th>
                     </thead>
                     <tbody>
-                        {fetchedUsers?.map((user, index) => (
+                        {users?.map((user, index) => (
                             <tr key={index}>
                                 <td className="border p-1 ps-2 text-lg">
                                     <span>{user.fullName}</span>
@@ -76,3 +68,24 @@ const Customers = () => {
 };
 
 export default Customers;
+
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+
+    const session: any = await getToken({ req: context.req });
+    const users = await getAll()
+    console.log(session)
+
+    if (session?.role !== "admin") {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false,
+            },
+        };
+    }
+    return {
+        props: {
+            users: JSON.parse(JSON.stringify(users)),
+        },
+    };
+}
