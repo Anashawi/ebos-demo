@@ -35,9 +35,9 @@ const Customers = ({ users }: { users: IUser[] }) => {
                         <th className="border font-extrabold text-xl ps-2 text-start w-36">
                             <span>Role</span>
                         </th>
-                        <th className="border font-extrabold text-xl ps-2 text-start w-52">
+                        {/* <th className="border font-extrabold text-xl ps-2 text-start w-52">
 
-                        </th>
+                        </th> */}
                     </thead>
                     <tbody>
                         {users?.map((user, index) => (
@@ -54,9 +54,9 @@ const Customers = ({ users }: { users: IUser[] }) => {
                                 <td className="border p-1 ps-2 text-lg">
                                     <span>{user.role}</span>
                                 </td>
-                                <td className="border p-1 ps-2 text-lg">
+                                {/* <td className="border p-1 ps-2 text-lg">
                                     <a>Delete User ?</a>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>
