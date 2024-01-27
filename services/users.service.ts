@@ -1,11 +1,11 @@
 import { IUser, User } from "../models/user";
 import { dbConnect } from "./db.service";
 
-export async function getAll(query: { searchText?: any; }) {
+export async function getAll(query?: { searchText?: any; }) {
    try {
       await dbConnect();
       let result;
-      if (!!Object.keys(query).length) {
+      if (query && !!Object.keys(query).length) {
          result = await User.find({ fullName: { $regex: query.searchText } });
       } else {
          result = await User.find();
@@ -69,8 +69,8 @@ export async function insertOne(user: IUser) {
 export async function deleteOne(id: string) {
    try {
       await dbConnect();
-      const result = await User.findByIdAndDelete(id);
-      return result?.toJSON();
+      return await User.findByIdAndDelete(id);
+      ;
    } catch (error) {
       console.log(error);
    }

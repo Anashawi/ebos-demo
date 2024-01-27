@@ -102,8 +102,7 @@ export async function insertOne(userProduct: IUserProduct) {
 export async function deleteOne(id: string) {
    try {
       await dbConnect();
-      const result = await UserProduct.findByIdAndDelete(id);
-      return result?.toJSON();
+      return await UserProduct.findByIdAndDelete(id);
    } catch (error) {
       console.log(error);
    }

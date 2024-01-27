@@ -45,15 +45,27 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
             </p>
           </Tooltip>
         </li>
+        {session?.user?.role === "admin" && (
+          <li className="group relative hover:animate-shake">
+            <Link href="/admin/customers">
+              <Image width="45" height="45" src="/users-svgrepo-com.svg" alt="Customers" />
+            </Link>
+            <Tooltip dir={tooltipDirectionsEnum.bottom}>
+              <p className="w-max">
+                <strong>Go to </strong> Customers
+              </p>
+            </Tooltip>
+          </li>
+        )
+        }
       </main>
       <ul className="nav-section-ul">
         <li>
           <p className="text-center font-hero-semibold text-4 text-[#4e79b2]">{session?.user?.fullName}</p>
         </li>
         <li
-          className={`group relative w-16 h-16 p-4 flex leading-7 bg-icons-gray rounded-full cursor-pointer ${
-            appContext.AIAssistant === AIAssistant.ManualLearning ? `hover:bg-blue-900` : `hover:bg-red-600`
-          } transition duration-200`}
+          className={`group relative w-16 h-16 p-4 flex leading-7 bg-icons-gray rounded-full cursor-pointer ${appContext.AIAssistant === AIAssistant.ManualLearning ? `hover:bg-blue-900` : `hover:bg-red-600`
+            } transition duration-200`}
           onClick={() => {
             setAppContext({
               ...appContext,

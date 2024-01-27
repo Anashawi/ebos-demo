@@ -50,7 +50,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
   const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
 
   const openai = new OpenAI({
-    apiKey: "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",
+    apiKey: process.env.NEXT_PUBLIC_OPEN_AI_KEY,
     dangerouslyAllowBrowser: true,
   });
 
@@ -144,6 +144,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     const newOpenAIMessage = {
       role: ChatCompletionRequestMessageRoleEnum.User,
       content: textContent,
+      name: '',
     };
     newOpenAIMessages.push(newOpenAIMessage);
     setOpenAIMessages([...newOpenAIMessages]);
@@ -207,6 +208,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     const newOpenAIMessage = {
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
       content: newDisplayedMessages[newDisplayedMessages.length - 1].content,
+      name: ''
     };
     newOpenAIMessages.push(newOpenAIMessage);
     setOpenAIMessages([...newOpenAIMessages]);
@@ -250,7 +252,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
               })}
             </MessageList>
             <MessageInput
-              className="chatpgt-message-input"
+              className="chatpgt-message-input relative"
               placeholder="Enter your message"
               onSend={sendShownUserMessage}
               autoFocus={true}
