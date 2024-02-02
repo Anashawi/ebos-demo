@@ -39,23 +39,21 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
                                                     <>
                                                         <div className="grow flex flex-col gap-2">
                                                             <label>
-                                                                {!comp.isUntapped && (
-                                                                    <>
-                                                                        Competitor{" "}
-                                                                        {compIndex -
-                                                                            1}
-                                                                    </>
-                                                                )}
-                                                                {comp.isUntapped && (
-                                                                    <>
-                                                                        Untapped
-                                                                        Market
-                                                                    </>
-                                                                )}
+                                                            {compIndex === 1 && (
+                                                             <label>
+                                                                 {!comp.isUntapped ? "Untapped Market" : `Competitor ${compIndex}`}
+                                                             </label>
+                                                         )}
+                                                         {compIndex !== 1 && (
+                                                             <label>
+                                                                 {!comp.isUntapped && `Competitor ${compIndex - 1}`}
+                                                                 
+                                                             </label>
+                                                         )}
                                                             </label>
                                                             <Field
                                                                 type="text"
-                                                                placeholder="name"
+                                                                placeholder={compIndex === 1 ? "Untapped Market" : "name"}
                                                                 className="w-full light-input"
                                                                 name={`products.${index}.competitors.${compIndex}.name`}
                                                             />
