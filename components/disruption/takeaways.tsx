@@ -29,7 +29,7 @@ const DisruptionTakeaways = ({
     >();
 
     useEffect(() => {
-        if (userTakeaways) {
+        if (userTakeaways && userTakeaways.takeaways && Array.isArray(userTakeaways.takeaways)) {
             setScaleTakeaways(
                 userTakeaways.takeaways?.find(
                     t => t.type === takeawayTypeEnums.scale

@@ -316,6 +316,7 @@ const DisruptionContent = ({
                                     if (!userTakeaways.id) {
                                         createUserTakeaways({
                                             ...userTakeaways,
+                                            userId : session.user.id
                                         });
                                     } else {
                                         updateUserTakeaways({

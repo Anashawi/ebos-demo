@@ -39,14 +39,14 @@ const TakeawaysNotes = ({ title, takeaways, dispatchUserTakeaways }: Props) => {
                         <button
                             type="button"
                             onClick={() => {
-                                takeaways?.notes.push(noteToBeAdded);
-                                dispatchUserTakeaways(
-                                    (latestUserTakeaways: IUserTakeaways) => {
-                                        return {
-                                            ...latestUserTakeaways,
-                                        } as IUserTakeaways;
-                                    }
-                                );
+                                const updatedNotes = [...(takeaways?.notes || []), noteToBeAdded];
+                                   dispatchUserTakeaways((prevTakeaways: IUserTakeaways) => ({
+                                       ...prevTakeaways,
+                                       takeaways: {
+                                           ...prevTakeaways.takeaways,
+                                           notes: updatedNotes,
+                                       },
+                                   }));
                                 setNoteToBeAdded("");
                             }}
                             disabled={!noteToBeAdded}
