@@ -35,20 +35,6 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
         } as IIdea;
     }, []);
 
-    const { mutate: createIdeas, isLoading: isCreatingIdeas } = useMutation(
-        (newUserIdeas: IUserIdeas) => {
-            return ideasApi.insertOne(newUserIdeas);
-        },
-        {
-            onMutate: newIdeas => {
-                setChatGPTMessage(getIdeasMessage(newIdeas));
-            },
-            onSuccess: storedIdeas => {
-                queryClient.invalidateQueries([ideasApi.Keys.All]);
-            },
-        }
-    );
-
     const { mutate: updateIdeas, isLoading: isUpdatingIdeas } = useMutation(
         (newUserIdeas: IUserIdeas) => {
             return ideasApi.updateOne(newUserIdeas);
@@ -59,6 +45,7 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
             },
             onSuccess: storedIdeas => {
                 queryClient.invalidateQueries([ideasApi.Keys.All]);
+                dispatchUserIdeas({ ...storedIdeas });
             },
         }
     );
@@ -117,7 +104,7 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
                         {isNotLoadingWithIdeas &&
                             userIdeas.ideas.map((idea, index) => (
                                 <li key={index} className="flex gap-2">
-                                    <div className="flex flex-col w-2/6">
+                                    <div className="flex flex-col">
                                         <label className="text-xl">Idea</label>
                                         <input
                                             value={idea.name}
@@ -130,8 +117,8 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
                                             className="light-input"
                                         />
                                     </div>
-                                    <div className="flex flex-col w-1/6">
-                                        <label className="text-xl">Start (month)</label>
+                                    <div className="flex flex-col">
+                                        <label className="text-xl">Start<span className="text-sm ms-1">(month)</span></label>
                                         <input
                                             type="month"
                                             value={calcIdeaStartMonth(idea)}
@@ -145,7 +132,7 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
                                             className="light-input"
                                         />
                                     </div>
-                                    <div className="flex flex-col w-2/6">
+                                    <div className="flex flex-col">
                                         <label className="text-xl">Idea Owner</label>
                                         <input
                                             type="text"
@@ -159,8 +146,8 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
                                             className="light-input"
                                         />
                                     </div>
-                                    <div className="flex flex-col w-1/6">
-                                        <label className="text-xl">Duration (months)</label>
+                                    <div className="flex flex-col">
+                                        <label className="text-xl">Duration<span className="text-sm ms-1">(months)</span></label>
                                         <input
                                             type="number"
                                             min={1}
@@ -189,7 +176,7 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
                             ))}
                     </ul>
                     <div className="h-10 flex justify-end">
-                        {(isUpdatingIdeas || isCreatingIdeas) && (
+                        {(isUpdatingIdeas) && (
                             <Spinner className="items-center" message="Saving Ideas ..." />
                         )}
                     </div>
@@ -217,23 +204,17 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading,
                                         idea.uuid = crypto.randomUUID();
                                     }
                                 });
-                                if (userIdeas?.id) {
-                                    updateIdeas({
-                                        ...userIdeas,
-                                    });
-                                } else {
-                                    createIdeas({
-                                        ...userIdeas,
-                                    });
-                                }
+                                updateIdeas({
+                                    ...userIdeas,
+                                });
                             }}
                         >
                             Save
                         </button>
                     </div>
                 </form>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

@@ -37,7 +37,8 @@ export async function getOneLookup(currentUserId: string) {
 export async function insertOne(userIdeas: IUserIdeas) {
    try {
       await dbConnect();
-      const frontEndUserIdeas = new UserIdeas(userIdeas)
+      const { id, ...userIdeasWithoutId } = userIdeas;
+      const frontEndUserIdeas = new UserIdeas({ ...userIdeasWithoutId })
       await frontEndUserIdeas.save();
       return frontEndUserIdeas?.toJSON() ?? "faild to create userIdeas collection";
    } catch (error) {
@@ -82,7 +83,7 @@ export async function insertOrUpdateIdea(idea: IIdea, sessionUser: any) {
          userIdeas.ideas = [{ ...idea }];
       }
 
-      if (result) { // update ... otherwise insert 
+      if (result) { // update ... otherwise insert
          const updateResult = await UserIdeas.updateOne(
             { _id: new ObjectId(userIdeas.id) },
             {

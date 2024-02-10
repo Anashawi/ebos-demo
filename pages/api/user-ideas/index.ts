@@ -4,8 +4,6 @@ import { getToken } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
-    case "POST":
-      return await _post(req, res);
     case "PUT":
       return await _put(req, res);
     case "GET":
@@ -30,24 +28,6 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function _post(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const userIdeas = req.body;
-
-    const sessionUser: any = await getToken({ req });
-    if (!sessionUser?.id) {
-      throw new Error("You are not logged in !");
-    }
-
-    const result = await service.insertOne(userIdeas);
-    res.status(200).json(result);
-  } catch (error: any) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-}
-
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userIdeas = req.body;
@@ -57,6 +37,17 @@ async function _put(req: NextApiRequest, res: NextApiResponse) {
       throw new Error("You are not logged in !");
     }
 
+    userIdeas.userId = sessionUser.id;
+
+    const existingUserIdeas = await service.getOne(userIdeas.userId);
+
+    if (!existingUserIdeas) {
+      const result = await service.insertOne(userIdeas);
+      res.status(200).json(result);
+      return;
+    }
+
+    userIdeas.id = existingUserIdeas.id;
     const result = await service.updateOne(userIdeas);
     res.status(200).json(result);
   } catch (error: any) {
