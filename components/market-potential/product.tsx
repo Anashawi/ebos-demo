@@ -137,7 +137,10 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
                                             if (!product?.competitors?.length || product.competitors.length === 0) {
                                                 newCompetitor.name = product.name;
                                             }
-                                            newCompetitor.isUntapped = product?.competitors?.length === 1
+                                            else if (product.competitors.length === 1) {
+                                                newCompetitor.name = "Untapped Market";
+                                                newCompetitor.isUntapped = true;
+                                            }
                                             push(newCompetitor);
                                         }}
                                         className="btn-primary px-10"
