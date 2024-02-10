@@ -7,7 +7,7 @@ interface Props {
 
 const DeleteButton = ({ callback }: Props) => {
     return (
-        <div className="self-center">
+        <div className="self-end mb-1">
             <button
                 onClick={() => callback()}
                 className="w-[3.75rem] h-[3.75rem] inline-flex justify-center items-center rounded-full bg-gray-200 cursor-pointer text-dark-300 hover:text-dark-400"
