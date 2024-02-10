@@ -44,7 +44,18 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { userProduct, path } = req.body;
-    const result = await service.updateOne(userProduct, path);
+    const sessionUser: any = await getToken({ req });
+    userProduct.userId = sessionUser.id;
+
+    const existingUserProduct = await service.getAll(sessionUser.id);
+
+    if (!existingUserProduct) {
+      const result = await service.insertOne(userProduct)
+      res.status(200).json(result);
+      return;
+    }
+
+    const result = await service.updateOne(userProduct);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({

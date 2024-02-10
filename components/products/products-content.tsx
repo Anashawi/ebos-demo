@@ -58,22 +58,6 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
         }
     );
 
-    const { mutate: createUserProduct, isLoading: isCreatingUserProduct } = useMutation(
-        (newUserProduct: IUserProduct) => productsApi.insertOne(newUserProduct),
-        {
-            onMutate: newProduct => {
-                queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProduct);
-                setChatGPTMessage(getCompanyProductMessage(newProduct));
-            },
-            onSuccess: storedProduct => {
-                queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
-                queryClient.invalidateQueries([productsApi.Keys.All]);
-            },
-        }
-    );
-
-    const isCreatingOrUpdating = isUpdatingUserProduct || isCreatingUserProduct;
-
     return (
         <>
             <section className="form-container">
@@ -110,17 +94,10 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
                             }
                         });
                         userProduct.userId = session?.user?.id;
-                        if (userProduct?.id) {
-                            await updateUserProduct({
-                                ...userProduct,
-                                ...values,
-                            });
-                        } else {
-                            await createUserProduct({
-                                ...userProduct,
-                                ...values,
-                            });
-                        }
+                        await updateUserProduct({
+                            ...userProduct,
+                            ...values,
+                        })
                         actions.setSubmitting(false);
                     }}
                     enableReinitialize
@@ -164,11 +141,10 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
                                                 </div>
                                                 <div className="flex">
                                                     <button
-                                                        className={`btn-primary px-8 ${
-                                                            isCreatingOrUpdating || isLoading || isSubmitting
-                                                                ? `btn-disabled`
-                                                                : ``
-                                                        }`}
+                                                        className={`btn-primary px-8 ${isUpdatingUserProduct || isLoading || isSubmitting
+                                                            ? `btn-disabled`
+                                                            : ``
+                                                            }`}
                                                         type="button"
                                                         onClick={() => {
                                                             push(emptyProduct);
@@ -183,7 +159,7 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
                                                     </button>
                                                 </div>
                                                 <div className="flex justify-end h-10">
-                                                    {isCreatingOrUpdating && (
+                                                    {isUpdatingUserProduct && (
                                                         <Spinner
                                                             className="flex items-center text-lg"
                                                             message="Saving Products"
@@ -193,15 +169,14 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
                                                 <div className="flex flex-row justify-end gap-4">
                                                     <button
                                                         type="submit"
-                                                        className={`btn-rev ${
-                                                            isCreatingOrUpdating ||
+                                                        className={`btn-rev ${isUpdatingUserProduct ||
                                                             isSubmitting ||
                                                             (!isValid && !isValidating)
-                                                                ? `btn-disabled`
-                                                                : ``
-                                                        }`}
+                                                            ? `btn-disabled`
+                                                            : ``
+                                                            }`}
                                                         disabled={
-                                                            isCreatingOrUpdating ||
+                                                            isUpdatingUserProduct ||
                                                             isSubmitting ||
                                                             (!isValid && !isValidating)
                                                         }
@@ -228,7 +203,7 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
                         );
                     }}
                 </Formik>
-            </section>
+            </section >
         </>
     );
 };

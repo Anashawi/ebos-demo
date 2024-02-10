@@ -23,7 +23,7 @@ export async function getOne(id: string) {
 }
 
 
-export async function updateOne(newUserProduct: IUserProduct, path: productPagesEnum) {
+export async function updateOne(newUserProduct: IUserProduct) {
    try {
       await dbConnect();
       await UserProduct.updateOne(
