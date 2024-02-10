@@ -6,8 +6,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "PUT":
       return await _put(req, res);
-    case "POST":
-      return await _post(req, res);
     case "GET":
       return _get(req, res);
   }
@@ -44,6 +42,18 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userNonCustomer = req.body;
+    const session = await getToken({ req });
+    userNonCustomer.userId = session!.id;
+
+    const existingUserNonCustomer = await service.getOne(userNonCustomer.userId);
+
+    if (!existingUserNonCustomer) {
+      const result = await service.insertOne(userNonCustomer);
+      res.status(200).json(result);
+      return;
+    }
+
+    userNonCustomer.id = existingUserNonCustomer.id;
     const result = await service.updateOne(userNonCustomer);
     res.status(200).json(result);
   } catch (error: any) {

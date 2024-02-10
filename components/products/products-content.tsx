@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
@@ -41,6 +41,11 @@ interface Props {
 const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchChartProducts }: Props) => {
     const { data: session }: any = useSession();
     const queryClient = useQueryClient();
+    const [goToNextEnabled, setGoToNextEnabled] = useState<boolean>(false);
+
+    useEffect(() => {
+        setGoToNextEnabled(userProduct.products.length > 0);
+    }, [userProduct.products]);
 
     const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
         (newUserProduct: IUserProduct) => {
@@ -54,6 +59,7 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
             onSuccess: storedProduct => {
                 queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
                 queryClient.invalidateQueries([productsApi.Keys.All]);
+                setGoToNextEnabled(true);
             },
         }
     );
@@ -186,7 +192,7 @@ const ProductsContent = ({ userProduct, isLoading, setChatGPTMessage, dispatchCh
                                                     <GoNextButton
                                                         stepUri={`../org/market-potential`}
                                                         nextStepTitle={`Market Potential`}
-                                                        disabled={userProduct.products.length < 1}
+                                                        disabled={!goToNextEnabled || isUpdatingUserProduct}
                                                     />
                                                 </div>
                                             </div>

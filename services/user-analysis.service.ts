@@ -32,7 +32,8 @@ export async function updateOne(frontEndUserAnalysis: IUserAnalysis) {
 export async function insertOne(userAnalysis: IUserAnalysis) {
    try {
       await dbConnect();
-      const frontEndUserAnalysis = new UserAnalysis(userAnalysis)
+      const { id, ...userAnalysisWithoutId } = userAnalysis;
+      const frontEndUserAnalysis = new UserAnalysis({ ...userAnalysisWithoutId })
       await frontEndUserAnalysis.save();
       return frontEndUserAnalysis?.toJSON();
    } catch (error) {

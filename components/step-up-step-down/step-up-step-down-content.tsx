@@ -47,20 +47,7 @@ const StepUpStepDownContent = ({
             onSuccess: storedAnalysis => {
                 queryClient.invalidateQueries([analysisApi.Keys.All, userAnalysis.id]);
                 queryClient.invalidateQueries([analysisApi.Keys.All]);
-            },
-        }
-    );
-
-    const { mutate: createUserAnalysis, isLoading: isCreatingUserAnalysis } = useMutation(
-        (userAnalysis: IUserAnalysis) => analysisApi.insertOne(userAnalysis),
-        {
-            onMutate: newAnalysis => {
-                queryClient.setQueryData([analysisApi.Keys.All, userAnalysis.id], newAnalysis);
-                setChatGPTMessage(getStepUpDownMessage(newAnalysis));
-            },
-            onSuccess: storedAnalysis => {
-                queryClient.invalidateQueries([analysisApi.Keys.All, userAnalysis.id]);
-                queryClient.invalidateQueries([analysisApi.Keys.All]);
+                dispatchUserAnalysis(storedAnalysis);
             },
         }
     );
@@ -302,7 +289,7 @@ const StepUpStepDownContent = ({
                         </ul>
                     </div>
                     <div className="flex justify-end h-10">
-                        {(isUpdatingUserAnalysis || isCreatingUserAnalysis) && (
+                        {(isUpdatingUserAnalysis) && (
                             <Spinner className="flex items-center px-1 text-xl" message="Saving customers..." />
                         )}
                     </div>
@@ -312,11 +299,7 @@ const StepUpStepDownContent = ({
                             onClick={() => {
                                 console.log(userAnalysis.customers);
                                 userAnalysis.userId = session?.user?.id;
-                                if (!userAnalysis.id) {
-                                    createUserAnalysis(userAnalysis);
-                                } else {
-                                    updateUserAnalysis(userAnalysis);
-                                }
+                                updateUserAnalysis(userAnalysis);
                             }}
                             className="btn-rev"
                         >

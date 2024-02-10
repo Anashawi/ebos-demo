@@ -6,8 +6,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "PUT":
       return await _put(req, res);
-    case "POST":
-      return await _post(req, res);
     case "GET":
       return _get(req, res);
   }
@@ -29,21 +27,21 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function _post(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const userCustomer = req.body;
-    const result = await service.insertOne(userCustomer);
-    res.status(200).json(result);
-  } catch (error: any) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-}
-
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userCustomer = req.body;
+
+    const user = await getToken({ req });
+    userCustomer.userId = user!.id;
+    const existingUserCustomer = await service.getOne(userCustomer.userId);
+
+    if (!existingUserCustomer) {
+      const result = await service.insertOne(userCustomer);
+      res.status(200).json(result);
+      return;
+    }
+
+    userCustomer.id = existingUserCustomer.id;
     const result = await service.updateOne(userCustomer);
     res.status(200).json(result);
   } catch (error: any) {

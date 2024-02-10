@@ -32,8 +32,8 @@ export async function updateOne(frontEndUserGoals: IUserGoals) {
 export async function insertOne(userGoals: IUserGoals) {
     try {
         await dbConnect();
-        console.log(userGoals);
-        const frontEndUserGoals = new UserGoals(userGoals);
+        const { id, ...userGoalsWithoutId } = userGoals;
+        const frontEndUserGoals = new UserGoals({ ...userGoalsWithoutId });
         await frontEndUserGoals.save();
         return frontEndUserGoals?.toJSON();
     } catch (error) {

@@ -46,20 +46,7 @@ const NonCustomersContent = ({
             onSuccess: storedNonCustomers => {
                 queryClient.invalidateQueries([nonCustomersApi.Keys.All, userNonCustomers.id]);
                 queryClient.invalidateQueries([nonCustomersApi.Keys.All]);
-            },
-        }
-    );
-
-    const { mutate: createUserNonCustomers, isLoading: isCreatingUserNonCustomers } = useMutation(
-        (newUserNonCustomers: IUserNonCustomers) => nonCustomersApi.insertOne(newUserNonCustomers),
-        {
-            onMutate: newNonCustomers => {
-                queryClient.setQueryData([nonCustomersApi.Keys.All, userNonCustomers.id], newNonCustomers);
-                setChatGPTMessage(getNonCustomersMessage(newNonCustomers));
-            },
-            onSuccess: storedNonCustomers => {
-                queryClient.invalidateQueries([nonCustomersApi.Keys.All, userNonCustomers.id]);
-                queryClient.invalidateQueries([nonCustomersApi.Keys.All]);
+                dispatchUserNonCustomers(storedNonCustomers);
             },
         }
     );
@@ -336,7 +323,7 @@ const NonCustomersContent = ({
                             </ul>
                         </section>
                         <div className="flex justify-end h-10">
-                            {(isUpdatingUserNonCustomers || isCreatingUserNonCustomers) && (
+                            {(isUpdatingUserNonCustomers) && (
                                 <Spinner className="flex items-center px-1 text-xl" message="Saving non customers..." />
                             )}
                         </div>
@@ -348,11 +335,7 @@ const NonCustomersContent = ({
                                         ...userNonCustomers,
                                     };
                                     newObj.userId = session?.user?.id;
-                                    if (!userNonCustomers.id) {
-                                        createUserNonCustomers(newObj);
-                                    } else {
-                                        updateUserNonCustomers(newObj);
-                                    }
+                                    updateUserNonCustomers(newObj);
                                 }}
                                 className="btn-rev"
                             >

@@ -36,6 +36,7 @@ const VoiceOfCustomersContent = () => {
         data: fetchedUserCustomers,
         isLoading: isUserCustomersLoading,
         status: fetchingCustomersStatus,
+        refetch: refetchUserCustomers,
     } = useQuery<IUserCustomers>({
         queryKey: [customersApi.Keys.All],
         queryFn: customersApi.getOne,
@@ -58,27 +59,16 @@ const VoiceOfCustomersContent = () => {
             onMutate: newVoices => {
                 queryClient.setQueryData([customersApi.Keys.All, userCustomers.id], newVoices);
                 setChatGPTMessage(getVoiceOfCustomerMessage(newVoices));
+                refetchUserCustomers();
             },
             onSuccess: storedVoices => {
                 queryClient.invalidateQueries([customersApi.Keys.All, userCustomers.id]);
                 queryClient.invalidateQueries([customersApi.Keys.All]);
+                setUserCustomers(storedVoices);
             },
         }
     );
 
-    const { mutate: createUserCustomers, isLoading: isCreatingUserCustomers } = useMutation(
-        (userCustomers: IUserCustomers) => customersApi.insertOne(userCustomers),
-        {
-            onMutate: newUserCustomers => {
-                queryClient.setQueryData([customersApi.Keys.All, userCustomers.id], newUserCustomers);
-                setChatGPTMessage(getVoiceOfCustomerMessage(newUserCustomers));
-            },
-            onSuccess: storedUserCustomer => {
-                queryClient.invalidateQueries([customersApi.Keys.All, userCustomers.id]);
-                queryClient.invalidateQueries([customersApi.Keys.All]);
-            },
-        }
-    );
 
     const formik = useFormik({
         initialValues: {
@@ -91,11 +81,7 @@ const VoiceOfCustomersContent = () => {
         }),
         onSubmit: async (values, { setSubmitting }) => {
             values.userId = session?.user?.id;
-            if (!values.id) {
-                await createUserCustomers(values);
-            } else {
-                await updateUserCustomers(values);
-            }
+            await updateUserCustomers(values);
             setSubmitting(false);
         },
         enableReinitialize: true,
@@ -253,28 +239,25 @@ const VoiceOfCustomersContent = () => {
                             </div>
                         </div>
                         <div className="flex justify-end h-10">
-                            {(isUpdatingUserCustomers || isCreatingUserCustomers) && (
+                            {(isUpdatingUserCustomers) && (
                                 <Spinner className="flex items-center text-xl" message="Saving Customers..." />
                             )}
                         </div>
                         <div className="flex gap-4 justify-end">
                             <button
-                                className={`btn-rev ${
-                                    isUserCustomersLoading ||
-                                    isCreatingUserCustomers ||
+                                className={`btn-rev ${isUserCustomersLoading ||
                                     isUpdatingUserCustomers ||
                                     formik.isSubmitting ||
                                     !formik.isValid
-                                        ? `btn-disabled`
-                                        : ``
-                                }`}
+                                    ? `btn-disabled`
+                                    : ``
+                                    }`}
                                 type="button"
                                 onClick={() => {
                                     formik.handleSubmit();
                                 }}
                                 disabled={
                                     isUserCustomersLoading ||
-                                    isCreatingUserCustomers ||
                                     isUpdatingUserCustomers ||
                                     formik.isSubmitting ||
                                     !formik.isValid

@@ -32,7 +32,8 @@ export async function updateOne(frontEndUserCustomers: IUserCustomers) {
 export async function insertOne(userCustomers: IUserCustomers) {
    try {
       await dbConnect();
-      const frontEndUserCustomers = new UserCustomers(userCustomers)
+      const { id, ...userCustomersWithoutId } = userCustomers;
+      const frontEndUserCustomers = new UserCustomers({ ...userCustomersWithoutId })
       await frontEndUserCustomers.save();
       return frontEndUserCustomers?.toJSON();
    } catch (error) {
