@@ -79,7 +79,7 @@ const DisruptionContent = ({
     });
 
     useEffect(() => {
-        if (fetchingTakeawaysStatus === "success") {
+        if (fetchingTakeawaysStatus === "success" && fetchedTakeaways) {
             setUserTakeaways(fetchedTakeaways);
             setChatGPTMessage(`${stepFiveTranscript}\n\n${getDisruptionMessage(fetchedTakeaways)}`);
         }
@@ -110,6 +110,7 @@ const DisruptionContent = ({
             onSuccess: storedTakeaways => {
                 queryClient.invalidateQueries([takeawaysApi.Keys.all, userTakeaways.id]);
                 queryClient.invalidateQueries([takeawaysApi.Keys.all]);
+                setUserTakeaways(storedTakeaways);
             },
         }
     );
@@ -307,16 +308,15 @@ const DisruptionContent = ({
                     <div className="flex justify-end gap-4">
                         {!!userTakeaways && (
                             <button
-                                className={`btn-rev ${
-                                    isLoadingTakeaways || isUpdatingUserTakeaways || isCreatingUserTakeaways
-                                        ? `btn-disabled`
-                                        : ``
-                                }`}
+                                className={`btn-rev ${isLoadingTakeaways || isUpdatingUserTakeaways || isCreatingUserTakeaways
+                                    ? `btn-disabled`
+                                    : ``
+                                    }`}
                                 onClick={() => {
                                     if (!userTakeaways.id) {
                                         createUserTakeaways({
                                             ...userTakeaways,
-                                            userId : session.user.id
+                                            userId: session.user.id
                                         });
                                     } else {
                                         updateUserTakeaways({

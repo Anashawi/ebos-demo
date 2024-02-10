@@ -18,9 +18,12 @@ export async function getOne(currentUserId: string) {
 export async function insertOne(userTakeaways: IUserTakeaways) {
    try {
       await dbConnect();
-      const frontEndUserTakeaways = new UserTakeaways(userTakeaways)
+
+      const { id, ...newUserTakeaways } = userTakeaways;
+
+      const frontEndUserTakeaways = new UserTakeaways({ ...newUserTakeaways })
       await frontEndUserTakeaways.save();
-      return frontEndUserTakeaways?.toJSON() ?? "faild to create userTakeaways collection";
+      return frontEndUserTakeaways;
    } catch (error) {
       console.log(error);
       throw new Error(error as any);
@@ -65,7 +68,7 @@ export async function insertOrUpdateTakeaway(takeaway: ITakeaway, sessionUser: a
          userTakeaways.takeaways = [{ ...takeaway }];
       }
 
-      if (result) { // update ... otherwise insert 
+      if (result) { // update ... otherwise insert
          const updateResult = await UserTakeaways.updateOne(
             { _id: new ObjectId(userTakeaways.id) },
             {

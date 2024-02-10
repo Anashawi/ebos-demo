@@ -1,4 +1,4 @@
-import { UserTakeaways } from '../../models/user-takeaways';
+import { IUserTakeaways } from '../../models/user-takeaways';
 import { NextApiRequest, NextApiResponse } from "next";
 import * as service from "../../services/user-takeaways.service";
 import { getToken } from "next-auth/jwt";
@@ -31,12 +31,11 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
 
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const userTakeaways = req.body;
 
     const sessionUser: any = await getToken({ req });
-
+    const userTakeaways: IUserTakeaways = { ...req.body, userId: sessionUser.id };
     const result = await service.insertOne(userTakeaways);
-    
+
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({
@@ -48,9 +47,7 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
 async function _put(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userTakeaways = req.body;
-
     const sessionUser: any = await getToken({ req });
-
     const result = await service.updateOne(userTakeaways);
     res.status(200).json(result);
   } catch (error: any) {

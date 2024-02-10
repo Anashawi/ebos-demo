@@ -20,28 +20,7 @@ const DisruptionTakeaways = ({
     isLoading,
     className,
 }: Props) => {
-    const [scaleTakeaways, setScaleTakeaways] = useState<
-        ITakeaway | undefined
-    >();
 
-    const [ideasTakeaways, setIdeasTakeaways] = useState<
-        ITakeaway | undefined
-    >();
-
-    useEffect(() => {
-        if (userTakeaways && userTakeaways.takeaways && Array.isArray(userTakeaways.takeaways)) {
-            setScaleTakeaways(
-                userTakeaways.takeaways?.find(
-                    t => t.type === takeawayTypeEnums.scale
-                )
-            );
-            setIdeasTakeaways(
-                userTakeaways.takeaways?.find(
-                    t => t.type === takeawayTypeEnums.ideas
-                )
-            );
-        }
-    }, [userTakeaways]);
 
     return (
         <>
@@ -55,7 +34,8 @@ const DisruptionTakeaways = ({
                 {!isLoading && (
                     <TakeawaysNotes
                         title="Takeaways on Scale"
-                        takeaways={scaleTakeaways}
+                        userTakeaways={userTakeaways}
+                        type={takeawayTypeEnums.scale}
                         dispatchUserTakeaways={dispatchUserTakeaways}
                     />
                 )}
@@ -68,7 +48,8 @@ const DisruptionTakeaways = ({
                 {!isLoading && (
                     <TakeawaysNotes
                         title="Takeaways on Ideas"
-                        takeaways={ideasTakeaways}
+                        userTakeaways={userTakeaways}
+                        type={takeawayTypeEnums.ideas}
                         dispatchUserTakeaways={dispatchUserTakeaways}
                     />
                 )}
