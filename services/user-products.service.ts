@@ -22,55 +22,6 @@ export async function getOne(id: string) {
    }
 }
 
-// export async function updateOne(frontEndUserProduct: IUserProduct, path: productPagesEnum) {
-//    try {
-// await dbConnect();
-// await dbConnect();
-//       const backEndUserProduct = await UserProduct.findById(
-//          { _id: frontEndUserProduct.id }
-//       );
-
-//       frontEnduserProduct.products?.map((frontProd) => {
-//          const backProd = backEnduserProduct.products?.find((backP: IProduct) => backP.uuid === frontProd.uuid);
-//          console.log(`backProd`, backProd);
-
-//          if (!backProd) {
-//             backEndUserProduct.products = [...backEndUserProduct.products, frontProd];
-//          } else {
-//             if (path === productPagesEnum.futures) {
-//                backProd.name = frontProd.name;
-//             }
-//             backProd[path] = [...frontProd[path]];
-//          }
-//       });
-
-//       // problem code start
-//       let filteredBEUserProds: (IProduct | null)[] = [];
-
-//       backEnduserProduct.products?.map((backProd: IProduct) => {
-//          filteredBEUserProds = frontEnduserProduct.products?.map((frontP: IProduct) => {
-//             if (frontP.uuid !== backProd.uuid) {
-//                return null;
-//             }
-//             return backProd;
-//          });
-//       });
-//       backEndUserProduct.products =
-//          filteredBEUserProds.filter((backProd: IProduct | null) => backProd !== null);
-//       // problem code end
-
-//       const updateResult = await UserProduct.updateOne(
-//          { _id: frontEndUserProduct.id },
-//          {
-//             $set: { ...backEndUserProduct },
-//          }
-//       );
-//       const updatedUserProduct = await UserProduct.findById(frontEndUserProduct.id);
-//       return updatedUserProduct?.toJSON();
-//    } catch (error) {
-//       console.log(error);
-//    }
-// }
 
 export async function updateOne(newUserProduct: IUserProduct, path: productPagesEnum) {
    try {
@@ -91,7 +42,8 @@ export async function updateOne(newUserProduct: IUserProduct, path: productPages
 export async function insertOne(userProduct: IUserProduct) {
    try {
       await dbConnect();
-      const frontEndUserProduct = new UserProduct(userProduct)
+      const { id, ...newUserProduct } = userProduct;
+      const frontEndUserProduct = new UserProduct({ ...newUserProduct })
       await frontEndUserProduct.save();
       return frontEndUserProduct?.toJSON();
    } catch (error) {
