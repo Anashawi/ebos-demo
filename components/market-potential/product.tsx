@@ -35,57 +35,46 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
                                                 key={compIndex}
                                                 className="flex flex-row flex-wrap justify-center gap-4 items-start relative"
                                             >
-                                                {compIndex > 0 && (
-                                                    <>
-                                                        <div className="grow flex flex-col gap-2">
-                                                            <label>
-                                                                {!comp.isUntapped && (
-                                                                    <>
-                                                                        Competitor{" "}
-                                                                        {compIndex -
-                                                                            1}
-                                                                    </>
-                                                                )}
-                                                                {comp.isUntapped && (
-                                                                    <>
-                                                                        Untapped
-                                                                        Market
-                                                                    </>
-                                                                )}
-                                                            </label>
-                                                            <Field
-                                                                type="text"
-                                                                placeholder="name"
-                                                                className="w-full light-input"
-                                                                name={`products.${index}.competitors.${compIndex}.name`}
-                                                            />
-                                                            <ErrorMessage
-                                                                name={`products.${index}.competitors.${compIndex}.name`}
-                                                            >
-                                                                {msg => (
-                                                                    <div className="text-sm text-rose-500">
-                                                                        {msg}
-                                                                    </div>
-                                                                )}
-                                                            </ErrorMessage>
-                                                        </div>
-                                                    </>
+                                                {(
+                                                    <div className="grow flex flex-col gap-2">
+                                                        <label>
+                                                            {
+                                                                compIndex === 0 && (
+                                                                    <label>
+                                                                        My Product
+                                                                    </label>
+                                                                )
+                                                            }
+                                                            {compIndex === 1 && (
+                                                                <label>
+                                                                    {!comp.isUntapped ? "Untapped Market" : `Competitor ${compIndex}`}
+                                                                </label>
+                                                            )}
+                                                            {compIndex > 1 && (
+                                                                <label>
+                                                                    {!comp.isUntapped && `Competitor ${compIndex - 1}`}
+
+                                                                </label>
+                                                            )}
+                                                        </label>
+                                                        <Field
+                                                            type="text"
+                                                            placeholder={compIndex === 1 ? "Untapped Market" : "name"}
+                                                            className="w-full light-input"
+                                                            name={`products.${index}.competitors.${compIndex}.name`}
+                                                        />
+                                                        <ErrorMessage
+                                                            name={`products.${index}.competitors.${compIndex}.name`}
+                                                        >
+                                                            {msg => (
+                                                                <div className="text-sm text-rose-500">
+                                                                    {msg}
+                                                                </div>
+                                                            )}
+                                                        </ErrorMessage>
+                                                    </div>
                                                 )}
-                                                {compIndex === 0 && (
-                                                    <>
-                                                        <div className="grow flex flex-col gap-2">
-                                                            <label>
-                                                                My Product
-                                                            </label>
-                                                            <Field
-                                                                type="text"
-                                                                placeholder="product name"
-                                                                className="light-input"
-                                                                name={`products.${index}.name`}
-                                                            />
-                                                        </div>
-                                                    </>
-                                                )}
+
                                                 <div className="grow relative flex flex-col gap-2">
                                                     <label>
                                                         Market share (USD)
