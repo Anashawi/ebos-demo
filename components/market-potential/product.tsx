@@ -14,6 +14,7 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
         uuid: crypto.randomUUID(),
         name: "",
         marketShare: 0,
+        isUntapped: false,
     } as ICompetitor;
 
     return (
@@ -47,7 +48,7 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
                                                             }
                                                             {compIndex === 1 && (
                                                                 <label>
-                                                                    {!comp.isUntapped ? "Untapped Market" : `Competitor ${compIndex}`}
+                                                                    {comp.isUntapped ? "Untapped Market" : `Competitor ${compIndex}`}
                                                                 </label>
                                                             )}
                                                             {compIndex > 1 && (
@@ -131,7 +132,13 @@ const CompetitorsProduct = ({ product, index, formUtilities }: Props) => {
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            push(emptyCompetitor);
+                                            const newCompetitor = emptyCompetitor
+                                            console.log(product?.competitors?.length)
+                                            if (!product?.competitors?.length || product.competitors.length === 0) {
+                                                newCompetitor.name = product.name;
+                                            }
+                                            newCompetitor.isUntapped = product?.competitors?.length === 1
+                                            push(newCompetitor);
                                         }}
                                         className="btn-primary px-10"
                                     >
