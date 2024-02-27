@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from 'react';
 
-import { AIAssistant, ChatIs } from "../../../models/enums";
-import { appContextData } from "../../../context";
+import { AIAssistant, ChatIs } from '../../../models/enums';
+import { appContextData } from '../../../context';
 
-import OpenAI from "openai";
+import OpenAI from 'openai';
 import {
   Avatar,
   Button,
@@ -14,17 +14,17 @@ import {
   MessageInput,
   MessageList,
   TypingIndicator,
-} from "@chatscope/chat-ui-kit-react";
-import { faComment, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from '@chatscope/chat-ui-kit-react';
+import { faComment, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 enum MessageSentBy {
-  ChatGpt = "ChatGPT",
-  You = "You",
+  ChatGpt = 'ChatGPT',
+  You = 'You',
 }
 enum MessageDirection {
-  Incoming = "incoming",
-  Outgoing = "outgoing",
+  Incoming = 'incoming',
+  Outgoing = 'outgoing',
 }
 type Message = {
   content: string;
@@ -34,20 +34,20 @@ type Message = {
 };
 
 enum ChatCompletionRequestMessageRoleEnum {
-  System = "system",
-  User = "user",
-  Assistant = "assistant",
-  Function = "function",
+  System = 'system',
+  User = 'user',
+  Assistant = 'assistant',
+  Function = 'function',
 }
 
 enum ChatGPTIs {
-  Idle = "idle",
-  Learning = "learning",
-  Typing = "typing",
+  Idle = 'idle',
+  Learning = 'learning',
+  Typing = 'typing',
 }
 
 export default function OpenAIChat({ initialMessage }: { initialMessage: string }) {
-  const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
+  const CHATGPT_MODEL = 'gpt-3.5-turbo-1106';
 
   const openai = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPEN_AI_KEY,
@@ -105,19 +105,19 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     try {
       if (!streamCancelled) {
         const chatRepsonse = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo-1106",
+          model: 'gpt-3.5-turbo-1106',
           messages: [...newOpenAIMessages], // openAI requires all old msgs
         });
-        return chatRepsonse["choices"][0]["message"]["content"] ?? "";
+        return chatRepsonse['choices'][0]['message']['content'] ?? '';
       } else {
         setStreamCancelled(false);
-        return "cancelled by the user.";
+        return 'cancelled by the user.';
       }
     } catch (error) {
-      let errorMessage = "Oops, something unexpected went wrong... try again later";
+      let errorMessage = 'Oops, something unexpected went wrong... try again later';
       const newDisplayedMessages = [...displayedMessages];
       if (error instanceof OpenAI.APIError) {
-        if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
+        if (error.status === 429) errorMessage = 'Rate limit reached. Limit: 3 / min. Please try again in 20s';
 
         console.error(error.status); // e.g. 401
         console.error(error.message); // e.g. The authentication token you passed was invalid...
@@ -150,7 +150,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     const newOpenAIMessage = {
       role: ChatCompletionRequestMessageRoleEnum.User,
       content: textContent,
-      name: "TestName",
+      name: 'TestName',
     };
     newOpenAIMessages.push(newOpenAIMessage);
     setOpenAIMessages([...newOpenAIMessages]);
@@ -174,7 +174,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     newDisplayedMessages: Message[]
   ) => {
     const newDisplayedMessageResponse: Message = {
-      content: "",
+      content: '',
       sentTime: Math.floor(Date.now() / 1000),
       sender: MessageSentBy.ChatGpt,
       direction: MessageDirection.Incoming,
@@ -190,7 +190,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       try {
         for await (const part of stream) {
           if (!streamCancelled) {
-            newDisplayedMessages[newDisplayedMessages.length - 1].content += part.choices[0]?.delta.content ?? "";
+            newDisplayedMessages[newDisplayedMessages.length - 1].content += part.choices[0]?.delta.content ?? '';
             setDisplayedMessages([...newDisplayedMessages]);
           } else {
             setStreamCancelled(false);
@@ -198,12 +198,12 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
           }
         }
       } catch (err) {
-        console.error("The stream had an error", err);
+        console.error('The stream had an error', err);
       }
     } catch (error) {
-      let errorMessage = "Oops, something unexpected went wrong... try again later";
+      let errorMessage = 'Oops, something unexpected went wrong... try again later';
       if (error instanceof OpenAI.APIError) {
-        if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
+        if (error.status === 429) errorMessage = 'Rate limit reached. Limit: 3 / min. Please try again in 20s';
         console.error(error.status); // e.g. 401
         console.error(error.message); // e.g. The authentication token you passed was invalid...
         console.error(error.code); // e.g. 'invalid_api_key'
@@ -221,7 +221,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     const newOpenAIMessage = {
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
       content: newDisplayedMessages[newDisplayedMessages.length - 1].content,
-      name: "",
+      name: '',
     };
     newOpenAIMessages.push(newOpenAIMessage);
     setOpenAIMessages([...newOpenAIMessages]);
@@ -269,8 +269,8 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
                       sentTime: `${message.sentTime}`,
                       sender: message.sender,
                       direction: message.direction,
-                      position: "single",
-                      type: "text",
+                      position: 'single',
+                      type: 'text',
                     }}
                   />
                 );
@@ -291,7 +291,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       )}
       <Button
         className="chatgpt-button"
-        title={appContext.chatIs === ChatIs.Minimized ? "Open Chat" : "Hide Chat"}
+        title={appContext.chatIs === ChatIs.Minimized ? 'Open Chat' : 'Hide Chat'}
         onClick={() =>
           setAppContext({
             ...appContext,
