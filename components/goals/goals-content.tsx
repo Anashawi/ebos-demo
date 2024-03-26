@@ -14,77 +14,78 @@ import { stepOneTranscript } from "../common/openai-chat/openai-transcript";
 import { getUserGoalsMsg, getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
 
 const emptyUserOrganizations: IUserOrganizations = {
-    id: "",
-    userId: "",
-    organizations: [],
+  id: "",
+  userId: "",
+  organizations: [],
 };
 const emptyUserGoals: IUserGoals = {
-    id: "",
-    userId: "",
-    targetDate: "",
-    goals: [],
+  id: "",
+  userId: "",
+  targetDate: "",
+  goals: [],
 };
 
 const GoalsContent = () => {
-    const { data: session }: any = useSession();
+  const { data: session }: any = useSession();
 
-    emptyUserOrganizations.userId = session?.user?.id;
-    const [userOrganizations, setUserOrganizations] = useState<IUserOrganizations>(emptyUserOrganizations);
-    emptyUserGoals.userId = session?.user?.id;
-    const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoals);
-    const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
+  emptyUserOrganizations.userId = session?.user?.id;
+  emptyUserGoals.userId = session?.user?.id;
 
-    // fetch user organizations
-    const {
-        data: fetchedUserOrganizations,
-        isLoading: areUserOrganizationsLoading,
-        status: fetchingOrgsStatus,
-    } = useQuery([organizationsApi.keys.all, session?.user?.id], organizationsApi.getAll, {
-        refetchOnWindowFocus: false,
-        retry: 2,
-    });
+  const [userOrganizations, setUserOrganizations] = useState<IUserOrganizations>(emptyUserOrganizations);
+  const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoals);
+  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
-    // fetch user goals
-    const {
-        data: fetchedUserGoals,
-        isLoading: areUserGoalsLoading,
-        status: fetchingGoalsStatus,
-    } = useQuery({
-        queryKey: [goalsApi.Keys.All],
-        queryFn: goalsApi.getAll,
-        refetchOnWindowFocus: false,
-        enabled: !!session?.user?.id,
-    });
+  // fetch user organizations
+  const {
+    data: fetchedUserOrganizations,
+    isLoading: areUserOrganizationsLoading,
+    status: fetchingOrgsStatus,
+  } = useQuery([organizationsApi.keys.all, session?.user?.id], organizationsApi.getAll, {
+    refetchOnWindowFocus: false,
+    retry: 2,
+  });
 
-    useEffect(() => {
-        if (fetchingOrgsStatus === "success" && fetchingGoalsStatus === "success") {
-            setChatGPTMessage(
-                `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations.data)}\n${getUserGoalsMsg(
-                    fetchedUserGoals
-                )}`
-            );
-        }
-    }, [fetchingOrgsStatus, fetchingGoalsStatus]);
+  // fetch user goals
+  const {
+    data: fetchedUserGoals,
+    isLoading: areUserGoalsLoading,
+    status: fetchingGoalsStatus,
+  } = useQuery({
+    queryKey: [goalsApi.Keys.All],
+    queryFn: goalsApi.getAll,
+    refetchOnWindowFocus: false,
+    enabled: !!session?.user?.id,
+  });
 
-    return (
-        <>
-            <OrganizationsForm
-                fetchedUserOrganizations={fetchedUserOrganizations}
-                areUserOrganizationsLoading={areUserOrganizationsLoading}
-                userOrganizations={userOrganizations}
-                setUserOrganizations={setUserOrganizations}
-                setChatGPTMessage={setChatGPTMessage}
-            />
-            <GoalsForm
-                fetchedUserGoals={fetchedUserGoals}
-                areUserGoalsLoading={areUserGoalsLoading}
-                userGoals={userGoals}
-                setUserGoals={setUserGoals}
-                setChatGPTMessage={setChatGPTMessage}
-            />
-            <Chat initialMessage={chatGPTMessage}></Chat>
-        </>
-    );
+  useEffect(() => {
+    if (fetchingOrgsStatus === "success" && fetchingGoalsStatus === "success") {
+      setChatGPTMessage(
+        `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations.data)}\n${getUserGoalsMsg(
+          fetchedUserGoals
+        )}`
+      );
+    }
+  }, [fetchingOrgsStatus, fetchingGoalsStatus]);
+
+  return (
+    <>
+      <OrganizationsForm
+        fetchedUserOrganizations={fetchedUserOrganizations}
+        areUserOrganizationsLoading={areUserOrganizationsLoading}
+        userOrganizations={userOrganizations}
+        setUserOrganizations={setUserOrganizations}
+        setChatGPTMessage={setChatGPTMessage}
+      />
+      <GoalsForm
+        fetchedUserGoals={fetchedUserGoals}
+        areUserGoalsLoading={areUserGoalsLoading}
+        userGoals={userGoals}
+        setUserGoals={setUserGoals}
+        setChatGPTMessage={setChatGPTMessage}
+      />
+      <Chat initialMessage={chatGPTMessage}></Chat>
+    </>
+  );
 };
 
 export default GoalsContent;

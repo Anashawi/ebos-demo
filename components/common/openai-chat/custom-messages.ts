@@ -12,7 +12,8 @@ import { IUserTakeaways } from "../../../models/user-takeaways";
 export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
     let chatGPTmsg = `The user haven't entered their organization's name or website or any competitor.`;
 
-    if (!userOrgs || userOrgs.organizations.length === 0) return chatGPTmsg;
+    if (!userOrgs || userOrgs.organizations?.length === 0) return chatGPTmsg;
+
     const orgs = userOrgs.organizations;
     const competitorsListLength = orgs.length - 1; // 0: own org, 1+: comp orgs
 
@@ -43,7 +44,7 @@ export function getCompanyProductMessage(userProduct: IUserProduct) {
     let product = {} as IProduct;
     let future = {} as IFuture; 
     let level = ``;
-    let i, j = 0;
+    let i = 0, j = 0;
 
     if (!userProduct || userProduct.products.length === 0) return msgForChatGPT;
 
