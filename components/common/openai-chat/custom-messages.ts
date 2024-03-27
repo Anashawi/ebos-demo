@@ -22,7 +22,7 @@ export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
     if (competitorsListLength === 0) return chatGPTmsg;
 
     chatGPTmsg += `It's competitors' organization names and websites are:\n`;
-    for (let i = 1; i < competitorsListLength; i++) {
+    for (let i = 1; i <= competitorsListLength; i++) {
         chatGPTmsg += `- Competitor ${i}'s organization name is ${orgs[i].name} and their website is ${orgs[i].website}\n`;
     }
 
