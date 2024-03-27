@@ -287,7 +287,7 @@ export function getIdeasMessage(ideas: IUserIdeas) {
             ideas.ideas[i].name
         } starting from ${ideas.ideas[i].startMonth} and lasting for ${
             ideas.ideas[i].durationInMonths
-        } Month${ideas.ideas[i].durationInMonths === 1 ? `` : `s`} \n`;
+        } Month${ideas.ideas[i].durationInMonths === 1 ? `` : `s`}\n`;
     }
 
     return msgForChatGPT;

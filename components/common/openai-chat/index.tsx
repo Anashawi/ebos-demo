@@ -58,7 +58,6 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
   const messageInput = useRef<HTMLDivElement>(null);
 
   // history of all chat messages between system/user/AI [required for AI]
-  const [openAIMessages, setOpenAIMessages] = useState<OpenAI.Chat.Completions.ChatCompletionMessageParam[]>([]);
   // only the chat messages that are displayed in the chat box
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [chatGPTState, setChatGPTState] = useState<ChatGPTIs>(ChatGPTIs.Idle);
@@ -80,7 +79,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
   }, [initialMessage]);
 
   const sendHiddenSystemMessage = async (automaticallyGenSystemMsg: string) => {
-    const newOpenAIMessages = [...openAIMessages];
+    const newOpenAIMessages = [...appContext.openAIMessages];
 
     // outgoing AI message
     const newOpenAIMessage = {
@@ -88,15 +87,22 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       content: automaticallyGenSystemMsg,
     } as OpenAI.Chat.Completions.ChatCompletionMessageParam;
     newOpenAIMessages.push(newOpenAIMessage);
-    setOpenAIMessages([...newOpenAIMessages]);
+    setAppContext({
+      ...appContext,
+      openAIMessages: [...newOpenAIMessages],
+    });
 
     setChatGPTState(ChatGPTIs.Learning);
     newOpenAIMessages.push({
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
       content: await sendMessagesAndGetResponse(newOpenAIMessages),
     } as OpenAI.Chat.Completions.ChatCompletionMessageParam);
-    setOpenAIMessages([...newOpenAIMessages]);
+    setAppContext({
+      ...appContext,
+      openAIMessages: [...newOpenAIMessages],
+    });
     setChatGPTState(ChatGPTIs.Idle);
+    console.log(appContext.openAIMessages);
   };
 
   const sendMessagesAndGetResponse = async (
@@ -144,7 +150,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     innerText: string,
     nodes: NodeList | null
   ) => {
-    const newOpenAIMessages = [...openAIMessages];
+    const newOpenAIMessages = [...appContext.openAIMessages];
     const newDisplayedMessages = [...displayedMessages];
 
     const newOpenAIMessage = {
@@ -152,7 +158,10 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       content: textContent,
     };
     newOpenAIMessages.push(newOpenAIMessage);
-    setOpenAIMessages([...newOpenAIMessages]);
+    setAppContext({
+      ...appContext,
+      openAIMessages: [...newOpenAIMessages],
+    });
 
     const newUserDisplayedMessage: Message = {
       content: textContent,
@@ -218,7 +227,10 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       content: newDisplayedMessages[newDisplayedMessages.length - 1].content,
     };
     newOpenAIMessages.push(newOpenAIMessage);
-    setOpenAIMessages([...newOpenAIMessages]);
+    setAppContext({
+      ...appContext,
+      openAIMessages: [...newOpenAIMessages],
+    });
   };
 
   const cancelStream = () => {
