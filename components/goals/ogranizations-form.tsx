@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import * as organizationsApi from "../../http-client/organizations.client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUserOrganizations } from "../../models/organization";
 import { IOrganization } from "../../models/types";
+import { appContextData } from "../../context";
 
 import Spinner from "../common/spinner";
 import { getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
@@ -22,7 +23,6 @@ interface Props {
   areUserOrganizationsLoading: boolean;
   userOrganizations: IUserOrganizations;
   setUserOrganizations: React.Dispatch<React.SetStateAction<IUserOrganizations>>;
-  setChatGPTMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const OrganizationsForm = ({
@@ -30,9 +30,9 @@ const OrganizationsForm = ({
   areUserOrganizationsLoading,
   userOrganizations,
   setUserOrganizations,
-  setChatGPTMessage,
 }: Props) => {
   const queryClient = useQueryClient();
+  const { appContext, setAppContext } = useContext(appContextData);
 
   // render user organizations
   useEffect(() => {
@@ -46,7 +46,7 @@ const OrganizationsForm = ({
     mutationFn: !userOrganizations.id ? organizationsApi.insertOne : organizationsApi.updateOne,
     mutationKey: [organizationsApi.keys.updateUserOrganizations, userOrganizations.id ?? ""],
     onMutate: (newUserOrgs) => {
-      setChatGPTMessage(getUserOrganizationsMsg(newUserOrgs));
+      setAppContext({ ...appContext, openAIMessage: getUserOrganizationsMsg(newUserOrgs) });
     },
     onSuccess: (storedUserOrgs) => {
       queryClient.invalidateQueries([organizationsApi.keys.updateUserOrganizations, userOrganizations.id ?? ""]);

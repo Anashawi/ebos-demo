@@ -31,7 +31,6 @@ const RoadMap = () => {
     ideas: [],
   } as IUserIdeas;
   const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedIdeas,
@@ -46,12 +45,15 @@ const RoadMap = () => {
   useEffect(() => {
     if (fetchingIdeasStatus === "success") {
       if (fetchedIdeas) {
-        fetchedIdeas.ideas.forEach(idea => {
+        fetchedIdeas.ideas.forEach((idea) => {
           !idea.durationInMonths ? (idea.durationInMonths = 6) : null;
         });
         setUserIdeas(fetchedIdeas);
       }
-      setChatGPTMessage(`${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`,
+      });
     }
   }, [fetchingIdeasStatus]);
 
@@ -64,7 +66,6 @@ const RoadMap = () => {
             dispatchUserIdeas={setUserIdeas}
             todayDateStr={todayDateStr}
             isLoading={areIdeasLoading}
-            setChatGPTMessage={setChatGPTMessage}
           />
         </article>
         <aside className="aside-content">
@@ -87,7 +88,7 @@ const RoadMap = () => {
         )}
         {!areIdeasLoading && userIdeas.ideas.length > 0 && <RoadmapChart userIdeas={userIdeas} />}
       </div>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

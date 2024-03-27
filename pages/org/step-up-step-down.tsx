@@ -28,7 +28,6 @@ const Analysis = () => {
   } as IUserAnalysis;
 
   const [userAnalysis, setUserAnalysis] = useState<IUserAnalysis>(emptyUserAnalysis);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedAnalysis,
@@ -44,7 +43,10 @@ const Analysis = () => {
   useEffect(() => {
     if (fetchingAnalysisStatus === "success") {
       setUserAnalysis(fetchedAnalysis ?? emptyUserAnalysis);
-      setChatGPTMessage(`${stepNineTranscript}\n\n${getStepUpDownMessage(fetchedAnalysis)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepNineTranscript}\n\n${getStepUpDownMessage(fetchedAnalysis)}`,
+      });
     }
   }, [fetchingAnalysisStatus]);
 
@@ -56,7 +58,6 @@ const Analysis = () => {
             userAnalysis={userAnalysis}
             dispatchUserAnalysis={setUserAnalysis}
             isLoading={isAnalysisLoading}
-            setChatGPTMessage={setChatGPTMessage}
           />
         </article>
         <aside className="aside-content">
@@ -68,7 +69,7 @@ const Analysis = () => {
           />
         </aside>
       </article>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

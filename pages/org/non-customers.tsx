@@ -28,7 +28,6 @@ const NonCustomers = () => {
   } as IUserNonCustomers;
 
   const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(emptyUserNonCustomers);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedNonCustomers,
@@ -44,7 +43,10 @@ const NonCustomers = () => {
   useEffect(() => {
     if (fetchingNonCustomersStatus === "success") {
       setUserNonCustomers(fetchedNonCustomers ?? emptyUserNonCustomers);
-      setChatGPTMessage(`${stepEightTranscript}\n\n${getNonCustomersMessage(fetchedNonCustomers)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepEightTranscript}\n\n${getNonCustomersMessage(fetchedNonCustomers)}`,
+      });
     }
   }, [fetchingNonCustomersStatus]);
 
@@ -56,7 +58,6 @@ const NonCustomers = () => {
             userNonCustomers={userNonCustomers}
             dispatchUserNonCustomers={setUserNonCustomers}
             isLoading={areNonCustomersLoading}
-            setChatGPTMessage={setChatGPTMessage}
           />
         </article>
         <aside className="aside-content">
@@ -68,7 +69,7 @@ const NonCustomers = () => {
           />
         </aside>
       </article>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

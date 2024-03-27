@@ -57,7 +57,6 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
   const { appContext, setAppContext } = useContext(appContextData);
   const messageInput = useRef<HTMLDivElement>(null);
 
-  // history of all chat messages between system/user/AI [required for AI]
   // only the chat messages that are displayed in the chat box
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [chatGPTState, setChatGPTState] = useState<ChatGPTIs>(ChatGPTIs.Idle);
@@ -102,7 +101,6 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       openAIMessages: [...newOpenAIMessages],
     });
     setChatGPTState(ChatGPTIs.Idle);
-    console.log(appContext.openAIMessages);
   };
 
   const sendMessagesAndGetResponse = async (

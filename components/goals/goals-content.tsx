@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as organizationsApi from "../../http-client/organizations.client";
@@ -6,6 +6,7 @@ import * as goalsApi from "../../http-client/goals.client";
 import { useQuery } from "@tanstack/react-query";
 import { IUserOrganizations } from "../../models/organization";
 import { IUserGoals } from "../../models/user-goal";
+import { appContextData } from "../../context";
 
 import OrganizationsForm from "./ogranizations-form";
 import GoalsForm from "./goals-form";
@@ -33,7 +34,7 @@ const GoalsContent = () => {
 
   const [userOrganizations, setUserOrganizations] = useState<IUserOrganizations>(emptyUserOrganizations);
   const [userGoals, setUserGoals] = useState<IUserGoals>(emptyUserGoals);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
+  const { appContext, setAppContext } = useContext(appContextData);
 
   // fetch user organizations
   const {
@@ -59,11 +60,12 @@ const GoalsContent = () => {
 
   useEffect(() => {
     if (fetchingOrgsStatus === "success" && fetchingGoalsStatus === "success") {
-      setChatGPTMessage(
-        `${stepOneTranscript}\n\n${getUserOrganizationsMsg(fetchedUserOrganizations.data)}\n${getUserGoalsMsg(
-          fetchedUserGoals
-        )}`
-      );
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepOneTranscript}\n\n${getUserOrganizationsMsg(
+          fetchedUserOrganizations.data
+        )}\n${getUserGoalsMsg(fetchedUserGoals)}`,
+      });
     }
   }, [fetchingOrgsStatus, fetchingGoalsStatus]);
 
@@ -74,16 +76,14 @@ const GoalsContent = () => {
         areUserOrganizationsLoading={areUserOrganizationsLoading}
         userOrganizations={userOrganizations}
         setUserOrganizations={setUserOrganizations}
-        setChatGPTMessage={setChatGPTMessage}
       />
       <GoalsForm
         fetchedUserGoals={fetchedUserGoals}
         areUserGoalsLoading={areUserGoalsLoading}
         userGoals={userGoals}
         setUserGoals={setUserGoals}
-        setChatGPTMessage={setChatGPTMessage}
       />
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

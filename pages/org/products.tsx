@@ -29,7 +29,6 @@ const Products = () => {
   emptyUserProducts.userId = session?.user?.id;
   const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProducts);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedUserProducts,
@@ -45,7 +44,10 @@ const Products = () => {
   useEffect(() => {
     if (fetchingProdsStatus === "success") {
       if (fetchedUserProducts) setUserProducts(fetchedUserProducts);
-      setChatGPTMessage(`${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`,
+      });
     }
   }, [fetchingProdsStatus]);
 
@@ -56,7 +58,6 @@ const Products = () => {
           <ProductsContent
             userProduct={userProducts}
             isLoading={areUserProductsLoading}
-            setChatGPTMessage={setChatGPTMessage}
             dispatchChartProducts={setChartProducts}
           />
         </article>
@@ -69,7 +70,7 @@ const Products = () => {
           />
         </aside>
       </article>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

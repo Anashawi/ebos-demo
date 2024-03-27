@@ -37,7 +37,6 @@ const RedOceanCanvas = () => {
 
   const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProduct);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedUserProducts,
@@ -52,9 +51,9 @@ const RedOceanCanvas = () => {
 
   useEffect(() => {
     if (status === "success") {
-      fetchedUserProducts?.products?.forEach(prod => {
+      fetchedUserProducts?.products?.forEach((prod) => {
         emptyFactor.competitors =
-          prod.competitors?.map(comp => {
+          prod.competitors?.map((comp) => {
             return {
               uuid: comp.uuid,
               value: 1,
@@ -67,12 +66,12 @@ const RedOceanCanvas = () => {
             { ...emptyFactor, name: "" },
           ];
         } else {
-          prod.factors.forEach(factor => {
-            const existingCompetitorUuids = new Set(factor.competitors.map(c => c.uuid));
+          prod.factors.forEach((factor) => {
+            const existingCompetitorUuids = new Set(factor.competitors.map((c) => c.uuid));
 
             const newfactorCompetitors = prod.competitors
-              ?.filter(comp => !existingCompetitorUuids.has(comp.uuid))
-              .map(comp => {
+              ?.filter((comp) => !existingCompetitorUuids.has(comp.uuid))
+              .map((comp) => {
                 return {
                   uuid: comp.uuid,
                   value: 1,
@@ -85,14 +84,19 @@ const RedOceanCanvas = () => {
             }
 
             // Remove competitors that exist in factor.competitors but not in prod.competitors
-            factor.competitors = factor.competitors.filter(comp => prod.competitors?.some(c => c.uuid === comp.uuid));
+            factor.competitors = factor.competitors.filter((comp) =>
+              prod.competitors?.some((c) => c.uuid === comp.uuid)
+            );
           });
         }
       });
       if (fetchedUserProducts) {
         setUserProducts(fetchedUserProducts ?? emptyUserProduct);
       }
-      setChatGPTMessage(`${stepFourTranscript}\n\n${getRedOceanMessage(fetchedUserProducts)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepFourTranscript}\n\n${getRedOceanMessage(fetchedUserProducts)}`,
+      });
     }
   }, [status]);
 
@@ -102,11 +106,10 @@ const RedOceanCanvas = () => {
         <article className="forms-container">
           <RedOceanContent
             userProducts={userProducts}
-            dispatchChartProducts={products => {
+            dispatchChartProducts={(products) => {
               setChartProducts(products);
             }}
             isLoading={areUserProductsLoading}
-            setChatGPTMessage={setChatGPTMessage}
           />
         </article>
         <aside className="aside-content">
@@ -118,7 +121,7 @@ const RedOceanCanvas = () => {
           />
         </aside>
       </article>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };
