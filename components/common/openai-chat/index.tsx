@@ -72,8 +72,8 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
     if (appContext.AIAssistant === AIAssistant.ManualLearning) return;
 
     if (initialMessage) {
-      // console.log(initialMessage);
-      sendHiddenSystemMessage(initialMessage);
+      console.log(initialMessage);
+      // sendHiddenSystemMessage(initialMessage);
     }
   }, [initialMessage]);
 
