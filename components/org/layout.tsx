@@ -19,10 +19,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </header>
           <main className="right-side-step-content">
             <nav className="top-navigation">
-              {
-                appContext.activeStep !== stepNamesEnum.admin &&
+              {appContext.activeStep !== stepNamesEnum.admin && (
                 <StepsNavbar selectedNodeTitle={appContext.activeStep} />
-              }
+              )}
             </nav>
             {children}
           </main>

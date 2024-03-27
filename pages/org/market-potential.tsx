@@ -40,7 +40,6 @@ const Competitors = () => {
   emptyUserProduct.userId = session?.user?.id;
   const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProduct);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedUserProducts,
@@ -55,7 +54,7 @@ const Competitors = () => {
 
   useEffect(() => {
     if (fetchingProdsStatus === "success") {
-      userProducts?.products?.forEach(prod => {
+      userProducts?.products?.forEach((prod) => {
         if (!prod.competitors || (prod.competitors && prod.competitors.length === 0)) {
           prod.competitors = [
             { ...emptyCompetitor(), name: "Me" },
@@ -68,7 +67,10 @@ const Competitors = () => {
         setUserProducts(fetchedUserProducts);
       }
       setChartProducts(fetchedUserProducts?.products || []);
-      setChatGPTMessage(`${stepThreeTranscript}\n\n${getMarketPotentialMessage(fetchedUserProducts)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepThreeTranscript}\n\n${getMarketPotentialMessage(fetchedUserProducts)}`,
+      });
     }
   }, [fetchingProdsStatus]);
 
@@ -80,7 +82,6 @@ const Competitors = () => {
             userProduct={userProducts}
             isLoading={areProductsLoading}
             setChartProducts={setChartProducts}
-            setChatGPTMessage={setChatGPTMessage}
           />
         </article>
         <aside className="aside-content">
@@ -91,7 +92,7 @@ const Competitors = () => {
           />
         </aside>
       </article>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

@@ -12,7 +12,8 @@ import { IUserTakeaways } from "../../../models/user-takeaways";
 export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
     let chatGPTmsg = `The user haven't entered their organization's name or website or any competitor.`;
 
-    if (!userOrgs || userOrgs.organizations.length === 0) return chatGPTmsg;
+    if (!userOrgs || userOrgs.organizations?.length === 0) return chatGPTmsg;
+
     const orgs = userOrgs.organizations;
     const competitorsListLength = orgs.length - 1; // 0: own org, 1+: comp orgs
 
@@ -21,7 +22,7 @@ export function getUserOrganizationsMsg(userOrgs: IUserOrganizations) {
     if (competitorsListLength === 0) return chatGPTmsg;
 
     chatGPTmsg += `It's competitors' organization names and websites are:\n`;
-    for (let i = 1; i < competitorsListLength; i++) {
+    for (let i = 1; i <= competitorsListLength; i++) {
         chatGPTmsg += `- Competitor ${i}'s organization name is ${orgs[i].name} and their website is ${orgs[i].website}\n`;
     }
 
@@ -43,7 +44,7 @@ export function getCompanyProductMessage(userProduct: IUserProduct) {
     let product = {} as IProduct;
     let future = {} as IFuture; 
     let level = ``;
-    let i, j = 0;
+    let i = 0, j = 0;
 
     if (!userProduct || userProduct.products.length === 0) return msgForChatGPT;
 
@@ -286,7 +287,7 @@ export function getIdeasMessage(ideas: IUserIdeas) {
             ideas.ideas[i].name
         } starting from ${ideas.ideas[i].startMonth} and lasting for ${
             ideas.ideas[i].durationInMonths
-        } Month${ideas.ideas[i].durationInMonths === 1 ? `` : `s`} \n`;
+        } Month${ideas.ideas[i].durationInMonths === 1 ? `` : `s`}\n`;
     }
 
     return msgForChatGPT;

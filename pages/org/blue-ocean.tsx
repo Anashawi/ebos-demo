@@ -37,7 +37,6 @@ const BlueOceanCanvas = () => {
 
   const [userProduct, setUserProduct] = useState<IUserProduct>(emptyUserProduct);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
-  const [chatGPTMessage, setChatGPTMessage] = useState<string>("");
 
   const {
     data: fetchedProducts,
@@ -52,9 +51,9 @@ const BlueOceanCanvas = () => {
 
   useEffect(() => {
     if (fetchingProdsStatus === "success") {
-      fetchedProducts?.products?.forEach(prod => {
+      fetchedProducts?.products?.forEach((prod) => {
         emptyFactor.competitors =
-          prod.competitors?.map(comp => {
+          prod.competitors?.map((comp) => {
             return {
               uuid: comp.uuid,
               value: 1,
@@ -67,12 +66,12 @@ const BlueOceanCanvas = () => {
             { ...emptyFactor, name: "" },
           ];
         } else {
-          prod.ideaFactors.forEach(ideaFactor => {
-            const existingCompetitorUuids = new Set(ideaFactor.competitors.map(c => c.uuid));
+          prod.ideaFactors.forEach((ideaFactor) => {
+            const existingCompetitorUuids = new Set(ideaFactor.competitors.map((c) => c.uuid));
 
             const newIdeaFactorCompetitors = prod.competitors
-              ?.filter(comp => !existingCompetitorUuids.has(comp.uuid))
-              .map(comp => {
+              ?.filter((comp) => !existingCompetitorUuids.has(comp.uuid))
+              .map((comp) => {
                 return {
                   uuid: comp.uuid,
                   value: 1,
@@ -85,8 +84,8 @@ const BlueOceanCanvas = () => {
             }
 
             // Remove competitors that exist in ideaFactor.competitors but not in prod.competitors
-            ideaFactor.competitors = ideaFactor.competitors.filter(comp =>
-              prod.competitors?.some(c => c.uuid === comp.uuid)
+            ideaFactor.competitors = ideaFactor.competitors.filter((comp) =>
+              prod.competitors?.some((c) => c.uuid === comp.uuid)
             );
           });
         }
@@ -94,7 +93,10 @@ const BlueOceanCanvas = () => {
       if (fetchedProducts) {
         setUserProduct(fetchedProducts ?? emptyUserProduct);
       }
-      setChatGPTMessage(`${stepSevenTranscript}\n\n${getBlueOceanMessage(fetchedProducts)}`);
+      setAppContext({
+        ...appContext,
+        openAIMessage: `${stepSevenTranscript}\n\n${getBlueOceanMessage(fetchedProducts)}`,
+      });
     }
   }, [fetchingProdsStatus]);
 
@@ -104,11 +106,10 @@ const BlueOceanCanvas = () => {
         <article className="forms-container">
           <BlueOceanContent
             userProduct={userProduct}
-            dispatchProducts={products => {
+            dispatchProducts={(products) => {
               setChartProducts(products);
             }}
             isLoading={areProductsLoading}
-            setChatGPTMessage={setChatGPTMessage}
           />
         </article>
         <aside className="aside-content">
@@ -120,7 +121,7 @@ const BlueOceanCanvas = () => {
           />
         </aside>
       </article>
-      <Chat initialMessage={chatGPTMessage}></Chat>
+      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

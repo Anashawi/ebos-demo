@@ -1,49 +1,47 @@
-import mongoose from "mongoose";
-import { OrganizationModel } from "./types";
+import { Document, Model, Schema, models, model } from "mongoose";
+import { IOrganization } from "./types";
 
 interface UserOrganizationsAttrs {
-    userId: string;
-    organizations: OrganizationModel[];
-}
-
-export interface UserOrganizationsDocument
-    extends mongoose.Document,
-        UserOrganizationsAttrs {}
-
-interface UserOrganizationsModel
-    extends mongoose.Model<UserOrganizationsDocument> {
-    build(attrs: UserOrganizationsAttrs): UserOrganizationsDocument;
+  userId: string;
+  organizations: IOrganization[];
 }
 
 export interface IUserOrganizations extends UserOrganizationsAttrs {
-    id: string;
+  id: string;
 }
 
-const UserOrganizationsSchema = new mongoose.Schema(
-    {
-        userId: {
-            type: String,
-            required: true,
-        },
-        organizations: Array<OrganizationModel>,
+interface UserOrganizationsDocument extends Document, UserOrganizationsAttrs {}
+
+interface UserOrganizationsModel extends Model<UserOrganizationsDocument> {
+  build(attrs: UserOrganizationsAttrs): UserOrganizationsDocument;
+}
+
+const UserOrganizationsSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
     },
-    {
-        toJSON: {
-            transform(doc, ret) {
-                ret.id = ret._id.toString();
-            },
-        },
-    }
+    organizations: Array<IOrganization>,
+  },
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id.toString();
+        delete ret.__v;
+      },
+    },
+  }
 );
 
 UserOrganizationsSchema.statics.build = (attrs: UserOrganizationsAttrs) => {
-    return new UserOrganizations(attrs);
+  return new UserOrganizations(attrs);
 };
 
 export const UserOrganizations =
-    mongoose.models.UserOrganizations ||
-    mongoose.model<UserOrganizationsDocument, UserOrganizationsModel>(
-        "UserOrganizations",
-        UserOrganizationsSchema,
-        "userOrganizations"
-    );
+  models.UserOrganizations ||
+  model<UserOrganizationsDocument, UserOrganizationsModel>(
+    "UserOrganizations",
+    UserOrganizationsSchema,
+    "userOrganizations"
+  );
