@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 
 import * as organizationsApi from "../../http-client/organizations.client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -30,18 +31,17 @@ const OrganizationsForm = ({
   setUserOrganizations,
   setOpenaiMessage,
 }: Props) => {
+  const { data: session }: any = useSession();
   const queryClient = useQueryClient();
 
   // insert/update user organizations
   const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } = useMutation({
     mutationFn: !userOrganizations.id ? organizationsApi.insertOne : organizationsApi.updateOne,
-    mutationKey: [organizationsApi.keys.updateUserOrganizations, userOrganizations.id ?? ""],
     onMutate: (newUserOrgs) => {
       setOpenaiMessage(getUserOrganizationsMsg(newUserOrgs));
     },
     onSuccess: (storedUserOrgs) => {
-      queryClient.invalidateQueries([organizationsApi.keys.updateUserOrganizations, userOrganizations.id ?? ""]);
-      queryClient.invalidateQueries([organizationsApi.keys.all]);
+      queryClient.invalidateQueries([organizationsApi.keys.all, session?.user?.id]);
       setUserOrganizations(storedUserOrgs);
     },
   });
