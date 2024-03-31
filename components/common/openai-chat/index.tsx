@@ -121,7 +121,9 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
       let errorMessage = "Oops, something unexpected went wrong... try again later";
       const newDisplayedMessages = [...displayedMessages];
       if (error instanceof OpenAI.APIError) {
-        if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
+        if (error.status === 429 && error.code === "insufficient_quota")
+          errorMessage = "You exceeded your current quota, please check your plan and billing details.";
+        else if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
 
         console.error(error.status); // e.g. 401
         console.error(error.message); // e.g. The authentication token you passed was invalid...

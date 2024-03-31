@@ -38,7 +38,7 @@ const Products = () => {
     isLoading: areUserProductsLoading,
     status: fetchingProdsStatus,
   } = useQuery({
-    queryKey: [productsApi.Keys.UserProduct, userProducts.id],
+    queryKey: [productsApi.Keys.All],
     queryFn: productsApi.getAll,
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id,
