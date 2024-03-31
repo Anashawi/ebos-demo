@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading, setOpenaiMessage }: Props) => {
+  const { data: session }: any = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
@@ -34,12 +36,10 @@ const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading, setOp
     },
     {
       onMutate: (newProducts) => {
-        queryClient.setQueryData([productsApi.Keys.UserProduct, userProducts.id], newProducts);
         setOpenaiMessage(getRedOceanMessage(newProducts));
       },
       onSuccess: (storedProducts) => {
-        queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProducts.id]);
-        queryClient.invalidateQueries([productsApi.Keys.All]);
+        queryClient.invalidateQueries([productsApi.Keys.All, session?.user?.id]);
       },
     }
   );

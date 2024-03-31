@@ -46,7 +46,7 @@ const RedOceanCanvas = () => {
     isLoading: areUserProductsLoading,
     status,
   } = useQuery<IUserProduct>({
-    queryKey: [clientApi.Keys.All],
+    queryKey: [clientApi.Keys.All, session?.user?.id],
     queryFn: clientApi.getAll,
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id,
