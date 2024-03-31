@@ -12,12 +12,6 @@ import { getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const emptyUserOrganization: IOrganization = {
-  uuid: typeof window !== "undefined" ? crypto.randomUUID() : "",
-  name: "",
-  website: "",
-};
-
 interface Props {
   areUserOrganizationsLoading: boolean;
   userOrganizations: IUserOrganizations;
@@ -33,6 +27,12 @@ const OrganizationsForm = ({
 }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
+
+  const emptyUserOrganization: IOrganization = {
+    uuid: typeof window !== "undefined" ? crypto.randomUUID() : "",
+    name: "",
+    website: "",
+  };
 
   // insert/update user organizations
   const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } = useMutation({
