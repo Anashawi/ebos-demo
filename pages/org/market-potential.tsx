@@ -25,8 +25,10 @@ const emptyUserProduct = {
 const Competitors = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.marketPotential }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.marketPotential }));
+  }, []);
 
   const emptyCompetitor = () => {
     const uuid = crypto.randomUUID();
@@ -40,6 +42,7 @@ const Competitors = () => {
   emptyUserProduct.userId = session?.user?.id;
   const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProduct);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedUserProducts,
@@ -67,10 +70,7 @@ const Competitors = () => {
         setUserProducts(fetchedUserProducts);
       }
       setChartProducts(fetchedUserProducts?.products || []);
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepThreeTranscript}\n\n${getMarketPotentialMessage(fetchedUserProducts)}`,
-      });
+      setOpenaiMessage(`${stepThreeTranscript}\n\n${getMarketPotentialMessage(fetchedUserProducts)}`);
     }
   }, [fetchingProdsStatus]);
 
@@ -82,6 +82,7 @@ const Competitors = () => {
             userProduct={userProducts}
             isLoading={areProductsLoading}
             setChartProducts={setChartProducts}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -89,10 +90,11 @@ const Competitors = () => {
             videoPropName={videoPropNamesEnum.marketPotential}
             videoLabel="Market Potential Video"
             chartProducts={chartProducts}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

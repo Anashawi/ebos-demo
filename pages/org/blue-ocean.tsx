@@ -17,8 +17,10 @@ import Chat from "../../components/common/openai-chat";
 const BlueOceanCanvas = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.blueOceanCanvas }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.blueOceanCanvas }));
+  }, []);
 
   const emptyFactor = useMemo(() => {
     return {
@@ -37,6 +39,7 @@ const BlueOceanCanvas = () => {
 
   const [userProduct, setUserProduct] = useState<IUserProduct>(emptyUserProduct);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedProducts,
@@ -93,10 +96,7 @@ const BlueOceanCanvas = () => {
       if (fetchedProducts) {
         setUserProduct(fetchedProducts ?? emptyUserProduct);
       }
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepSevenTranscript}\n\n${getBlueOceanMessage(fetchedProducts)}`,
-      });
+      setOpenaiMessage(`${stepSevenTranscript}\n\n${getBlueOceanMessage(fetchedProducts)}`);
     }
   }, [fetchingProdsStatus]);
 
@@ -110,6 +110,7 @@ const BlueOceanCanvas = () => {
               setChartProducts(products);
             }}
             isLoading={areProductsLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -118,10 +119,11 @@ const BlueOceanCanvas = () => {
             videoLabel="Blue Ocean Video"
             chartProducts={chartProducts}
             isChartDataLoading={areProductsLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

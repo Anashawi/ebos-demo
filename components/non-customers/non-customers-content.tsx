@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -6,7 +6,6 @@ import Image from "next/image";
 import * as nonCustomersApi from "../../http-client/non-customers.client";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { IUserNonCustomers } from "../../models/user-non-customers";
-import { appContextData } from "../../context";
 
 import Spinner from "../common/spinner";
 import { getNonCustomersMessage } from "../common/openai-chat/custom-messages";
@@ -18,17 +17,18 @@ interface Props {
   userNonCustomers: IUserNonCustomers;
   dispatchUserNonCustomers: (userNonCustomers: any) => void;
   isLoading: boolean;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
 const NonCustomersContent = ({
   userNonCustomers,
   dispatchUserNonCustomers,
   isLoading: areNonCustomersLoading,
+  setOpenaiMessage,
 }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const [nonCustomerToBeAdded, setNonCustomerToBeAdded] = useState<string>("");
   const [refusingNonCustomerToBeAdded, setRefusingNonCustomerToBeAdded] = useState<string>("");
@@ -41,10 +41,7 @@ const NonCustomersContent = ({
     {
       onMutate: (newNonCustomers) => {
         queryClient.setQueryData([nonCustomersApi.Keys.All, userNonCustomers.id], newNonCustomers);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getNonCustomersMessage(newNonCustomers),
-        });
+        setOpenaiMessage(getNonCustomersMessage(newNonCustomers));
       },
       onSuccess: (storedNonCustomers) => {
         queryClient.invalidateQueries([nonCustomersApi.Keys.All, userNonCustomers.id]);

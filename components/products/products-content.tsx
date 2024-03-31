@@ -36,13 +36,13 @@ interface Props {
   userProduct: IUserProduct;
   isLoading: boolean;
   dispatchChartProducts: (products: IProduct[]) => void;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts }: Props) => {
+const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts, setOpenaiMessage }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
   const [goToNextEnabled, setGoToNextEnabled] = useState<boolean>(false);
-  const { appContext, setAppContext } = useContext(appContextData);
 
   useEffect(() => {
     setGoToNextEnabled(userProduct.products.length > 0);
@@ -55,10 +55,7 @@ const ProductsContent = ({ userProduct, isLoading, dispatchChartProducts }: Prop
     {
       onMutate: (newProduct) => {
         queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProduct);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getCompanyProductMessage(newProduct),
-        });
+        setOpenaiMessage(getCompanyProductMessage(newProduct));
       },
       onSuccess: (storedProduct) => {
         queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);

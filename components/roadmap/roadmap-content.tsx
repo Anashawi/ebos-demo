@@ -19,12 +19,12 @@ interface Props {
   dispatchUserIdeas: (userIdeas: IUserIdeas) => void;
   todayDateStr: string;
   isLoading: boolean;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading }: Props) => {
+const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading, setOpenaiMessage }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const emptyIdea: IIdea = useMemo(() => {
     return {
@@ -42,10 +42,7 @@ const RoadMapContent = ({ userIdeas, dispatchUserIdeas, todayDateStr, isLoading 
     },
     {
       onMutate: (newIdeas) => {
-        setAppContext({
-          ...appContext,
-          openAIMessage: getIdeasMessage(newIdeas),
-        });
+        setOpenaiMessage(getIdeasMessage(newIdeas));
       },
       onSuccess: (storedIdeas) => {
         queryClient.invalidateQueries([ideasApi.Keys.All]);

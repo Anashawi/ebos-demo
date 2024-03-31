@@ -18,8 +18,11 @@ import Chat from "../../components/common/openai-chat";
 const RoadMap = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.roadMap }), []);
+  const { setAppContext } = useContext(appContextData);
+
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.roadMap }));
+  }, []);
 
   // "yyyy-mm"
   const todayDateStr = new Date().toISOString().substring(0, 7);
@@ -31,6 +34,7 @@ const RoadMap = () => {
     ideas: [],
   } as IUserIdeas;
   const [userIdeas, setUserIdeas] = useState<IUserIdeas>(emptyUserIdeas);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedIdeas,
@@ -50,10 +54,7 @@ const RoadMap = () => {
         });
         setUserIdeas(fetchedIdeas);
       }
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`,
-      });
+      setOpenaiMessage(`${stepTenTranscript}\n\n${getIdeasMessage(fetchedIdeas)}`);
     }
   }, [fetchingIdeasStatus]);
 
@@ -66,6 +67,7 @@ const RoadMap = () => {
             dispatchUserIdeas={setUserIdeas}
             todayDateStr={todayDateStr}
             isLoading={areIdeasLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -74,6 +76,7 @@ const RoadMap = () => {
             videoLabel="Road Map Video"
             chartProducts={[]}
             isChartDataLoading={false}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
@@ -88,7 +91,7 @@ const RoadMap = () => {
         )}
         {!areIdeasLoading && userIdeas.ideas.length > 0 && <RoadmapChart userIdeas={userIdeas} />}
       </div>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

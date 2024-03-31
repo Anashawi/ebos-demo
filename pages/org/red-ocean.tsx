@@ -17,8 +17,10 @@ import Chat from "../../components/common/openai-chat";
 const RedOceanCanvas = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.redOceanCanvas }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.redOceanCanvas }));
+  }, []);
 
   const emptyFactor = useMemo(() => {
     return {
@@ -37,6 +39,7 @@ const RedOceanCanvas = () => {
 
   const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProduct);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedUserProducts,
@@ -93,10 +96,7 @@ const RedOceanCanvas = () => {
       if (fetchedUserProducts) {
         setUserProducts(fetchedUserProducts ?? emptyUserProduct);
       }
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepFourTranscript}\n\n${getRedOceanMessage(fetchedUserProducts)}`,
-      });
+      setOpenaiMessage(`${stepFourTranscript}\n\n${getRedOceanMessage(fetchedUserProducts)}`);
     }
   }, [status]);
 
@@ -110,6 +110,7 @@ const RedOceanCanvas = () => {
               setChartProducts(products);
             }}
             isLoading={areUserProductsLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -118,10 +119,11 @@ const RedOceanCanvas = () => {
             videoLabel="Red Ocean Video"
             chartProducts={chartProducts}
             isChartDataLoading={areUserProductsLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

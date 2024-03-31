@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import * as productsApi from "../../http-client/products.client";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { IUserProduct } from "../../models/user-product";
 import { productPagesEnum } from "../../models/enums";
 import { IProduct } from "../../models/types";
-import { appContextData } from "../../context";
 
 import FormikContextChild from "../products/formik-context-child";
 import BlueOceanProduct from "./product";
@@ -23,11 +22,11 @@ interface Props {
   userProduct: IUserProduct;
   dispatchProducts: (products: IProduct[]) => void;
   isLoading: boolean;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading }: Props) => {
+const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading, setOpenaiMessage }: Props) => {
   const queryClient = useQueryClient();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
     (userProduct: IUserProduct) => {
@@ -36,10 +35,7 @@ const BlueOceanContent = ({ userProduct, dispatchProducts, isLoading }: Props) =
     {
       onMutate: (newProducts) => {
         queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProducts);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getBlueOceanMessage(newProducts),
-        });
+        setOpenaiMessage(getBlueOceanMessage(newProducts));
       },
       onSuccess: (newProducts) => {
         queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);

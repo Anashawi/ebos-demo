@@ -12,7 +12,7 @@ import ProductsContent from "../../components/products/products-content";
 import ChartsContent from "../../components/common/charts-content";
 import { stepTwoTranscript } from "../../components/common/openai-chat/openai-transcript";
 import { getCompanyProductMessage } from "../../components/common/openai-chat/custom-messages";
-import Chat from "../../components/common/openai-chat/";
+import OpenAIChat from "../../components/common/openai-chat/";
 
 const emptyUserProducts = {
   id: "",
@@ -23,12 +23,15 @@ const emptyUserProducts = {
 const Products = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.pioneerMigratorSettler }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.pioneerMigratorSettler }));
+  }, []);
 
   emptyUserProducts.userId = session?.user?.id;
   const [userProducts, setUserProducts] = useState<IUserProduct>(emptyUserProducts);
   const [chartProducts, setChartProducts] = useState<IProduct[]>([]);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedUserProducts,
@@ -44,10 +47,7 @@ const Products = () => {
   useEffect(() => {
     if (fetchingProdsStatus === "success") {
       if (fetchedUserProducts) setUserProducts(fetchedUserProducts);
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`,
-      });
+      setOpenaiMessage(`${stepTwoTranscript}\n\n${getCompanyProductMessage(fetchedUserProducts)}`);
     }
   }, [fetchingProdsStatus]);
 
@@ -59,6 +59,7 @@ const Products = () => {
             userProduct={userProducts}
             isLoading={areUserProductsLoading}
             dispatchChartProducts={setChartProducts}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -67,10 +68,11 @@ const Products = () => {
             videoLabel="Products Video"
             chartProducts={chartProducts}
             isChartDataLoading={areUserProductsLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <OpenAIChat initialMessage={openaiMessage}></OpenAIChat>
     </>
   );
 };

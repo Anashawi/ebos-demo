@@ -16,8 +16,10 @@ import { getNonCustomersMessage } from "../../components/common/openai-chat/cust
 const NonCustomers = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.nonCustomers }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.nonCustomers }));
+  }, []);
 
   const emptyUserNonCustomers = {
     id: "",
@@ -28,6 +30,7 @@ const NonCustomers = () => {
   } as IUserNonCustomers;
 
   const [userNonCustomers, setUserNonCustomers] = useState<IUserNonCustomers>(emptyUserNonCustomers);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedNonCustomers,
@@ -43,10 +46,7 @@ const NonCustomers = () => {
   useEffect(() => {
     if (fetchingNonCustomersStatus === "success") {
       setUserNonCustomers(fetchedNonCustomers ?? emptyUserNonCustomers);
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepEightTranscript}\n\n${getNonCustomersMessage(fetchedNonCustomers)}`,
-      });
+      setOpenaiMessage(`${stepEightTranscript}\n\n${getNonCustomersMessage(fetchedNonCustomers)}`);
     }
   }, [fetchingNonCustomersStatus]);
 
@@ -58,6 +58,7 @@ const NonCustomers = () => {
             userNonCustomers={userNonCustomers}
             dispatchUserNonCustomers={setUserNonCustomers}
             isLoading={areNonCustomersLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -66,10 +67,11 @@ const NonCustomers = () => {
             videoLabel="Non Customers Video"
             chartProducts={[userNonCustomers]}
             isChartDataLoading={areNonCustomersLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

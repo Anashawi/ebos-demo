@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import * as productsApi from "../../http-client/products.client";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -17,17 +17,16 @@ import { getRedOceanMessage } from "../common/openai-chat/custom-messages";
 import { FieldArray, Form, Formik } from "formik";
 import { string, object, array } from "yup";
 import { cloneDeep } from "lodash";
-import { appContextData } from "../../context";
 
 interface Props {
   userProducts: IUserProduct;
   dispatchChartProducts: (products: IProduct[]) => void;
   isLoading: boolean;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading }: Props) => {
+const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading, setOpenaiMessage }: Props) => {
   const queryClient = useQueryClient();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
     (newUserProducts: IUserProduct) => {
@@ -36,10 +35,7 @@ const RedOceanContent = ({ userProducts, dispatchChartProducts, isLoading }: Pro
     {
       onMutate: (newProducts) => {
         queryClient.setQueryData([productsApi.Keys.UserProduct, userProducts.id], newProducts);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getRedOceanMessage(newProducts),
-        });
+        setOpenaiMessage(getRedOceanMessage(newProducts));
       },
       onSuccess: (storedProducts) => {
         queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProducts.id]);

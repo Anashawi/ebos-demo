@@ -16,8 +16,10 @@ import { getStepUpDownMessage } from "../../components/common/openai-chat/custom
 const Analysis = () => {
   const { data: session }: any = useSession();
 
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.stepUpStepDownModel }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.stepUpStepDownModel }));
+  }, []);
 
   const emptyUserAnalysis = {
     id: "",
@@ -28,6 +30,7 @@ const Analysis = () => {
   } as IUserAnalysis;
 
   const [userAnalysis, setUserAnalysis] = useState<IUserAnalysis>(emptyUserAnalysis);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
 
   const {
     data: fetchedAnalysis,
@@ -43,10 +46,7 @@ const Analysis = () => {
   useEffect(() => {
     if (fetchingAnalysisStatus === "success") {
       setUserAnalysis(fetchedAnalysis ?? emptyUserAnalysis);
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepNineTranscript}\n\n${getStepUpDownMessage(fetchedAnalysis)}`,
-      });
+      setOpenaiMessage(`${stepNineTranscript}\n\n${getStepUpDownMessage(fetchedAnalysis)}`);
     }
   }, [fetchingAnalysisStatus]);
 
@@ -58,6 +58,7 @@ const Analysis = () => {
             userAnalysis={userAnalysis}
             dispatchUserAnalysis={setUserAnalysis}
             isLoading={isAnalysisLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -66,10 +67,11 @@ const Analysis = () => {
             videoLabel="Step Up Step Down Model Video"
             chartProducts={[userAnalysis]}
             isChartDataLoading={isAnalysisLoading}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </aside>
       </article>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

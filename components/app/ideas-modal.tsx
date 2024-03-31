@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { NextPage } from "next";
 
 import * as clientApi from "../../http-client/ideas.client";
@@ -14,17 +14,16 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string } from "yup";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { appContextData } from "../../context";
 
 interface Props {
   isOpen: boolean;
   toggle: () => void;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
+const IdeasModal: NextPage<Props> = ({ isOpen, toggle, setOpenaiMessage }) => {
   const [ideaFactors, setIdeaFactors] = useState<IIdea[]>([]);
   const [userIdeasId, setUserIdeasId] = useState<string>("");
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const { data: userIdeas, isLoading: isUserIdeasLoading } = useQuery<IUserIdeas>({
     queryKey: [clientApi.Keys.AllLookup],
@@ -49,10 +48,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
     {
       onSuccess: (updated) => {
         queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getIdeasMessage(updated),
-        });
+        setOpenaiMessage(getIdeasMessage(updated));
       },
     }
   );
@@ -64,10 +60,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
     {
       onSuccess: (updated) => {
         queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getIdeasMessage(updated),
-        });
+        setOpenaiMessage(getIdeasMessage(updated));
       },
     }
   );
@@ -79,10 +72,7 @@ const IdeasModal: NextPage<Props> = ({ isOpen, toggle }) => {
     {
       onSuccess: (updated) => {
         queryClient.invalidateQueries([clientApi.Keys.AllLookup]);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getIdeasMessage(updated),
-        });
+        setOpenaiMessage(getIdeasMessage(updated));
       },
     }
   );

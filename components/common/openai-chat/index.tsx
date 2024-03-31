@@ -46,7 +46,7 @@ enum ChatGPTIs {
   Typing = "typing",
 }
 
-export default function OpenAIChat({ initialMessage }: { initialMessage: string }) {
+export default function OpenAIChat({ initialMessage }: { initialMessage?: string }) {
   const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
 
   const openai = new OpenAI({
@@ -59,7 +59,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
 
   // only the chat messages that are displayed in the chat box
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
-  const [chatGPTState, setChatGPTState] = useState<ChatGPTIs>(ChatGPTIs.Idle);
+  const [chatGPTState, setChatGPTState] = useState(ChatGPTIs.Idle);
   const [streamCancelled, setStreamCancelled] = useState(false);
 
   useEffect(() => {
@@ -70,9 +70,9 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
 
   useEffect(() => {
     if (appContext.AIAssistant === AIAssistant.ManualLearning) return;
-
     if (initialMessage) {
-      //   console.log(initialMessage);
+      console.log(initialMessage);
+      console.log(appContext);
       sendHiddenSystemMessage(initialMessage);
     }
   }, [initialMessage]);
@@ -86,20 +86,20 @@ export default function OpenAIChat({ initialMessage }: { initialMessage: string 
       content: automaticallyGenSystemMsg,
     } as OpenAI.Chat.Completions.ChatCompletionMessageParam;
     newOpenAIMessages.push(newOpenAIMessage);
-    setAppContext({
-      ...appContext,
+    setAppContext((prev) => ({
+      ...prev,
       openAIMessages: [...newOpenAIMessages],
-    });
+    }));
 
     setChatGPTState(ChatGPTIs.Learning);
     newOpenAIMessages.push({
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
       content: await sendMessagesAndGetResponse(newOpenAIMessages),
     } as OpenAI.Chat.Completions.ChatCompletionMessageParam);
-    setAppContext({
-      ...appContext,
+    setAppContext((prev) => ({
+      ...prev,
       openAIMessages: [...newOpenAIMessages],
-    });
+    }));
     setChatGPTState(ChatGPTIs.Idle);
   };
 
