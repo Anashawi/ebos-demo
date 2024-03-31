@@ -55,7 +55,7 @@ const GoalsContent = ({ setOpenaiMessage }: Props) => {
     isLoading: areUserGoalsLoading,
     status: fetchingGoalsStatus,
   } = useQuery({
-    queryKey: [goalsApi.Keys.All],
+    queryKey: [goalsApi.Keys.All, session?.user?.id],
     queryFn: goalsApi.getAll,
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id, // wth is this

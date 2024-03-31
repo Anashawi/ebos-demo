@@ -34,13 +34,10 @@ const GoalsForm = ({ areUserGoalsLoading, userGoals, setUserGoals, setOpenaiMess
     },
     {
       onMutate: (newGoal) => {
-        queryClient.setQueryData([goalsApi.Keys.UserGoals, userGoals.id], newGoal);
         setOpenaiMessage(getUserGoalsMsg(newGoal));
       },
       onSuccess: (storedGoal) => {
-        queryClient.invalidateQueries([goalsApi.Keys.UserGoals, userGoals.id]);
-        // flag locally stored goals as invalid, to be loaded onPageLoad
-        queryClient.invalidateQueries([goalsApi.Keys.All]);
+        queryClient.invalidateQueries([goalsApi.Keys.All, session?.user?.id]);
       },
     }
   );
