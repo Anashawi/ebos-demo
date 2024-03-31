@@ -49,7 +49,7 @@ const Competitors = () => {
     isLoading: areProductsLoading,
     status: fetchingProdsStatus,
   } = useQuery<IUserProduct>({
-    queryKey: [productsApi.Keys.All],
+    queryKey: [productsApi.Keys.All, session?.user?.id],
     queryFn: productsApi.getAll,
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id,

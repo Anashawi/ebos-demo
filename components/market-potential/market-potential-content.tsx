@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -30,6 +31,7 @@ const MarketPotentialContent = ({
   setChartProducts,
   setOpenaiMessage,
 }: Props) => {
+  const { data: session }: any = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
@@ -38,12 +40,10 @@ const MarketPotentialContent = ({
     },
     {
       onMutate: (newProducts) => {
-        queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProducts);
         setOpenaiMessage(getCompanyProductMessage(newProducts));
       },
       onSuccess: (storedProducts) => {
-        queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
-        queryClient.invalidateQueries([productsApi.Keys.All]);
+        queryClient.invalidateQueries([productsApi.Keys.All, session?.user?.id]);
       },
     }
   );
