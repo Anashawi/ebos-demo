@@ -1,25 +1,26 @@
-import { useMemo, useState, useEffect, useContext } from "react";
+import { useMemo, useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 import * as customersApi from "../../http-client/customers.client";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { IUserCustomers } from "../../models/user-customers";
-import { appContextData } from "../../context";
 
 import Spinner from "../common/spinner";
 import GoNextButton from "../common/go-next-button";
-import Chat from "../common/openai-chat";
 import { stepSixTranscript } from "../common/openai-chat/openai-transcript";
 import { getVoiceOfCustomerMessage } from "../common/openai-chat/custom-messages";
 
 import { useFormik } from "formik";
 import { array, object, string } from "yup";
 
-const VoiceOfCustomersContent = () => {
+interface Props {
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
+}
+
+const VoiceOfCustomersContent = ({ setOpenaiMessage }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   let emptyUserCustomers = useMemo(() => {
     return {
@@ -48,10 +49,7 @@ const VoiceOfCustomersContent = () => {
   useEffect(() => {
     if (fetchingCustomersStatus === "success") {
       if (fetchedUserCustomers) setUserCustomers(fetchedUserCustomers);
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(fetchedUserCustomers)}`,
-      });
+      setOpenaiMessage(`${stepSixTranscript}\n\n${getVoiceOfCustomerMessage(fetchedUserCustomers)}`);
     }
   }, [fetchingCustomersStatus]);
 
@@ -62,10 +60,7 @@ const VoiceOfCustomersContent = () => {
     {
       onMutate: (newVoices) => {
         queryClient.setQueryData([customersApi.Keys.All, userCustomers.id], newVoices);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getVoiceOfCustomerMessage(newVoices),
-        });
+        setOpenaiMessage(getVoiceOfCustomerMessage(newVoices));
         refetchUserCustomers();
       },
       onSuccess: (storedVoices) => {
@@ -272,7 +267,6 @@ const VoiceOfCustomersContent = () => {
           </div>
         )}
       </section>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

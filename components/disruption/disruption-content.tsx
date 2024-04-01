@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -12,13 +12,11 @@ import { IUserTakeaways } from "../../models/user-takeaways";
 
 import DisruptionTakeaways from "./takeaways";
 import Spinner from "../common/spinner";
-import Chat from "../common/openai-chat";
 import { stepFiveTranscript } from "../common/openai-chat/openai-transcript";
 import { getDisruptionMessage } from "../common/openai-chat/custom-messages";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { appContextData } from "../../context";
 
 interface Props {
   videos: IVideos;
@@ -26,6 +24,7 @@ interface Props {
   setSelectedVideoPropName: (name: videoPropNamesEnum) => void;
   toggleVideoModal: (isOpen?: boolean) => void;
   toggleEditUrlsModal: (isOpen?: boolean) => void;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
 const DisruptionContent = ({
@@ -34,6 +33,7 @@ const DisruptionContent = ({
   setSelectedVideoPropName,
   toggleVideoModal,
   toggleEditUrlsModal,
+  setOpenaiMessage,
 }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
@@ -68,7 +68,6 @@ const DisruptionContent = ({
   };
 
   const [userTakeaways, setUserTakeaways] = useState<IUserTakeaways>(emptyUserTakeaways);
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const {
     data: fetchedTakeaways,
@@ -82,10 +81,7 @@ const DisruptionContent = ({
   useEffect(() => {
     if (fetchingTakeawaysStatus === "success") {
       if (fetchedTakeaways) setUserTakeaways(fetchedTakeaways);
-      setAppContext({
-        ...appContext,
-        openAIMessage: `${stepFiveTranscript}\n\n${getDisruptionMessage(fetchedTakeaways)}`,
-      });
+      setOpenaiMessage(`${stepFiveTranscript}\n\n${getDisruptionMessage(fetchedTakeaways)}`);
     }
   }, [fetchingTakeawaysStatus]);
 
@@ -96,10 +92,7 @@ const DisruptionContent = ({
     {
       onMutate: (newTakeaways) => {
         queryClient.setQueryData([takeawaysApi.Keys.all, userTakeaways.id], newTakeaways);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getDisruptionMessage(fetchedTakeaways),
-        });
+        setOpenaiMessage(getDisruptionMessage(fetchedTakeaways));
       },
       onSuccess: (storedTakeaways) => {
         queryClient.invalidateQueries([takeawaysApi.Keys.all, userTakeaways.id]);
@@ -112,10 +105,7 @@ const DisruptionContent = ({
     {
       onMutate: (newTakeaways) => {
         queryClient.setQueryData([takeawaysApi.Keys.all, userTakeaways.id], newTakeaways);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getDisruptionMessage(fetchedTakeaways),
-        });
+        setOpenaiMessage(getDisruptionMessage(fetchedTakeaways));
       },
       onSuccess: (storedTakeaways) => {
         queryClient.invalidateQueries([takeawaysApi.Keys.all, userTakeaways.id]);
@@ -378,7 +368,6 @@ const DisruptionContent = ({
           </div>
         )}
       </section>
-      <Chat initialMessage={appContext.openAIMessage}></Chat>
     </>
   );
 };

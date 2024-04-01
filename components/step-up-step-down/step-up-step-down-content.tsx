@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -19,13 +19,18 @@ interface Props {
   userAnalysis: IUserAnalysis;
   dispatchUserAnalysis: (userAnalysis: any) => void;
   isLoading: boolean;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const StepUpStepDownContent = ({ userAnalysis, dispatchUserAnalysis, isLoading: isAnalysisLoading }: Props) => {
+const StepUpStepDownContent = ({
+  userAnalysis,
+  dispatchUserAnalysis,
+  isLoading: isAnalysisLoading,
+  setOpenaiMessage,
+}: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const [aboveCustomerToBeAdded, setAboveCustomerToBeAdded] = useState<string>("");
   const [currentCustomerToBeAdded, setCurrentCustomerToBeAdded] = useState<string>("");
@@ -38,10 +43,7 @@ const StepUpStepDownContent = ({ userAnalysis, dispatchUserAnalysis, isLoading: 
     {
       onMutate: (newAnalysis) => {
         queryClient.setQueryData([analysisApi.Keys.All, userAnalysis.id], newAnalysis);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getStepUpDownMessage(newAnalysis),
-        });
+        setOpenaiMessage(getStepUpDownMessage(newAnalysis));
       },
       onSuccess: (storedAnalysis) => {
         queryClient.invalidateQueries([analysisApi.Keys.All, userAnalysis.id]);

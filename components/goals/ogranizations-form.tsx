@@ -1,10 +1,10 @@
-import { useContext, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 
 import * as organizationsApi from "../../http-client/organizations.client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUserOrganizations } from "../../models/organization";
 import { IOrganization } from "../../models/types";
-import { appContextData } from "../../context";
 
 import Spinner from "../common/spinner";
 import { getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
@@ -12,45 +12,36 @@ import { getUserOrganizationsMsg } from "../common/openai-chat/custom-messages";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const emptyUserOrganization: IOrganization = {
-  uuid: typeof window !== "undefined" ? crypto.randomUUID() : "",
-  name: "",
-  website: "",
-};
-
 interface Props {
-  fetchedUserOrganizations: any;
   areUserOrganizationsLoading: boolean;
   userOrganizations: IUserOrganizations;
-  setUserOrganizations: React.Dispatch<React.SetStateAction<IUserOrganizations>>;
+  setUserOrganizations: Dispatch<SetStateAction<IUserOrganizations>>;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
 const OrganizationsForm = ({
-  fetchedUserOrganizations,
   areUserOrganizationsLoading,
   userOrganizations,
   setUserOrganizations,
+  setOpenaiMessage,
 }: Props) => {
+  const { data: session }: any = useSession();
   const queryClient = useQueryClient();
-  const { appContext, setAppContext } = useContext(appContextData);
 
-  // render user organizations
-  useEffect(() => {
-    if (fetchedUserOrganizations?.status === 200 && fetchedUserOrganizations.data) {
-      setUserOrganizations({ ...fetchedUserOrganizations.data });
-    }
-  }, [fetchedUserOrganizations]);
+  const emptyUserOrganization: IOrganization = {
+    uuid: typeof window !== "undefined" ? crypto.randomUUID() : "",
+    name: "",
+    website: "",
+  };
 
   // insert/update user organizations
   const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } = useMutation({
     mutationFn: !userOrganizations.id ? organizationsApi.insertOne : organizationsApi.updateOne,
-    mutationKey: [organizationsApi.keys.updateUserOrganizations, userOrganizations.id ?? ""],
     onMutate: (newUserOrgs) => {
-      setAppContext({ ...appContext, openAIMessage: getUserOrganizationsMsg(newUserOrgs) });
+      setOpenaiMessage(getUserOrganizationsMsg(newUserOrgs));
     },
     onSuccess: (storedUserOrgs) => {
-      queryClient.invalidateQueries([organizationsApi.keys.updateUserOrganizations, userOrganizations.id ?? ""]);
-      queryClient.invalidateQueries([organizationsApi.keys.all]);
+      queryClient.invalidateQueries([organizationsApi.keys.all, session?.user?.id]);
       setUserOrganizations(storedUserOrgs);
     },
   });

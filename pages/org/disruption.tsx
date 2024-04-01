@@ -12,10 +12,13 @@ import Video from "../../components/disruption/video";
 import VideosForm from "../../components/disruption/videos-form";
 import VideosButtonList from "../../components/disruption/videos-button-list";
 import ChartsButton from "../../components/common/charts/charts-button";
+import Chat from "../../components/common/openai-chat";
 
 const Disruption = () => {
-  const { appContext, setAppContext } = useContext(appContextData);
-  useEffect(() => setAppContext({ ...appContext, activeStep: stepNamesEnum.disruption }), []);
+  const { setAppContext } = useContext(appContextData);
+  useEffect(() => {
+    setAppContext((prev) => ({ ...prev, activeStep: stepNamesEnum.disruption }));
+  }, []);
 
   const emptyVideos: IVideos = useMemo(() => {
     return {
@@ -42,6 +45,8 @@ const Disruption = () => {
 
   const [selectedVideoPropName, setSelectedVideoPropName] = useState<videoPropNamesEnum>(videoPropNamesEnum.goalsVideo);
   const [videos, setVideos] = useState<IVideos>(emptyVideos);
+  const [openaiMessage, setOpenaiMessage] = useState(``);
+
   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
   const [isVideoModalOn, toggleVideoModal] = useModalToggler();
   const [isEditUrlsModalOn, toggleEditUrlsModal] = useModalToggler();
@@ -56,6 +61,7 @@ const Disruption = () => {
             setSelectedVideoPropName={setSelectedVideoPropName}
             toggleEditUrlsModal={toggleEditUrlsModal}
             toggleVideoModal={toggleVideoModal}
+            setOpenaiMessage={setOpenaiMessage}
           />
         </article>
         <aside className="aside-content">
@@ -100,21 +106,19 @@ const Disruption = () => {
         </aside>
       </article>
       {/* ideas modal */}
-      <IdeasModal isOpen={isIdeasModalOpen} toggle={() => toggleIdeasModal()} />
+      <IdeasModal isOpen={isIdeasModalOpen} toggle={() => toggleIdeasModal()} setOpenaiMessage={setOpenaiMessage} />
       {/* video modal */}
       <Modal
         config={{
           isShown: isVideoModalOn,
           closeCallback: () => toggleVideoModal(false),
           className: "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[600px] rounded-xl overflow-hidden ",
-        }}
-      >
+        }}>
         <Video videoPropName={selectedVideoPropName} />
         <div className="flex justify-center p-5 bg-black">
           <button
             className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
-            onClick={() => toggleVideoModal(false)}
-          >
+            onClick={() => toggleVideoModal(false)}>
             close
           </button>
         </div>
@@ -126,10 +130,10 @@ const Disruption = () => {
           closeCallback: () => toggleEditUrlsModal(false),
           className:
             "flex flex-col w-[90%] lg:w-2/3 max-w-[1320px] h-[90%] max-h-[750px] rounded-xl overflow-hidden p-5 lg:p-10",
-        }}
-      >
+        }}>
         <VideosForm videos={videos} toggleEditUrlsModal={() => toggleEditUrlsModal(false)} />
       </Modal>
+      <Chat initialMessage={openaiMessage}></Chat>
     </>
   );
 };

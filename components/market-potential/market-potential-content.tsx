@@ -1,18 +1,18 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 
 import * as productsApi from "../../http-client/products.client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUserProduct } from "../../models/user-product";
 import { productPagesEnum } from "../../models/enums";
 import { IProduct } from "../../models/types";
-import { appContextData } from "../../context";
 
 import CompetitorsProduct from "./product";
 import Spinner from "../common/spinner";
 import GoNextButton from "../common/go-next-button";
 import ZeroProductsWarning from "../common/zero-products-warning";
 import FormikContextChild from "../products/formik-context-child";
-import { getCompanyProductMessage, getMarketPotentialMessage } from "../common/openai-chat/custom-messages";
+import { getCompanyProductMessage } from "../common/openai-chat/custom-messages";
 
 import { FieldArray, Form, Formik } from "formik";
 import { object, array, string, number } from "yup";
@@ -22,11 +22,17 @@ interface Props {
   userProduct: IUserProduct;
   isLoading: boolean;
   setChartProducts: (products: IProduct[]) => void;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const MarketPotentialContent = ({ userProduct, isLoading: areUserProductsLoading, setChartProducts }: Props) => {
+const MarketPotentialContent = ({
+  userProduct,
+  isLoading: areUserProductsLoading,
+  setChartProducts,
+  setOpenaiMessage,
+}: Props) => {
+  const { data: session }: any = useSession();
   const queryClient = useQueryClient();
-  const { appContext, setAppContext } = useContext(appContextData);
 
   const { mutate: updateUserProduct, isLoading: isUpdatingUserProduct } = useMutation(
     (userProduct: IUserProduct) => {
@@ -34,15 +40,10 @@ const MarketPotentialContent = ({ userProduct, isLoading: areUserProductsLoading
     },
     {
       onMutate: (newProducts) => {
-        queryClient.setQueryData([productsApi.Keys.UserProduct, userProduct.id], newProducts);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getCompanyProductMessage(newProducts),
-        });
+        setOpenaiMessage(getCompanyProductMessage(newProducts));
       },
       onSuccess: (storedProducts) => {
-        queryClient.invalidateQueries([productsApi.Keys.UserProduct, userProduct.id]);
-        queryClient.invalidateQueries([productsApi.Keys.All]);
+        queryClient.invalidateQueries([productsApi.Keys.All, session?.user?.id]);
       },
     }
   );

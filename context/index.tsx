@@ -3,7 +3,6 @@ import { AIAssistant, ChatIs, stepNamesEnum } from "../models/enums";
 import { OpenAI } from "openai";
 
 type AppContext = {
-  openAIMessage: string;
   openAIMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[];
   chatIs: ChatIs;
   AIAssistant: AIAssistant;
@@ -18,7 +17,6 @@ export const appContextData = createContext<AppContextType>({} as AppContextType
 
 function Context({ children }: { children: ReactNode }) {
   const [appContext, setAppContext] = useState<AppContext>({
-    openAIMessage: "",
     openAIMessages: [],
     chatIs: ChatIs.Minimized,
     AIAssistant: AIAssistant.AutoLearning,

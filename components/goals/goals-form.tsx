@@ -1,12 +1,10 @@
-import { useState, useEffect, ChangeEvent, useContext } from "react";
+import { useState, ChangeEvent, Dispatch, SetStateAction } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 import * as goalsApi from "../../http-client/goals.client";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { IUserGoals } from "../../models/user-goal";
-import { appContextData } from "../../context";
-
 import Spinner from "../common/spinner";
 import { getUserGoalsMsg } from "../common/openai-chat/custom-messages";
 
@@ -17,25 +15,17 @@ import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import GoNextButton from "../common/go-next-button";
 
 interface Props {
-  fetchedUserGoals: IUserGoals | undefined;
   areUserGoalsLoading: boolean;
   userGoals: IUserGoals;
   setUserGoals: React.Dispatch<React.SetStateAction<IUserGoals>>;
+  setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-const GoalsForm = ({ fetchedUserGoals, areUserGoalsLoading, userGoals, setUserGoals }: Props) => {
+const GoalsForm = ({ areUserGoalsLoading, userGoals, setUserGoals, setOpenaiMessage }: Props) => {
   const { data: session }: any = useSession();
   const queryClient = useQueryClient();
 
   const [goalToBeAdded, setGoalToBeAdded] = useState("");
-  const { appContext, setAppContext } = useContext(appContextData);
-
-  // display goals
-  useEffect(() => {
-    if (fetchedUserGoals) {
-      setUserGoals(fetchedUserGoals);
-    }
-  }, [fetchedUserGoals, setUserGoals]);
 
   // update goal with local storage mutation
   const { mutate: updateUserGoal, isLoading: isUpdatingUserGoal } = useMutation(
@@ -44,16 +34,10 @@ const GoalsForm = ({ fetchedUserGoals, areUserGoalsLoading, userGoals, setUserGo
     },
     {
       onMutate: (newGoal) => {
-        queryClient.setQueryData([goalsApi.Keys.UserGoals, userGoals.id], newGoal);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getUserGoalsMsg(newGoal),
-        });
+        setOpenaiMessage(getUserGoalsMsg(newGoal));
       },
       onSuccess: (storedGoal) => {
-        queryClient.invalidateQueries([goalsApi.Keys.UserGoals, userGoals.id]);
-        // flag locally stored goals as invalid, to be loaded onPageLoad
-        queryClient.invalidateQueries([goalsApi.Keys.All]);
+        queryClient.invalidateQueries([goalsApi.Keys.All, session?.user?.id]);
       },
     }
   );
@@ -64,10 +48,7 @@ const GoalsForm = ({ fetchedUserGoals, areUserGoalsLoading, userGoals, setUserGo
     {
       onMutate: (newGoal) => {
         queryClient.setQueryData([goalsApi.Keys.UserGoals, userGoals.id], newGoal);
-        setAppContext({
-          ...appContext,
-          openAIMessage: getUserGoalsMsg(newGoal),
-        });
+        setOpenaiMessage(getUserGoalsMsg(newGoal));
       },
       onSuccess: (storedGoal) => {
         queryClient.invalidateQueries([goalsApi.Keys.UserGoals, userGoals.id]);

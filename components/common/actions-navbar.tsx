@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { stepNamesEnum, tooltipDirectionsEnum, ChatIs, AIAssistant } from "../../models/enums";
+import { stepNamesEnum, tooltipDirectionsEnum, AIAssistant } from "../../models/enums";
 import { appContextData } from "../../context";
 
 import ConsultantReview from "./consultant-review";
@@ -56,26 +56,25 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
               </p>
             </Tooltip>
           </li>
-        )
-        }
+        )}
       </main>
       <ul className="nav-section-ul">
         <li>
           <p className="text-center font-hero-semibold text-4 text-[#4e79b2]">{session?.user?.fullName}</p>
         </li>
         <li
-          className={`group relative w-16 h-16 p-4 flex leading-7 bg-icons-gray rounded-full cursor-pointer ${appContext.AIAssistant === AIAssistant.ManualLearning ? `hover:bg-blue-900` : `hover:bg-red-600`
-            } transition duration-200`}
+          className={`group relative w-16 h-16 p-4 flex leading-7 bg-icons-gray rounded-full cursor-pointer ${
+            appContext.AIAssistant === AIAssistant.ManualLearning ? `hover:bg-blue-900` : `hover:bg-red-600`
+          } transition duration-200`}
           onClick={() => {
-            setAppContext({
-              ...appContext,
+            setAppContext((prev) => ({
+              ...prev,
               AIAssistant:
                 appContext.AIAssistant === AIAssistant.ManualLearning
                   ? AIAssistant.AutoLearning
                   : AIAssistant.ManualLearning,
-            });
-          }}
-        >
+            }));
+          }}>
           {appContext.AIAssistant === AIAssistant.ManualLearning ? (
             <>
               <FontAwesomeIcon icon={faComment} className="w-8 h-8 text-white" />
@@ -94,8 +93,7 @@ const ActionsNavbar = ({ selectedStepTitle: displayedPageTitle }: Props) => {
             signOut({
               callbackUrl: "/",
             });
-          }}
-        >
+          }}>
           <FontAwesomeIcon icon={faArrowRightFromBracket} className="text-white" />
           <Tooltip dir={tooltipDirectionsEnum.bottom}>Logout</Tooltip>
         </li>
