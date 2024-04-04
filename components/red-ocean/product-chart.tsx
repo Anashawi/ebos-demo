@@ -20,16 +20,16 @@ const RedOceanProductChart = ({ product, customOptions }: Props) => {
     });
     const updateChartProps = () => {
         const competitors =
-            product.competitors?.filter(c => !c.isUntapped) ?? [];
+            product.competitors?.filter((c) => !c.isUntapped) ?? [];
 
         const rows =
-            product.factors?.map(factor => {
+            product.factors?.map((factor) => {
                 return [
                     factor.name,
-                    ...competitors.map(comp => {
+                    ...competitors.map((comp) => {
                         const factorComp: IFactorCompetitor | undefined =
                             factor.competitors.find(
-                                competitor => comp.uuid === competitor.uuid
+                                (competitor) => comp.uuid === competitor.uuid
                             );
                         if (factorComp) {
                             return +factorComp.value;
@@ -39,7 +39,12 @@ const RedOceanProductChart = ({ product, customOptions }: Props) => {
                 ];
             }) ?? [];
         chart.data = [
-            ["Factor", ...(competitors?.map(comp => comp.name) ?? [])],
+            [
+                "Factor",
+                ...(competitors?.map((comp, index) =>
+                    index == 0 ? "Me" : comp.name
+                ) ?? []),
+            ],
             ...rows,
         ];
         chart.options = {
@@ -112,7 +117,12 @@ const RedOceanProductChart = ({ product, customOptions }: Props) => {
         }
     }, [product]);
 
-    return <Chart {...chart} legendToggle />;
+    return (
+        <Chart
+            {...chart}
+            legendToggle
+        />
+    );
 };
 
 export default RedOceanProductChart;
