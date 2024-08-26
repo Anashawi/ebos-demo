@@ -47,7 +47,7 @@ enum ChatGPTIs {
 }
 
 export default function OpenAIChat({ initialMessage }: { initialMessage?: string }) {
-  const CHATGPT_MODEL = "gpt-3.5-turbo-1106";
+  const CHATGPT_MODEL = "gpt-4o-2024-05-13" //"gpt-3.5-turbo-1106";
 
   const openai = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPEN_AI_KEY,
