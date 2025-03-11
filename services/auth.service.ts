@@ -20,20 +20,20 @@ export async function createUser(user: IUser) {
       password: hashedPassword,
       fullName: user.fullName,
       phoneNumber: user.phoneNumber,
-      provider: 'credentials',
-      role: 'client'
+      provider: "credentials",
+      role: user?.role || "client",
+      activeStatus: user?.activeStatus || false,
     } as IUser);
 
     await newUser.save();
     return newUser;
-
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
 
-export async function login(credentials: { email: string, password: string }) {
+export async function login(credentials: { email: string; password: string }) {
   try {
     await dbConnect();
     const result = await User.findOne({ email: credentials.email });
@@ -44,10 +44,18 @@ export async function login(credentials: { email: string, password: string }) {
 
     const isValid = await compare(credentials.password, result.password);
     if (!isValid) {
-      throw new Error("invalid password");
+      return new Error("invalid password");
     }
     const user = result?.toJSON();
-    return { email: user.email, role: user.role, id: user.id, fullName: user.fullName };
+    if (!user.activeStatus) {
+      throw new Error("inActive user");
+    }
+    return {
+      email: user.email,
+      role: user.role,
+      id: user.id,
+      fullName: user.fullName,
+    };
   } catch (error) {
     console.log(error);
   }

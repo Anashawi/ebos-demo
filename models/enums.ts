@@ -56,7 +56,7 @@ export enum stepNamesEnum {
   nonCustomers = "Non customers",
   stepUpStepDownModel = "Step Up Step Down Model",
   roadMap = "Roadmap",
-  admin = "admin"
+  admin = "admin",
 }
 
 export enum takeawayTypeEnums {

@@ -1,5 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import { authProviderEnum } from "./enums";
+import { boolean } from "yup";
 
 interface UserAttrs {
   fullName: string;
@@ -8,10 +9,13 @@ interface UserAttrs {
   phoneNumber: string;
   password: string;
   role: string;
+  activeStatus: boolean;
 }
 
 export interface IUser extends UserAttrs {
   id: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface UserDocument extends Document, UserAttrs {}
@@ -47,6 +51,11 @@ const userSchema = new Schema<UserDocument, UserModel>(
       type: String,
       required: true,
     },
+    activeStatus: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   {
     timestamps: true,
@@ -64,4 +73,6 @@ userSchema.statics.build = function (attrs: UserAttrs): UserDocument {
   return new User(attrs);
 };
 
-export const User = mongoose.models.User || mongoose.model<UserDocument, UserModel>("User", userSchema, "users");
+export const User =
+  mongoose.models.User ||
+  mongoose.model<UserDocument, UserModel>("User", userSchema, "users");

@@ -1,12 +1,13 @@
-import { User } from "../../models/user";
 import { NextApiRequest, NextApiResponse } from "next";
-import * as service from "../../services/users.service";
+import * as service from "../../services/activity-logs.service";
 import { getToken } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "GET":
       return _get(req, res);
+    case "POST":
+      return _post(req, res);
     case "PUT":
       return _put(req, res);
     case "DELETE":
@@ -22,6 +23,19 @@ async function _get(req: NextApiRequest, res: NextApiResponse) {
     if (sessionUser?.role !== "admin") throw new Error("You are not admin!");
 
     const result = await service.getAll();
+    res.status(200).json(result);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+
+async function _post(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const activityLog = req.body;
+    delete activityLog.uuid;
+    const result = await service.insertOne(activityLog);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({

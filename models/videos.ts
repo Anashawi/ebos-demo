@@ -29,7 +29,7 @@ interface VideosAttrs {
   stepUpStepDownModel: string;
   roadMap: string;
 }
-interface VideosDocument extends mongoose.Document, VideosAttrs { }
+interface VideosDocument extends mongoose.Document, VideosAttrs {}
 
 interface VideosModel extends mongoose.Model<VideosDocument> {
   build(attrs: VideosAttrs): VideosDocument;
