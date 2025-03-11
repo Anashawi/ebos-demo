@@ -37,7 +37,7 @@ const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPageLogs = logs.slice(startIndex, endIndex);
+  const currentPageLogs = logs ? logs.slice(startIndex, endIndex) : [];
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
