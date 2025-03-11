@@ -166,6 +166,7 @@ export default function OpenAIChat({
       role: ChatCompletionRequestMessageRoleEnum.User,
       content: textContent,
     };
+    //@ts-ignore
     newOpenAIMessages.push(newOpenAIMessage);
     setAppContext({
       ...appContext,
@@ -240,6 +241,7 @@ export default function OpenAIChat({
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
       content: newDisplayedMessages[newDisplayedMessages.length - 1].content,
     };
+    //@ts-ignore
     newOpenAIMessages.push(newOpenAIMessage);
     setAppContext({
       ...appContext,
