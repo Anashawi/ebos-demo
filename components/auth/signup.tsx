@@ -172,7 +172,7 @@ const Signup = ({
               />
               {formik.errors?.fullName && (
                 <div className="pl-4 text-rose-400 text-[1rem]">
-                  {formik.errors.fullName}
+                  {formik.errors.fullName as string}
                 </div>
               )}
             </div>
@@ -186,7 +186,7 @@ const Signup = ({
               />
               {formik.errors.email && (
                 <div className="pl-4 text-rose-400 text-[1rem]">
-                  {formik.errors.email}
+                  {formik.errors.email as string}
                 </div>
               )}
             </div>
@@ -200,7 +200,7 @@ const Signup = ({
               />
               {formik.errors?.phoneNumber && (
                 <div className="pl-4 text-rose-400 text-[1rem]">
-                  {formik.errors.phoneNumber}
+                  {formik.errors.phoneNumber as string}
                 </div>
               )}
             </div>
@@ -278,7 +278,7 @@ const Signup = ({
                 </div>
                 {formik.errors?.role && (
                   <div className="pl-4 text-rose-400 text-[1rem]">
-                    {formik.errors.role}
+                    {formik.errors.role as string}
                   </div>
                 )}
               </>
