@@ -27,7 +27,8 @@ const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const pageCount = Math.ceil(logs.length / itemsPerPage);
+
+  const pageCount = logs ? Math.ceil(logs.length / itemsPerPage) : 0;
 
   const paginationSize = Array.from(
     { length: pageCount },
