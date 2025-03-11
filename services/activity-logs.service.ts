@@ -36,10 +36,10 @@ export async function updateOne(logs: IActivityLogs) {
   try {
     await dbConnect();
     const result = await ActivityLogs.updateOne(
-      { _id: logs.id },
+      { _id: logs },
       { $set: { ...logs } }
     );
-    const updatedLog = await ActivityLogs.findById(logs.id);
+    const updatedLog = await ActivityLogs.findById(logs);
     return updatedLog?.toJSON();
   } catch (error) {
     console.log(error);
