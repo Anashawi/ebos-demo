@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
+import { IUser } from "../models/user";
+
 import * as clientApi from "../http-client/videos.client";
 import { useQuery } from "@tanstack/react-query";
 import { videoPropNamesEnum } from "../models/enums";
@@ -244,7 +246,12 @@ export default function Home() {
           className: "w-full min-w-[320px] max-w-[700px]",
         }}
       >
-        <Signup closeCallback={() => toggleSignupModal(false)} />
+        <Signup
+          permissionAdmin={false}
+          setUsers={() => ""}
+          updateUser={""}
+          closeCallback={() => toggleSignupModal(false)}
+        />
       </Modal>
 
       {/* video modal */}
