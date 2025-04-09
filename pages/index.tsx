@@ -24,11 +24,13 @@ import {
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import objectPath from "object-path";
+import { IUser } from "../models/user";
 
 export default function Home() {
   const { data: session }: any = useSession();
 
   const router = useRouter();
+  const [updateUser, setUpdateUser] = useState<IUser>();
 
   const [isSignupOn, toggleSignupModal] = useModalToggler();
   const [isLoginOn, toggleLoginModal] = useModalToggler();
@@ -171,9 +173,7 @@ export default function Home() {
                       </div>
                     )}
                     <div
-                      onClick={() => {
-                        router.push("org/goals");
-                      }}
+                      onClick={() => router.push("org/goals")}
                       className="w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400  cursor-pointer hover:shadow-lg transition duration-200"
                     >
                       <p className="grow text-white text-2xl">Start</p>
@@ -244,7 +244,12 @@ export default function Home() {
           className: "w-full min-w-[320px] max-w-[700px]",
         }}
       >
-        <Signup closeCallback={() => toggleSignupModal(false)} />
+        <Signup
+          permissionAdmin={false}
+          updateUser={updateUser}
+          setUsers={() => {}}
+          closeCallback={() => toggleSignupModal(false)}
+        />
       </Modal>
 
       {/* video modal */}

@@ -64,6 +64,12 @@ const Login = ({ closeCallback }: Props) => {
         // });
 
         router.push("org/goals");
+      } else {
+        setAuthState((old) => ({
+          ...old,
+          isLoading: false,
+          error: "Invalid Login",
+        }));
       }
     } catch (err) {
       setAuthState((old) => ({

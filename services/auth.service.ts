@@ -47,9 +47,7 @@ export async function login(credentials: { email: string; password: string }) {
       return new Error("invalid password");
     }
     const user = result?.toJSON();
-    if (!user.activeStatus) {
-      throw new Error("inActive user");
-    }
+
     return {
       email: user.email,
       role: user.role,
