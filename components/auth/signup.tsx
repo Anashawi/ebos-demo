@@ -16,11 +16,7 @@ interface Props {
   closeCallback: () => void;
   permissionAdmin: boolean;
   setUsers: (user: any) => void;
-<<<<<<< HEAD
   updateUser?: IUser | any;
-=======
-  updateUser?: IUser;
->>>>>>> main
 }
 
 const Signup = ({
