@@ -311,14 +311,10 @@ export default function OpenAIChat({
               autoFocus={true}
               attachButton={false}
               sendButton={true}
-<<<<<<< HEAD
               disabled={
                 chatGPTState === ChatGPTIs.Typing ||
                 chatGPTState === ChatGPTIs.Learning
               }
-=======
-              disabled={chatGPTState === ChatGPTIs.Typing || chatGPTState === ChatGPTIs.Learning}
->>>>>>> main
               ref={messageInput}
             />
           </ChatContainer>
@@ -326,7 +322,6 @@ export default function OpenAIChat({
       )}
       <Button
         className="chatgpt-button"
-<<<<<<< HEAD
         title={
           appContext.chatIs === ChatIs.Minimized ? "Open Chat" : "Hide Chat"
         }
@@ -337,20 +332,12 @@ export default function OpenAIChat({
               appContext.chatIs === ChatIs.Minimized
                 ? ChatIs.Maximized
                 : ChatIs.Minimized,
-=======
-        title={appContext.chatIs === ChatIs.Minimized ? "Open Chat" : "Hide Chat"}
-        onClick={() =>
-          setAppContext({
-            ...appContext,
-            chatIs: appContext.chatIs === ChatIs.Minimized ? ChatIs.Maximized : ChatIs.Minimized,
->>>>>>> main
           })
         }
         icon={
           <div className="flex flex-row justify-center">
             <FontAwesomeIcon
               className="w-10 h-10"
-<<<<<<< HEAD
               icon={
                 appContext.chatIs === ChatIs.Minimized ? faComment : faTimes
               }
@@ -358,12 +345,6 @@ export default function OpenAIChat({
           </div>
         }
       ></Button>
-=======
-              icon={appContext.chatIs === ChatIs.Minimized ? faComment : faTimes}
-            />
-          </div>
-        }></Button>
->>>>>>> main
     </>
   );
 }
