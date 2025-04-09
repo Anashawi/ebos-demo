@@ -204,11 +204,7 @@ const Signup = ({
               />
               {formik.errors?.phoneNumber && (
                 <div className="pl-4 text-rose-400 text-[1rem]">
-<<<<<<< HEAD
                   {formik.errors.phoneNumber as string}
-=======
-                  {formik.errors.phoneNumber}
->>>>>>> main
                 </div>
               )}
             </div>
@@ -286,11 +282,7 @@ const Signup = ({
                 </div>
                 {formik.errors?.role && (
                   <div className="pl-4 text-rose-400 text-[1rem]">
-<<<<<<< HEAD
                     {formik.errors.role as string}
-=======
-                    {formik.errors.role}
->>>>>>> main
                   </div>
                 )}
               </>

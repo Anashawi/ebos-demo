@@ -46,17 +46,12 @@ enum ChatGPTIs {
   Typing = "typing",
 }
 
-<<<<<<< HEAD
 export default function OpenAIChat({
   initialMessage,
 }: {
   initialMessage?: string;
 }) {
   const CHATGPT_MODEL = "gpt-4o-2024-05-13"; //"gpt-3.5-turbo-1106";
-=======
-export default function OpenAIChat({ initialMessage }: { initialMessage?: string }) {
-  const CHATGPT_MODEL = "gpt-4o-2024-05-13" //"gpt-3.5-turbo-1106";
->>>>>>> main
 
   const openai = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPEN_AI_KEY,
@@ -117,26 +112,17 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
   ): Promise<string> => {
     try {
       if (!streamCancelled) {
-<<<<<<< HEAD
         // const chatRepsonse = await openai.chat.completions.create({
         //   model: "gpt-3.5-turbo-1106",
         //   messages: [...newOpenAIMessages], // openAI requires all old msgs
         // });
         // return chatRepsonse["choices"][0]["message"]["content"] ?? "";
         return "";
-=======
-        const chatRepsonse = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo-1106",
-          messages: [...newOpenAIMessages], // openAI requires all old msgs
-        });
-        return chatRepsonse["choices"][0]["message"]["content"] ?? "";
->>>>>>> main
       } else {
         setStreamCancelled(false);
         return "cancelled by the user.";
       }
     } catch (error) {
-<<<<<<< HEAD
       let errorMessage =
         "Oops, something unexpected went wrong... try again later";
       const newDisplayedMessages = [...displayedMessages];
@@ -147,14 +133,6 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
         else if (error.status === 429)
           errorMessage =
             "Rate limit reached. Limit: 3 / min. Please try again in 20s";
-=======
-      let errorMessage = "Oops, something unexpected went wrong... try again later";
-      const newDisplayedMessages = [...displayedMessages];
-      if (error instanceof OpenAI.APIError) {
-        if (error.status === 429 && error.code === "insufficient_quota")
-          errorMessage = "You exceeded your current quota, please check your plan and billing details.";
-        else if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
->>>>>>> main
 
         console.error(error.status); // e.g. 401
         console.error(error.message); // e.g. The authentication token you passed was invalid...
@@ -188,10 +166,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
       role: ChatCompletionRequestMessageRoleEnum.User,
       content: textContent,
     };
-<<<<<<< HEAD
     //@ts-ignore
-=======
->>>>>>> main
     newOpenAIMessages.push(newOpenAIMessage);
     setAppContext({
       ...appContext,
@@ -232,12 +207,8 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
       });
       for await (const part of stream) {
         if (!streamCancelled) {
-<<<<<<< HEAD
           newDisplayedMessages[newDisplayedMessages.length - 1].content +=
             part.choices[0]?.delta.content ?? "";
-=======
-          newDisplayedMessages[newDisplayedMessages.length - 1].content += part.choices[0]?.delta.content ?? "";
->>>>>>> main
           setDisplayedMessages([...newDisplayedMessages]);
         } else {
           setStreamCancelled(false);
@@ -245,18 +216,12 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
         }
       }
     } catch (error) {
-<<<<<<< HEAD
       let errorMessage =
         "Oops, something unexpected went wrong... try again later";
       if (error instanceof OpenAI.APIError) {
         if (error.status === 429)
           errorMessage =
             "Rate limit reached. Limit: 3 / min. Please try again in 20s";
-=======
-      let errorMessage = "Oops, something unexpected went wrong... try again later";
-      if (error instanceof OpenAI.APIError) {
-        if (error.status === 429) errorMessage = "Rate limit reached. Limit: 3 / min. Please try again in 20s";
->>>>>>> main
         console.error(error.status); // e.g. 401
         console.error(error.message); // e.g. The authentication token you passed was invalid...
         console.error(error.code); // e.g. 'invalid_api_key'
@@ -266,12 +231,8 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
         console.log(error);
       }
 
-<<<<<<< HEAD
       newDisplayedMessages[newDisplayedMessages.length - 1].content =
         errorMessage;
-=======
-      newDisplayedMessages[newDisplayedMessages.length - 1].content = errorMessage;
->>>>>>> main
       setDisplayedMessages([...newDisplayedMessages]);
     }
 
@@ -280,10 +241,7 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
       content: newDisplayedMessages[newDisplayedMessages.length - 1].content,
     };
-<<<<<<< HEAD
     //@ts-ignore
-=======
->>>>>>> main
     newOpenAIMessages.push(newOpenAIMessage);
     setAppContext({
       ...appContext,
@@ -311,19 +269,14 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
             <MessageList
               className="chatgpt-messages-container"
               typingIndicator={
-<<<<<<< HEAD
                 (chatGPTState === ChatGPTIs.Typing ||
                   chatGPTState === ChatGPTIs.Learning) && (
-=======
-                (chatGPTState === ChatGPTIs.Typing || chatGPTState === ChatGPTIs.Learning) && (
->>>>>>> main
                   <>
                     <TypingIndicator content={`ChatGPT is ${chatGPTState}`} />
                     <Button
                       className="absolute bottom-0 right-0"
                       title="Stop generating"
                       onClick={cancelStream}
-<<<<<<< HEAD
                       icon={
                         <FontAwesomeIcon
                           className="w-4 h-4 text-gray-700"
@@ -335,12 +288,6 @@ export default function OpenAIChat({ initialMessage }: { initialMessage?: string
                 )
               }
             >
-=======
-                      icon={<FontAwesomeIcon className="w-4 h-4 text-gray-700" icon={faTimes} />}></Button>
-                  </>
-                )
-              }>
->>>>>>> main
               {displayedMessages.map((message, index) => {
                 return (
                   <Message

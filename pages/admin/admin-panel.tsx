@@ -15,13 +15,8 @@ import {
 
 import Customers from "./customers";
 import ActivityLogs from "./activityLogs";
-<<<<<<< HEAD
-import { IActivityLogs } from "../../models/activity-logs";
-import { Logs } from "lucide-react";
-=======
 import Subscriptions from "./subscriptions";
 import { IActivityLogs } from "../../models/activity-logs";
->>>>>>> main
 
 function AdminPanel({
   users,
@@ -42,36 +37,22 @@ function AdminPanel({
           <TabsTrigger className="h-10 text-xl" value="Customers">
             Customers
           </TabsTrigger>
-<<<<<<< HEAD
-          <TabsTrigger value="activity-logs" className="h-10 text-xl">
-            Activity Logs
-          </TabsTrigger>
-          <TabsTrigger value="Video" className="h-10 text-xl">
-            Videos Content
-=======
           <TabsTrigger value="Activity-logs" className="h-10 text-xl">
             Activity Logs
           </TabsTrigger>
           <TabsTrigger value="Subscriptions" className="h-10 text-xl">
             Subscriptions
->>>>>>> main
           </TabsTrigger>
         </TabsList>
         <TabsContent value="Customers">
           <Customers users={users} />
         </TabsContent>
-<<<<<<< HEAD
-        <TabsContent value="activity-logs">
-          <ActivityLogs logs={logs} />
-        </TabsContent>
-=======
         <TabsContent value="Activity-logs">
           <ActivityLogs logs={logs} />
         </TabsContent>
         <TabsContent value="Subscriptions">
           <Subscriptions />
         </TabsContent>
->>>>>>> main
       </Tabs>
     </>
   );

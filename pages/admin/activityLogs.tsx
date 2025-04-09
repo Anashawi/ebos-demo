@@ -27,12 +27,8 @@ const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-<<<<<<< HEAD
 
   const pageCount = logs ? Math.ceil(logs.length / itemsPerPage) : 0;
-=======
-  const pageCount = Math.ceil(logs.length / itemsPerPage);
->>>>>>> main
 
   const paginationSize = Array.from(
     { length: pageCount },
@@ -41,11 +37,7 @@ const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-<<<<<<< HEAD
   const currentPageLogs = logs ? logs.slice(startIndex, endIndex) : [];
-=======
-  const currentPageLogs = logs.slice(startIndex, endIndex);
->>>>>>> main
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
