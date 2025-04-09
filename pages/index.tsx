@@ -4,8 +4,11 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
+<<<<<<< HEAD
 import { IUser } from "../models/user";
 
+=======
+>>>>>>> main
 import * as clientApi from "../http-client/videos.client";
 import { useQuery } from "@tanstack/react-query";
 import { videoPropNamesEnum } from "../models/enums";
@@ -26,11 +29,19 @@ import {
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import objectPath from "object-path";
+<<<<<<< HEAD
+=======
+import { IUser } from "../models/user";
+>>>>>>> main
 
 export default function Home() {
   const { data: session }: any = useSession();
 
   const router = useRouter();
+<<<<<<< HEAD
+=======
+  const [updateUser, setUpdateUser] = useState<IUser>();
+>>>>>>> main
 
   const [isSignupOn, toggleSignupModal] = useModalToggler();
   const [isLoginOn, toggleLoginModal] = useModalToggler();
@@ -173,9 +184,13 @@ export default function Home() {
                       </div>
                     )}
                     <div
+<<<<<<< HEAD
                       onClick={() => {
                         router.push("org/goals");
                       }}
+=======
+                      onClick={() => router.push("org/goals")}
+>>>>>>> main
                       className="w-[55%] pl-10 pr-5 py-[0.8rem] flex gap-10 items-center rounded-full bg-primary-400  cursor-pointer hover:shadow-lg transition duration-200"
                     >
                       <p className="grow text-white text-2xl">Start</p>
@@ -248,8 +263,13 @@ export default function Home() {
       >
         <Signup
           permissionAdmin={false}
+<<<<<<< HEAD
           setUsers={() => ""}
           updateUser={""}
+=======
+          updateUser={updateUser}
+          setUsers={() => {}}
+>>>>>>> main
           closeCallback={() => toggleSignupModal(false)}
         />
       </Modal>

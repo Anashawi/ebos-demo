@@ -24,9 +24,13 @@ import html2canvas from "html2canvas";
 
 const MyComponent = () => {
   const { data: session }: any = useSession();
+<<<<<<< HEAD
 
   const [isLoadingPdf, setIsLoadingPdf] = useState<boolean>(false);
 
+=======
+  const [isLoadingPdf, setIsLoadingPdf] = useState<boolean>(false);
+>>>>>>> main
   const [userProduct, setUserProduct] = useState<IUserProduct>();
 
   const { data, isLoading } = useQuery<IUserProduct>({
@@ -49,7 +53,14 @@ const MyComponent = () => {
     const a4HeightInPoints = 841.89; // in points
 
     // Function to add a base64 image to a page in the PDF
+<<<<<<< HEAD
     const addBase64ImageToPage = async (component: HTMLElement, imageContentHeight: number) => {
+=======
+    const addBase64ImageToPage = async (
+      component: HTMLElement,
+      imageContentHeight: number
+    ) => {
+>>>>>>> main
       const scale = 2;
       const canvas = await html2canvas(component, {
         scale,
@@ -92,6 +103,7 @@ const MyComponent = () => {
       // }
     };
 
+<<<<<<< HEAD
     const pdfContentContainer = document.getElementById("pdf-content-container");
 
     const pdfContentComponent1 = document.getElementById("pdf-content-component-1");
@@ -104,6 +116,42 @@ const MyComponent = () => {
     const pdfContentComponent8 = document.getElementById("pdf-content-component-8");
     const pdfContentComponent9 = document.getElementById("pdf-content-component-9");
     const pdfContentComponent10 = document.getElementById("pdf-content-component-10");
+=======
+    const pdfContentContainer = document.getElementById(
+      "pdf-content-container"
+    );
+
+    const pdfContentComponent1 = document.getElementById(
+      "pdf-content-component-1"
+    );
+    const pdfContentComponent2 = document.getElementById(
+      "pdf-content-component-2"
+    );
+    const pdfContentComponent3 = document.getElementById(
+      "pdf-content-component-3"
+    );
+    const pdfContentComponent4 = document.getElementById(
+      "pdf-content-component-4"
+    );
+    const pdfContentComponent5 = document.getElementById(
+      "pdf-content-component-5"
+    );
+    const pdfContentComponent6 = document.getElementById(
+      "pdf-content-component-6"
+    );
+    const pdfContentComponent7 = document.getElementById(
+      "pdf-content-component-7"
+    );
+    const pdfContentComponent8 = document.getElementById(
+      "pdf-content-component-8"
+    );
+    const pdfContentComponent9 = document.getElementById(
+      "pdf-content-component-9"
+    );
+    const pdfContentComponent10 = document.getElementById(
+      "pdf-content-component-10"
+    );
+>>>>>>> main
 
     if (
       !pdfContentContainer ||
@@ -118,7 +166,13 @@ const MyComponent = () => {
       !pdfContentComponent9 ||
       !pdfContentComponent10
     ) {
+<<<<<<< HEAD
       console.error("one or more of pdfContentComponents or the Container is/are not defined");
+=======
+      console.error(
+        "one or more of pdfContentComponents or the Container is/are not defined"
+      );
+>>>>>>> main
       return;
     }
 
@@ -160,8 +214,18 @@ const MyComponent = () => {
               isLoadingPdf
                 ? "fixed top-11 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none bg-primary-200 text-dark-400"
                 : "fixed top-11 right-12 w-[14rem] py-5 btn-primary z-[99999] font-hero-semibold text-2xl hover:shadow-none hover:animate-shake"
+<<<<<<< HEAD
             }>
             {isLoadingPdf ? <Spinner message="loading pdf..." className="items-center" /> : "Download PDF"}
+=======
+            }
+          >
+            {isLoadingPdf ? (
+              <Spinner message="loading pdf..." className="items-center" />
+            ) : (
+              "Download PDF"
+            )}
+>>>>>>> main
           </button>
           <div id="pdf-content-container" className="px-12 py-10 bg-white">
             <h1 className="text-5xl font-hero-bold mb-10">Report</h1>
@@ -170,6 +234,7 @@ const MyComponent = () => {
                 <GoalsReport />
               </div>
               <div id="pdf-content-component-2">
+<<<<<<< HEAD
                 <PioneerMigratorSettlerReport userProduct={userProduct} isLoading={isLoading} />
               </div>
               <div id="pdf-content-component-3">
@@ -177,6 +242,24 @@ const MyComponent = () => {
               </div>
               <div id="pdf-content-component-4">
                 <RedOceanReport userProduct={userProduct} isLoading={isLoading} />
+=======
+                <PioneerMigratorSettlerReport
+                  userProduct={userProduct}
+                  isLoading={isLoading}
+                />
+              </div>
+              <div id="pdf-content-component-3">
+                <MarketPotentialReport
+                  userProduct={userProduct}
+                  isLoading={isLoading}
+                />
+              </div>
+              <div id="pdf-content-component-4">
+                <RedOceanReport
+                  userProduct={userProduct}
+                  isLoading={isLoading}
+                />
+>>>>>>> main
               </div>
               <div id="pdf-content-component-5">
                 <DisruptionReport />
@@ -185,7 +268,14 @@ const MyComponent = () => {
                 <VoiceOfCustomersReport />
               </div>
               <div id="pdf-content-component-7">
+<<<<<<< HEAD
                 <BlueOceanReport userProduct={userProduct} isLoading={isLoading} />
+=======
+                <BlueOceanReport
+                  userProduct={userProduct}
+                  isLoading={isLoading}
+                />
+>>>>>>> main
               </div>
               <div id="pdf-content-component-8">
                 <NonCustomersReport />

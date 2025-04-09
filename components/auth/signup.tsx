@@ -16,7 +16,11 @@ interface Props {
   closeCallback: () => void;
   permissionAdmin: boolean;
   setUsers: (user: any) => void;
+<<<<<<< HEAD
   updateUser?: IUser | any;
+=======
+  updateUser?: IUser;
+>>>>>>> main
 }
 
 const Signup = ({
@@ -200,7 +204,11 @@ const Signup = ({
               />
               {formik.errors?.phoneNumber && (
                 <div className="pl-4 text-rose-400 text-[1rem]">
+<<<<<<< HEAD
                   {formik.errors.phoneNumber as string}
+=======
+                  {formik.errors.phoneNumber}
+>>>>>>> main
                 </div>
               )}
             </div>
@@ -278,7 +286,11 @@ const Signup = ({
                 </div>
                 {formik.errors?.role && (
                   <div className="pl-4 text-rose-400 text-[1rem]">
+<<<<<<< HEAD
                     {formik.errors.role as string}
+=======
+                    {formik.errors.role}
+>>>>>>> main
                   </div>
                 )}
               </>
