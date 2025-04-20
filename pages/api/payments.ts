@@ -29,21 +29,26 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { amount, orderId } = req.body;
 
-    const response =
-      orderId && amount
-        ? await service.createSession(orderId, amount)
-        : await service.insertOne(req.body);
-    if (response.status) {
-      return res
-        .status(response.status || 200)
-        .json(response?.data || response);
+    let response;
+
+    if (orderId && amount) {
+      response = await service.createSession(orderId, amount);
     } else {
-      return res.status(200).json(response);
+      response = await service.insertOne(req.body);
     }
-    // Extract only `data`
+
+    // Debug log
+    console.log("Payment response:", response);
+
+    if (response && response.status) {
+      return res.status(response.status).json(response.data || response);
+    } else {
+      return res.status(200).json(response || { message: "No response" });
+    }
   } catch (error: any) {
+    console.error("Payment error:", error);
     res.status(500).json({
-      message: error.message,
+      message: error.message || "Internal Server Error",
     });
   }
 }
