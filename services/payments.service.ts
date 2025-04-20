@@ -68,13 +68,6 @@ export async function getAll(query?: { searchText?: any }) {
 export async function insertOne(payment: IPayment) {
   try {
     await dbConnect();
-    // const indexes = await Payment.collection.indexes();
-    // const hasOldIndex = indexes.find((idx) => idx.name === "order.id_1");
-
-    // if (hasOldIndex) {
-    //   await Payment.collection.dropIndex("order.id_1");
-    //   console.log("✅ Dropped old index: orderId_1");
-    // }
     //@ts-ignore
     const newPayment = new Payment(payment);
     await newPayment.save();

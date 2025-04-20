@@ -34,7 +34,9 @@ async function _post(req: NextApiRequest, res: NextApiResponse) {
         ? await service.createSession(orderId, amount)
         : await service.insertOne(req.body);
     if (response.status) {
-      return res.status(response.status).json(response.data);
+      return res
+        .status(response.status || 200)
+        .json(response?.data || response);
     } else {
       return res.status(200).json(response);
     }
