@@ -55,7 +55,7 @@ function AdminPanel({
           <ActivityLogs logs={logs} />
         </TabsContent>
         <TabsContent value="Subscriptions">
-          <Subscriptions subscribers={subscribers} />
+          <Subscriptions subscribers={subscribers || []} />
         </TabsContent>
       </Tabs>
     </>

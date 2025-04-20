@@ -9,24 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { XCircle, CheckCircle } from "lucide-react";
 import { IPayment } from "../../models/payments";
-const Subscriptions = ({ subscribers }: { subscribers: IPayment[] }) => {
-  console.log(subscribers);
-  const subscriptions = [
-    {
-      id: "1",
-      username: "AnasAlhawi",
-      createdAt: "2025-04-05",
-      status: "active",
-    },
-    {
-      id: "2",
-      username: "OmarMango",
-      createdAt: "2025-04-04",
-      status: "active",
-    },
-  ];
+const Subscriptions = ({ subscribers = [] }: { subscribers: IPayment[] }) => {
   return (
     <div>
       <article className="md:w-[60vw]: lg:w-[80vw] h-[100vh] overflow-auto mt-10">
@@ -48,23 +32,24 @@ const Subscriptions = ({ subscribers }: { subscribers: IPayment[] }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {subscribers.map((subs) => (
-              <TableRow key={subs.id}>
-                {/* Assuming each log has a unique id */}
-                <TableCell className="font-medium font-hero-semibold ">
-                  {subs.userName} {/* Replace with actual log properties */}
-                </TableCell>
-                <TableCell className="font-medium font-hero-semibold ">
-                  {new Date(subs.subscriptionDate).toLocaleDateString()}
-                  {/* Replace with actual log properties */}
-                </TableCell>
-                <TableCell className="font-medium font-hero-semibold ">
-                  {new Date(
-                    subs.subscriptionExpirationDate
-                  ).toLocaleDateString()}
-                </TableCell>
-              </TableRow>
-            ))}
+            {subscribers &&
+              subscribers.map((subs) => (
+                <TableRow key={subs.id}>
+                  {/* Assuming each log has a unique id */}
+                  <TableCell className="font-medium font-hero-semibold ">
+                    {subs.userName} {/* Replace with actual log properties */}
+                  </TableCell>
+                  <TableCell className="font-medium font-hero-semibold ">
+                    {new Date(subs.subscriptionDate).toLocaleDateString()}
+                    {/* Replace with actual log properties */}
+                  </TableCell>
+                  <TableCell className="font-medium font-hero-semibold ">
+                    {new Date(
+                      subs.subscriptionExpirationDate
+                    ).toLocaleDateString()}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
 
           <TableFooter></TableFooter>

@@ -48,7 +48,6 @@ const Customers = ({ users }: { users: IUser[] }) => {
   const [updateUser, setUpdateUser] = useState<IUser>();
 
   const handleUserAdded = (newUser: any) => {
-    console.log(wholeUsers);
     setWholeUsers((prev) => {
       if (updateUser && Object.keys(updateUser).length) {
         return prev.map((elem) => (elem.id === updateUser.id ? newUser : elem));
