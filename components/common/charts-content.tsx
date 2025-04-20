@@ -1,6 +1,4 @@
-
-
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import { videoPropNamesEnum } from "../../models/enums";
@@ -22,10 +20,10 @@ import Chart from "react-google-charts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import StepUpStepDownCustomersReview from "../step-up-step-down/customers-review";
-import Link from "next/link";
-import { v4 as uuidv4 } from "uuid";
-import { createSession, checkStatus } from "../../http-client/payments";
+
+import { insertOne, getAll, deleteOne } from "../../http-client/payments";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface Props {
   videoPropName: videoPropNamesEnum;
@@ -35,11 +33,6 @@ interface Props {
   setOpenaiMessage: Dispatch<SetStateAction<string>>;
 }
 
-declare global {
-  interface Window {
-    Checkout: any;
-  }
-}
 const ChartsContent = ({
   videoPropName,
   videoLabel,
@@ -50,12 +43,12 @@ const ChartsContent = ({
   const router = useRouter();
   const { result, orderId } = router.query;
   const { data: session }: any = useSession();
-  console.log(session);
+  const userInfo = session?.user;
 
   const [isIdeasModalOpen, toggleIdeasModal] = useModalToggler();
   const [isVideoModalOn, toggleVideoModal] = useModalToggler(false);
   const [isEditUrlModalOn, toggleEditVideoModal] = useModalToggler();
-
+  const [subscribers, setSubscribers] = useState([]);
   const [chart] = useFuturesChart(chartProducts);
 
   // UI checks
@@ -63,67 +56,88 @@ const ChartsContent = ({
   const isNotLoadingWithChartData =
     !isChartDataLoading && chartProducts.length > 0;
 
-  const successPayment = async () => {
-    const uniqueId = {
-      id: uuidv4(),
-    };
-    const result = await createSession(uniqueId);
-    return result.session.id;
-  };
+  const [isPlansOpen, setIsPlansOpen] = useState(false); // State to control Plans dialog visibility
 
-  const handlePaymentPage = async () => {
-    const sessionId = await successPayment();
-    await initializeScript();
-    try {
-      if (typeof window !== "undefined" && window.Checkout) {
-        const checkoutInstance = window.Checkout;
+  const handleOpenPlansDialog = async () => {
+    const now = new Date();
+    for (const elem of subscribers) {
+      //@ts-ignore
+      const expirationDate = new Date(elem.subscriptionExpirationDate);
 
-        checkoutInstance.configure({
-          session: {
-            id: sessionId,
-          },
-        });
-
-        checkoutInstance.showPaymentPage();
-      } else {
-        console.error("Checkout is not available.");
-        alert("Payment service is unavailable. Please try again later.");
+      //@ts-ignore
+      if (elem?.userId === userInfo?.id) {
+        if (now < expirationDate) {
+          router.push("/org/report");
+          return; // stop execution after redirect
+        } else {
+          //@ts-ignore
+          await deleteOne(elem.id);
+          setIsPlansOpen(true);
+          return;
+        }
       }
-    } catch (error) {
-      console.error("Error in handlePaymentPage:", error);
-      alert("Failed to initiate payment. Please try again.");
     }
+
+    // if no matching userId, just open the plans
+    setIsPlansOpen(true);
   };
 
-  const initializeScript = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src =
-        "https://mepspay.gateway.mastercard.com/static/checkout/checkout.min.js";
-
-      script.onload = () => {
-        console.log(script);
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-
-      document.body.appendChild(script);
-    });
+  const handleClosePlansDialog = () => {
+    setIsPlansOpen(false);
   };
 
   useEffect(() => {
-    if (result === "SUCCESS" && orderId) {
-      const res = async () => {
-        const result = await checkStatus(orderId);
-      };
-      res();
-    }
+    if (typeof window !== "undefined") {
+      const user = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
-    if (result === "CANCELLED") {
+      if (result === "SUCCESS" && user?.id && user?.name && user?.email) {
+        const now = new Date();
+        const oneYearLater = new Date();
+        oneYearLater.setFullYear(now.getFullYear() + 1);
+
+        const insertPayment = async () => {
+          const res = await insertOne({
+            userName: user?.name,
+            userId: user?.id,
+            userEmail: user?.email,
+            //@ts-ignore
+            orderId: orderId,
+            subscriptionDate: now,
+            subscriptionExpirationDate: oneYearLater,
+          });
+
+          localStorage.removeItem("userInfo");
+          router.push("/org/report");
+          return res;
+        };
+
+        insertPayment();
+      }
     }
   }, [result, orderId]);
+
+  useEffect(() => {
+    const api = async () => {
+      const result = await getAll();
+      // await deleteOne("68052f3af167e66245a31887");
+      setSubscribers(result);
+    };
+    api();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && userInfo?.id) {
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          id: userInfo.id,
+          name: userInfo.fullName,
+          email: userInfo.email,
+        })
+      );
+    }
+  }, [userInfo]);
+
   return (
     <>
       <article className="helpers-modals-and-charts">
@@ -146,14 +160,24 @@ const ChartsContent = ({
         )}
         {videoPropName === videoPropNamesEnum.roadMap && (
           <>
-            {/* <Link
-              href=""
-              onClick={handlePaymentPage}
-              className="btn-primary-light text-center text-white hover:text-white"
-            >
-              Generate Report
-            </Link> */}
-            <Plans></Plans>
+            {/* Button that triggers the Plans dialog */}
+            <ChartsButton
+              title="Generate a report"
+              icon={undefined}
+              clickCallback={handleOpenPlansDialog}
+            />
+
+            {/* The Plans Dialog */}
+            {isPlansOpen && (
+              <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+                  <Plans
+                    isOpen={isPlansOpen}
+                    closePlans={handleClosePlansDialog}
+                  />
+                </div>
+              </div>
+            )}
           </>
         )}
         {isChartDataLoading && (
@@ -214,8 +238,8 @@ const ChartsContent = ({
         <div className="flex justify-center p-5 bg-black">
           <button
             className="btn-diff bg-gray-100 hover:bg-gray-300 text-dark-400"
-            onClick={() => toggleVideoModal(false)}>
-          
+            onClick={() => toggleVideoModal(false)}
+          >
             close
           </button>
         </div>

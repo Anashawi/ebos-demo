@@ -6,6 +6,7 @@ import { IUser } from "../../models/user";
 import { getToken } from "next-auth/jwt";
 import { getAll } from "../../services/users.service";
 import { getAll as getLogs } from "../../services/activity-logs.service";
+import { getAll as getSubscribers } from "../../services/payments.service";
 import {
   Tabs,
   TabsContent,
@@ -17,13 +18,16 @@ import Customers from "./customers";
 import ActivityLogs from "./activityLogs";
 import Subscriptions from "./subscriptions";
 import { IActivityLogs } from "../../models/activity-logs";
+import { IPayment } from "../../models/payments";
 
 function AdminPanel({
   users,
   logs,
+  subscribers,
 }: {
   users: IUser[];
   logs: IActivityLogs[];
+  subscribers: IPayment;
 }) {
   const { setAppContext } = useContext(appContextData);
 
@@ -51,7 +55,7 @@ function AdminPanel({
           <ActivityLogs logs={logs} />
         </TabsContent>
         <TabsContent value="Subscriptions">
-          <Subscriptions />
+          <Subscriptions subscribers={subscribers} />
         </TabsContent>
       </Tabs>
     </>
@@ -66,6 +70,8 @@ export const getServerSideProps = async (
   const session: any = await getToken({ req: context.req });
   const users = await getAll();
   const logs = await getLogs();
+  const subscribers = await getSubscribers();
+
   if (session?.role !== "admin") {
     return {
       redirect: {
@@ -78,6 +84,7 @@ export const getServerSideProps = async (
     props: {
       logs: JSON.parse(JSON.stringify(logs)),
       users: JSON.parse(JSON.stringify(users)),
+      subscribers: JSON.parse(JSON.stringify(subscribers)),
     },
   };
 };

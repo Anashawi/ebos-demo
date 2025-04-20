@@ -1,19 +1,12 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 interface PaymentAttrs {
-  apiOperation: string;
-  interaction: {
-    operation: string;
-    merchant: {
-      name: string;
-    };
-  };
-  order: {
-    currency: string;
-    amount: string;
-    id: string;
-    description: string;
-  };
+  userName: string;
+  userId: string;
+  userEmail: string;
+  orderId: string;
+  subscriptionDate: Date;
+  subscriptionExpirationDate: Date;
 }
 
 export interface IPayment extends PaymentAttrs {
@@ -30,21 +23,12 @@ interface PaymentModel extends Model<PaymentDocument> {
 
 const PaymentSchema = new Schema<PaymentDocument, PaymentModel>(
   {
-    apiOperation: { type: String, required: true },
-
-    interaction: {
-      operation: { type: String, required: true },
-      merchant: {
-        name: { type: String, required: true },
-      },
-    },
-
-    order: {
-      currency: { type: String, required: true },
-      amount: { type: String, required: true },
-      id: { type: String, required: true, unique: true },
-      description: { type: String, required: true },
-    },
+    userName: { type: String, required: true },
+    userId: { type: String, required: true },
+    userEmail: { type: String, required: true },
+    orderId: { type: String, required: true, unique: true },
+    subscriptionDate: { type: Date, required: true },
+    subscriptionExpirationDate: { type: Date, required: true },
   },
   {
     timestamps: true,

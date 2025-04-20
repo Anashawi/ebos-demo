@@ -10,7 +10,9 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { XCircle, CheckCircle } from "lucide-react";
-const Subscriptions = () => {
+import { IPayment } from "../../models/payments";
+const Subscriptions = ({ subscribers }: { subscribers: IPayment[] }) => {
+  console.log(subscribers);
   const subscriptions = [
     {
       id: "1",
@@ -41,42 +43,25 @@ const Subscriptions = () => {
                 subscription date
               </TableHead>
               <TableHead className="w-[150px] text-lg font-bold">
-                status
-              </TableHead>
-              <TableHead className="text-right text-lg font-bold px-10">
-                actions
+                subscription expire date
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {subscriptions.map((subs) => (
+            {subscribers.map((subs) => (
               <TableRow key={subs.id}>
                 {/* Assuming each log has a unique id */}
                 <TableCell className="font-medium font-hero-semibold ">
-                  {subs.username} {/* Replace with actual log properties */}
+                  {subs.userName} {/* Replace with actual log properties */}
                 </TableCell>
                 <TableCell className="font-medium font-hero-semibold ">
-                  {subs.createdAt} {/* Replace with actual log properties */}
+                  {new Date(subs.subscriptionDate).toLocaleDateString()}
+                  {/* Replace with actual log properties */}
                 </TableCell>
                 <TableCell className="font-medium font-hero-semibold ">
-                  {subs.status}
-                </TableCell>
-
-                <TableCell className="font-medium font-hero-semibold ">
-                  <div className="flex  flex-row justify-end gap-7 mx-auto ">
-                    <button
-                      onClick={() => {}}
-                      className="hover:bg-blue-100 p-2 rounded-lg transition"
-                    >
-                      <CheckCircle size={20} color="blue" />
-                    </button>
-                    <button
-                      onClick={() => {}}
-                      className="hover:bg-blue-100 p-2 rounded-lg transition"
-                    >
-                      <XCircle size={20} color="blue" />
-                    </button>
-                  </div>
+                  {new Date(
+                    subs.subscriptionExpirationDate
+                  ).toLocaleDateString()}
                 </TableCell>
               </TableRow>
             ))}

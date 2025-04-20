@@ -4,25 +4,56 @@ import * as service from "../../services/payments.service";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
+    case "GET":
+      return _get(req, res);
     case "POST":
       return _post(req, res);
+    case "DELETE":
+      return _delete(req, res);
     default:
       return res.status(405).json({ message: "Method Not Allowed" });
   }
 }
 
+async function _get(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const result = await service.getAll();
+    res.status(200).json(result);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
 async function _post(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { id, orderId } = req.body;
+    const { amount, orderId } = req.body;
 
-    if (!id && !orderId) {
-      return res.status(400).json({ message: "Order ID is required" });
+    const response =
+      orderId && amount
+        ? await service.createSession(orderId, amount)
+        : await service.insertOne(req.body);
+    if (response.status) {
+      return res.status(response.status).json(response.data);
+    } else {
+      return res.status(200).json(response);
     }
+    // Extract only `data`
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
 
-    const response = id
-      ? await service.createSession(id)
-      : await service.checkPaymentStatus(orderId);
-    return res.status(response.status).json(response.data); // Extract only `data`
+async function _delete(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    //@ts-ignore
+    const { id } = req.body;
+    if (!id) throw new Error("Payment ID is required!");
+    //@ts-ignore
+    const result = await service.deleteOne(id);
+    res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({
       message: error.message,

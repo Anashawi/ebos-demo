@@ -1,129 +1,142 @@
-import React from "react";
-import Link from "next/link";
+import React, { useState } from "react";
+import PlanCard from "./PlanCard"; // Make sure path is correct
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../../components/ui/alert-dialog";
+const Plans = ({
+  isOpen,
+  closePlans,
+}: {
+  isOpen: boolean;
+  closePlans: () => void;
+}) => {
+  const [isGenerateReportOpen, setIsGenerateReportOpen] = useState(false); // New state for second dialog
 
-const Plans = () => {
+  const handleOpenGenerateReportDialog = () => {
+    setIsGenerateReportOpen(true); // Open the second dialog when the button is clicked
+  };
+
+  if (!isOpen) return null; // Don't render the dialog if not open
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Link
-          href=""
-          className="btn-primary-light text-center text-white hover:text-white"
-        >
-          Generate Report
-        </Link>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="w-full max-w-none sm:max-w-none md:max-w-none lg:max-w-none xl:max-w-none rounded-none min-h-screen p-0">
-        <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-          <AlertDialogHeader className="text-center">
-            <AlertDialogTitle className="text-3xl font-bold text-gray-900 mt-10">
-              EBOSS Plans
-            </AlertDialogTitle>
-          </AlertDialogHeader>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <section className="bg-white py-16 px-4 flex flex-col justify-center items-center text-center w-[1000px] max-h-[98vh] overflow-y-auto rounded-3xl shadow-xl">
+        <h1 className="text-4xl font-extrabold text-[#1a3365] mt-5">
+          <span className="text-[#1a3365]">EBOSS</span> Plans
+        </h1>
 
-          <AlertDialogDescription asChild>
-            <div className="mx-auto bg-white p-8">
-              {/* Plan 1 */}
-              <div className="mb-10">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Start using the tool for Free
-                </h2>
-                <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-4">
-                  <li>
-                    Access to the EBOSS AI-powered growth strategy tool for 1
-                    year
-                  </li>
-                  <li>
-                    Includes step-by-step recorded training on how to use the
-                    tool
-                  </li>
-                  <li>
-                    Designed to help your company to develop a data-driven
-                    growth strategy
-                  </li>
-                </ul>
-                <div className="flex justify-between items-center">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md">
-                    Build Your Strategy
-                  </button>
-                  <p className="text-gray-900 font-medium">
-                    99$ one-time payment to generate report.
-                  </p>
-                </div>
-              </div>
-              <hr className="my-8 border-gray-200" />
-
-              {/* Plan 2 */}
-              <div className="mb-10">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Access to the EBOSS AI-powered growth strategy tool for 1 year
-                </h2>
-                <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-4">
-                  <li>
-                    Includes step-by-step recorded training on how to use the
-                    tool
-                  </li>
-                  <li>
-                    Get Feedback on your strategy from an EBOSS Expert by Email
-                  </li>
-                </ul>
-                <div className="flex justify-between items-center">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md">
-                    Buy now
-                  </button>
-                  <p className="text-gray-900 font-medium">
-                    499$ one-time payment
-                  </p>
-                </div>
-              </div>
-              <hr className="my-8 border-gray-200" />
-
-              {/* Plan 3 */}
-              <div className="mb-10">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Access to the EBOSS AI-powered growth strategy tool for 1 year
-                </h2>
-                <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-4">
-                  <li>
-                    Includes step-by-step recorded training on how to use the
-                    tool
-                  </li>
-                  <li>
-                    Get an EBOSS expert to meet with you in a 4-hour focused one
-                    to one meeting to enhance your strategy.
-                  </li>
-                </ul>
-                <div className="flex justify-between items-center">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md">
-                    Buy Now
-                  </button>
-                  <p className="text-gray-900 font-medium">
-                    1999$ one-time payment
-                  </p>
-                </div>
-              </div>
-              <hr className="my-8 border-gray-200" />
-            </div>
-          </AlertDialogDescription>
-
-          <AlertDialogFooter className="px-8 pb-8">
-            <AlertDialogAction>Cancel</AlertDialogAction>
-          </AlertDialogFooter>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+          {plansDetails.map((item, index) => (
+            <PlanCard
+              key={index}
+              title={item.title}
+              subtitle={item.subtitle}
+              items={item.items}
+              price={item.price}
+              buttonLabel={item.buttonLabel}
+            />
+          ))}
         </div>
-      </AlertDialogContent>
-    </AlertDialog>
+
+        <div className="bg-[#1a3365] text-white py-10 px-6 rounded-3xl max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 mt-2">
+          <div className="text-left">
+            <h2 className="text-2xl sm:text-3xl font-extrabold">
+              EBOSS <span className="text-yellow-400">Enterprise</span>
+            </h2>
+            <p className="text-yellow-400 font-semibold text-lg mt-2">
+              Build your Ultimate Growth Strategy Hand in hand with EBOSS
+              Experts.
+            </p>
+          </div>
+          <p className="bg-yellow-400 text-[#1a3365] font-bold px-8 py-3 rounded-full">
+            EBOSS
+          </p>
+        </div>
+
+        <button
+          onClick={closePlans}
+          className="bg-blue-500 text-white py-3 px-6 rounded-xl mt-2 hover:bg-blue-400"
+        >
+          Back
+        </button>
+
+        {isGenerateReportOpen && (
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
+              <h2 className="text-xl font-semibold text-center mb-6">
+                Generating Your Report
+              </h2>
+              <p className="text-center">
+                Your report is being generated. Please wait...
+              </p>
+              <button
+                onClick={() => setIsGenerateReportOpen(false)}
+                className="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-400"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
   );
 };
 
 export default Plans;
+
+const plansDetails = [
+  {
+    title: "EBOSS",
+    subtitle: "Start using the tool for Free",
+    items: [
+      "Access to the EBOSS AI-powered growth strategy tool for 1 year",
+      "Includes step-by-step recorded training on how to use the tool",
+      <div
+        className="bg-white shadow-md rounded-full px-4 py-2 font-semibold text-sm text-black"
+        key="highlight"
+      >
+        <span className="text-[#1a3365] font-bold">
+          Designed to help your company develop a data-driven growth strategy
+        </span>
+      </div>,
+    ],
+    price: "99$ one-time payment to generate report",
+    buttonLabel: "Build Your Strategy",
+  },
+  {
+    title: "EBOSS plus",
+    subtitle: "Start using the tool for EBOSS plus",
+    items: [
+      "Access to the EBOSS AI-powered growth strategy tool for 1 year",
+      "Includes step-by-step recorded training on how to use the tool",
+      <div
+        className="bg-white shadow-md rounded-full px-4 py-2 font-semibold text-sm text-black"
+        key="highlight"
+      >
+        <span className="text-[#1a3365] font-bold">
+          Get Feedback on your strategy from an EBOSS Expert by Email
+        </span>
+      </div>,
+    ],
+    price: "499$ one-time payment",
+    buttonLabel: "Build Now",
+  },
+  {
+    title: "EBOSS ultra",
+    subtitle: "Start using the tool for EBOSS ultra",
+    items: [
+      "Access to the EBOSS AI-powered growth strategy tool for 1 year",
+      "Includes step-by-step recorded training on how to use the tool",
+      <div
+        className="bg-white shadow-md rounded-full px-4 py-2 font-semibold text-sm text-black"
+        key="highlight"
+      >
+        <span className="text-[#1a3365] font-bold">
+          Get an EBOSS expert to meet with you in a 4-hours focused one to one
+          meeting to enhance your strategy
+        </span>
+      </div>,
+    ],
+    price: "1999$ one-time payment",
+    buttonLabel: "Build Now",
+  },
+];
