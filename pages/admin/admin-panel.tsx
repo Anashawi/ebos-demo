@@ -27,7 +27,7 @@ function AdminPanel({
 }: {
   users: IUser[];
   logs: IActivityLogs[];
-  subscribers: IPayment;
+  subscribers: IPayment[];
 }) {
   const { setAppContext } = useContext(appContextData);
 
