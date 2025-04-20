@@ -44,6 +44,13 @@ export const authOptions = {
         if (!credentials) return;
         try {
           const user = await authService.login(credentials);
+          if (
+            //@ts-ignore
+            user.message === "invalid email" ||
+            //@ts-ignore
+            user.message === "invalid password"
+          )
+            return null;
           return user;
         } catch (err) {
           console.log(err);
