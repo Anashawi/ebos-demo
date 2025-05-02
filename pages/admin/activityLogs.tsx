@@ -24,7 +24,7 @@ import { IActivityLogs } from "../../models/activity-logs";
 const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const logsItem = [...logs].reverse();
+  const logsItem = Array.isArray(logs) ? [...logs].reverse() : [];
 
   const pageCount = logsItem ? Math.ceil(logsItem.length / itemsPerPage) : 0;
 
