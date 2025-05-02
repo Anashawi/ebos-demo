@@ -82,7 +82,7 @@ export const getServerSideProps = async (
   }
   return {
     props: {
-      logs: JSON.parse(JSON.stringify(logs)),
+      logs: Array.isArray(logs) ? JSON.parse(JSON.stringify(logs)) : [],
       users: JSON.parse(JSON.stringify(users)),
       subscribers: JSON.parse(JSON.stringify(subscribers)),
     },
