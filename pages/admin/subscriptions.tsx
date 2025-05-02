@@ -21,13 +21,13 @@ const Subscriptions = ({ subscribers = [] }: { subscribers: IPayment[] }) => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[150px] text-lg font-bold">
-                username
+                Username
               </TableHead>
               <TableHead className="w-[150px] text-lg font-bold">
-                subscription date
+                Subscription date
               </TableHead>
               <TableHead className="w-[150px] text-lg font-bold">
-                subscription expire date
+                Subscription expire date
               </TableHead>
             </TableRow>
           </TableHeader>

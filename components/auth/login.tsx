@@ -4,14 +4,16 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { object, string } from "yup";
 import Spinner from "../common/spinner";
-import { insertOne, getAll } from "../../http-client/activity-logs";
+import { insertOne } from "../../http-client/activity-logs";
 
 interface Props {
   closeCallback: () => void;
+  openReset: () => void; // ← add this
 }
 
-const Login = ({ closeCallback }: Props) => {
+const Login = ({ closeCallback, openReset }: Props) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const [authState, setAuthState] = useState({
     isLoading: false,
@@ -56,12 +58,12 @@ const Login = ({ closeCallback }: Props) => {
       if (!result?.error) {
         //login is successful.. close login model
         closeCallback();
-        // const result = await insertOne({
-        //   _id: "",
-        //   action: "Login",
-        //   createdBy: "user",
-        //   typeOfAction: "create",
-        // });
+        //@ts-ignore
+        const result = await insertOne({
+          action: "Login",
+          createdBy: email || "unknown",
+          typeOfAction: "Auth",
+        });
 
         router.push("org/goals");
       } else {
@@ -139,6 +141,14 @@ const Login = ({ closeCallback }: Props) => {
               </div>
             )}
           </div>
+          <div
+            className="text-lg text-primary hover:underline cursor-pointer"
+            onClick={() => {
+              openReset();
+            }}
+          >
+            Forgot your password?
+          </div>{" "}
           <div className="flex justify-end">
             <button type="submit" className="btn-rev">
               Login

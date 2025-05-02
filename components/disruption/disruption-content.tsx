@@ -39,11 +39,12 @@ const DisruptionContent = ({
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data: fetchedVideos, status: fetchingVideoStatus } = useQuery<IVideos>({
-    queryKey: [videosApi.Keys.all],
-    queryFn: videosApi.getOne,
-    refetchOnWindowFocus: false,
-  });
+  const { data: fetchedVideos, status: fetchingVideoStatus } =
+    useQuery<IVideos>({
+      queryKey: [videosApi.Keys.all],
+      queryFn: videosApi.getOne,
+      refetchOnWindowFocus: false,
+    });
 
   useEffect(() => {
     if (fetchingVideoStatus === "success") {
@@ -67,53 +68,74 @@ const DisruptionContent = ({
     takeaways: [emptyScaleTakeaways, emptyIdeasTakeaways],
   };
 
-  const [userTakeaways, setUserTakeaways] = useState<IUserTakeaways>(emptyUserTakeaways);
+  const [userTakeaways, setUserTakeaways] =
+    useState<IUserTakeaways>(emptyUserTakeaways);
 
   const {
     data: fetchedTakeaways,
     isLoading: isLoadingTakeaways,
     status: fetchingTakeawaysStatus,
-  } = useQuery<IUserTakeaways>([takeawaysApi.Keys.all, userTakeaways.id], takeawaysApi.getOne, {
-    enabled: !!session?.user?.id,
-    refetchOnWindowFocus: false,
-  });
+  } = useQuery<IUserTakeaways>(
+    [takeawaysApi.Keys.all, userTakeaways.id],
+    takeawaysApi.getOne,
+    {
+      enabled: !!session?.user?.id,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   useEffect(() => {
     if (fetchingTakeawaysStatus === "success") {
       if (fetchedTakeaways) setUserTakeaways(fetchedTakeaways);
-      setOpenaiMessage(`${stepFiveTranscript}\n\n${getDisruptionMessage(fetchedTakeaways)}`);
+      setOpenaiMessage(
+        `${stepFiveTranscript}\n\n${getDisruptionMessage(fetchedTakeaways)}`
+      );
     }
   }, [fetchingTakeawaysStatus]);
 
-  const { mutate: updateUserTakeaways, isLoading: isUpdatingUserTakeaways } = useMutation(
-    (userTakeaways: IUserTakeaways) => {
-      return takeawaysApi.updateOne(userTakeaways);
-    },
-    {
-      onMutate: (newTakeaways) => {
-        queryClient.setQueryData([takeawaysApi.Keys.all, userTakeaways.id], newTakeaways);
-        setOpenaiMessage(getDisruptionMessage(fetchedTakeaways));
+  const { mutate: updateUserTakeaways, isLoading: isUpdatingUserTakeaways } =
+    useMutation(
+      (userTakeaways: IUserTakeaways) => {
+        return takeawaysApi.updateOne(userTakeaways);
       },
-      onSuccess: (storedTakeaways) => {
-        queryClient.invalidateQueries([takeawaysApi.Keys.all, userTakeaways.id]);
-      },
-    }
-  );
+      {
+        onMutate: (newTakeaways) => {
+          queryClient.setQueryData(
+            [takeawaysApi.Keys.all, userTakeaways.id],
+            newTakeaways
+          );
+          setOpenaiMessage(getDisruptionMessage(fetchedTakeaways));
+        },
+        onSuccess: (storedTakeaways) => {
+          queryClient.invalidateQueries([
+            takeawaysApi.Keys.all,
+            userTakeaways.id,
+          ]);
+        },
+      }
+    );
 
-  const { mutate: createUserTakeaways, isLoading: isCreatingUserTakeaways } = useMutation(
-    (userTakeaways: IUserTakeaways) => takeawaysApi.insertOne(userTakeaways),
-    {
-      onMutate: (newTakeaways) => {
-        queryClient.setQueryData([takeawaysApi.Keys.all, userTakeaways.id], newTakeaways);
-        setOpenaiMessage(getDisruptionMessage(fetchedTakeaways));
-      },
-      onSuccess: (storedTakeaways) => {
-        queryClient.invalidateQueries([takeawaysApi.Keys.all, userTakeaways.id]);
-        queryClient.invalidateQueries([takeawaysApi.Keys.all]);
-        setUserTakeaways(storedTakeaways);
-      },
-    }
-  );
+  const { mutate: createUserTakeaways, isLoading: isCreatingUserTakeaways } =
+    useMutation(
+      (userTakeaways: IUserTakeaways) => takeawaysApi.insertOne(userTakeaways),
+      {
+        onMutate: (newTakeaways) => {
+          queryClient.setQueryData(
+            [takeawaysApi.Keys.all, userTakeaways.id],
+            newTakeaways
+          );
+          setOpenaiMessage(getDisruptionMessage(fetchedTakeaways));
+        },
+        onSuccess: (storedTakeaways) => {
+          queryClient.invalidateQueries([
+            takeawaysApi.Keys.all,
+            userTakeaways.id,
+          ]);
+          queryClient.invalidateQueries([takeawaysApi.Keys.all]);
+          setUserTakeaways(storedTakeaways);
+        },
+      }
+    );
 
   return (
     <>
@@ -121,25 +143,35 @@ const DisruptionContent = ({
         <h3 className="title-header">Disruption</h3>
         <div className="pill-yellow-50 p-3">
           <div className="w-[3rem] h-[3rem]">
-            <Image src="/bulb.svg" alt="Bulb Icon" width={0} height={0} className="w-full h-auto" />
+            <Image
+              src="/bulb.svg"
+              alt="Bulb Icon"
+              width={0}
+              height={0}
+              className="w-full h-auto"
+            />
           </div>
           <p className="text-xl text-dark-300">
-            Watch help videos then update your ideas accordingly. Submit for feedback.
+            Watch help videos then update your ideas accordingly. Submit for
+            feedback.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-5 p-5 bg-dark-50 rounded-2xl">
           <div className="col-1/2 grow">
-            <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">Scale</h4>
+            <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">
+              Swift
+            </h4>
             <ul className="flex flex-col gap-3 mb-5">
               <li className="pill-primary-300 text-xl">
-                Staff on Demand
+                Synapse
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-100"
                   onClick={() => {
                     setSelectedVideoPropName(videoPropNamesEnum.staffOnDemand);
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -147,13 +179,16 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Community and Crowd
+                Window
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
-                    setSelectedVideoPropName(videoPropNamesEnum.communityAndCrowd);
+                    setSelectedVideoPropName(
+                      videoPropNamesEnum.communityAndCrowd
+                    );
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -161,13 +196,14 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Algorithms
+                Ideation
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
                     setSelectedVideoPropName(videoPropNamesEnum.algorithms);
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -175,13 +211,16 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Leveraged Assets
+                Flow
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
-                    setSelectedVideoPropName(videoPropNamesEnum.leveragedAssets);
+                    setSelectedVideoPropName(
+                      videoPropNamesEnum.leveragedAssets
+                    );
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -189,13 +228,14 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Engagement
+                Tribe
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
                     setSelectedVideoPropName(videoPropNamesEnum.Engagement);
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -205,17 +245,20 @@ const DisruptionContent = ({
             </ul>
           </div>
           <div className="col-1/2 grow">
-            <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">Ideas</h4>
+            <h4 className="mb-3 text-[1.75rem] text-dark-400 font-hero-bold">
+              Reach
+            </h4>
 
             <ul className="flex flex-col gap-3 mb-5">
               <li className="pill-primary-300 text-xl">
-                Interface
+                Remote Talent
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
                     setSelectedVideoPropName(videoPropNamesEnum.interface);
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -223,13 +266,14 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Dashboard
+                Ecosystem
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
                     setSelectedVideoPropName(videoPropNamesEnum.dashboard);
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -237,13 +281,16 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Experimentation
+                Automation
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
-                    setSelectedVideoPropName(videoPropNamesEnum.experimentation);
+                    setSelectedVideoPropName(
+                      videoPropNamesEnum.experimentation
+                    );
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -251,13 +298,14 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Autonomy
+                Cloud Resources
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
                     setSelectedVideoPropName(videoPropNamesEnum.autonomy);
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -265,13 +313,16 @@ const DisruptionContent = ({
                 </div>
               </li>
               <li className="pill-primary-300 text-xl">
-                Social Platforms
+                Human Energy
                 <div
                   className="cursor-pointer hover:scale-[115%] transition duration-200"
                   onClick={() => {
-                    setSelectedVideoPropName(videoPropNamesEnum.socialPlatforms);
+                    setSelectedVideoPropName(
+                      videoPropNamesEnum.socialPlatforms
+                    );
                     toggleVideoModal();
-                  }}>
+                  }}
+                >
                   <FontAwesomeIcon
                     className="w-9 h-auto text-primary-300 bg-white rounded-full p-[1.3px]"
                     icon={faCirclePlay}
@@ -291,7 +342,10 @@ const DisruptionContent = ({
 
         <div className="flex justify-end h-10">
           {(isUpdatingUserTakeaways || isCreatingUserTakeaways) && (
-            <Spinner className="pl-10 flex items-center text-2xl" message="Saving your takeaways..." />
+            <Spinner
+              className="pl-10 flex items-center text-2xl"
+              message="Saving your takeaways..."
+            />
           )}
         </div>
         {(session?.user as any)?.role !== "admin" && (
@@ -299,7 +353,11 @@ const DisruptionContent = ({
             {!!userTakeaways && (
               <button
                 className={`btn-rev ${
-                  isLoadingTakeaways || isUpdatingUserTakeaways || isCreatingUserTakeaways ? `btn-disabled` : ``
+                  isLoadingTakeaways ||
+                  isUpdatingUserTakeaways ||
+                  isCreatingUserTakeaways
+                    ? `btn-disabled`
+                    : ``
                 }`}
                 onClick={() => {
                   if (!userTakeaways.id) {
@@ -312,7 +370,8 @@ const DisruptionContent = ({
                       ...userTakeaways,
                     });
                   }
-                }}>
+                }}
+              >
                 Save
               </button>
             )}
@@ -321,9 +380,11 @@ const DisruptionContent = ({
                 className="cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full"
                 onClick={() => {
                   router.push("../org/voice-of-customers");
-                }}>
+                }}
+              >
                 <span className="text-xl text-md text-white">
-                  Go to next - <span className="text-white">Voice of Customers</span>
+                  Go to next -{" "}
+                  <span className="text-white">Voice of Customers</span>
                 </span>
               </div>
             )}
@@ -332,7 +393,10 @@ const DisruptionContent = ({
         {(session?.user as any)?.role === "admin" && (
           <div className="flex gap-4 justify-between">
             <div className="flex gap-5">
-              <button className="btn-primary-light" onClick={() => toggleEditUrlsModal(true)}>
+              <button
+                className="btn-primary-light"
+                onClick={() => toggleEditUrlsModal(true)}
+              >
                 <span>Edit video Urls</span>
                 <FontAwesomeIcon className="w-7" icon={faEdit} />
               </button>
@@ -349,7 +413,8 @@ const DisruptionContent = ({
                       });
                     }
                   }}
-                  className="btn-rev">
+                  className="btn-rev"
+                >
                   Save
                 </button>
               )}
@@ -359,9 +424,11 @@ const DisruptionContent = ({
                 className="cursor-pointer bg-dark-300 hover:shadow-lg px-9 py-3 rounded-full"
                 onClick={() => {
                   router.push("../org/voice-of-customers");
-                }}>
+                }}
+              >
                 <span className="text-xl text-md text-white">
-                  Go to next - <span className="text-white">Voice of Customers</span>
+                  Go to next -{" "}
+                  <span className="text-white">Voice of Customers</span>
                 </span>
               </div>
             )}

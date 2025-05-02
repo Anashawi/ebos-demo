@@ -57,3 +57,78 @@ export async function login(credentials: { email: string; password: string }) {
     console.log(error);
   }
 }
+
+export async function checkPassword(credentials: {
+  email: string;
+  password: string;
+}) {
+  try {
+    await dbConnect();
+    const result = await User.findOne({ email: credentials.email });
+
+    const isValid = await compare(credentials.password, result.password);
+    if (!isValid) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function ChangePassword(credentials: {
+  email: string;
+  password: string;
+}) {
+  try {
+    await dbConnect();
+    const result = await User.findOne({ email: credentials.email });
+
+    if (!result) {
+      throw new Error("invalid email");
+    }
+
+    const isValid = await compare(credentials.password, result.password);
+    if (!isValid) {
+      return new Error("invalid password");
+    }
+    const user = result?.toJSON();
+    return {
+      email: user.email,
+      role: user.role,
+      id: user.id,
+      fullName: user.fullName,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updatePassword({
+  email,
+  newPassword,
+}: {
+  email: string;
+  newPassword: string;
+}) {
+  try {
+    await dbConnect();
+    const hashedPassword = await hash(newPassword, 12);
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error(error);
+    //@ts-ignore
+    throw new Error(error.message);
+  }
+}

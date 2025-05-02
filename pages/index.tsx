@@ -27,6 +27,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import objectPath from "object-path";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
+
 export default function Home() {
   const { data: session }: any = useSession();
 
@@ -34,6 +45,8 @@ export default function Home() {
 
   const [isSignupOn, toggleSignupModal] = useModalToggler();
   const [isLoginOn, toggleLoginModal] = useModalToggler();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isVideoModalOn, toggleVideoModal] = useModalToggler();
   const [isEditUrlModalOn, toggleEditVideoModal] = useModalToggler();
@@ -235,8 +248,17 @@ export default function Home() {
           closeCallback={() => {
             toggleLoginModal(false);
           }}
+          openReset={() => {
+            toggleLoginModal(false);
+            setIsDialogOpen(true);
+          }}
         />
       </Modal>
+
+      <ResetPassword
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+      />
 
       {/* signup modal */}
       <Modal
@@ -290,5 +312,110 @@ export default function Home() {
         />
       </Modal>
     </>
+  );
+}
+
+interface ResetPasswordProps {
+  isDialogOpen: boolean;
+  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ResetPassword({ isDialogOpen, setIsDialogOpen }: ResetPasswordProps) {
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [showingErrorPassword, setShowingErrorPassword] = useState(false);
+  const [errorMatchPassword, setErrorMatchPassword] = useState("");
+
+  const handleResetPassword = async () => {
+    setShowingErrorPassword(false);
+    if (newPassword !== confirmPassword) {
+      setShowingErrorPassword(true);
+      setErrorMatchPassword("The password does not match");
+      return;
+    }
+
+    try {
+      const updateRes = await fetch("/api/auth/update-passwordByEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, newPassword }),
+      });
+
+      const updateData = await updateRes.json();
+
+      if (updateRes.ok) {
+        alert("Password updated successfully!");
+        setConfirmPassword("");
+        setNewPassword("");
+        setIsDialogOpen(false);
+      } else {
+        setShowingErrorPassword(true);
+        setErrorMatchPassword(
+          updateData.message || "Failed to update password"
+        );
+      }
+    } catch (err) {
+      alert("Something went wrong.");
+      console.error(err);
+    }
+  };
+
+  return (
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogContent className="sm:max-w-[425px] ">
+        <DialogHeader>
+          <DialogTitle>reset your password</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="new" className=" text-sm w-[150px]">
+              Email
+            </Label>
+            <Input
+              type="text"
+              id="new"
+              value={email}
+              className="col-span-3"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="new" className=" text-sm w-[150px]">
+              New Password
+            </Label>
+            <Input
+              type="password"
+              id="new"
+              value={newPassword}
+              className="col-span-3"
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="confirm" className=" text-sm w-[150px] ">
+              Confirm New Password
+            </Label>
+            <Input
+              type="password"
+              id="confirm"
+              value={confirmPassword}
+              className="col-span-3"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          {showingErrorPassword && (
+            <div className="text-red-600 bg-red-100 border border-red-300 px-3 py-2 rounded-md text-sm mb-2">
+              {errorMatchPassword}
+            </div>
+          )}
+          <Button type="submit" onClick={handleResetPassword}>
+            Save changes
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

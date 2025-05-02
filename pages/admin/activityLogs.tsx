@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,16 +19,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../../components/ui/pagination";
-import { IUser } from "../../models/user";
 import { IActivityLogs } from "../../models/activity-logs";
 
 const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
-  console.log(logs);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
+  const logsItem = [...logs].reverse();
 
-  const pageCount = logs ? Math.ceil(logs.length / itemsPerPage) : 0;
+  const pageCount = logsItem ? Math.ceil(logsItem.length / itemsPerPage) : 0;
 
   const paginationSize = Array.from(
     { length: pageCount },
@@ -37,7 +35,7 @@ const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPageLogs = logs ? logs.slice(startIndex, endIndex) : [];
+  const currentPageLogs = logsItem ? logsItem.slice(startIndex, endIndex) : [];
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -88,20 +86,21 @@ const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
           </TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[150px] text-lg font-bold">
-                action type
-              </TableHead>
-              <TableHead className="w-[150px] text-lg font-bold">
-                created by
-              </TableHead>
               <TableHead className="w-[200px] text-lg font-bold">
-                action
+                Action
+              </TableHead>
+
+              <TableHead className="w-[150px] text-lg font-bold">
+                Created by
+              </TableHead>
+              <TableHead className="w-[150px] text-lg font-bold">
+                Action type
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {currentPageLogs.map((log) => (
-              <TableRow key={log._id}>
+              <TableRow key={log.id}>
                 {/* Assuming each log has a unique id */}
                 <TableCell className="font-medium font-hero-semibold ">
                   {log.action} {/* Replace with actual log properties */}

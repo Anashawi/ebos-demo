@@ -23,7 +23,8 @@ import StepUpStepDownCustomersReview from "../step-up-step-down/customers-review
 
 import { insertOne, getAll, deleteOne } from "../../http-client/payments";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { insertOne as insertLog } from "../../http-client/activity-logs";
+import emailjs from "emailjs-com";
 
 interface Props {
   videoPropName: videoPropNamesEnum;
@@ -67,6 +68,12 @@ const ChartsContent = ({
       //@ts-ignore
       if (elem?.userId === userInfo?.id) {
         if (now < expirationDate) {
+          //@ts-ignore
+          const result = await insertLog({
+            action: "Generate a report",
+            createdBy: userInfo?.email || "unknown",
+            typeOfAction: "Preview",
+          });
           router.push("/org/report");
           return; // stop execution after redirect
         } else {
@@ -84,6 +91,37 @@ const ChartsContent = ({
 
   const handleClosePlansDialog = () => {
     setIsPlansOpen(false);
+  };
+
+  const sendEmail = async () => {
+    try {
+      const serviceID = process.env.NEXT_PUBLIC_SERVICEID!;
+      const templateID = process.env.NEXT_PUBLIC_TEMPLATEID!;
+      const userID = process.env.NEXT_PUBLIC_USERID!;
+
+      //@ts-ignore
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+      const templateParams = {
+        //@ts-ignore
+        to_name: userInfo?.name,
+        to_email: userInfo?.email,
+        //@ts-ignore
+        message: `${userInfo?.name} has successfully subscribed.`,
+      };
+      // Step 2: Send email from client side
+      if (userInfo) {
+        const emailResponse = await emailjs.send(
+          //@ts-ignore
+          serviceID,
+          templateID,
+          templateParams,
+          userID
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
@@ -105,7 +143,13 @@ const ChartsContent = ({
             subscriptionDate: now,
             subscriptionExpirationDate: oneYearLater,
           });
-
+          sendEmail();
+          //@ts-ignore
+          const result = await insertLog({
+            action: "Subscribe",
+            createdBy: user.email || "unknown",
+            typeOfAction: "Payment",
+          });
           localStorage.removeItem("userInfo");
           router.push("/org/report");
           return res;
@@ -119,7 +163,7 @@ const ChartsContent = ({
   useEffect(() => {
     const api = async () => {
       const result = await getAll();
-      // await deleteOne("68052f3af167e66245a31887");
+      // await deleteOne("6811eb6e7fd27620db5be0d1");
       setSubscribers(result);
     };
     api();

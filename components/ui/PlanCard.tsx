@@ -109,8 +109,8 @@ const PlanCard = ({
             <ul className="mt-4 space-y-4 text-gray-800">
               {items.map((item, idx) => (
                 <li key={idx} className="flex gap-3 items-start">
-                  <CheckCircle2 className="text-green-500 mt-1" />
-                  <span>{item}</span>
+                  <CheckCircle2 className="text-green-500 mt-1 " size={40} />
+                  <span className="w-[400px]">{item}</span>
                 </li>
               ))}
             </ul>
@@ -129,8 +129,8 @@ const PlanCard = ({
         <ul className="mt-6 space-y-4 text-gray-800">
           {items.map((item, idx) => (
             <li key={idx} className="flex gap-3 items-start">
-              <CheckCircle2 className="text-green-500 mt-1" />
-              <span>{item}</span>
+              <CheckCircle2 className="text-green-500 mt-1" size={25} />
+              <span className="w-[400px]">{item}</span>
             </li>
           ))}
         </ul>

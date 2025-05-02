@@ -48,8 +48,12 @@ const Customers = ({ users }: { users: IUser[] }) => {
   const [updateUser, setUpdateUser] = useState<IUser>();
 
   const handleUserAdded = (newUser: any) => {
+    if (!newUser) {
+      alert("the email address should be unique");
+      return;
+    }
     setWholeUsers((prev) => {
-      if (updateUser && Object.keys(updateUser).length) {
+      if (newUser && updateUser && Object.keys(updateUser).length) {
         return prev.map((elem) => (elem.id === updateUser.id ? newUser : elem));
       }
       return [newUser, ...prev];

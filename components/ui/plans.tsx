@@ -10,10 +10,6 @@ const Plans = ({
 }) => {
   const [isGenerateReportOpen, setIsGenerateReportOpen] = useState(false); // New state for second dialog
 
-  const handleOpenGenerateReportDialog = () => {
-    setIsGenerateReportOpen(true); // Open the second dialog when the button is clicked
-  };
-
   if (!isOpen) return null; // Don't render the dialog if not open
 
   return (

@@ -11,6 +11,7 @@ import { object, string } from "yup";
 import { useRouter } from "next/router";
 import { Label } from "../../components/ui/label";
 import { Switch } from "../../components/ui/switch";
+import { insertOne } from "../../http-client/activity-logs";
 
 interface Props {
   closeCallback: () => void;
@@ -41,7 +42,7 @@ const Signup = ({
       phoneNumber: updateUser?.phoneNumber || "",
       password: "",
       confirmPassword: "",
-      role: updateUser?.role || "",
+      role: updateUser?.role || "admin",
       activeStatus: updateUser.hasOwnProperty("activeStatus")
         ? updateUser.activeStatus
         : activeUser,
@@ -86,6 +87,12 @@ const Signup = ({
     onSuccess: async (res) => {
       if (permissionAdmin || CheckEditUser) setUsers(res);
       if (res.id && !permissionAdmin) {
+        //@ts-ignore
+        const result = await insertOne({
+          action: "SignUp",
+          createdBy: formik.values.email || "unknown",
+          typeOfAction: "Auth",
+        });
         await trySignIn(
           formik.values.email ?? "",
           formik.values.password ?? ""

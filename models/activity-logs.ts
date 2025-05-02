@@ -7,9 +7,9 @@ export interface ActivityLogsAttrs {
 }
 
 export interface IActivityLogs extends ActivityLogsAttrs {
-  _id: string;
-  // createdAt: string;
-  // updatedAt: string;
+  id: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ActivityLogsDocument extends Document, ActivityLogsAttrs {}
@@ -18,20 +18,32 @@ interface ActivityLogsModel extends Model<ActivityLogsDocument> {
   build(attrs: ActivityLogsAttrs): ActivityLogsDocument;
 }
 
-const ActivityLogsSchema = new Schema<ActivityLogsDocument, ActivityLogsModel>({
-  action: {
-    type: String,
-    required: true,
+const ActivityLogsSchema = new Schema<ActivityLogsDocument, ActivityLogsModel>(
+  {
+    action: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: String,
+      required: true,
+    },
+    typeOfAction: {
+      type: String,
+      required: true,
+    },
   },
-  createdBy: {
-    type: String,
-    required: true,
-  },
-  typeOfAction: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id.toString();
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  }
+);
 
 ActivityLogsSchema.statics.build = function (
   attrs: ActivityLogsAttrs

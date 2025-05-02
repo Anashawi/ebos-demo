@@ -81,10 +81,10 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
       <form className="grow overflow-auto pt-10 flex gap-5 flex-wrap">
         <ul className="grow flex flex-col gap-3 mb-5">
           <h2 className="mb-2 text-3xl text-dark-400 font-hero-semibold">
-            Scale
+            Swift
           </h2>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Staff on Demand</label>
+            <label>Synapse</label>
             <input
               type="text"
               className="light-input"
@@ -98,7 +98,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Community and Crowd</label>
+            <label>Window</label>
             <input
               type="text"
               className="light-input"
@@ -113,7 +113,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Algorithms</label>
+            <label>Ideation</label>
             <input
               type="text"
               className="light-input"
@@ -127,7 +127,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Leveraged Assets</label>
+            <label>Flow</label>
             <input
               type="text"
               className="light-input"
@@ -141,7 +141,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Engagement</label>
+            <label>Tribe</label>
             <input
               type="text"
               className="light-input"
@@ -157,10 +157,10 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
         </ul>
         <ul className="grow flex flex-col gap-3 mb-5">
           <h2 className="mb-2 text-3xl text-dark-400 font-hero-semibold">
-            Ideas
+            Reach
           </h2>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Interface</label>
+            <label>Remote Talent</label>
             <input
               type="text"
               className="light-input"
@@ -174,7 +174,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Dashboard</label>
+            <label>Ecosystem</label>
             <input
               type="text"
               className="light-input"
@@ -188,7 +188,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Experimentation</label>
+            <label>Automation</label>
             <input
               type="text"
               className="light-input"
@@ -202,7 +202,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Autonomy</label>
+            <label>Cloud Resources</label>
             <input
               type="text"
               className="light-input"
@@ -216,7 +216,7 @@ const VideosForm: NextPage<Props> = ({ videos, toggleEditUrlsModal }) => {
             ) : null}
           </li>
           <li className="flex gap-2 flex-col p-3 relative text-gray-800 text-lg">
-            <label>Social Platforms</label>
+            <label>Human Energy</label>
             <input
               type="text"
               className="light-input"
