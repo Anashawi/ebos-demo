@@ -21,7 +21,7 @@ import {
 } from "../../components/ui/pagination";
 import { IActivityLogs } from "../../models/activity-logs";
 
-const ActivityLogs = ({ logs }: { logs: IActivityLogs[] }) => {
+const ActivityLogs = ({ logs = [] }: { logs?: IActivityLogs[] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const logsItem = Array.isArray(logs) ? [...logs].reverse() : [];
