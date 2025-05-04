@@ -61,6 +61,11 @@ const ChartsContent = ({
 
   const handleOpenPlansDialog = async () => {
     const now = new Date();
+
+    if (isAdmin) {
+      router.push("/org/report");
+      return; // stop execution after redirect
+    }
     for (const elem of subscribers) {
       //@ts-ignore
       const expirationDate = new Date(elem.subscriptionExpirationDate);
