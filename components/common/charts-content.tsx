@@ -210,9 +210,11 @@ const ChartsContent = ({
         {videoPropName === videoPropNamesEnum.roadMap && (
           <>
             {/* Button that triggers the Plans dialog */}
+
             <ChartsButton
               title="Generate a report"
               icon={undefined}
+              className="btn-rev rounded-xl"
               clickCallback={handleOpenPlansDialog}
             />
 

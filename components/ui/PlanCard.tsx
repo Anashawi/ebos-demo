@@ -18,12 +18,14 @@ const PlanCard = ({
   title,
   subtitle,
   items,
+  buyNow,
   price,
   buttonLabel,
 }: {
   title: React.ReactNode;
   subtitle?: string;
   items: React.ReactNode[];
+  buyNow: string;
   price: string;
   buttonLabel: string;
 }) => {
@@ -115,6 +117,9 @@ const PlanCard = ({
               ))}
             </ul>
           </div>
+          <button className="mt-6 w-full py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white lg text-font-semibold transition shadow-md">
+            {buyNow}
+          </button>{" "}
           <div className="mt-8 text-center">
             <p className="text-gray-600 text-sm mt-2">{price}</p>
           </div>

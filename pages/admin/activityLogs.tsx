@@ -96,6 +96,9 @@ const ActivityLogs = ({ logs = [] }: { logs?: IActivityLogs[] }) => {
               <TableHead className="w-[150px] text-lg font-bold">
                 Action type
               </TableHead>
+              <TableHead className="w-[150px] text-lg font-bold">
+                Created At
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -110,6 +113,13 @@ const ActivityLogs = ({ logs = [] }: { logs?: IActivityLogs[] }) => {
                 </TableCell>
                 <TableCell className="font-medium font-hero-semibold ">
                   {log.typeOfAction} {/* Replace with actual log properties */}
+                </TableCell>
+                <TableCell className="font-medium font-hero-semibold ">
+                  {log.createdAt
+                    ? new Date(log.createdAt).toLocaleDateString()
+                    : "_"}
+
+                  {/* Replace with actual log properties */}
                 </TableCell>
               </TableRow>
             ))}

@@ -35,16 +35,22 @@ const OrganizationsForm = ({
   };
 
   // insert/update user organizations
-  const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } = useMutation({
-    mutationFn: !userOrganizations.id ? organizationsApi.insertOne : organizationsApi.updateOne,
-    onMutate: (newUserOrgs) => {
-      setOpenaiMessage(getUserOrganizationsMsg(newUserOrgs));
-    },
-    onSuccess: (storedUserOrgs) => {
-      queryClient.invalidateQueries([organizationsApi.keys.all, session?.user?.id]);
-      setUserOrganizations(storedUserOrgs);
-    },
-  });
+  const { mutate: createOrUpdateUserOrganizations, isLoading: isSaving } =
+    useMutation({
+      mutationFn: !userOrganizations?.id
+        ? organizationsApi.insertOne
+        : organizationsApi.updateOne,
+      onMutate: (newUserOrgs) => {
+        setOpenaiMessage(getUserOrganizationsMsg(newUserOrgs));
+      },
+      onSuccess: (storedUserOrgs) => {
+        queryClient.invalidateQueries([
+          organizationsApi.keys.all,
+          session?.user?.id,
+        ]);
+        setUserOrganizations(storedUserOrgs);
+      },
+    });
 
   return (
     <section className="form-container">
@@ -52,11 +58,16 @@ const OrganizationsForm = ({
       <div className="flex flex-col gap-4 bg-dark-50 rounded-2xl p-4">
         <div className="flex flex-col gap-4">
           {!areUserOrganizationsLoading ? (
-            userOrganizations.organizations.length !== 0 ? (
-              userOrganizations.organizations.map((org, index) => (
-                <div key={`org-${index}`} className="flex flex-row flex-wrap justify-between gap-4">
+            userOrganizations?.organizations.length !== 0 ? (
+              userOrganizations?.organizations.map((org, index) => (
+                <div
+                  key={`org-${index}`}
+                  className="flex flex-row flex-wrap justify-between gap-4"
+                >
                   <div className="grow flex flex-col gap-1">
-                    <label>{index === 0 ? `Name` : `Competitor ${index}`}</label>
+                    <label>
+                      {index === 0 ? `Name` : `Competitor ${index}`}
+                    </label>
                     <input
                       className="light-input"
                       type="text"
@@ -85,9 +96,10 @@ const OrganizationsForm = ({
                         <FontAwesomeIcon
                           icon={faTimes}
                           onClick={() => {
-                            userOrganizations.organizations = userOrganizations.organizations.filter(
-                              (organization) => organization.uuid !== org.uuid
-                            );
+                            userOrganizations.organizations =
+                              userOrganizations.organizations.filter(
+                                (organization) => organization.uuid !== org.uuid
+                              );
                             setUserOrganizations({
                               ...userOrganizations,
                             });
@@ -100,15 +112,25 @@ const OrganizationsForm = ({
                 </div>
               ))
             ) : (
-              <p className="text-yellow-600 text-xl">Click add new organization to start</p>
+              <p className="text-yellow-600 text-xl">
+                Click add new organization to start
+              </p>
             )
           ) : (
-            <Spinner message="loading organizations..." className="items-center text-2xl" />
+            <Spinner
+              message="loading organizations..."
+              className="items-center text-2xl"
+            />
           )}
         </div>
         <div className="flex flex-col justify-center gap-2">
           <div className="flex justify-end h-10">
-            {isSaving && <Spinner className="items-center text-xl" message="Saving organizations..." />}
+            {isSaving && (
+              <Spinner
+                className="items-center text-xl"
+                message="Saving organizations..."
+              />
+            )}
           </div>
           <div className="flex justify-between">
             <button
@@ -118,22 +140,29 @@ const OrganizationsForm = ({
                 setUserOrganizations((prevValue) => {
                   return {
                     ...prevValue,
-                    organizations: [...prevValue.organizations, emptyUserOrganization],
+                    organizations: [
+                      ...prevValue.organizations,
+                      emptyUserOrganization,
+                    ],
                   };
                 });
-              }}>
+              }}
+            >
               <FontAwesomeIcon className="w-4 cursor-pointer" icon={faPlus} />
               Add New Organization
             </button>
             <button
               className={`btn-rev ${
-                isSaving || !userOrganizations.organizations.length ? `opacity-50 cursor-not-allowed` : ``
+                isSaving || !userOrganizations?.organizations.length
+                  ? `opacity-50 cursor-not-allowed`
+                  : ``
               }`}
               type="button"
-              disabled={isSaving || !userOrganizations.organizations.length}
+              disabled={isSaving || !userOrganizations?.organizations.length}
               onClick={() => {
                 createOrUpdateUserOrganizations(userOrganizations);
-              }}>
+              }}
+            >
               Save
             </button>
           </div>

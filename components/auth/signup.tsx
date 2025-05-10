@@ -42,7 +42,7 @@ const Signup = ({
       phoneNumber: updateUser?.phoneNumber || "",
       password: "",
       confirmPassword: "",
-      role: updateUser?.role || "admin",
+      role: updateUser?.role || "client",
       activeStatus: updateUser.hasOwnProperty("activeStatus")
         ? updateUser.activeStatus
         : activeUser,

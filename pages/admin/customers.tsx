@@ -139,7 +139,7 @@ const Customers = ({ users }: { users: IUser[] }) => {
                   {user.role}
                 </TableCell>
                 <TableCell className="font-medium font-hero-semibold">
-                  {user?.activeStatus ? "Active" : "An-Active"}
+                  {user?.activeStatus ? "Active" : "Inactive"}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex  flex-row justify-end gap-7 mx-auto ">
